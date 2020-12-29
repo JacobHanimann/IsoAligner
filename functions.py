@@ -80,9 +80,6 @@ def map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(fasta1,fasta2,match,misma
     alignment_COSMIC_fasta = list(alignments[0][0])
     alignment_isoform_fasta=list(alignments[0][1])
     isoform_pattern_check= check_for_wrong_exon_alignments(alignment_COSMIC_fasta,alignment_isoform_fasta,exon_length_AA)
-    print('\n')
-    print('new sequence')
-    print(check_for_wrong_exon_alignments(alignment_COSMIC_fasta,alignment_isoform_fasta,exon_length_AA))
     reference_position_list=[]
     isoform_positions_list=[]
     aminoacids=[]
