@@ -28,18 +28,21 @@ import re
 from functions import * #import all functions from the functions.py file
 
 
+#Functions for the front-end:
+
+def get_binary_file_downloader_html(bin_file, file_label='File', name_button='download'):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    bin_str = base64.b64encode(data).decode()
+    href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">{name_button} {file_label}</a>'
+    return href
+
 
 #Streamlit website
 def main():
     """ Isoform Mapping Tool """
     st.title("AminoAcid Isoform Mapper")
 
-    def get_binary_file_downloader_html(bin_file, file_label='File', name_button='download'):
-        with open(bin_file, 'rb') as f:
-            data = f.read()
-        bin_str = base64.b64encode(data).decode()
-        href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">{name_button} {file_label}</a>'
-        return href
 
     activity = ['Mapping tool', 'Download pre-computed data', 'About & Source Code']
     st.sidebar.markdown("### Menu")

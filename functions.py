@@ -29,17 +29,7 @@ import re
 
 
 
-#Back-end code
-
-def visualise_unfiltered_alignment_better(alignment_string):
-    'replace connection character between the two sequences'
-    unfiltered_alignmnent = re.sub('\|','|',alignment_string)
-    return unfiltered_alignmnent
-
-def filter_and_visualize_final_alignment(alignment_string):
-    'select which matches are discared and replace connection character between the two sequences'
-    unfiltered_alignmnent = re.sub('\|', 'x', alignment_string)
-    return unfiltered_alignmnent
+#Back-end code (biological aspects)
 
 def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list):
     '''Function that returns an alignment of two sequences according to the AA_match_evalutation list generated from
@@ -51,7 +41,6 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     alignment_character_list = [" " if score =="gap" else correct_match_character if score=="correct" else wrong_match_character for score in AA_match_evalutation_list]
     output_alignment_string= ''.join(reference_sequence_list)+'\n'+''.join(alignment_character_list)+"\n"+''.join(isoform_sequence_list)
     return output_alignment_string
-
 
 
 def transform_uploaded_data_type_accordingly(file):
