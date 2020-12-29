@@ -25,6 +25,7 @@ from Bio.pairwise2 import format_alignment
 import os
 import base64
 import re
+from functions import * #import all functions from the functions.py file
 
 
 
