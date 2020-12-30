@@ -45,7 +45,7 @@ def main():
 
 
     activity = ['Mapping tool', 'Download pre-computed data', 'About & Source Code']
-    st.sidebar.markdown("### Menu")
+    st.sidebar.markdown("### Navigation")
     choice = st.sidebar.selectbox("", activity)
     st.sidebar.write("\n")
     st.sidebar.write("\n")
@@ -57,19 +57,18 @@ def main():
         st.write("--------------------------")
         st.markdown("#### Input")
         fasta1 = st.text_area('Paste Amino Acid sequence of reference isoform: ', '''''')
-        agree = st.checkbox("upload fasta file of reference isoform?")
+        agree = st.checkbox("upload list of ID's?")
         if agree:
-            fasta1 = st.file_uploader("Upload 1st FASTA File", type=["fasta", "fa","txt"])
+            fasta1 = st.file_uploader("Accepted ID's: Ensemble, Refseq, Uniprot", type=[ "gz","txt"])
         st.write("\n")
         option = st.selectbox(
             'Select alternative isoforms to align',
              ['Insert own sequence',"Available on Refseq", "Available on Ensembl", "All Available Isoforms"])
         if option == "Insert own sequence":
             fasta2 = st.text_area('Type in Amino Acid sequence of alternative isoform: ', '''''')
-            agree2 = st.checkbox("upload fasta file of alternative isoform?")
-            if agree2:
-                fasta2 = st.file_uploader("Upload 2st FASTA File", type=["fasta", "fa","txt"])
         st.write("--------------------------")
+        st.sidebar.markdown("#### Minimal Exon Length (AA):")
+        exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None, format=None,key=None)
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Needleman-Wunsch-Algorithm Parameters:")
         st.sidebar.write("\n")
@@ -78,8 +77,6 @@ def main():
         open_gap_penalty= st.sidebar.number_input("Open Gap penalty:", min_value=None, max_value=None, value=-1.75, step=None, format=None, key=None)
         gap_extension_penalty= st.sidebar.number_input("Gap Extension penalty:", min_value=None, max_value=None, value=0, step=None, format=None, key=None)
         st.sidebar.write("\n")
-        st.sidebar.markdown("#### Minimal Exon Length (AA):")
-        exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None, format=None, key=None)
 
         if fasta1 !="" and fasta2 !="":
             st.markdown("#### Results")
@@ -87,8 +84,6 @@ def main():
             #st.markdown("##### Unfiltered Alignment:")
             #st.write("\n")
             maped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(fasta1, fasta2, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
-            Alignment_preview = visualise_unfiltered_alignment_better(maped_tuple[0])
-            alignment_final = filter_and_visualize_final_alignment(maped_tuple[0])
             #st.text(Alignment_preview)
             st.write("\n")
             st.write("\n")
