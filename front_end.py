@@ -57,7 +57,7 @@ def main():
         st.write("--------------------------")
         st.markdown("#### Input")
         fasta1 = st.text_area('Paste Amino Acid sequence of reference isoform: ', '''''')
-        agree = st.checkbox("Upload list of ID's or gene names")
+        agree = st.checkbox("Click here to upload list of gene names or ID's")
         if agree:
             fasta1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=[ "gz","txt"])
         st.write("\n")
