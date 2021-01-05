@@ -26,17 +26,25 @@ import os
 import base64
 import re
 
-#create a dictionary of references (ensembl, refseq, uniprot)     Problem: Es git überschnidige
-
 #Allgemeins Problem: an welem kriterium sell ich es gene definiere: an name? anere ID?
 
-#create a dictionary of genes
+#create a dictionary of genes (gene names in list and then make a search with if gene_name matches any element in the gene name list...
 
 class protein_sequence:
-    def __init__(self,gene_name, ENSG, ENSG_version, ENST, ENST_version, ENSP, ENSP_version, uniprot_accession, uniprot_uniparc):
+    def __init__(self,gene_name, ENSG, ENSG_version, ENST, ENST_version, ENSP, ENSP_version, refseq_rna, refseq_protein, uniprot_accession, uniprot_uniparc, average_exon_length):
         self.gene_name= gene_name
         self.ENSG = ENSG
         self.ENSG_version = ENSG_version
+        self.ENST = ENST
+        self.ENST_version = ENST_version
+        self.ENSP = ENSP
+        self.ENSP_version = ENSP_version
+        self.refseq_rna = refseq_rna
+        self.refseq_protein = refseq_protein
+        self.uniprot_accession = uniprot_accession
+        self.uniprot_uniparc = uniprot_uniparc
+        self.average_exon_length= average_exon_length
+
 
 #choose the canonical sequence
 
