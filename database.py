@@ -44,4 +44,3 @@ class protein_sequence:
 
 #what if the user wants a different reference protein sequence?
 # I have to then compute it realtime probably
-
