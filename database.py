@@ -26,3 +26,17 @@ import os
 import base64
 import re
 
+#create a dictionary of references (ensembl, refseq, uniprot)     Problem: Es git überschnidige
+
+#Allgemeins Problem: an welem kriterium sell ich es gene definiere: an name? anere ID?
+
+#create a dictionary of genes
+
+class protein_sequence:
+    def __init__(self,gene_name, ENSG, ENSG_version, ENST, ENST_version, ENSP, ENSP_version, uniprot_accession, uniprot_uniparc):
+        self.gene_name= gene_name
+        self.ENSG = ENSG
+        self.ENSG_version = ENSG_version
+
+
+
