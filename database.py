@@ -38,5 +38,10 @@ class protein_sequence:
         self.ENSG = ENSG
         self.ENSG_version = ENSG_version
 
+#choose the canonical sequence
 
+#generate the 3 three mapped lists and store them somewhere (only used when a gene name is entered or the user takes the canonical one
+
+#what if the user wants a different reference protein sequence?
+# I have to then compute it realtime probably
 
