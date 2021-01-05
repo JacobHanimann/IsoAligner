@@ -26,9 +26,15 @@ import os
 import base64
 import re
 
-#Allgemeins Problem: an welem kriterium sell ich es gene definiere: an name? anere ID?
-
 #create a dictionary of genes (gene names in list and then make a search with if gene_name matches any element in the gene name list...
+#all protein_Sequence objects in value of dictionary, then, use grouping to choose a canonical sequence or let the user select
+
+
+def create_gene_dictionary(list_of_gene_names):
+    'make a dictionary with all the alternative gene name per gene'
+
+
+#two instances of searching for a sequence, first by gene name and then by ID
 
 class protein_sequence:
     def __init__(self,gene_name, ENSG, ENSG_version, ENST, ENST_version, ENSP, ENSP_version, refseq_rna, refseq_protein, uniprot_accession, uniprot_uniparc, average_exon_length):
@@ -45,10 +51,6 @@ class protein_sequence:
         self.uniprot_uniparc = uniprot_uniparc
         self.average_exon_length= average_exon_length
 
+def select_canonical_sequence(isoforms):
+ 'function that can be dynamically applied to a set of isoform sequences'
 
-#choose the canonical sequence
-
-#generate the 3 three mapped lists and store them somewhere (only used when a gene name is entered or the user takes the canonical one
-
-#what if the user wants a different reference protein sequence?
-# I have to then compute it realtime probably
