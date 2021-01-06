@@ -30,17 +30,35 @@ import re
 #keep in mind that code also has to be descriptive to generate pre-computed offline data and not only for the dynamic stuff
 
 
-def create_list_of_gene_objects(file_of_gene_names):
-    'make a dictionary with all the alternative gene name per gene'
-
 class gene:
-    def __init__(self, HGNC, gene_symbol, previous_symbol=None, alias_symbol=None, protein_sequence_isoform_collection=None, canonical_default=None):
+    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None):
         self.HGNC = HGNC
         self.gene_symbol = gene_symbol
-        self.previous_symbol = previous_symbol
-        self.alias_symbol = alias_symbol
+        self.previous_symbols = previous_symbols
+        self.alias_symbols = alias_symbols
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
         self.canonical_default = canonical_default
+
+
+def create_list_of_gene_objects(file_of_gene_names):
+    '''make a list of gene objects
+    input: textfile
+    output: list of gene objects'''
+    df = pd.read_csv(file_of_gene_names, sep='\t')
+    print(df['alias_symbols'])
+    list_of_gene_objects = [gene(df.loc[index,'HGNC'], gene_symbol = df.loc[index, 'approved_symbol'],previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'])for index in range(0,len(df))]
+    print(len(list_of_gene_objects))
+    for gene_object in list_of_gene_objects: #convert comma separated strings into elements of a list to facilitate a infrastructure which can be better searched through later (no need for regex later)
+       if type(gene_object.previous_symbols) != float: #None values are type float
+           if "," in  gene_object.previous_symbols:
+            gene_object.previous_symbols = gene_object.previous_symbols.split(', ')
+       if type(gene_object.alias_symbols) != float:
+           if "," in gene_object.alias_symbols:
+            gene_object.alias_symbols = gene_object.alias_symbols.split(', ')
+    #for gen in list_of_gene_objects:
+        #print(gen.gene_symbol,'first',gen.alias_symbols,'other', gen.previous_symbols)
+    return list_of_gene_objects
+
 
 
 class protein_sequence:
@@ -80,14 +98,18 @@ def get_bio_IDs_with_regex(ID_type,string):
 def select_canonical_sequence(isoforms):
  'function that can be dynamically applied to a set of isoform sequences'
 
-def select_and_map_isoforms_with_canonical_sequence():
-    'I dont know if this makes sense'
-
-
 def save_all_data_in_pickle_style():
     'see if this method is fast enough with streamlit'
+
+
+def map_isoforms_with_canonical_sequence():
+    'I dont know if this makes sense'
 
 
 def save_results_to_tsv_file(dictionary):
     'to be pre-computed values'
 
+
+#Execution
+
+list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
