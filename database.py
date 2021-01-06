@@ -34,7 +34,7 @@ def create_list_of_gene_objects(file_of_gene_names):
     'make a dictionary with all the alternative gene name per gene'
 
 class gene:
-    def __init__(self, HGNC, gene_symbol, previous_symbol, alias_symbol, protein_sequence_isoform_collection, canonical_default):
+    def __init__(self, HGNC, gene_symbol, previous_symbol=None, alias_symbol=None, protein_sequence_isoform_collection=None, canonical_default=None):
         self.HGNC = HGNC
         self.gene_symbol = gene_symbol
         self.previous_symbol = previous_symbol
@@ -44,8 +44,9 @@ class gene:
 
 
 class protein_sequence:
-    def __init__(self,gene_name, protein_sequence, ENSG, ENSG_version, ENST, ENST_version, ENSP, ENSP_version, refseq_rna, refseq_protein, uniprot_accession, uniprot_uniparc, average_exon_length):
-        self.gene_name= gene_name
+    def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
+                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, average_exon_length=None):
+        self.gene_name= gene_name #maybe unnecessary
         self.protein_sequence = protein_sequence
         self.ENSG = ENSG
         self.ENSG_version = ENSG_version
