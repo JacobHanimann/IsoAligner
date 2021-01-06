@@ -27,7 +27,10 @@ import base64
 import re
 
 
+#new function ideas
 
+def select_canonical_sequence(isoforms):
+ 'function that can be dynamically applied to a set of isoform sequences'
 
 #Back-end code (biological aspects)
 
