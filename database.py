@@ -151,4 +151,4 @@ def save_results_to_tsv_file(dictionary):
 
 list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
 
-print(get_bio_IDs_with_regex('ensembl_enst', 'ENSG00000001036|ENSG00000001036.14|ENST00000002165|ENST00000002165.11|ENSP00000002165|ENSP00000002165.5|Q9BTY2|UPI0000073C10|FUCA2'))
+print(get_bio_IDs_with_regex('uniprot_uniparc', 'ENSG00000001036|ENSG00000001036.14|ENST00000002165|ENST00000002165.11|ENSP00000002165|ENSP00000002165.5|Q9BTY2|UPI0000073C10|FUCA2'))
