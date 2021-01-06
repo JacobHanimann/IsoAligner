@@ -27,6 +27,9 @@ import base64
 import re
 
 
+#keep in mind that code also has to be descriptive to generate pre-computed offline data and not only for the dynamic stuff
+
+
 def create_list_of_gene_objects(file_of_gene_names):
     'make a dictionary with all the alternative gene name per gene'
 
