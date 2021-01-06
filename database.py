@@ -73,9 +73,8 @@ def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
         'before creating new protein_sequence, check if it already exists'
 
 
-def get_bio_IDs_with_regex(ID_type):
+def get_bio_IDs_with_regex(ID_type,string):
     'write generic functions to extract certain ID types from different databases'
-
 
 
 def select_canonical_sequence(isoforms):
@@ -91,3 +90,4 @@ def save_all_data_in_pickle_style():
 
 def save_results_to_tsv_file(dictionary):
     'to be pre-computed values'
+
