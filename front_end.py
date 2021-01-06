@@ -2,29 +2,6 @@ import pandas as pd
 import streamlit as st
 import matplotlib
 matplotlib.use("TkAgg")
-import matplotlib as plt
-from Bio.Seq import Seq
-from Bio import SeqIO
-from collections import Counter
-import neatbio.sequtils as utils
-import numpy as np
-from PIL import Image
-import matplotlib.pyplot as plt
-from Bio.Seq import Seq
-from Bio import SeqIO
-from collections import Counter
-import neatbio.sequtils as utils
-import numpy as np
-from PIL import Image
-import gzip
-import pickle
-import csv
-import re
-from Bio import pairwise2
-from Bio.pairwise2 import format_alignment
-import os
-import base64
-import re
 from functions import * #import all functions from the functions.py file
 
 
@@ -56,7 +33,7 @@ def main():
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
         st.write("--------------------------")
         st.markdown("#### Input")
-        fasta1 = st.text_area('Paste Amino Acid sequence of reference isoform: ', '''''')
+        fasta1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')
         agree = st.checkbox("Click here to upload list of gene names or ID's")
         if agree:
             fasta1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=[ "gz","txt"])
@@ -65,7 +42,7 @@ def main():
             'Select alternative isoforms to align',
              ['Insert own sequence',"Available on Refseq", "Available on Ensembl", "All Available Isoforms"])
         if option == "Insert own sequence":
-            fasta2 = st.text_area('Type in Amino Acid sequence of alternative isoform: ', '''''')
+            fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''')
         else:
             st.write("Feature coming soon")
         st.write("--------------------------")
