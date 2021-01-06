@@ -33,8 +33,14 @@ import re
 def create_gene_dictionary(list_of_gene_names):
     'make a dictionary with all the alternative gene name per gene'
 
+class gene:
+    def __init__(self, HGNC, gene_symbol, previous_symbol, alias_symbol, protein_sequence_isoform_collection):
+        self.HGNC = HGNC
+        self.gene_symbol = gene_symbol
+        self.previous_symbol = previous_symbol
+        self.alias_symbol = alias_symbol
+        self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
 
-#two instances of searching for a sequence, first by gene name and then by ID
 
 class protein_sequence:
     def __init__(self,gene_name, protein_sequence, ENSG, ENSG_version, ENST, ENST_version, ENSP, ENSP_version, refseq_rna, refseq_protein, uniprot_accession, uniprot_uniparc, average_exon_length):
