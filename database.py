@@ -1,30 +1,6 @@
 import pandas as pd
-import streamlit as st
 import matplotlib
 matplotlib.use("TkAgg")
-import matplotlib as plt
-from Bio.Seq import Seq
-from Bio import SeqIO
-from collections import Counter
-import neatbio.sequtils as utils
-import numpy as np
-from PIL import Image
-import matplotlib.pyplot as plt
-from Bio.Seq import Seq
-from Bio import SeqIO
-from collections import Counter
-import neatbio.sequtils as utils
-import numpy as np
-from PIL import Image
-import gzip
-import pickle
-import csv
-import re
-from Bio import pairwise2
-from Bio.pairwise2 import format_alignment
-import os
-import base64
-import re
 from functions import * #import all functions from the functions.py file
 from collections.abc import Iterable
 
@@ -78,30 +54,28 @@ class protein_sequence:
         self.uniprot_accession = uniprot_accession
         self.uniprot_uniparc = uniprot_uniparc
 
-def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
-    '''What we need: reading in chunk and extracting AA sequence and ID's and then create a protein_sequence object
-    try to be generic with regular expressions for fetching the ID's
-    ouput: objects in a dictionary or a list'''
+def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fasta_files):
+    '''extract fasta files one by one and add them to the gene objects'''
     with open(file, "r") as f:
         expenses_txt = f.readlines()
     # Put all the lines into a single string
     whole_txt = "".join(expenses_txt)
     splittext = re.split(">", whole_txt)
-    count = 0
     fasta_count = 0
     matches = 0
-    for fasta in splittext[1:1000]:
+    for fasta in splittext[1:number_of_fasta_files]:
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
         for gene in list_of_gene_objects:
             if found:
                 break
-            for attribute in [a for a in dir(gene) if not a.startswith('__') and not a.startswith('protein')]:
+            for attribute in [a for a in dir(gene) if not a.startswith('__') and not a.startswith('protein')]: #extract the attributes wanted
                 if found:
                     break
-                attribute_value = getattr(gene,attribute)
+                attribute_value = getattr(gene,attribute) #extract the value of the attribue
                 if isinstance(attribute_value, Iterable):
+                    #only perfect matches allowed with the following if statement
                     if type(attribute_value) == list:
                         if gene_name in attribute_value:
                             matches +=1
@@ -111,6 +85,7 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
                             found= True
 
             if found ==True:
+                #create protein_sequence object to add to the gene_object
                 sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
                                                get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
                                                get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
@@ -123,8 +98,11 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
                                                    fasta),
                                                uniprot_uniparc=get_bio_IDs_with_regex_ensembl_fasta('uniprot_uniparc',fasta))
                 gene.protein_sequence_isoform_collection.append(sequence_object)
+
             #else:
-                #list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[sequence_object])) #this does not work because per object there will always be one sequence
+                #list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[sequence_object]))
+
+             #this does not work because per object there will always be one sequence
 
         print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
     print('Fasta files matched: ' + str(matches))
@@ -135,7 +113,8 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
 def find_gene_objects_that_are_the_same_and_group_together(list_of_gene_objects):
     '''hardcore aligne sequences and check if these are isoforms
     make criteria what counts a isoform
-    could also be done with all sequences, would be the most precise method at the beginning of reading fasta files'''
+    could also be done with all sequences, would be the most precise method at the beginning of reading fasta files
+    also add gene name to the gene object to alias symbols'''
 
 def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
     'also get refseq data'
@@ -190,6 +169,7 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         else:
             return match_list[0][1:-2] #remove \n
 
+#execute regular expression
     match_list = re.findall(pattern,string)
     if not match_list: #if list is empty
         return 'not found'
@@ -222,29 +202,15 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
+#Create list of gene objects
 list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
-print(len(list_of_gene_objects))
 
-#print(get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', '''>ENSG00000101276|ENSG00000101276.18|ENST00000217254|ENST00000217254.11|ENSP00000217254|ENSP00000217254.7|Q9NQ40|UPI000002A74E|SLC52A3
-#MAFLMHLLVCVFGMGSWVTINGLWVELPLLVMELPEGWYLPSYLTVVIQLANIGPLLVTL
-#LHHFRPSCLSEVPIIFTLLGVGTVTCIIFAFLWNMTSWVLDGHHSIAFLVLTFFLALVDC
-#TSSVTFLPFMSRLPTYYLTTFFVGEGLSGLLPALVALAQGSGLTTCVNVTEISDSVPSPV
-#PTRETDIAQGVPRALVSALPGMEAPLSHLESRYLPAHFSPLVFFLLLSIMMACCLVAFFV
-#LQRQPRCWEASVEDLLNDQVTLHSIRPREENDLGPAGTVDSSQGQGYLEEKAAPCCPAHL
-#AFIYTLVAFVNALTNGMLPSVQTYSCLSYGPVAYHLAATLSIVANPLASLVSMFLPNRSL
-#LFLGVLSVLGTCFGGYNMAMAVMSPCPLLQGHWGGEVLIVASWVLFSGCLSYVKVMLGVV
-#LRDLSRSALLWCGAAVQLGSLLGALLMFPLVNVLRLFSSADFCNLHCPA*
-#'''))
+#add fasta files
+list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects,3000)
 
-#print(dir(list_of_gene_objects[0]))
-
-#for gene in list_of_gene_objects:
-    #print(gene.gene_symbol)
-
-list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects)
-
+#see how many fasta files per gene were found
 for gene in list_of_gene_objects_with_fasta:
-    if len(gene.protein_sequence_isoform_collection) != 0:
+    if len(gene.protein_sequence_isoform_collection) > 1:
         print(gene.gene_symbol, len(gene.protein_sequence_isoform_collection))
 
 #save list of gene objects to import to the subsequent script
