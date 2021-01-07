@@ -32,14 +32,15 @@ from collections.abc import Iterable
 #keep in mind that code also has to be descriptive to generate pre-computed offline data and not only for the dynamic stuff
 
 
-class gene:
-    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=[], canonical_default=None):
+class Gene:
+    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None):
         self.HGNC = HGNC
         self.gene_symbol = gene_symbol
         self.previous_symbols = previous_symbols
         self.alias_symbols = alias_symbols
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
         self.canonical_default = canonical_default
+        self.average_exon_length= average_exon_length
 
 
 def create_list_of_gene_objects(file_of_gene_names):
@@ -48,7 +49,7 @@ def create_list_of_gene_objects(file_of_gene_names):
     output: list of gene objects
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    list_of_gene_objects = [gene(df.loc[index,'HGNC'], gene_symbol = df.loc[index, 'approved_symbol'],previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'])for index in range(0,len(df))]
+    list_of_gene_objects = [Gene(df.loc[index,'HGNC'], gene_symbol = df.loc[index, 'approved_symbol'],previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'],protein_sequence_isoform_collection=[])for index in range(0,len(df))]
     for gene_object in list_of_gene_objects: #convert comma separated strings into elements of a list to facilitate a infrastructure which can be better searched through later (no need for regex later)
        if type(gene_object.previous_symbols) != float: #None values are type float
            if "," in  gene_object.previous_symbols:
@@ -63,7 +64,7 @@ def create_list_of_gene_objects(file_of_gene_names):
 
 class protein_sequence:
     def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
-                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, average_exon_length=None):
+                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None):
         self.gene_name= gene_name #maybe unnecessary
         self.protein_sequence = protein_sequence
         self.ENSG = ENSG
@@ -76,7 +77,6 @@ class protein_sequence:
         self.refseq_protein = refseq_protein
         self.uniprot_accession = uniprot_accession
         self.uniprot_uniparc = uniprot_uniparc
-        self.average_exon_length= average_exon_length
 
 def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
     '''What we need: reading in chunk and extracting AA sequence and ID's and then create a protein_sequence object
@@ -90,13 +90,10 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
     count = 0
     fasta_count = 0
     matches = 0
-    for fasta in splittext[1:-1]:
+    for fasta in splittext[1:1000]:
         fasta_count += 1
         found = False
-        print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
-        #print(fasta)
-        #print(gene_name)
         for gene in list_of_gene_objects:
             if found:
                 break
@@ -105,25 +102,33 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
                     break
                 attribute_value = getattr(gene,attribute)
                 if isinstance(attribute_value, Iterable):
-                    #print(attribute,getattr(gene,attribute))
-                    #print('fastaname',gene_name,'calssname',gene.gene_symbol
                     if type(attribute_value) == list:
                         if gene_name in attribute_value:
-                            #print('its a match')
-                            #print('fastaname', gene_name, 'classname', attribute_value)
                             matches +=1
-                            #print(matches)
                             found = True
                     elif gene_name == attribute_value:
                             matches +=1
-                            #print('fastaname', gene_name, 'classname', attribute_value)
-                            #print(matches)
                             found= True
 
-        #if found == False:
-            #print(gene_name)
-        print(matches)
+            if found ==True:
+                sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
+                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
+                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
+                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
+                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst_version', fasta),
+                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp', fasta),
+                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', fasta),
+                                               uniprot_accession=get_bio_IDs_with_regex_ensembl_fasta(
+                                                   'uniprot_accession',
+                                                   fasta),
+                                               uniprot_uniparc=get_bio_IDs_with_regex_ensembl_fasta('uniprot_uniparc',fasta))
+                gene.protein_sequence_isoform_collection.append(sequence_object)
+            #else:
+                #list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[sequence_object])) #this does not work because per object there will always be one sequence
+
+        print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
     print('Fasta files matched: ' + str(matches))
+    return list_of_gene_objects
 
 #Idea store fasta files that weren't a match also in list_of_gene_objects as Hugo unmatch labeled
 
@@ -218,18 +223,30 @@ def save_results_to_tsv_file(dictionary):
 #Execution
 
 list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
+print(len(list_of_gene_objects))
 
-print(get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', '''>ENSG00000101276|ENSG00000101276.18|ENST00000217254|ENST00000217254.11|ENSP00000217254|ENSP00000217254.7|Q9NQ40|UPI000002A74E|SLC52A3
-MAFLMHLLVCVFGMGSWVTINGLWVELPLLVMELPEGWYLPSYLTVVIQLANIGPLLVTL
-LHHFRPSCLSEVPIIFTLLGVGTVTCIIFAFLWNMTSWVLDGHHSIAFLVLTFFLALVDC
-TSSVTFLPFMSRLPTYYLTTFFVGEGLSGLLPALVALAQGSGLTTCVNVTEISDSVPSPV
-PTRETDIAQGVPRALVSALPGMEAPLSHLESRYLPAHFSPLVFFLLLSIMMACCLVAFFV
-LQRQPRCWEASVEDLLNDQVTLHSIRPREENDLGPAGTVDSSQGQGYLEEKAAPCCPAHL
-AFIYTLVAFVNALTNGMLPSVQTYSCLSYGPVAYHLAATLSIVANPLASLVSMFLPNRSL
-LFLGVLSVLGTCFGGYNMAMAVMSPCPLLQGHWGGEVLIVASWVLFSGCLSYVKVMLGVV
-LRDLSRSALLWCGAAVQLGSLLGALLMFPLVNVLRLFSSADFCNLHCPA*
-'''))
+#print(get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', '''>ENSG00000101276|ENSG00000101276.18|ENST00000217254|ENST00000217254.11|ENSP00000217254|ENSP00000217254.7|Q9NQ40|UPI000002A74E|SLC52A3
+#MAFLMHLLVCVFGMGSWVTINGLWVELPLLVMELPEGWYLPSYLTVVIQLANIGPLLVTL
+#LHHFRPSCLSEVPIIFTLLGVGTVTCIIFAFLWNMTSWVLDGHHSIAFLVLTFFLALVDC
+#TSSVTFLPFMSRLPTYYLTTFFVGEGLSGLLPALVALAQGSGLTTCVNVTEISDSVPSPV
+#PTRETDIAQGVPRALVSALPGMEAPLSHLESRYLPAHFSPLVFFLLLSIMMACCLVAFFV
+#LQRQPRCWEASVEDLLNDQVTLHSIRPREENDLGPAGTVDSSQGQGYLEEKAAPCCPAHL
+#AFIYTLVAFVNALTNGMLPSVQTYSCLSYGPVAYHLAATLSIVANPLASLVSMFLPNRSL
+#LFLGVLSVLGTCFGGYNMAMAVMSPCPLLQGHWGGEVLIVASWVLFSGCLSYVKVMLGVV
+#LRDLSRSALLWCGAAVQLGSLLGALLMFPLVNVLRLFSSADFCNLHCPA*
+#'''))
 
-print(dir(list_of_gene_objects[0]))
+#print(dir(list_of_gene_objects[0]))
 
-get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects)
+#for gene in list_of_gene_objects:
+    #print(gene.gene_symbol)
+
+list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects)
+
+for gene in list_of_gene_objects_with_fasta:
+    if len(gene.protein_sequence_isoform_collection) != 0:
+        print(gene.gene_symbol, len(gene.protein_sequence_isoform_collection))
+
+#save list of gene objects to import to the subsequent script
+with open("list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects_with_fasta, fp)
