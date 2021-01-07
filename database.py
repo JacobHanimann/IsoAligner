@@ -90,49 +90,60 @@ def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
         'before creating new protein_sequence, check if it already exists'
 
 
-def get_bio_IDs_with_regex(ID_type,string):
-    'write generic functions to extract certain ID types from different databases'
+def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
+    'generic functions to extract certain ID types from different databases'
     version = False
     #Ensembl
     if ID_type=='ensembl_ensg':
         pattern = 'ENSG\d{11}'
     elif ID_type == 'ensembl_ensg_version':
-        pattern = 'ENSG\d+\.\d'
+        pattern = 'ENSG\d+\.\d+'
         version = True
     elif ID_type == 'ensembl_enst':
-         pattern = 'ENST\d+{17}'
+         pattern = 'ENST\d{11}'
     elif ID_type == 'ensembl_enst_version':
-         pattern = 'ENST\d+\.\d'
+         pattern = 'ENST\d+\.\d+'
          version = True
     elif ID_type == 'ensembl_ensp':
-         pattern = 'ENSP\d+{17}'
+         pattern = 'ENSP\d{11}'
     elif ID_type == 'ensembl_ensp_version':
-        pattern = 'ENSP\d+\.\d'
+        pattern = 'ENSP\d+\.\d+'
         version = True
 
-    #Refseq
-    elif ID_type=='refseq_rna':
-         pattern = 'NM_\d+'
-    elif ID_type=='refseq_rna_version':
-         pattern = 'NM_\d+\.\d+'
-         version = True
-    elif ID_type=='refseq_prot':
-         pattern = 'NP_\d+'
-    elif ID_type=='refseq_prot_version':
-        version = True
-        pattern = 'NP_\d+\.\d+'
+   # #Refseq
+   # elif ID_type=='refseq_rna':
+   #      pattern = 'NM_\d+'
+   # elif ID_type=='refseq_rna_version':
+   #      pattern = 'NM_\d+\.\d+'
+   #      version = True
+   # elif ID_type=='refseq_prot':
+   #      pattern = 'NP_\d+'
+   # elif ID_type=='refseq_prot_version':
+   #     version = True
+   #     pattern = 'NP_\d+\.\d+'
 
     #Uniprot IDs
     elif ID_type == 'uniprot_accession':
-         pattern = '[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}'
+         pattern = '\|[OPQ][0-9][0-9A-Z]{3}[0-9]\||\|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]\||\|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]\|'
     elif ID_type == 'uniprot_uniparc':
         pattern = 'UPI[0-9A-F]+'
+
+    if ID_type == "gene_name":
+        pattern = "\|[^\|\n]+\n"
+        match_list = re.findall(pattern,string)
+        if not match_list:  # if list is empty
+            return 'not found'
+        else:
+            return match_list[0][1:]
 
     match_list = re.findall(pattern,string)
     if not match_list: #if list is empty
         return 'not found'
     elif len(match_list)==1:
-        return match_list[0]
+        if ID_type == "uniprot_accession":
+            return match_list[0][1:-1]
+        else:
+            return match_list[0]
     else:
         if version == False:
             return match_list[0]
@@ -159,4 +170,13 @@ def save_results_to_tsv_file(dictionary):
 
 list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
 
-print(get_bio_IDs_with_regex('ensembl_ensg', 'ENSG00000001036|ENSG00000001036.14|ENST00000002165|ENST00000002165.11|ENSP00000002165|ENSP00000002165.5|Q9BTY2|UPI0000073C10|FUCA2'))
+print(get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', '''>ENSG00000101276|ENSG00000101276.18|ENST00000217254|ENST00000217254.11|ENSP00000217254|ENSP00000217254.7|Q9NQ40|UPI000002A74E|SLC52A3
+MAFLMHLLVCVFGMGSWVTINGLWVELPLLVMELPEGWYLPSYLTVVIQLANIGPLLVTL
+LHHFRPSCLSEVPIIFTLLGVGTVTCIIFAFLWNMTSWVLDGHHSIAFLVLTFFLALVDC
+TSSVTFLPFMSRLPTYYLTTFFVGEGLSGLLPALVALAQGSGLTTCVNVTEISDSVPSPV
+PTRETDIAQGVPRALVSALPGMEAPLSHLESRYLPAHFSPLVFFLLLSIMMACCLVAFFV
+LQRQPRCWEASVEDLLNDQVTLHSIRPREENDLGPAGTVDSSQGQGYLEEKAAPCCPAHL
+AFIYTLVAFVNALTNGMLPSVQTYSCLSYGPVAYHLAATLSIVANPLASLVSMFLPNRSL
+LFLGVLSVLGTCFGGYNMAMAVMSPCPLLQGHWGGEVLIVASWVLFSGCLSYVKVMLGVV
+LRDLSRSALLWCGAAVQLGSLLGALLMFPLVNVLRLFSSADFCNLHCPA*
+'''))
