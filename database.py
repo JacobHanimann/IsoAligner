@@ -92,23 +92,45 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
     matches = 0
     for fasta in splittext[1:-1]:
         fasta_count += 1
+        found = False
         print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
         #print(fasta)
         #print(gene_name)
         for gene in list_of_gene_objects:
+            if found:
+                break
             for attribute in [a for a in dir(gene) if not a.startswith('__') and not a.startswith('protein')]:
-                if isinstance(getattr(gene,attribute), Iterable):
+                if found:
+                    break
+                attribute_value = getattr(gene,attribute)
+                if isinstance(attribute_value, Iterable):
                     #print(attribute,getattr(gene,attribute))
-                    #print('fastaname',gene_name,'calssname',gene.gene_symbol)
-                    if gene_name in getattr(gene,attribute) or gene_name==getattr(gene,attribute):
-                        matches +=1
-                        print(matches)
+                    #print('fastaname',gene_name,'calssname',gene.gene_symbol
+                    if type(attribute_value) == list:
+                        if gene_name in attribute_value:
+                            #print('its a match')
+                            #print('fastaname', gene_name, 'classname', attribute_value)
+                            matches +=1
+                            #print(matches)
+                            found = True
+                    elif gene_name == attribute_value:
+                            matches +=1
+                            #print('fastaname', gene_name, 'classname', attribute_value)
+                            #print(matches)
+                            found= True
 
+        #if found == False:
+            #print(gene_name)
+        print(matches)
+    print('Fasta files matched: ' + str(matches))
 
+#Idea store fasta files that weren't a match also in list_of_gene_objects as Hugo unmatch labeled
 
-    print('Fasta files found: ' + str(count))
-
+def find_gene_objects_that_are_the_same_and_group_together(list_of_gene_objects):
+    '''hardcore aligne sequences and check if these are isoforms
+    make criteria what counts a isoform
+    could also be done with all sequences, would be the most precise method at the beginning of reading fasta files'''
 
 def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
     'also get refseq data'
