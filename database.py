@@ -26,13 +26,14 @@ import os
 import base64
 import re
 from functions import * #import all functions from the functions.py file
+from collections.abc import Iterable
 
 
 #keep in mind that code also has to be descriptive to generate pre-computed offline data and not only for the dynamic stuff
 
 
 class gene:
-    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None):
+    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=[], canonical_default=None):
         self.HGNC = HGNC
         self.gene_symbol = gene_symbol
         self.previous_symbols = previous_symbols
@@ -55,8 +56,8 @@ def create_list_of_gene_objects(file_of_gene_names):
        if type(gene_object.alias_symbols) != float:
            if "," in gene_object.alias_symbols:
             gene_object.alias_symbols = gene_object.alias_symbols.split(', ')
-    for gen in list_of_gene_objects:
-        print(gen.HGNC, gen.gene_symbol,'first',gen.alias_symbols,'other', gen.previous_symbols)
+    #for gen in list_of_gene_objects:
+        #print(gen.HGNC, gen.gene_symbol,'first',gen.alias_symbols,'other', gen.previous_symbols)
     return list_of_gene_objects
 
 
@@ -77,10 +78,36 @@ class protein_sequence:
         self.uniprot_uniparc = uniprot_uniparc
         self.average_exon_length= average_exon_length
 
-def get_ensembl_fasta_sequences_and_IDs(file):
+def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects):
     '''What we need: reading in chunk and extracting AA sequence and ID's and then create a protein_sequence object
     try to be generic with regular expressions for fetching the ID's
     ouput: objects in a dictionary or a list'''
+    with open(file, "r") as f:
+        expenses_txt = f.readlines()
+    # Put all the lines into a single string
+    whole_txt = "".join(expenses_txt)
+    splittext = re.split(">", whole_txt)
+    count = 0
+    fasta_count = 0
+    matches = 0
+    for fasta in splittext[1:-1]:
+        fasta_count += 1
+        print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
+        gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
+        #print(fasta)
+        #print(gene_name)
+        for gene in list_of_gene_objects:
+            for attribute in [a for a in dir(gene) if not a.startswith('__') and not a.startswith('protein')]:
+                if isinstance(getattr(gene,attribute), Iterable):
+                    #print(attribute,getattr(gene,attribute))
+                    #print('fastaname',gene_name,'calssname',gene.gene_symbol)
+                    if gene_name in getattr(gene,attribute) or gene_name==getattr(gene,attribute):
+                        matches +=1
+                        print(matches)
+
+
+
+    print('Fasta files found: ' + str(count))
 
 
 def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
@@ -134,7 +161,7 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         if not match_list:  # if list is empty
             return 'not found'
         else:
-            return match_list[0][1:]
+            return match_list[0][1:-2] #remove \n
 
     match_list = re.findall(pattern,string)
     if not match_list: #if list is empty
@@ -180,3 +207,7 @@ AFIYTLVAFVNALTNGMLPSVQTYSCLSYGPVAYHLAATLSIVANPLASLVSMFLPNRSL
 LFLGVLSVLGTCFGGYNMAMAVMSPCPLLQGHWGGEVLIVASWVLFSGCLSYVKVMLGVV
 LRDLSRSALLWCGAAVQLGSLLGALLMFPLVNVLRLFSSADFCNLHCPA*
 '''))
+
+print(dir(list_of_gene_objects[0]))
+
+get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects)
