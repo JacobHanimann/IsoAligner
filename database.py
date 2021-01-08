@@ -211,15 +211,6 @@ print(len(list_of_gene_objects))
 list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects,3000)
 print(len(list_of_gene_objects_with_fasta))
 
-#see how many fasta files per gene were found
-for gene in list_of_gene_objects_with_fasta:
-    if len(gene.protein_sequence_isoform_collection) >= 1:
-        print(gene.gene_symbol, len(gene.protein_sequence_isoform_collection))
-
-for gene in list_of_gene_objects_with_fasta:
-    if len(gene.protein_sequence_isoform_collection) >= 2:
-        if gene.HGNC == 'no HUGO match':
-            print('blah',gene.gene_symbol, gene.protein_sequence_isoform_collection)
 
 #save list of gene objects to import to the subsequent script
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
