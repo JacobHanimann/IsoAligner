@@ -131,17 +131,22 @@ mismatch= -1.75
 open_gap_penalty= -1
 gap_extension_penalty= 0
 
-
-
 with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
     list_of_gene_objects_with_fasta = pickle.load(fp)
 
+#for gene in list_of_gene_objects_with_fasta:
+    #if len(gene.protein_sequence_isoform_collection) >0:
+        #print(gene.gene_symbol)
 
-for gene in list_of_gene_objects_with_fasta:
-    if len(gene.protein_sequence_isoform_collection) >0:
-        print(gene.gene_symbol)
 
 #Execution
 if __name__ == '__main__':
     main()
 
+
+with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
+    list_of_gene_objects_with_fasta = pickle.load(fp)
+
+for gene in list_of_gene_objects_with_fasta:
+    if len(gene.protein_sequence_isoform_collection) >0:
+        print(gene.gene_symbol)
