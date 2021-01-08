@@ -212,3 +212,32 @@ def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign f
     df = pd.read_csv(file_location, sep='\t')
     return (file_location,df)
 
+
+#classes
+
+class Gene:
+    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None):
+        self.HGNC = HGNC
+        self.gene_symbol = gene_symbol
+        self.previous_symbols = previous_symbols
+        self.alias_symbols = alias_symbols
+        self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
+        self.canonical_default = canonical_default
+        self.average_exon_length= average_exon_length
+
+
+class protein_sequence:
+    def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
+                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None):
+        self.gene_name= gene_name #maybe unnecessary
+        self.protein_sequence = protein_sequence
+        self.ENSG = ENSG
+        self.ENSG_version = ENSG_version
+        self.ENST = ENST
+        self.ENST_version = ENST_version
+        self.ENSP = ENSP
+        self.ENSP_version = ENSP_version
+        self.refseq_rna = refseq_rna
+        self.refseq_protein = refseq_protein
+        self.uniprot_accession = uniprot_accession
+        self.uniprot_uniparc = uniprot_uniparc

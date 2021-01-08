@@ -6,6 +6,7 @@ from functions import * #import all functions from the functions.py file
 import pickle
 import sys
 
+#move classes from database to functions script
 
 
 #Functions for the front-end:
@@ -131,16 +132,14 @@ open_gap_penalty= -1
 gap_extension_penalty= 0
 
 
-with open("testing_pickles.txt", "rb") as fp:   #Pickling
-    mylist_other = pickle.load(fp)
 
-print(mylist_other)
+with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
+    list_of_gene_objects_with_fasta = pickle.load(fp)
 
-#with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
-    #mylist_other = pickle.load(fp)
 
-print(mylist_other)
-
+for gene in list_of_gene_objects_with_fasta:
+    if len(gene.protein_sequence_isoform_collection) >0:
+        print(gene.gene_symbol)
 
 #Execution
 if __name__ == '__main__':
