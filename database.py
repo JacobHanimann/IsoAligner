@@ -68,13 +68,25 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fas
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
+        # create protein_sequence object to add to the gene_object
+        sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
+                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
+                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
+                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
+                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst_version', fasta),
+                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp', fasta),
+                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', fasta),
+                                           uniprot_accession=get_bio_IDs_with_regex_ensembl_fasta(
+                                               'uniprot_accession',
+                                               fasta),
+                                           uniprot_uniparc=get_bio_IDs_with_regex_ensembl_fasta('uniprot_uniparc',fasta))
         for gene in list_of_gene_objects:
             if found:
                 break
             for attribute in [a for a in dir(gene) if not a.startswith('__') and not a.startswith('protein')]: #extract the attributes wanted
                 if found:
                     break
-                attribute_value = getattr(gene,attribute) #extract the value of the attribue
+                attribute_value = getattr(gene,attribute) #extract the value of the attribute
                 if isinstance(attribute_value, Iterable):
                     #only perfect matches allowed with the following if statement
                     if type(attribute_value) == list:
@@ -85,23 +97,11 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fas
                             matches +=1
                             found= True
 
-            if found ==True:
-                #create protein_sequence object to add to the gene_object
-                sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
-                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
-                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
-                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
-                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst_version', fasta),
-                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp', fasta),
-                                               get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', fasta),
-                                               uniprot_accession=get_bio_IDs_with_regex_ensembl_fasta(
-                                                   'uniprot_accession',
-                                                   fasta),
-                                               uniprot_uniparc=get_bio_IDs_with_regex_ensembl_fasta('uniprot_uniparc',fasta))
-                gene.protein_sequence_isoform_collection.append(sequence_object)
+        if found ==True:
+            gene.protein_sequence_isoform_collection.append(sequence_object)
 
-            #else:
-                #list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[sequence_object]))
+        else:
+            list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[protein_sequence])) #takes really long to create objects both gene and protein_sequence
 
              #this does not work because per object there will always be one sequence
 
@@ -205,15 +205,22 @@ def save_results_to_tsv_file(dictionary):
 
 #Create list of gene objects
 list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
+print(len(list_of_gene_objects))
 
 #add fasta files
 list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects,3000)
+print(len(list_of_gene_objects_with_fasta))
 
 #see how many fasta files per gene were found
 for gene in list_of_gene_objects_with_fasta:
-    if len(gene.protein_sequence_isoform_collection) > 1:
+    if len(gene.protein_sequence_isoform_collection) >= 1:
         print(gene.gene_symbol, len(gene.protein_sequence_isoform_collection))
 
+for gene in list_of_gene_objects_with_fasta:
+    if len(gene.protein_sequence_isoform_collection) >= 2:
+        if gene.HGNC == 'no HUGO match':
+            print('blah',gene.gene_symbol, gene.protein_sequence_isoform_collection)
+
 #save list of gene objects to import to the subsequent script
-with open("list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
