@@ -131,9 +131,15 @@ open_gap_penalty= -1
 gap_extension_penalty= 0
 
 
-#import fasta data
+with open("testing_pickles.txt", "rb") as fp:   #Pickling
+    mylist_other = pickle.load(fp)
+
+print(mylist_other)
+
 with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
-    list_of_gene_objects_with_fasta = pickle.load(fp)
+    mylist_other = pickle.load(fp)
+
+print(mylist_other)
 
 
 #Execution

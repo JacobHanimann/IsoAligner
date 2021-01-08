@@ -3,6 +3,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 from functions import * #import all functions from the functions.py file
 from collections.abc import Iterable
+import pickle
 
 
 #keep in mind that code also has to be descriptive to generate pre-computed offline data and not only for the dynamic stuff
@@ -206,7 +207,8 @@ def save_results_to_tsv_file(dictionary):
 list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
 
 #add fasta files
-list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects,3000)
+list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects,5)
+print(type(list_of_gene_objects_with_fasta))
 
 #see how many fasta files per gene were found
 for gene in list_of_gene_objects_with_fasta:
@@ -216,3 +218,13 @@ for gene in list_of_gene_objects_with_fasta:
 #save list of gene objects to import to the subsequent script
 with open("list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects_with_fasta, fp)
+
+mylist = ['hello','this', 2,3]
+
+with open("testing_pickles.txt", "wb") as fp:  # Pickling
+    pickle.dump(mylist, fp)
+
+with open("testing_pickles.txt", "rb") as fp:   #Pickling
+    mylist_other = pickle.load(fp)
+
+print(mylist_other)
