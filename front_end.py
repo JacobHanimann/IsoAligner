@@ -3,6 +3,9 @@ import streamlit as st
 import matplotlib
 matplotlib.use("TkAgg")
 from functions import * #import all functions from the functions.py file
+import pickle
+import sys
+
 
 
 #Functions for the front-end:
@@ -126,6 +129,11 @@ match=2
 mismatch= -1.75
 open_gap_penalty= -1
 gap_extension_penalty= 0
+
+
+#import fasta data
+with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
+    list_of_gene_objects_with_fasta = pickle.load(fp)
 
 
 #Execution
