@@ -136,8 +136,8 @@ with open("testing_pickles.txt", "rb") as fp:   #Pickling
 
 print(mylist_other)
 
-with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
-    mylist_other = pickle.load(fp)
+#with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
+    #mylist_other = pickle.load(fp)
 
 print(mylist_other)
 
