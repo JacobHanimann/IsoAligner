@@ -98,12 +98,14 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
         for gene in list_of_gene_objects:
             if found:
                 break
-            if gene.ENSG == protein_sequence.ENSG:
-                gene.protein_sequence_isoform_collection.append(protein_sequence)
+            if gene.ENSG == sequence_object.ENSG:
+                if type(gene.protein_sequence_isoform_collection)==list:
+                    gene.protein_sequence_isoform_collection.append(sequence_object)
+                else:
+                    gene.protein_sequence_isoform_collection = [sequence_object]
                 found=True
-
         if found ==False:
-            list_of_gene_objects.append(Gene(protein_sequence.ENSG,gene_name))
+            list_of_gene_objects.append(Gene(sequence_object.ENSG,gene_name,protein_sequence_isoform_collection=[sequence_object]))
 
 
         print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
@@ -204,9 +206,9 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt',30000)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',3000)
 
-add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt')
+add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 
 
 #save list of gene objects to import to the subsequent script
