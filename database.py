@@ -10,9 +10,10 @@ import pickle
 
 
 class Gene:
-    def __init__(self, ensembl, ensembl_gene_symbol, HGNC=None, HGNC_gene_symbol=None, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None):
-        self.ensembl = ensembl
+    def __init__(self, ENSG, ensembl_gene_symbol,refseq_gene_ID=None, HGNC=None, HGNC_gene_symbol=None, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None, uniprot_ID=None):
+        self.ENSG = ENSG
         self.ensembl_gene_symbol = ensembl_gene_symbol
+        self.refseq_gene_ID = refseq_gene_ID
         self.HGNC = HGNC
         self.HGNC_gene_symbol = HGNC_gene_symbol
         self.previous_symbols = previous_symbols
@@ -20,24 +21,34 @@ class Gene:
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
         self.canonical_default = canonical_default
         self.average_exon_length= average_exon_length
+        self.uniprot_ID = uniprot_ID
 
 
-def create_list_of_gene_objects(file_of_gene_names):
-    '''make a list of gene objects
-    input: textfile
-    output: list of gene objects
+def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects):
+    '''complement list of gene objects
+    input: list of gene objects
+    output: list of gene objects with added attribute values
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    list_of_gene_objects = [Gene(df.loc[index,'HGNC'], gene_symbol = df.loc[index, 'approved_symbol'],previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'],protein_sequence_isoform_collection=[])for index in range(0,len(df))]
-    for gene_object in list_of_gene_objects: #convert comma separated strings into elements of a list to facilitate a infrastructure which can be better searched through later (no need for regex later)
-       if type(gene_object.previous_symbols) != float: #None values are type float
-           if "," in  gene_object.previous_symbols:
-            gene_object.previous_symbols = gene_object.previous_symbols.split(', ')
-       if type(gene_object.alias_symbols) != float:
-           if "," in gene_object.alias_symbols:
-            gene_object.alias_symbols = gene_object.alias_symbols.split(', ')
-    #for gen in list_of_gene_objects:
-        #print(gen.HGNC, gen.gene_symbol,'first',gen.alias_symbols,'other', gen.previous_symbols)
+    for index in range(0,len(df)):
+        found = False
+        for gene in list_of_gene_objects:
+            if gene.ENSG == df.loc[index,'Ensembl gene ID']:
+                   found = True
+                   gene.HGNC = df.loc[index,'HGNC']
+                   gene.HGNC_gene_symbol = df.loc[index, 'approved_symbol']
+                   gene.previous_symbols = df.loc[index, 'previous_symbols']
+                   gene.refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
+                   gene.alias_symbols = df.loc[index, 'alias_symbols']
+                   gene.uniprot_ID = df.loc[index, 'UniProt ID'] #check if it the same ID as in the protein_sequence classes
+                   if type(gene.previous_symbols) != float: #None values are type float
+                       if "," in  gene.previous_symbols:
+                        gene.previous_symbols = gene.previous_symbols.split(', ')
+                   if type(gene.alias_symbols) != float:
+                       if "," in gene.alias_symbols:
+                        gene.alias_symbols = gene.alias_symbols.split(', ')
+        if found == False:
+            list_of_gene_objects.append(Gene(df.loc[index,'Ensembl gene ID'],'no HGNC_ensembl match',HGNC=df.loc[index,'HGNC'], HGNC_gene_symbol = df.loc[index, 'approved_symbol'], previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'], refseq_gene_ID=df.loc[index, 'NCBI Gene ID']))
     return list_of_gene_objects
 
 
@@ -87,27 +98,13 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fas
         for gene in list_of_gene_objects:
             if found:
                 break
-            for attribute in [a for a in dir(gene) if not a.startswith('__') and not a.startswith('protein')]: #extract the attributes wanted
-                if found:
-                    break
-                attribute_value = getattr(gene,attribute) #extract the value of the attribute
-                if isinstance(attribute_value, Iterable):
-                    #only perfect matches allowed with the following if statement
-                    if type(attribute_value) == list:
-                        if gene_name in attribute_value:
-                            matches +=1
-                            found = True
-                    elif gene_name == attribute_value:
-                            matches +=1
-                            found= True
+            if gene.ENSG == protein_sequence.ENSG:
+                gene.protein_sequence_isoform_collection.append(protein_sequence)
+                found=True
 
-        if found ==True:
-            gene.protein_sequence_isoform_collection.append(sequence_object)
+        if found ==False:
+            list_of_gene_objects.append(Gene(protein_sequence.ENSG,gene_name))
 
-        else:
-            list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[protein_sequence])) #takes really long to create objects both gene and protein_sequence
-
-             #this does not work because per object there will always be one sequence
 
         print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
     print('Fasta files matched: ' + str(matches))
