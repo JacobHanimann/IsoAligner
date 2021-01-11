@@ -30,7 +30,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     output: list of gene objects with added attribute values
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    for index in range(0,len(df)):
+    for index in range(0,1000):
         print(index)
         found = False
         for gene in list_of_gene_objects:
@@ -71,7 +71,7 @@ class protein_sequence:
         self.uniprot_uniparc = uniprot_uniparc
         self.uniprot_isoform = uniprot_isoform
 
-def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_fasta_files):
+def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     '''extract fasta files one by one and add them to the gene objects'''
     with open(file, "r") as f:
         expenses_txt = f.readlines()
@@ -81,7 +81,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
     fasta_count = 0
     matches = 0
     list_of_gene_objects =[]
-    for fasta in splittext[1:number_of_fasta_files]:
+    for fasta in splittext[1:len(splittext)]:
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
@@ -208,13 +208,19 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',30000)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
 
-#for gene in list_of_gene_objects:
-#    if len(gene.protein_sequence_isoform_collection) >1:
-#        print(gene.ensembl_gene_symbol,len(gene.protein_sequence_isoform_collection))
-#        print(gene.protein_sequence_isoform_collection[0].protein_sequence)
-#        print(gene.HGNC,gene.alias_symbols)
+count = 0
+for gene in list_of_gene_objects:
+    if len(gene.protein_sequence_isoform_collection) >1:
+        print(gene.ensembl_gene_symbol,len(gene.protein_sequence_isoform_collection))
+        print(gene.protein_sequence_isoform_collection[0].protein_sequence)
+        print(gene.HGNC,gene.alias_symbols)
+    if len(gene.protein_sequence_isoform_collection) >=1:
+        for sequence in gene.protein_sequence_isoform_collection: #muss man noch verbessern
+            if sequence.protein_sequence ==None:
+                count +=1
+print('could not match protein sequence:',count)
 
 add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 
