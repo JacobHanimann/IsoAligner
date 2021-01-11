@@ -69,7 +69,7 @@ class protein_sequence:
         self.uniprot_uniparc = uniprot_uniparc
         self.uniprot_isoform = uniprot_isoform
 
-def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fasta_files):
+def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_fasta_files):
     '''extract fasta files one by one and add them to the gene objects'''
     with open(file, "r") as f:
         expenses_txt = f.readlines()
@@ -204,13 +204,9 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-#Create list of gene objects
-list_of_gene_objects = create_list_of_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding.txt')
-print(len(list_of_gene_objects))
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt',30000)
 
-#add fasta files
-list_of_gene_objects_with_fasta = get_ensembl_fasta_sequences_and_IDs('/Users/jacob/Desktop/Biomart_fasta_files/ensembl_fasta_IDs_gene_name.txt', list_of_gene_objects,3000)
-print(len(list_of_gene_objects_with_fasta))
+add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt')
 
 
 #save list of gene objects to import to the subsequent script
