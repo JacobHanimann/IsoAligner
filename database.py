@@ -31,24 +31,26 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
     for index in range(0,len(df)):
+        print(index)
         found = False
         for gene in list_of_gene_objects:
             if gene.ENSG == df.loc[index,'Ensembl gene ID']:
-                   found = True
-                   gene.HGNC = df.loc[index,'HGNC']
-                   gene.HGNC_gene_symbol = df.loc[index, 'approved_symbol']
-                   gene.previous_symbols = df.loc[index, 'previous_symbols']
-                   gene.refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
-                   gene.alias_symbols = df.loc[index, 'alias_symbols']
-                   gene.uniprot_ID = df.loc[index, 'UniProt ID'] #check if it the same ID as in the protein_sequence classes
-                   if type(gene.previous_symbols) != float: #None values are type float
-                       if "," in  gene.previous_symbols:
-                        gene.previous_symbols = gene.previous_symbols.split(', ')
-                   if type(gene.alias_symbols) != float:
-                       if "," in gene.alias_symbols:
-                        gene.alias_symbols = gene.alias_symbols.split(', ')
+                  found = True
+                  gene.HGNC = df.loc[index,'HGNC']
+                  gene.HGNC_gene_symbol = df.loc[index, 'approved_symbol']
+                  gene.previous_symbols = df.loc[index, 'previous_symbols']
+                  gene.refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
+                  gene.alias_symbols = df.loc[index, 'alias_symbols']
+                  gene.uniprot_ID = df.loc[index, 'UniProt ID'] #check if it the same ID as in the protein_sequence classes
+                  if type(gene.previous_symbols) != float: #None values are type float
+                      if "," in  gene.previous_symbols:
+                       gene.previous_symbols = gene.previous_symbols.split(', ')
+                  if type(gene.alias_symbols) != float:
+                      if "," in gene.alias_symbols:
+                       gene.alias_symbols = gene.alias_symbols.split(', ')
         if found == False:
             list_of_gene_objects.append(Gene(df.loc[index,'Ensembl gene ID'],'no HGNC_ensembl match',HGNC=df.loc[index,'HGNC'], HGNC_gene_symbol = df.loc[index, 'approved_symbol'], previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'], refseq_gene_ID=df.loc[index, 'NCBI Gene ID']))
+
     return list_of_gene_objects
 
 
@@ -206,7 +208,13 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',3000)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',30000)
+
+#for gene in list_of_gene_objects:
+#    if len(gene.protein_sequence_isoform_collection) >1:
+#        print(gene.ensembl_gene_symbol,len(gene.protein_sequence_isoform_collection))
+#        print(gene.protein_sequence_isoform_collection[0].protein_sequence)
+#        print(gene.HGNC,gene.alias_symbols)
 
 add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 
@@ -214,3 +222,10 @@ add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtoo
 #save list of gene objects to import to the subsequent script
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
+
+
+#for gene in list_of_gene_objects:
+#    if len(gene.protein_sequence_isoform_collection) >1:
+#        print(gene.ensembl_gene_symbol,len(gene.protein_sequence_isoform_collection))
+#        print(gene.protein_sequence_isoform_collection[0].protein_sequence)
+#        print(gene.HGNC,gene.alias_symbols)
