@@ -10,11 +10,9 @@ import pickle
 
 
 class Gene:
-    def __init__(self, ensembl, ensembl_gene_symbol, HGNC=None, HGNC_gene_symbol=None, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None):
-        self.ensembl = ensembl
-        self.ensembl_gene_symbol = ensembl_gene_symbol
+    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None):
         self.HGNC = HGNC
-        self.HGNC_gene_symbol = HGNC_gene_symbol
+        self.gene_symbol = gene_symbol
         self.previous_symbols = previous_symbols
         self.alias_symbols = alias_symbols
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
@@ -43,7 +41,7 @@ def create_list_of_gene_objects(file_of_gene_names):
 
 class protein_sequence:
     def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
-                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None):
+                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None):
         self.gene_name= gene_name #maybe unnecessary
         self.protein_sequence = protein_sequence
         self.ENSG = ENSG
@@ -56,7 +54,6 @@ class protein_sequence:
         self.refseq_protein = refseq_protein
         self.uniprot_accession = uniprot_accession
         self.uniprot_uniparc = uniprot_uniparc
-        self.uniprot_isoform = uniprot_isoform
 
 def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fasta_files):
     '''extract fasta files one by one and add them to the gene objects'''
@@ -67,7 +64,6 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fas
     splittext = re.split(">", whole_txt)
     fasta_count = 0
     matches = 0
-    list_of_gene_objects =[]
     for fasta in splittext[1:number_of_fasta_files]:
         fasta_count += 1
         found = False
