@@ -72,6 +72,7 @@ def main():
                 st.markdown("##### Alignment:")
                 st.write("\n")
                 st.text(visualise_alignment_dynamically(maped_tuple[5],maped_tuple[6],maped_tuple[4]))
+                st.markdown(" ###### Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
                 st.write("\n")
                # st.text(maped_tuple[1])
                # st.text(maped_tuple[2])
@@ -80,19 +81,18 @@ def main():
                # st.text(maped_tuple[5])
                # st.text(maped_tuple[6])
                 st.write("\n")
-                st.markdown("##### Dataframe Preview:")
+                st.markdown("##### Table of correctly mapped AA positions:")
                 generated_table = write_results_to_tsv_file(maped_tuple,'/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv')
                 st.write("\n")
                 st.write(generated_table[1])
                 st.write("\n")
-                st.markdown("##### Download Table:")
-                st.write("\n")
-                st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv', '','Mapped_Isoform_Positions.tsv'), unsafe_allow_html=True)
+                st.markdown("##### Download Dataframe:")
+                st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv', '','AA_Isoforms_Mapped_Positions.tsv'), unsafe_allow_html=True)
                 st.write("--------------------------")
 
 
     elif choice == 'Download pre-computed data':
-        st.header("Pre-computed mapped isoforms of GRCh37")
+        st.header("Pre-computed mapped isoforms")
         st.write("--------------------------")
         st.markdown("#### Refseq (4GB):")
         st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv','', 'Refseq_Isoforms.tsv'), unsafe_allow_html=True)
@@ -144,9 +144,10 @@ if __name__ == '__main__':
     main()
 
 
-with open("list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
     list_of_gene_objects_with_fasta = pickle.load(fp)
 
 for gene in list_of_gene_objects_with_fasta:
-    if len(gene.protein_sequence_isoform_collection) >0:
-        print(gene.gene_symbol)
+    if type(gene.protein_sequence_isoform_collection) == list:
+        if len(gene.protein_sequence_isoform_collection) >0:
+            print(gene.ensembl_gene_symbol)

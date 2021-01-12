@@ -220,19 +220,23 @@ def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign f
 #classes
 
 class Gene:
-    def __init__(self, HGNC, gene_symbol, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None):
+    def __init__(self, ENSG, ensembl_gene_symbol,refseq_gene_ID=None, HGNC=None, HGNC_gene_symbol=None, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None, uniprot_ID=None):
+        self.ENSG = ENSG
+        self.ensembl_gene_symbol = ensembl_gene_symbol
+        self.refseq_gene_ID = refseq_gene_ID
         self.HGNC = HGNC
-        self.gene_symbol = gene_symbol
+        self.HGNC_gene_symbol = HGNC_gene_symbol
         self.previous_symbols = previous_symbols
         self.alias_symbols = alias_symbols
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
         self.canonical_default = canonical_default
         self.average_exon_length= average_exon_length
+        self.uniprot_ID = uniprot_ID
 
 
 class protein_sequence:
     def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
-                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None):
+                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None):
         self.gene_name= gene_name #maybe unnecessary
         self.protein_sequence = protein_sequence
         self.ENSG = ENSG
@@ -245,3 +249,4 @@ class protein_sequence:
         self.refseq_protein = refseq_protein
         self.uniprot_accession = uniprot_accession
         self.uniprot_uniparc = uniprot_uniparc
+        self.uniprot_isoform = uniprot_isoform

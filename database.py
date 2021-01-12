@@ -173,7 +173,8 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         if not match_list:  # if list is empty
             return 'not found'
         else:
-            return match_list[0][1:-2] #remove \n
+            #remove \n with regex
+            return match_list[0][1:-1] #remove \n
 
 #execute regular expression
     match_list = re.findall(pattern,string)
