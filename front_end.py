@@ -33,12 +33,12 @@ def import_data(file):
 
 #list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
 #
-#first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606')
+#first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
 #st.write(first_list)
 #
-#second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606')
+#second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
 #st.write(second_dict)
-#index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606'))
+#index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16'))
 #st.write(index)
 
 #Streamlit website

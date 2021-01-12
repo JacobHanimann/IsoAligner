@@ -86,14 +86,25 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
     dict_element_indexes = {}
     for element,ID in dict_of_IDs.items():
         found = False
+        parent_class = True
+        if ID in ['ENSG_version','ENST','ENST_version','ENSP','ENSP_version']: #list must be completed
+            parent_class = False
         for index,gene in enumerate(list_of_gene_objects):
             if found:
                 break
-            if getattr(gene,ID) == element:
-                dict_element_indexes[element] = index
-                found=True
+            if parent_class:
+                if getattr(gene,ID) == element:
+                    dict_element_indexes[element] = index
+                    break
             else:
-                dict_element_indexes[element] = 'not found'
+                if type(gene.protein_sequence_isoform_collection) ==list:
+                    for protein_sequence in gene.protein_sequence_isoform_collection:
+                        if getattr(protein_sequence, ID) == element:
+                            dict_element_indexes[element] = index
+                            found = True
+                            break
+        else:
+            dict_element_indexes[element] = 'not found'
     return dict_element_indexes
 
 
