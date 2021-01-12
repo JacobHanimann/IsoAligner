@@ -18,8 +18,25 @@ def get_binary_file_downloader_html(bin_file, file_label='File', name_button='do
     href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">{name_button} {file_label}</a>'
     return href
 
+#@st.cache
+#def import_list_of_gene_objects(file):
+#    with open(file,"rb") as fp:  # Pickling
+#        list_of_gene_objects = pickle.load(fp)
+#    return list_of_gene_objects
+#
+#list_of_gene_objects= import_list_of_gene_objects("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
+
+
+
+@st.cache(allow_output_mutation=True)  # 👈 Added this
+def import_data(file):
+    with open(file,"rb") as fp:  # Pickling
+           list_of_gene_objects = pickle.load(fp)
+    return list_of_gene_objects
+
 
 #Streamlit website
+
 def main():
     """ Isoform Mapping Tool """
     st.title("AminoAcid Isoform Mapper")
@@ -46,7 +63,7 @@ def main():
             'Select alternative isoforms to align',
              ['Insert own sequence',"Available on Refseq", "Available on Ensembl", "All Available Isoforms"])
         if option == "Insert own sequence":
-            fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''')
+            fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ','''''')
         else:
             st.write("Feature coming soon")
         st.write("--------------------------")
@@ -144,10 +161,8 @@ if __name__ == '__main__':
     main()
 
 
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "rb") as fp:   #Pickling
-    list_of_gene_objects_with_fasta = pickle.load(fp)
 
-for gene in list_of_gene_objects_with_fasta:
-    if type(gene.protein_sequence_isoform_collection) == list:
-        if len(gene.protein_sequence_isoform_collection) >0:
-            print(gene.ensembl_gene_symbol)
+#for gene in list_of_gene_objects_with_fasta:
+#    if type(gene.protein_sequence_isoform_collection) == list:
+#        if len(gene.protein_sequence_isoform_collection) >0:
+#            print(gene.ensembl_gene_symbol)

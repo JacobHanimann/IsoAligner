@@ -46,6 +46,33 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     return output_alignment_string
 
 
+def identify_IDs_from_user_text_input(string):
+    '''
+    Function that identifies which ID's the user typed in with regex. Returns a list of ID_types which can be used to search through the database more efficiently
+    :param string:
+    :return: list of ID_types
+    '''
+    list_of_IDs = []
+    #write function that seperates all elements from the input_String and gives a list
+    #for loop for all elements
+    if re.search('ENSG\d+\.\d+', string):
+        list_of_IDs.append('ENSG_version')
+    elif re.search('ENSG\d{11}',string):
+        list_of_IDs.append('ENSG')
+
+    return list_of_IDs
+
+def search_through_database_with_known_ID_Type(list_of_gene_objects,list_of_IDs):
+    '''
+    Function that searches trough database with gettatribute()
+    :param database_list, list_of_IDs
+    :return: list of indexes of each element, maybe a dictionary..? (probably not)
+    '''
+    for ID in list_of_IDs:
+        for index,gene in list_of_gene_objects:
+            if getattr(gene,ID)
+
+
 def transform_uploaded_data_type_accordingly(file):
     '''uploaded files can be different types of files. A transformation is needed to interpret the data correctly
     Type of input: FASTA, FA and TXT
