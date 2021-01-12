@@ -45,32 +45,57 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     output_alignment_string= ''.join(reference_sequence_list)+'\n'+''.join(alignment_character_list)+"\n"+''.join(isoform_sequence_list)
     return output_alignment_string
 
+def split_elements_from_user_input_string(string):
+    '''
+    Function that separates gene names/ID from each other
+    :param string:
+    :return: list of elements
+    '''
+    if "\n" in string:
+        list_of_elements = list(string.split('\n'))
+    elif ","  in string:
+        list_of_elements = list(string.split(','))
+    else:
+        list_of_elements = [string]
+
+    return list_of_elements
+
 
 def identify_IDs_from_user_text_input(string):
     '''
-    Function that identifies which ID's the user typed in with regex. Returns a list of ID_types which can be used to search through the database more efficiently
-    :param string:
-    :return: list of ID_types
+    Function that identifies which ID's the user typed in with regex. Returns a dict of ID_types which can be used to search through the database more efficiently
+    :param list of elements:
+    :return: dict of ID_types
     '''
-    list_of_IDs = []
-    #write function that seperates all elements from the input_String and gives a list
-    #for loop for all elements
-    if re.search('ENSG\d+\.\d+', string):
-        list_of_IDs.append('ENSG_version')
-    elif re.search('ENSG\d{11}',string):
-        list_of_IDs.append('ENSG')
+    dict_of_IDs = {}
+    list_of_elements = split_elements_from_user_input_string(string)
+    for element in list_of_elements:
+        if re.search('ENSG\d+\.\d+',element):
+            dict_of_IDs[element]='ENSG_version'
+        elif re.search('ENSG\d{11}',element):
+            dict_of_IDs[element]='ENSG'
 
-    return list_of_IDs
+    return dict_of_IDs
 
-def search_through_database_with_known_ID_Type(list_of_gene_objects,list_of_IDs):
+def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs):
     '''
     Function that searches trough database with gettatribute()
     :param database_list, list_of_IDs
     :return: list of indexes of each element, maybe a dictionary..? (probably not)
     '''
-    for ID in list_of_IDs:
-        for index,gene in list_of_gene_objects:
-            if getattr(gene,ID)
+    dict_element_indexes = {}
+    for element,ID in dict_of_IDs.items():
+        found = False
+        for index,gene in enumerate(list_of_gene_objects):
+            if found:
+                break
+            if getattr(gene,ID) == element:
+                dict_element_indexes[element] = index
+                found=True
+            else:
+                dict_element_indexes[element] = 'not found'
+    return dict_element_indexes
+
 
 
 def transform_uploaded_data_type_accordingly(file):

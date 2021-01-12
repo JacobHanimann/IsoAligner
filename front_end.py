@@ -23,9 +23,6 @@ def get_binary_file_downloader_html(bin_file, file_label='File', name_button='do
 #    with open(file,"rb") as fp:  # Pickling
 #        list_of_gene_objects = pickle.load(fp)
 #    return list_of_gene_objects
-#
-#list_of_gene_objects= import_list_of_gene_objects("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
-
 
 
 @st.cache(allow_output_mutation=True)  # 👈 Added this
@@ -34,6 +31,15 @@ def import_data(file):
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
+#list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
+#
+#first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606')
+#st.write(first_list)
+#
+#second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606')
+#st.write(second_dict)
+#index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606'))
+#st.write(index)
 
 #Streamlit website
 
