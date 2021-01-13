@@ -48,13 +48,13 @@ def main():
     st.title("AminoAcid Isoform Mapper")
 
 
-    activity = ['Mapping tool', 'Download pre-computed data', 'About & Source Code']
+    activity = ['Mapping Tool', 'Download Pre-computed Data', 'About & Source Code']
     st.sidebar.markdown("### Navigation")
     choice = st.sidebar.selectbox("", activity)
     st.sidebar.write("\n")
     st.sidebar.write("\n")
 
-    if choice == 'Mapping tool':
+    if choice == 'Mapping Tool':
         st.subheader("A simple tool to align isoforms globally")
         st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard fasely mapped positions (random matches) of two distinct exons."
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
@@ -73,15 +73,17 @@ def main():
         else:
             st.write("Feature coming soon")
         st.write("--------------------------")
+        st.sidebar.markdown("### Function Parameters")
+        st.sidebar.write("\n")
         st.sidebar.markdown("#### Minimal Exon Length (AA):")
         exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None, format=None,key=None)
         st.sidebar.write("\n")
-        st.sidebar.markdown("#### Needleman-Wunsch-Algorithm Parameters:")
+        st.sidebar.markdown("#### Needleman-Wunsch-Algorithm:")
         st.sidebar.write("\n")
-        match= st.sidebar.number_input("Match:", min_value=None, max_value=None, value=1, step=None, format=None, key=None)
-        mismatch= st.sidebar.number_input("Mismatch:", min_value=None, max_value=None, value=-2, step=None, format=None, key=None)
-        open_gap_penalty= st.sidebar.number_input("Open Gap penalty:", min_value=None, max_value=None, value=-1.75, step=None, format=None, key=None)
-        gap_extension_penalty= st.sidebar.number_input("Gap Extension penalty:", min_value=None, max_value=None, value=0, step=None, format=None, key=None)
+        match= st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None, key=None)
+        mismatch= st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None, format=None, key=None)
+        open_gap_penalty= st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75, step=None, format=None, key=None)
+        gap_extension_penalty= st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None, value=0, step=None, format=None, key=None)
         st.sidebar.write("\n")
         if option == "Insert own sequence":
             if fasta1 !="" and fasta2 !="":
@@ -114,7 +116,7 @@ def main():
                 st.write("--------------------------")
 
 
-    elif choice == 'Download pre-computed data':
+    elif choice == 'Download Pre-computed Data':
         st.header("Pre-computed mapped isoforms")
         st.write("--------------------------")
         st.markdown("#### Refseq (4GB):")
