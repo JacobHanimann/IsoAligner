@@ -31,15 +31,21 @@ def import_data(file):
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-#list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
-#
-#first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
-#st.write(first_list)
-#
-#second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
-#st.write(second_dict)
-#index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16'))
-#st.write(index)
+#Playground
+e = RuntimeError('This is an exception of type RuntimeError')
+st.exception(e)
+st.success('This is a success message!')
+st.info("This is information")
+
+list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
+
+first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
+st.write(first_list)
+
+second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
+st.write(second_dict)
+index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16'))
+st.write(index)
 
 #Streamlit website
 
@@ -61,15 +67,20 @@ def main():
         st.write("--------------------------")
         st.markdown("#### Input")
         fasta1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')
-        agree = st.checkbox("Click here to upload list of gene names or ID's")
-        if agree:
-            fasta1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=[ "gz","txt"])
+        col1, col2 = st.beta_columns([3.6,1])
+        with col2:
+            st.button('Search Database')
+        with col1:
+            agree = st.checkbox("Click here to upload list of gene names or ID's")
+            if agree:
+                fasta1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=[ "gz","txt"])
         st.write("\n")
         option = st.selectbox(
             'Select alternative isoforms to align',
              ['Insert own sequence',"Available on Refseq", "Available on Ensembl", "All Available Isoforms"])
         if option == "Insert own sequence":
             fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ','''''')
+            submit=st.button('Submit')
         else:
             st.write("Feature coming soon")
         st.write("--------------------------")
@@ -78,7 +89,7 @@ def main():
         st.sidebar.markdown("#### Minimal Exon Length (AA):")
         exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None, format=None,key=None)
         st.sidebar.write("\n")
-        st.sidebar.markdown("#### Needleman-Wunsch-Algorithm:")
+        st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
         st.sidebar.write("\n")
         match= st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None, key=None)
         mismatch= st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None, format=None, key=None)
@@ -86,7 +97,7 @@ def main():
         gap_extension_penalty= st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None, value=0, step=None, format=None, key=None)
         st.sidebar.write("\n")
         if option == "Insert own sequence":
-            if fasta1 !="" and fasta2 !="":
+            if fasta1 !="" and fasta2 !="" and submit:
                 st.markdown("#### Results")
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
