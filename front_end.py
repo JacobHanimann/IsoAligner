@@ -13,9 +13,6 @@ if st.button("Increment x"):
     ss.x = True
     st.text(ss.x)
 
-
-
-
 #move classes from database to functions script
 
 
