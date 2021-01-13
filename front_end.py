@@ -5,6 +5,16 @@ matplotlib.use("TkAgg")
 from functions import * #import all functions from the functions.py file
 import pickle
 import sys
+import SessionState
+
+ss = SessionState.get(x=1)
+
+if st.button("Increment x"):
+    ss.x = True
+    st.text(ss.x)
+
+
+
 
 #move classes from database to functions script
 
@@ -25,13 +35,19 @@ def get_binary_file_downloader_html(bin_file, file_label='File', name_button='do
 #    return list_of_gene_objects
 
 
-@st.cache(allow_output_mutation=True)  # 👈 Added this
+@st.cache(allow_output_mutation=True)
 def import_data(file):
     with open(file,"rb") as fp:  # Pickling
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
 #Playground
+options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    ['Yellow', 'Red'])
+
+st.write('You selected:', options)
 e = RuntimeError('This is an exception of type RuntimeError')
 st.exception(e)
 st.success('This is a success message!')
@@ -51,9 +67,10 @@ st.write(index)
 
 def main():
     """ Isoform Mapping Tool """
+    #Title
     st.title("AminoAcid Isoform Mapper")
 
-
+    #Sidebar
     activity = ['Mapping Tool', 'Download Pre-computed Data', 'About & Source Code']
     st.sidebar.markdown("### Navigation")
     choice = st.sidebar.selectbox("", activity)
@@ -66,67 +83,73 @@ def main():
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
         st.write("--------------------------")
         st.markdown("#### Input")
-        input1 = search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')))
+        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')
+        input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
         col1, col2 = st.beta_columns([3.6,1])
         with col2:
             search = st.button('Search Database')
         with col1:
             agree = st.checkbox("Click here to upload list of gene names or ID's")
-        if search:
-            st.write(input1)
             if agree:
                 input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
+        if search and bool(input1_IDs) and len(input1_IDs) == 1: #check if dictionary is not empty
+            reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
+        elif search and len(input1_IDs) > 1:
+            st.write('multiple IDs')
+        elif search:
+            st.warning("Could not find any IDs")
         st.write("\n")
-        option = st.selectbox(
-            'Select alternative isoforms to align',
-             ['Insert own sequence',"Available on Refseq", "Available on Ensembl", "All Available Isoforms"])
-        if option == "Insert own sequence":
-            fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ','''''')
-            submit=st.button('Submit')
-        else:
-            st.write("Feature coming soon")
+
+        fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ','''''')
+        submit=st.button('Align')
         st.write("--------------------------")
-        st.sidebar.markdown("### Function Parameters")
-        st.sidebar.write("\n")
-        st.sidebar.markdown("#### Minimal Exon Length (AA):")
-        exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None, format=None,key=None)
-        st.sidebar.write("\n")
-        st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
-        st.sidebar.write("\n")
-        match= st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None, key=None)
-        mismatch= st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None, format=None, key=None)
-        open_gap_penalty= st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75, step=None, format=None, key=None)
-        gap_extension_penalty= st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None, value=0, step=None, format=None, key=None)
-        st.sidebar.write("\n")
-        if option == "Insert own sequence":
-            if input1 != "" and fasta2 != "" and submit:
-                st.markdown("#### Results")
-                #st.write("\n")
-                #st.markdown("##### Unfiltered Alignment:")
-                #st.write("\n")
-                maped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1, fasta2, match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-                #st.text(Alignment_preview)
-                st.write("\n")
-                st.markdown("##### Alignment:")
-                st.write("\n")
-                st.text(visualise_alignment_dynamically(maped_tuple[5],maped_tuple[6],maped_tuple[4]))
-                st.markdown(" ###### Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
-                st.write("\n")
-               # st.text(maped_tuple[1])
-               # st.text(maped_tuple[2])
-               # st.text(maped_tuple[3])
-               # st.text(maped_tuple[4])
-               # st.text(maped_tuple[5])
-               # st.text(maped_tuple[6])
-                st.write("\n")
-                st.markdown("##### Table of correctly mapped AA positions:")
-                generated_table = write_results_to_tsv_file(maped_tuple,'/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv')
-                st.write("\n")
-                st.write(generated_table[1])
-                st.write("\n")
-                st.markdown("##### Download Dataframe:")
-                st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv', '','AA_Isoforms_Mapped_Positions.tsv'), unsafe_allow_html=True)
-                st.write("--------------------------")
+        if input1 != "" and fasta2 != "" and submit:
+            #Sidebar pop up
+            st.sidebar.markdown("### Function Parameters")
+            st.sidebar.write("\n")
+            st.sidebar.markdown("#### Minimal Exon Length (AA):")
+            exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
+                                                     format=None, key=None)
+            st.sidebar.write("\n")
+            st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
+            st.sidebar.write("\n")
+            match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None,
+                                            key=None)
+            mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
+                                               format=None, key=None)
+            open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75,
+                                                       step=None, format=None, key=None)
+            gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None,
+                                                            value=0,
+                                                            step=None, format=None, key=None)
+            st.sidebar.write("\n")
+            st.markdown("#### Results")
+            #st.write("\n")
+            #st.markdown("##### Unfiltered Alignment:")
+            #st.write("\n")
+            maped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1, fasta2, match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            #st.text(Alignment_preview)
+            st.write("\n")
+            st.markdown("##### Alignment:")
+            st.write("\n")
+            st.text(visualise_alignment_dynamically(maped_tuple[5],maped_tuple[6],maped_tuple[4]))
+            st.markdown(" ###### Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+            st.write("\n")
+           # st.text(maped_tuple[1])
+           # st.text(maped_tuple[2])
+           # st.text(maped_tuple[3])
+           # st.text(maped_tuple[4])
+           # st.text(maped_tuple[5])
+           # st.text(maped_tuple[6])
+            st.write("\n")
+            st.markdown("##### Table of correctly mapped AA positions:")
+            generated_table = write_results_to_tsv_file(maped_tuple,'/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv')
+            st.write("\n")
+            st.write(generated_table[1])
+            st.write("\n")
+            st.markdown("##### Download Dataframe:")
+            st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv', '','AA_Isoforms_Mapped_Positions.tsv'), unsafe_allow_html=True)
+            st.write("--------------------------")
 
 
     elif choice == 'Download Pre-computed Data':
