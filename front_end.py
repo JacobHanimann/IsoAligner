@@ -66,14 +66,16 @@ def main():
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
         st.write("--------------------------")
         st.markdown("#### Input")
-        fasta1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')
+        input1 = search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')))
         col1, col2 = st.beta_columns([3.6,1])
         with col2:
-            st.button('Search Database')
+            search = st.button('Search Database')
         with col1:
             agree = st.checkbox("Click here to upload list of gene names or ID's")
+        if search:
+            st.write(input1)
             if agree:
-                fasta1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=[ "gz","txt"])
+                input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
         st.write("\n")
         option = st.selectbox(
             'Select alternative isoforms to align',
@@ -97,12 +99,12 @@ def main():
         gap_extension_penalty= st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None, value=0, step=None, format=None, key=None)
         st.sidebar.write("\n")
         if option == "Insert own sequence":
-            if fasta1 !="" and fasta2 !="" and submit:
+            if input1 != "" and fasta2 != "" and submit:
                 st.markdown("#### Results")
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
-                maped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(fasta1, fasta2, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+                maped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1, fasta2, match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
                 #st.text(Alignment_preview)
                 st.write("\n")
                 st.markdown("##### Alignment:")

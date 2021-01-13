@@ -107,7 +107,12 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
             dict_element_indexes[element] = 'not found'
     return dict_element_indexes
 
-
+def fetch_Isoform_IDs_of_sequence_collection(dictionary):
+    '''
+    function to get IDs of the gene object to be displayed in a selectbox to choose a reference
+    :param dictionary:
+    :return: list
+    '''
 
 def transform_uploaded_data_type_accordingly(file):
     '''uploaded files can be different types of files. A transformation is needed to interpret the data correctly
