@@ -7,11 +7,9 @@ import pickle
 import sys
 import SessionState
 
-ss = SessionState.get(x=1)
+#declare session state variables
+ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False)
 
-if st.button("Increment x"):
-    ss.x = True
-    st.text(ss.x)
 
 #move classes from database to functions script
 
@@ -39,6 +37,14 @@ def import_data(file):
     return list_of_gene_objects
 
 #Playground
+
+if st.button("Search"):
+    ss.clicked = True
+if st.button("Reset"):
+    ss.clicked = False
+
+st.write(ss.clicked)
+
 options = st.multiselect(
     'What are your favorite colors',
     ['Green', 'Yellow', 'Red', 'Blue'],
@@ -74,6 +80,7 @@ def main():
     st.sidebar.write("\n")
     st.sidebar.write("\n")
 
+    #Mapping tool section
     if choice == 'Mapping Tool':
         st.subheader("A simple tool to align isoforms globally")
         st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard fasely mapped positions (random matches) of two distinct exons."
@@ -85,22 +92,26 @@ def main():
         col1, col2 = st.beta_columns([3.6,1])
         with col2:
             search = st.button('Search Database')
+            if search:
+                ss.searched_clicked +=1
         with col1:
             agree = st.checkbox("Click here to upload list of gene names or ID's")
             if agree:
                 input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
-        if search and bool(input1_IDs) and len(input1_IDs) == 1: #check if dictionary is not empty
+        if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1: #check if dictionary is not empty
             reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
-        elif search and len(input1_IDs) > 1:
+        elif ss.searched_clicked and len(input1_IDs) > 1:
             st.write('multiple IDs')
-        elif search:
+        elif ss.searched_clicked:
             st.warning("Could not find any IDs")
         st.write("\n")
 
         fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ','''''')
-        submit=st.button('Align')
+        align=st.button('Align')
+        if align:
+            align_clicked = True
         st.write("--------------------------")
-        if input1 != "" and fasta2 != "" and submit:
+        if input1 != "" and fasta2 != "" and align_clicked:
             #Sidebar pop up
             st.sidebar.markdown("### Function Parameters")
             st.sidebar.write("\n")
