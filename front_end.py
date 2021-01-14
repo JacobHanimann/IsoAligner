@@ -66,6 +66,11 @@ st.write(second_dict)
 index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16'))
 st.write(index)
 
+color = st.select_slider(
+'Select a color of the rainbow',
+options=['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
+st.write('My favorite color is', color)
+
 #Streamlit website
 
 def main():
@@ -109,9 +114,9 @@ def main():
         fasta2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ','''''')
         align=st.button('Align')
         if align:
-            align_clicked = True
+            ss.align_clicked = True
         st.write("--------------------------")
-        if input1 != "" and fasta2 != "" and align_clicked:
+        if input1 != "" and fasta2 != "" and ss.align_clicked:
             #Sidebar pop up
             st.sidebar.markdown("### Function Parameters")
             st.sidebar.write("\n")
