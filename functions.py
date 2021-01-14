@@ -66,6 +66,7 @@ def display_Needleman_Wunsch_Parameters_Sidebar():
                                                     step=None, format=None, key=None)
     st.sidebar.write("\n")
 
+
 def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENST'):
     '''
     :param reference_transcript:
@@ -80,12 +81,11 @@ def display_alignment_for_one_gene_from_database(reference_transcript,list_of_ge
     for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
         if getattr(transcript, ID_type) == reference_transcript:
             continue
-        st.text('loops')
+        st.text('Alignment')
         st.text(reference_protein_sequence)
         st.text(transcript.protein_sequence)
         #mapped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
         #st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4]))
-
 
 
 def split_elements_from_user_input_string(string):
