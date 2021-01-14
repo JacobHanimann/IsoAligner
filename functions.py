@@ -34,7 +34,7 @@ def select_canonical_sequence(isoforms):
 
 #Back-end code (biological aspects)
 
-def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list):
+def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list,sequence1='sequence1: ', sequence2='sequence2: '):
     '''Function that returns an alignment of two sequences according to the AA_match_evalutation list generated from
      the check_for_wrong_exon_alignments() function in a visually pleasing fashion
      Input: 3 lists
@@ -42,8 +42,51 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     correct_match_character = "|"
     wrong_match_character = "x"
     alignment_character_list = [" " if score =="gap" else correct_match_character if score=="correct" else wrong_match_character for score in AA_match_evalutation_list]
-    output_alignment_string= "sequence1: "+''.join(reference_sequence_list)+'\n'+"           "+''.join(alignment_character_list)+"\n"+"sequence2: "+''.join(isoform_sequence_list)
+    whitespace = len(sequence1)*" "
+    output_alignment_string= sequence1+''.join(reference_sequence_list)+'\n'+whitespace+''.join(alignment_character_list)+"\n"+sequence2+''.join(isoform_sequence_list)
     return output_alignment_string
+
+def display_Needleman_Wunsch_Parameters_Sidebar():
+    st.sidebar.markdown("### Function Parameters")
+    st.sidebar.write("\n")
+    st.sidebar.markdown("#### Minimal Exon Length (AA):")
+    exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
+                                             format=None, key=None)
+    st.sidebar.write("\n")
+    st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
+    st.sidebar.write("\n")
+    match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None,
+                                    key=None)
+    mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
+                                       format=None, key=None)
+    open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75,
+                                               step=None, format=None, key=None)
+    gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None,
+                                                    value=0,
+                                                    step=None, format=None, key=None)
+    st.sidebar.write("\n")
+
+def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENST'):
+    '''
+    :param reference_transcript:
+    :param list_of_gene_objects:
+    :param index_of_gene:
+    :return:
+    '''
+    for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
+        if getattr(transcript, ID_type) == reference_transcript:
+            reference_protein_sequence = getattr(transcript, "protein_sequence")
+            break
+    for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
+        if getattr(transcript, ID_type) == reference_transcript:
+            continue
+        st.text('loops')
+        st.text(reference_protein_sequence)
+        st.text(transcript.protein_sequence)
+        #mapped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+        #st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4]))
+
+
 
 def split_elements_from_user_input_string(string):
     '''
@@ -81,7 +124,7 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
     '''
     Function that searches trough database with gettatribute()
     :param database_list, list_of_IDs
-    :return: list of indexes of each element, maybe a dictionary..? (probably not)
+    :return: dictionary of indexes of each element
     '''
     dict_element_indexes = {}
     for element,ID in dict_of_IDs.items():
@@ -107,6 +150,15 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
             dict_element_indexes[element] = 'not found'
     return dict_element_indexes
 
+def generate_dictionary_of_canonical_IDs_from_user_input_IDs(dict_element_indexes,list_of_gene_objects):
+    '''
+    function that returns a dictionary in which each ID has the canonical ID as a value. If user specified ID, then key=value, if not, the canonical sequence must be extracted from the gene objecc
+    :param ID_dictionary:
+    :param list_of_gene_objects:
+    :return: dictionary of canonical ID's used as a default reference
+    '''
+
+
 def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,index_of_gene,ID="ENST"):
     '''
     function to get IDs of the gene object to be displayed in a selectbox to choose a reference
@@ -115,7 +167,6 @@ def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,index_of_gene,
     '''
     list_of_transcripts=[getattr(sequence,ID) for sequence in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection]
     return list_of_transcripts
-
 
 
 def transform_uploaded_data_type_accordingly(file):
