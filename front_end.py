@@ -101,31 +101,39 @@ def main():
         st.markdown("#### Input")
         input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')
         input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
-        col1, col2 = st.beta_columns([2.4,1])
-        with col2:
-            search = st.button('Search Database for IDs')
-            if search:
-                ss.searched_clicked =True
-        with col1:
+        file_upload, search_button = st.beta_columns([2.4,1])
+        with file_upload:
             agree = st.checkbox("Click here to upload list of gene names or ID's")
             if agree:
                 input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
+        with search_button:
+            search = st.button('Search Database for IDs')
+            if search:
+                ss.searched_clicked =True
 
         #set default for displaying second text_area input for input2
         using_IDs= False
 
         #check what user input is
+
+        #case of using one ID's
         if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1: #check if dictionary is not empty
-            reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
             using_IDs = True
+            reference_select, placeholder = st.beta_columns([1,2.5])
+            with reference_select:
+                chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
+
+        #case of using multiple ID's
         elif ss.searched_clicked and len(input1_IDs) > 1:
             st.write('multiple IDs')
             using_IDs = True
+        #case user types in aminoacid and clicks on search database
         elif ss.searched_clicked and extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
             st.warning("Looks like an Amino Acid sequence! Paste in your second sequence below and click 'Align' ")
         elif ss.searched_clicked:
             st.warning("Couldn't find any ID's")
         st.write("\n")
+
 
         #Input 2 Area
         if using_IDs== False:
@@ -136,7 +144,7 @@ def main():
                 ss.searched_clicked = False
             st.write("--------------------------")
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
-                #Sidebar pop up
+                #Sidebar pop up, make function out of it?
                 st.sidebar.markdown("### Function Parameters")
                 st.sidebar.write("\n")
                 st.sidebar.markdown("#### Minimal Exon Length (AA):")

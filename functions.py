@@ -42,7 +42,7 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     correct_match_character = "|"
     wrong_match_character = "x"
     alignment_character_list = [" " if score =="gap" else correct_match_character if score=="correct" else wrong_match_character for score in AA_match_evalutation_list]
-    output_alignment_string= "sequence1: "+''.join(reference_sequence_list)+'\n'+"      "+''.join(alignment_character_list)+"\n"+"sequence2: "+''.join(isoform_sequence_list)
+    output_alignment_string= "sequence1: "+''.join(reference_sequence_list)+'\n'+"           "+''.join(alignment_character_list)+"\n"+"sequence2: "+''.join(isoform_sequence_list)
     return output_alignment_string
 
 def split_elements_from_user_input_string(string):
