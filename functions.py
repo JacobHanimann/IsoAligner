@@ -233,6 +233,7 @@ def check_for_wrong_exon_alignments(ref,isoform,exon_length_AA):     #Has to be 
     :param ref: aligned sequence in form of a list
     :param isoform: aligned sequence in form of a list
     :return: list which categories each elements alignment in 'correct,wrong,gap'
+    To do: Function could be written in fewer lines: few things are copied like category gap classification and appending the category..could be all shortened
     '''
     isoform_check=[]
     for index in range(0,len(ref)):
