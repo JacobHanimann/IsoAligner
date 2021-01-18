@@ -124,27 +124,7 @@ def main():
             with reference_select:
                 chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
             ss.generate = True
-            st.sidebar.markdown("### Function Parameters")
-            st.sidebar.write("\n")
-            st.sidebar.markdown("#### Minimal Exon Length (AA):")
-            exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
-                                                     format=None, key=None)
-            st.sidebar.write("\n")
-            st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
-            st.sidebar.write("\n")
-            match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None,
-                                            format=None,
-                                            key=None)
-            mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
-                                               format=None, key=None)
-            open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None,
-                                                       value=-1.75,
-                                                       step=None, format=None, key=None)
-            gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None,
-                                                            max_value=None,
-                                                            value=0,
-                                                            step=None, format=None, key=None)
-            st.sidebar.write("\n")
+            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
 
         #case of using multiple ID's
@@ -169,25 +149,8 @@ def main():
             st.write("--------------------------")
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
                 #Sidebar pop up, make function out of it?
-                st.sidebar.markdown("### Function Parameters")
-                st.sidebar.write("\n")
-                st.sidebar.markdown("#### Minimal Exon Length (AA):")
-                exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
-                                                         format=None, key=None)
-                st.sidebar.write("\n")
-                st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
-                st.sidebar.write("\n")
-                match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None,
-                                                key=None)
-                mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
-                                                   format=None, key=None)
-                open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75,
-                                                           step=None, format=None, key=None)
-                gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None,
-                                                                value=0,
-                                                                step=None, format=None, key=None)
-                st.sidebar.write("\n")
-                st.markdown("#### Results")
+                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
+                st.markdown("### Results")
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
@@ -261,7 +224,6 @@ gap_extension_penalty= 0
 #Execution
 if __name__ == '__main__':
     main()
-
 
 
 #for gene in list_of_gene_objects_with_fasta:

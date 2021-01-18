@@ -299,107 +299,31 @@ def check_for_wrong_exon_alignments(ref,isoform,exon_length_AA):     #Has to be 
     return isoform_check
 
 
-#This function also needs a sanity check
-def check_for_wrong_exon_alignments_second(ref,isoform,exon_length_AA):     #Has to be adjusted so the minimal exon length can be varied with tool (more neighbours have to be counted)
+def sidebar_pop_up_parameters():
     '''
-    This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene.
-    The Needleman Wunsch algorithm also randomly alignes fractions of different exons but they do not represent the same aminoacid.
-    since the optimization of the algorithm is to maximize matches (which makes sense with homologues but not with isoforms)
-    :param ref: aligned sequence in form of a list
-    :param isoform: aligned sequence in form of a list
-    :return: list which categories each elements alignment in 'correct,wrong,gap'
+    sidebar pop up for the parameters of all functions which can be dynamically adjusted.
     '''
-    isoform_check=[]
-    for index in range(0,len(ref)):
-        score=0 #score which determines if the position is part of an exon which is at least 5 elements long
-        gap=False
-        #at the start and end of the array an element has just neighbours on one side
-        if index <=4: #start of array
-            if ref[index] != isoform[index]:
-                category = "gap"
-                gap=True
-            else: score +=1
-            if ref[index + 1] == isoform[index + 1]:
-                score += 1
-                if ref[index + 2] == isoform[index + 2]:
-                    score += 1
-                    if ref[index + 3] == isoform[index + 3]:
-                        score += 1
-                        if ref[index + 4] == isoform[index + 4]:
-                            score += 1
-                            if ref[index + 5] == isoform[index + 5]:
-                                score += 1
-                                if ref[index + 6] == isoform[index + 6]:
-                                    score += 1
-            if score >= exon_length_AA and gap!=True:
-                category = 'correct'
-            elif score <= exon_length_AA and gap!=True:
-                category = 'wrong'
-            isoform_check.append(category)
-            continue
+    st.sidebar.markdown("### Function Parameters")
+    st.sidebar.write("\n")
+    st.sidebar.markdown("#### Minimal Exon Length (AA):")
+    exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
+                                             format=None, key=None)
+    st.sidebar.write("\n")
+    st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
+    st.sidebar.write("\n")
+    match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None,
+                                    key=None)
+    mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
+                                       format=None, key=None)
+    open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75,
+                                               step=None, format=None, key=None)
+    gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None,
+                                                    value=0,
+                                                    step=None, format=None, key=None)
+    st.sidebar.write("\n")
 
-        #end of array
-        if len(ref)-index <=4 :
-            if ref[index] != isoform[index]:
-                category = "gap"
-                gap = True
-            else:
-                score += 1
-            if ref[index - 1] == isoform[index - 1]:
-                score += 1
-                if ref[index - 2] == isoform[index - 2]:
-                    score += 1
-                    if ref[index - 3] == isoform[index - 3]:
-                        score += 1
-                        if ref[index - 4] == isoform[index - 4]:
-                            score += 1
-                            if ref[index - 5] == isoform[index - 5]:
-                                score += 1
-                                if ref[index - 6] == isoform[index - 6]:
-                                    score += 1
-            if score >= exon_length_AA and gap!=True:
-                category = 'correct'
-            elif score <= exon_length_AA and gap!=True:
-                category = 'wrong'
-            isoform_check.append(category)
-            continue
+    return match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA
 
-        #middle of array, checks for matches both sided
-        if ref[index]!=isoform[index]:
-            category="gap"
-            gap = True
-        else:
-            score += 1
-        if ref[index + 1] == isoform[index + 1]: #neighbours to the right
-            score += 1
-            if ref[index + 2] == isoform[index + 2]:
-                score += 1
-                if ref[index + 3] == isoform[index + 3]:
-                    score += 1
-                    if ref[index + 4] == isoform[index + 4]:
-                        score += 1
-                        if ref[index + 5] == isoform[index + 5]:
-                            score += 1
-                            if ref[index + 6] == isoform[index + 6]:
-                                score += 1
-        if ref[index - 1] == isoform[index - 1]:  #neighbours to the left
-            score += 1
-            if ref[index - 2] == isoform[index - 2]:
-                score += 1
-                if ref[index - 3] == isoform[index - 3]:
-                    score += 1
-                    if ref[index - 4] == isoform[index - 4]:
-                        score += 1
-                        if ref[index - 5] == isoform[index - 5]:
-                            score += 1
-                            if ref[index - 6] == isoform[index - 6]:
-                                score += 1
-        if score >= exon_length_AA and gap!=True:
-            category='correct'
-        elif score <= exon_length_AA and gap!=True:
-            category='wrong'
-        isoform_check.append(category)
-    return isoform_check
 
 
 def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign for different inputs
