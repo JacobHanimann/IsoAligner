@@ -149,17 +149,17 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         pattern = 'ENSP\d+\.\d+'
         version = True
 
-   # #Refseq
-   # elif ID_type=='refseq_rna':
-   #      pattern = 'NM_\d+'
-   # elif ID_type=='refseq_rna_version':
-   #      pattern = 'NM_\d+\.\d+'
-   #      version = True
-   # elif ID_type=='refseq_prot':
-   #      pattern = 'NP_\d+'
-   # elif ID_type=='refseq_prot_version':
-   #     version = True
-   #     pattern = 'NP_\d+\.\d+'
+    #Refseq
+    elif ID_type=='refseq_rna':
+         pattern = 'NM_\d+'
+    elif ID_type=='refseq_rna_version':
+         pattern = 'NM_\d+\.\d+'
+         version = True
+    elif ID_type=='refseq_prot':
+         pattern = 'NP_\d+'
+    elif ID_type=='refseq_prot_version':
+        version = True
+        pattern = 'NP_\d+\.\d+'
 
     #Uniprot IDs
     elif ID_type == 'uniprot_accession':

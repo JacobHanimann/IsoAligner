@@ -92,7 +92,7 @@ def split_elements_from_user_input_string(string):
     if "\n" in string:
         list_of_elements = list(string.split('\n'))
     elif ","  in string:
-        list_of_elements = list(string.split(','))
+        list_of_elements = list(string.split(', '))
     else:
         list_of_elements = [string]
 
@@ -104,14 +104,53 @@ def identify_IDs_from_user_text_input(string):
     Function that identifies which ID's the user typed in with regex. Returns a dict of ID_types which can be used to search through the database more efficiently
     :param list of elements:
     :return: dict of ID_types
+    comment: should be updated for all kinds of ID in database
     '''
     dict_of_IDs = {}
     list_of_elements = split_elements_from_user_input_string(string)
     for element in list_of_elements:
+        #ensembl
         if re.search('ENSG\d+\.\d+',element):
             dict_of_IDs[element]='ENSG_version'
+            continue
         elif re.search('ENSG\d{11}',element):
             dict_of_IDs[element]='ENSG'
+            continue
+        if re.search('ENST\d+\.\d+',element):
+            dict_of_IDs[element]='ENST_version'
+            continue
+        elif re.search('ENST\d{11}', element):
+            dict_of_IDs[element] = 'ENST'
+            continue
+        if re.search('ENSP\d+\.\d+', element):
+            dict_of_IDs[element] = 'ENSP_version'
+            continue
+        elif re.search('ENSP\d{11}', element):
+            dict_of_IDs[element] = 'ENSP'
+            continue
+        #uniprot
+        if re.search('[OPQ][0-9][0-9A-Z]{3}[0-9]|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]', element):
+            dict_of_IDs[element] = 'uniprot_accession'
+            continue
+        if re.search('UPI[0-9A-F]+',element):
+            dict_of_IDs[element] = 'uniprot_uniparc'
+            continue
+        #refseq
+        if re.search('NM_\d+\.\d+', element):
+            dict_of_IDs[element] = 'refseq_rna_version'
+            continue
+        elif re.search('NM_\d+', element):
+            dict_of_IDs[element] = 'refseq_rna'
+            continue
+        if re.search('NP_\d+\.\d+', element):
+            dict_of_IDs[element] = 'refseq_prot_version'
+            continue
+        elif re.search('NP_\d+', element):
+            dict_of_IDs[element] = 'refseq_prot'
+            continue
+
+        #if no ID's were found, the string is probably a gene name
+        dict_of_IDs[element]= 'gene_name'
 
     return dict_of_IDs
 
@@ -125,15 +164,31 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
     for element,ID in dict_of_IDs.items():
         found = False
         parent_class = True
-        if ID in ['ENSG_version','ENST','ENST_version','ENSP','ENSP_version']: #list must be completed
+        if ID in ['ENSG_version','ENST','ENST_version','ENSP','ENSP_version', 'refseq_rna', 'refseq_protein','uniprot_accession','uniprot_uniparc','uniprot_isoform']: #list must be completed
             parent_class = False
         for index,gene in enumerate(list_of_gene_objects):
             if found:
                 break
             if parent_class:
-                if getattr(gene,ID) == element:
-                    dict_element_indexes[element] = index
-                    break
+                if ID =="gene_name":
+                    if getattr(gene, "ensembl_gene_symbol") == element:
+                        dict_element_indexes[element] = index
+                        break
+                    if getattr(gene, "HGNC_gene_symbol") == element:
+                        dict_element_indexes[element] = index
+                        break
+                    if type(gene.previous_symbols) == list:
+                        if element in getattr(gene, "previous_symbols"):
+                            dict_element_indexes[element] = index
+                            break
+                    if type(gene.alias_symbols)==list:
+                        if element in getattr(gene, "alias_symbols"):
+                            dict_element_indexes[element] = index
+                            break
+                else:
+                    if getattr(gene,ID) == element:
+                        dict_element_indexes[element] = index
+                        break
             else:
                 if type(gene.protein_sequence_isoform_collection) ==list:
                     for protein_sequence in gene.protein_sequence_isoform_collection:

@@ -40,41 +40,41 @@ list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/l
 
 #Playground
 
-if st.button("Search"):
-    ss.clicked = True
-if st.button("Reset"):
-    ss.clicked = False
-
-st.write(ss.clicked)
-
-options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    ['Yellow', 'Red'])
-
-st.write('You selected:', options)
-e = RuntimeError('This is an exception of type RuntimeError')
-st.exception(e)
-st.success('This is a success message!')
-st.info("This is information")
-
-
-first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
-st.write(first_list)
-
-second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
-st.write(second_dict)
-index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16'))
-st.write(index)
-
-color = st.select_slider(
-'Select a color of the rainbow',
-options=['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
-st.write('My favorite color is', color)
-
-
-title = st.text_input('Movie title', 'Life of Brian')
-st.write('The current movie title is', title)
+#if st.button("Search"):
+#    ss.clicked = True
+#if st.button("Reset"):
+#    ss.clicked = False
+#
+#st.write(ss.clicked)
+#
+#options = st.multiselect(
+#    'What are your favorite colors',
+#    ['Green', 'Yellow', 'Red', 'Blue'],
+#    ['Yellow', 'Red'])
+#
+#st.write('You selected:', options)
+#e = RuntimeError('This is an exception of type RuntimeError')
+#st.exception(e)
+#st.success('This is a success message!')
+#st.info("This is information")
+#
+#
+#first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
+#st.write(first_list)
+#
+#second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8, KRAS, ENST00000004531,ENSP00000005178.5, Q96HP8,UPI00001BDC11,O14792,Q9Y258')
+#st.write(second_dict)
+#index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16'))
+#st.write(index)
+#
+#color = st.select_slider(
+#'Select a color of the rainbow',
+#options=['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
+#st.write('My favorite color is', color)
+#
+#
+#title = st.text_input('Movie title', 'Life of Brian')
+#st.write('The current movie title is', title)
 
 #Streamlit website
 
@@ -118,8 +118,10 @@ def main():
         #check what user input is
 
         #case of using one ID's
-        if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1: #check if dictionary is not empty
+        if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found': #check if dictionary is not empty
             using_IDs = True
+            st.write(input1_IDs)
+            st.write(list(input1_IDs.values())[0])
             st.markdown("### Alignments")
             reference_select, placeholder = st.beta_columns([1,2.5])
             with reference_select:
@@ -131,12 +133,19 @@ def main():
             st.write('\n')
             st.text('\n')
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            st.markdown("#### Table")
+            options = st.multiselect(
+                'Choose columns',
+                ['Gene name', 'Transcript ID', 'AA', 'Ref Position', 'Isoform Position','Refseq ID', 'Uniprot_ID'],
+                ['Gene name', 'Transcript ID', 'AA', 'Ref Position'])
 
 
         #case of using multiple ID's
         elif ss.searched_clicked and len(input1_IDs) > 1:
             st.write('multiple IDs')
             using_IDs = True
+            st.write(input1_IDs)
+            st.write(list(input1_IDs.values())[0])
         #case user types in aminoacid and clicks on search database
         elif ss.searched_clicked and extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
             st.warning("Looks like an Amino Acid sequence! Paste in your second sequence below and click 'Align' ")
@@ -166,7 +175,7 @@ def main():
                 st.markdown("##### Alignment:")
                 st.write("\n")
                 st.text(visualise_alignment_dynamically(maped_tuple[5],maped_tuple[6],maped_tuple[4]))
-                st.markdown(" ###### Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+                st.markdown(" ###### ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
                 st.write("\n")
                 st.write("\n")
                 st.markdown("##### Table of correctly mapped AA positions:")
@@ -236,3 +245,7 @@ if __name__ == '__main__':
 #    if type(gene.protein_sequence_isoform_collection) == list:
 #        if len(gene.protein_sequence_isoform_collection) >0:
 #            print(gene.ensembl_gene_symbol)
+
+for gene in list_of_gene_objects:
+    print(gene.previous_symbols)
+    #print(type(gene.alias_symbols),type(gene.previous_symbols))
