@@ -42,29 +42,9 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     correct_match_character = "|"
     wrong_match_character = "x"
     alignment_character_list = [" " if score =="gap" else correct_match_character if score=="correct" else wrong_match_character for score in AA_match_evalutation_list]
-    whitespace = len(sequence1)*" "
-    output_alignment_string= sequence1+''.join(reference_sequence_list)+'\n'+whitespace+''.join(alignment_character_list)+"\n"+sequence2+''.join(isoform_sequence_list)
+    whitespace = len(sequence1)*" "+"  "
+    output_alignment_string= sequence1+": "+''.join(reference_sequence_list)+'\n'+whitespace+''.join(alignment_character_list)+"\n"+sequence2+": "+''.join(isoform_sequence_list)
     return output_alignment_string
-
-def display_Needleman_Wunsch_Parameters_Sidebar():
-    st.sidebar.markdown("### Function Parameters")
-    st.sidebar.write("\n")
-    st.sidebar.markdown("#### Minimal Exon Length (AA):")
-    exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
-                                             format=None, key=None)
-    st.sidebar.write("\n")
-    st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
-    st.sidebar.write("\n")
-    match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None,
-                                    key=None)
-    mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
-                                       format=None, key=None)
-    open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75,
-                                               step=None, format=None, key=None)
-    gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None,
-                                                    value=0,
-                                                    step=None, format=None, key=None)
-    st.sidebar.write("\n")
 
 
 def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENST'):
@@ -85,7 +65,8 @@ def display_alignment_for_one_gene_from_database(reference_transcript,list_of_ge
         #st.text(reference_protein_sequence)
         #st.text(transcript.protein_sequence)
         mapped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-        st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4]))
+        st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4],sequence1 =reference_transcript,sequence2= transcript.ENST))
+        #st.write("Alignment x")
 
 
 def split_elements_from_user_input_string(string):

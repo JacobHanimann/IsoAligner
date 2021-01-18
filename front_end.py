@@ -125,6 +125,7 @@ def main():
                 chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
             ss.generate = True
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
+            st.write("\n")
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
 
         #case of using multiple ID's
