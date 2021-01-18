@@ -25,6 +25,7 @@ from Bio.pairwise2 import format_alignment
 import os
 import base64
 import re
+from collections import Counter
 
 
 #new function ideas
@@ -64,9 +65,22 @@ def display_alignment_for_one_gene_from_database(reference_transcript,list_of_ge
         #st.text('Alignment')
         #st.text(reference_protein_sequence)
         #st.text(transcript.protein_sequence)
-        mapped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-        st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4],sequence1 =reference_transcript,sequence2= transcript.ENST))
-        #st.write("Alignment x")
+        isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)[4:7]
+        matches, positions_total_reference, percentage = calculate_percentage_of_mapped_positions(isoform_pattern_check,reference_protein_sequence)
+        st.write('mapped positions: '+str(round(100*percentage,2))+"%")
+        st.text(visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,sequence1 =reference_transcript,sequence2= transcript.ENST))
+        st.text('\n')
+
+def calculate_percentage_of_mapped_positions(isoform_check, reference_protein_sequence):
+    '''
+    :return: percentage of mapped positions
+    '''
+    positions_total_reference = len(reference_protein_sequence)
+    counter_dict = Counter(isoform_check)
+    matches= counter_dict['correct']
+    percentage = matches / positions_total_reference
+    return matches,positions_total_reference, percentage
+
 
 
 def split_elements_from_user_input_string(string):
@@ -177,32 +191,32 @@ def map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(fasta1,fasta2,match,misma
     print('Mapping transcripts with Needleman-Wunsch...')
     clean_reference_fasta = extract_only_AA_of_Fasta_file(fasta1)
     alignments = pairwise2.align.globalms(clean_reference_fasta,extract_only_AA_of_Fasta_file(fasta2), match, mismatch, gap_penalty, gap_extension_penalty,one_alignment_only=True, penalize_extend_when_opening=True, penalize_end_gaps=False)
-    alignment_COSMIC_fasta = list(alignments[0][0])
+    alignment_reference_fasta = list(alignments[0][0])
     alignment_isoform_fasta=list(alignments[0][1])
-    isoform_pattern_check= check_for_wrong_exon_alignments(alignment_COSMIC_fasta,alignment_isoform_fasta,exon_length_AA)
+    isoform_pattern_check= check_for_wrong_exon_alignments(alignment_reference_fasta, alignment_isoform_fasta, exon_length_AA)
     reference_position_list=[]
     isoform_positions_list=[]
     aminoacids=[]
     position_reference=1
     position_isoform=1
-    for i in range(0,len(alignment_COSMIC_fasta)):
+    for i in range(0, len(alignment_reference_fasta)):
         if isoform_pattern_check[i]!='wrong':
-            if alignment_COSMIC_fasta[i]==alignment_isoform_fasta[i]:
-                aminoacids.append(alignment_COSMIC_fasta[i])
+            if alignment_reference_fasta[i]==alignment_isoform_fasta[i]:
+                aminoacids.append(alignment_reference_fasta[i])
                 reference_position_list.append(position_reference)
                 isoform_positions_list.append(position_isoform)
                 position_reference+=1
                 position_isoform+=1
-            if alignment_COSMIC_fasta[i]=='-' and alignment_isoform_fasta[i]=='-': #does it even happen?
+            if alignment_reference_fasta[i]== '-' and alignment_isoform_fasta[i]== '-': #does it even happen?
                 continue
-            if alignment_COSMIC_fasta[i]!='-' and alignment_isoform_fasta[i]=='-':
+            if alignment_reference_fasta[i]!= '-' and alignment_isoform_fasta[i]== '-':
                 position_reference+=1
-            if alignment_COSMIC_fasta[i]=='-' and alignment_isoform_fasta[i]!='-':
+            if alignment_reference_fasta[i]== '-' and alignment_isoform_fasta[i]!= '-':
                 position_isoform+=1
         else:
             position_reference += 1
             position_isoform += 1
-    return(format_alignment(*alignments[0],full_sequences=True),aminoacids,reference_position_list,isoform_positions_list,isoform_pattern_check,alignment_COSMIC_fasta,alignment_isoform_fasta)
+    return(format_alignment(*alignments[0],full_sequences=True), aminoacids, reference_position_list, isoform_positions_list, isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta)
 
 
 #This function also needs a sanity check

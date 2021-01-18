@@ -120,13 +120,18 @@ def main():
         #case of using one ID's
         if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1: #check if dictionary is not empty
             using_IDs = True
+            st.markdown("### Alignments")
             reference_select, placeholder = st.beta_columns([1,2.5])
             with reference_select:
                 chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
             ss.generate = True
+            st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
-            st.write("\n")
+            st.markdown(" ######  ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+            st.write('\n')
+            st.text('\n')
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+
 
         #case of using multiple ID's
         elif ss.searched_clicked and len(input1_IDs) > 1:
