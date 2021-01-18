@@ -81,11 +81,11 @@ def display_alignment_for_one_gene_from_database(reference_transcript,list_of_ge
     for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
         if getattr(transcript, ID_type) == reference_transcript:
             continue
-        st.text('Alignment')
-        st.text(reference_protein_sequence)
-        st.text(transcript.protein_sequence)
-        #mapped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-        #st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4]))
+        #st.text('Alignment')
+        #st.text(reference_protein_sequence)
+        #st.text(transcript.protein_sequence)
+        mapped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+        st.text(visualise_alignment_dynamically(mapped_tuple[5],mapped_tuple[6],mapped_tuple[4]))
 
 
 def split_elements_from_user_input_string(string):
@@ -236,6 +236,80 @@ def check_for_wrong_exon_alignments(ref,isoform,exon_length_AA):     #Has to be 
     '''
     isoform_check=[]
     for index in range(0,len(ref)):
+        score=0 #score which determines if the position is fullfills the minimal exon length parameter
+        gap=False
+        # start of array
+        if index <= exon_length_AA:
+            if ref[index] != isoform[index]:
+                category = "gap"
+                gap=True
+            else: #same Aminoacid
+                score +=1
+                for sidestep in range(1,exon_length_AA): #check how many neighbours there are
+                    if ref[index + sidestep] == isoform[index + sidestep]:
+                        score +=1
+                    else:
+                        break
+            if score >= exon_length_AA and gap!=True:
+                category = 'correct'
+            elif score <= exon_length_AA and gap!=True:
+                category = 'wrong'
+            isoform_check.append(category)
+            continue
+        #end of array
+        if len(ref)-index <=exon_length_AA :
+            if ref[index] != isoform[index]:
+                category = "gap"
+                gap = True
+            else:  # same Aminoacid
+                score += 1
+                for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+                    if ref[index - sidestep] == isoform[index - sidestep]:
+                        score += 1
+                    else:
+                        break
+            if score >= exon_length_AA and gap!=True:
+                category = 'correct'
+            elif score <= exon_length_AA and gap!=True:
+                category = 'wrong'
+            isoform_check.append(category)
+            continue
+        #middle of array, checks for matches both sided
+        if ref[index]!=isoform[index]:
+            category="gap"
+            gap = True
+        else:  # same Aminoacid
+            score += 1
+            for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+                if ref[index + sidestep] == isoform[index + sidestep]:
+                    score += 1
+                else:
+                    break
+            for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+                if ref[index - sidestep] == isoform[index - sidestep]:
+                    score += 1
+                else:
+                    break
+        if score >= exon_length_AA and gap!=True:
+            category='correct'
+        elif score <= exon_length_AA and gap!=True:
+            category='wrong'
+        isoform_check.append(category)
+    return isoform_check
+
+
+#This function also needs a sanity check
+def check_for_wrong_exon_alignments_second(ref,isoform,exon_length_AA):     #Has to be adjusted so the minimal exon length can be varied with tool (more neighbours have to be counted)
+    '''
+    This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene.
+    The Needleman Wunsch algorithm also randomly alignes fractions of different exons but they do not represent the same aminoacid.
+    since the optimization of the algorithm is to maximize matches (which makes sense with homologues but not with isoforms)
+    :param ref: aligned sequence in form of a list
+    :param isoform: aligned sequence in form of a list
+    :return: list which categories each elements alignment in 'correct,wrong,gap'
+    '''
+    isoform_check=[]
+    for index in range(0,len(ref)):
         score=0 #score which determines if the position is part of an exon which is at least 5 elements long
         gap=False
         #at the start and end of the array an element has just neighbours on one side
@@ -327,7 +401,6 @@ def check_for_wrong_exon_alignments(ref,isoform,exon_length_AA):     #Has to be 
     return isoform_check
 
 
-
 def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign for different inputs
     'to be written'
     print('Writing results to csv file...')
@@ -338,6 +411,8 @@ def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign f
             tsv_writer.writerow([mapped_tuple[1][indexiterator],mapped_tuple[2][indexiterator],mapped_tuple[3][indexiterator]])
     df = pd.read_csv(file_location, sep='\t')
     return (file_location,df)
+
+
 
 
 #classes

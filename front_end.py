@@ -36,6 +36,8 @@ def import_data(file):
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
+list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
+
 #Playground
 
 if st.button("Search"):
@@ -56,7 +58,6 @@ st.exception(e)
 st.success('This is a success message!')
 st.info("This is information")
 
-list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
 
 first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
 st.write(first_list)
