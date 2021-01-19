@@ -127,7 +127,7 @@ def main():
         if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found': #check if dictionary is not empty
             using_IDs = True
             #st.write(input1_IDs)
-            st.write(list(input1_IDs.values())[0])
+            #st.write(list(input1_IDs.values())[0])
             st.markdown("### Alignments")
             reference_select, placeholder = st.beta_columns([1,2.5])
             with reference_select:
