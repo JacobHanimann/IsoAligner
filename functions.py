@@ -177,7 +177,7 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
                     if getattr(gene, "HGNC_gene_symbol") == element:
                         dict_element_indexes[element] = index
                         break
-                    if type(gene.previous_symbols) == list:
+                    if type(gene.previous_symbols) == list: #line can be deleted since all these attributes should be lists
                         if element in getattr(gene, "previous_symbols"):
                             dict_element_indexes[element] = index
                             break
