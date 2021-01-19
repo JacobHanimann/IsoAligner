@@ -44,7 +44,7 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     return output_alignment_string
 
 
-def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENST'):
+def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENSP'):
     '''
     :param reference_transcript:
     :param list_of_gene_objects:
