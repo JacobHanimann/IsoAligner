@@ -34,7 +34,7 @@ def import_data(file):
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
+#list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
 
 #Playground
 if st.button("Search"):
