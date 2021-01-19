@@ -30,26 +30,37 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     output: list of gene objects with added attribute values
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    for index in range(0,1000):
+    for index in range(0,100):
         print(index)
         found = False
         for gene in list_of_gene_objects:
+            HGNC = df.loc[index, 'HGNC']
+            HGNC_gene_symbol = df.loc[index, 'approved_symbol']
+            previous_symbols = df.loc[index, 'previous_symbols']
+            refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
+            alias_symbols = df.loc[index, 'alias_symbols']
+            uniprot_ID = df.loc[index, 'UniProt ID']  # check if it the same ID as in the protein_sequence classes
+            if type(previous_symbols) != float:  # None values are type float
+                if "," in previous_symbols:
+                    previous_symbols = previous_symbols.split(', ')
+                else:
+                    previous_symbols = [previous_symbols]  # either way create a list because it facilitates later search functions
+            if type(alias_symbols) != float:
+                if "," in alias_symbols:
+                    alias_symbols = alias_symbols.split(', ')
+                else:
+                    alias_symbols = [alias_symbols]
             if gene.ENSG == df.loc[index,'Ensembl gene ID']:
                   found = True
-                  gene.HGNC = df.loc[index,'HGNC']
-                  gene.HGNC_gene_symbol = df.loc[index, 'approved_symbol']
-                  gene.previous_symbols = df.loc[index, 'previous_symbols']
-                  gene.refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
-                  gene.alias_symbols = df.loc[index, 'alias_symbols']
-                  gene.uniprot_ID = df.loc[index, 'UniProt ID'] #check if it the same ID as in the protein_sequence classes
-                  if type(gene.previous_symbols) != float: #None values are type float
-                      if "," in  gene.previous_symbols:
-                       gene.previous_symbols = gene.previous_symbols.split(', ')
-                  if type(gene.alias_symbols) != float:
-                      if "," in gene.alias_symbols:
-                       gene.alias_symbols = gene.alias_symbols.split(', ')
+                  gene.HGNC = HGNC
+                  gene.HGNC_gene_symbol = HGNC_gene_symbol
+                  gene.previous_symbols = previous_symbols
+                  gene.refseq_gene_ID = refseq_gene_ID
+                  gene.alias_symbols = alias_symbols
+                  gene.uniprot_ID = uniprot_ID #check if it the same ID as in the protein_sequence classes
+
         if found == False:
-            list_of_gene_objects.append(Gene(df.loc[index,'Ensembl gene ID'],'no HGNC_ensembl match',HGNC=df.loc[index,'HGNC'], HGNC_gene_symbol = df.loc[index, 'approved_symbol'], previous_symbols = df.loc[index, 'previous_symbols'], alias_symbols = df.loc[index, 'alias_symbols'], refseq_gene_ID=df.loc[index, 'NCBI Gene ID']))
+            list_of_gene_objects.append(Gene(df.loc[index,'Ensembl gene ID'],'no HGNC_ensembl match',HGNC=HGNC, HGNC_gene_symbol = HGNC_gene_symbol, previous_symbols = previous_symbols, alias_symbols = alias_symbols, refseq_gene_ID=refseq_gene_ID))
 
     return list_of_gene_objects
 
@@ -81,12 +92,12 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     fasta_count = 0
     matches = 0
     list_of_gene_objects =[]
-    for fasta in splittext[1:len(splittext)]:
+    for fasta in splittext[1:10000]:
         fasta_count += 1
         found = False
-        gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
+        gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta.split('\n',1)[1])
         # create protein_sequence object to add to the gene_object
-        sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
+        sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1]),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
@@ -231,8 +242,5 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
     pickle.dump(list_of_gene_objects, fp)
 
 
-#for gene in list_of_gene_objects:
-#    if len(gene.protein_sequence_isoform_collection) >1:
-#        print(gene.ensembl_gene_symbol,len(gene.protein_sequence_isoform_collection))
-#        print(gene.protein_sequence_isoform_collection[0].protein_sequence)
-#        print(gene.HGNC,gene.alias_symbols)
+for gene in list_of_gene_objects:
+    print(gene.HGNC, 'hello',gene.alias_symbols,'well',gene.previous_symbols)

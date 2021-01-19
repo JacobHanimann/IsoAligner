@@ -35,7 +35,7 @@ def select_canonical_sequence(isoforms):
 
 #Back-end code (biological aspects)
 
-def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list,sequence1='sequence1: ', sequence2='sequence2: '):
+def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list,sequence1='sequence1', sequence2='sequence2'):
     '''Function that returns an alignment of two sequences according to the AA_match_evalutation list generated from
      the check_for_wrong_exon_alignments() function in a visually pleasing fashion
      Input: 3 lists
