@@ -246,5 +246,6 @@ if __name__ == '__main__':
 #            print(gene.ensembl_gene_symbol)
 
 for gene in list_of_gene_objects:
+    print(gene.ensembl_gene_symbol)
     print(gene.previous_symbols)
     #print(type(gene.alias_symbols),type(gene.previous_symbols))
