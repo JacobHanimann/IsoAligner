@@ -28,7 +28,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     output: list of gene objects with added attribute values
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    for index in range(0,1000):
+    for index in range(0,100):
         print(index)
         found = False
         for gene in list_of_gene_objects:

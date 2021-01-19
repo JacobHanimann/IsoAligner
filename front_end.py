@@ -34,11 +34,16 @@ def import_data(file):
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-#fetch data from google drive
 
-url = "https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing"
-path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
-list_of_gene_objects= import_data(path)
+#fetch data from google drive
+#url = 'https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing'
+#st.write(url.split('/')[-2])
+#path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
+#st.write('https://drive.google.com/uc?export=download&id='+url.split('/')[-2])
+#df = pd.read_csv(path)
+
+list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
+
 
 #Playground
 if st.button("Search"):
