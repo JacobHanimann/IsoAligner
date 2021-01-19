@@ -92,7 +92,7 @@ def main():
     #Mapping tool section
     if choice == 'Mapping Tool':
         st.subheader("A simple tool to align isoforms globally")
-        st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard fasely mapped positions (random matches) of two distinct exons."
+        st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
 
         st.write("--------------------------")
