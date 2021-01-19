@@ -46,41 +46,41 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 
 
 #Playground
-if st.button("Search"):
-    ss.clicked = True
-if st.button("Reset"):
-    ss.clicked = False
-
-st.write(ss.clicked)
-
-options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    ['Yellow', 'Red'])
-
-st.write('You selected:', options)
-e = RuntimeError('This is an exception of type RuntimeError')
-st.exception(e)
-st.success('This is a success message!')
-st.info("This is information")
-
-
-first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
-st.write(first_list)
-
-second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8, KRAS, ENST00000004531,ENSP00000005178.5, Q96HP8,UPI00001BDC11,O14792,Q9Y258')
-st.write(second_dict)
-index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16\nHBB'))
-st.write(index)
-
-color = st.select_slider(
-'Select a color of the rainbow',
-options=['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
-st.write('My favorite color is', color)
-
-
-title = st.text_input('Movie title', 'Life of Brian')
-st.write('The current movie title is', title)
+#if st.button("Search"):
+#    ss.clicked = True
+#if st.button("Reset"):
+#    ss.clicked = False
+#
+#st.write(ss.clicked)
+#
+#options = st.multiselect(
+#    'What are your favorite colors',
+#    ['Green', 'Yellow', 'Red', 'Blue'],
+#    ['Yellow', 'Red'])
+#
+#st.write('You selected:', options)
+#e = RuntimeError('This is an exception of type RuntimeError')
+#st.exception(e)
+#st.success('This is a success message!')
+#st.info("This is information")
+#
+#
+#first_list=split_elements_from_user_input_string('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8')
+#st.write(first_list)
+#
+#second_dict=identify_IDs_from_user_text_input('ENSG00000282353,ENSG00000003137,ENSG00000006606,ENSG00000003137.8, KRAS, ENST00000004531,ENSP00000005178.5, Q96HP8,UPI00001BDC11,O14792,Q9Y258')
+#st.write(second_dict)
+#index= search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input('ENSG00000282357\nENSG00000003137\nENSG00000006606\nENSG00000003137.8\nENSG00000003509.16\nHBB'))
+#st.write(index)
+#
+#color = st.select_slider(
+#'Select a color of the rainbow',
+#options=['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
+#st.write('My favorite color is', color)
+#
+#
+#title = st.text_input('Movie title', 'Life of Brian')
+#st.write('The current movie title is', title)
 
 #Streamlit website
 

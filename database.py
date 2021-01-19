@@ -28,7 +28,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     output: list of gene objects with added attribute values
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    for index in range(0,100):
+    for index in range(0,80):
         print(index)
         found = False
         for gene in list_of_gene_objects:
@@ -90,7 +90,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     fasta_count = 0
     matches = 0
     list_of_gene_objects =[]
-    for fasta in splittext[1:len(splittext)]:
+    for fasta in splittext[1:25000]:
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
