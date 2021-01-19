@@ -162,7 +162,7 @@ def main():
 
         #Input 2 Area
         if using_IDs== False:
-            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''')
+            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''EGFR''')
             align=st.button('Align')
             if align:
                 ss.align_clicked = True
