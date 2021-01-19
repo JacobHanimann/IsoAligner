@@ -1,7 +1,5 @@
 import pandas as pd
 import streamlit as st
-import matplotlib
-matplotlib.use("TkAgg")
 from functions import * #import all functions from the functions.py file
 import pickle
 import sys
