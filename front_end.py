@@ -106,7 +106,7 @@ def main():
 
         #fixed in put area
         st.markdown("#### Input")
-        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''')
+        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''')
         input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
@@ -162,7 +162,7 @@ def main():
 
         #Input 2 Area
         if using_IDs== False:
-            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''EGFR''')
+            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''')
             align=st.button('Align')
             if align:
                 ss.align_clicked = True
