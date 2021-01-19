@@ -34,7 +34,11 @@ def import_data(file):
            list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-#list_of_gene_objects= import_data("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt")
+#fetch data from google drive
+
+url = "https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing"
+path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
+list_of_gene_objects= import_data(path)
 
 #Playground
 if st.button("Search"):
