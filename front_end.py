@@ -104,9 +104,7 @@ def main():
 
         st.write("--------------------------")
 
-        emptyspace, organism = st.beta_columns([1,2.5])
-        with organism:
-            st.selectbox("Choose organism", ['human', 'fish', 'frog'])
+        st.sidebar.selectbox("Choose organism: ", ['Homo Sapiens 🙋🏽‍️', 'D. melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
 
         #fixed in put area
         st.markdown("#### Input")
