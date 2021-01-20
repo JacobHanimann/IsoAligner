@@ -103,8 +103,9 @@ def main():
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
 
         st.write("--------------------------")
-        st.sidebar.markdown("### Organism 🧬️")
-        st.sidebar.selectbox('', ['Homo Sapiens 🙋🏽‍🧬️', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
+        st.sidebar.markdown("### 🧬️ Organism")
+        st.sidebar.selectbox('', ['Homo Sapiens 🙋🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
+        st.sidebar.selectbox('Database Version', ['Ensembl 102 (GRCh38.p13)', 'Ensembl 101 (GRCh38.p13)', 'Ensembl 75: Feb 2014 (GRCh37.p13)'])
 
         #fixed in put area
         st.markdown("#### Input")
