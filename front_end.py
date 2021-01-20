@@ -6,7 +6,7 @@ import sys
 import SessionState
 
 #declare session state variables
-ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False)
+ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0)
 
 
 #move classes from database to functions script
@@ -122,7 +122,7 @@ def main():
             st.markdown("#### Input")
         with example_button:
             st.button('Load Example')
-        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''')
+        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''',key=ss.run_id)
         input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
@@ -250,9 +250,11 @@ def main():
         #'''
         #st.code(code, language='python')
 
-    placehold, clear_all = st.beta_columns([4.1, 1])
+    placehold, clear_all = st.beta_columns([4.5, 1])
     with clear_all:
-        st.button('Clear All')
+       reset= st.button('Clear All')
+    if reset:
+        ss.run_id +=1
 
 #Execution
 
@@ -281,7 +283,7 @@ if __name__ == '__main__':
 #        if len(gene.protein_sequence_isoform_collection) >0:
 #            print(gene.ensembl_gene_symbol)
 
-for gene in list_of_gene_objects:
-    print(gene.ensembl_gene_symbol)
-    print(gene.previous_symbols)
-    #print(type(gene.alias_symbols),type(gene.previous_symbols))
+#for gene in list_of_gene_objects:
+#    print(gene.ensembl_gene_symbol)
+#    print(gene.previous_symbols)
+#    #print(type(gene.alias_symbols),type(gene.previous_symbols))
