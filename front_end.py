@@ -232,8 +232,10 @@ def main():
         st.markdown("##### check_for_wrong_exon_alignments function :")
         st.write(" This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene. The Needleman Wunsch algorithm randomly alignes fractions of non-identical exons since the optimization of the algorithm is to maximize matches (which makes sense with homologues but not with isoforms). This function discards such fractions of the alignment by rejecting exons shorter than the defined minimal length (in AA).")
         st.markdown("#### Contact:")
-        st.write("Please get in touch for suggestions for new features or to report bugs :)")
-        st.text('Jacob Hanimann')
+        st.write("\n")
+        st.write("Please get in touch for suggestions or to report bugs :)")
+        st.text('''Jacob Hanimann
+        Hello world \n its a nice new day''')
         st.text('E-mail: GianJacob.Hanimann@usz.ch')
         st.text('Phone: +41765596015')
         #st.text('LinkedIn: ')
