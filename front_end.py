@@ -91,7 +91,7 @@ def main():
 
     #Sidebar
     activity = ['Mapping Tool', 'Download Pre-computed Data', 'About & Source Code']
-    st.sidebar.markdown("### Navigation")
+    st.sidebar.markdown("### 📍 Navigation")
     choice = st.sidebar.selectbox("", activity)
     st.sidebar.write("\n")
     st.sidebar.write("\n")
@@ -105,8 +105,6 @@ def main():
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️ Organism")
         st.sidebar.selectbox('', ['Homo Sapiens 🙋🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
-        st.sidebar.write('\n')
-        st.sidebar.selectbox('Database Version', ['Ensembl 102 (GRCh38.p13)', 'Ensembl 101 (GRCh38.p13)', 'Ensembl 75: Feb 2014 (GRCh37.p13)'])
 
         #fixed in put area
         st.markdown("#### Input")
