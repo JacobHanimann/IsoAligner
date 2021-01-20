@@ -87,7 +87,7 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 def main():
     """ Isoform Mapping Tool """
     #Title
-    st.title("AminoAcid Isoform Mapper")
+    st.title(" Amino Acid Isoform Aligner")
 
     #Sidebar
     activity = ['Mapping Tool', 'Download Pre-computed Data', 'About & Source Code']
