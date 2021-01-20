@@ -219,11 +219,12 @@ def main():
         st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv','', 'All_Isoforms.tsv'), unsafe_allow_html=True)
 
     elif choice == 'About & Source Code':
-        st.header("Details")
         st.write("--------------------------")
+        st.write("")
         image = Image.open('Isoform_mapping_problem.png')
-        st.image(image, caption='Sunrise by the mountains',
+        st.image(image,
         use_column_width=True)
+        st.write("\n")
         st.markdown("#### About this code:")
         st.write("\n")
         st.markdown("##### Needleman-Wunsch Algorithm:")
