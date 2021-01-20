@@ -104,6 +104,9 @@ def main():
 
     #Mapping tool section
     if choice == 'Mapping Tool':
+        image1 = Image.open('Isoform_picture.png')
+        st.image(image1,
+                 use_column_width=True)
         st.subheader("A simple tool to map amino acid positions across isoforms")
         st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
@@ -221,8 +224,8 @@ def main():
     elif choice == 'About & Source Code':
         st.write("--------------------------")
         st.markdown("#### Problem Statement:")
-        image = Image.open('Isoform_mapping_problem.png')
-        st.image(image,
+        image2 = Image.open('Isoform_statement.png')
+        st.image(image2,
         use_column_width=True)
         st.write("\n")
         st.markdown("#### About the code:")
