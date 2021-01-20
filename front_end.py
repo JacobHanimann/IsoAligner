@@ -224,7 +224,7 @@ def main():
     elif choice == 'About & Source Code':
         st.write("--------------------------")
         st.markdown("#### Problem Statement:")
-        image2 = Image.open('Isoform_statement.png')
+        image2 = Image.open('Problem_statement.png')
         st.image(image2,
         use_column_width=True)
         st.write("\n")
