@@ -98,11 +98,15 @@ def main():
 
     #Mapping tool section
     if choice == 'Mapping Tool':
-        st.subheader("A simple tool to align isoforms globally")
+        st.subheader("A simple tool to map amino acid positions across isoforms")
         st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
 
         st.write("--------------------------")
+
+        emptyspace, organism = st.beta_columns([1,2.5])
+        with organism:
+            st.selectbox("Choose organism", ['human', 'fish', 'frog'])
 
         #fixed in put area
         st.markdown("#### Input")
