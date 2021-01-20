@@ -231,10 +231,12 @@ def main():
         st.write("It is also sometimes referred to as the optimal matching algorithm and the global alignment technique. The Needleman–Wunsch algorithm is still widely used for optimal global alignment, particularly when the quality of the global alignment is of the utmost importance.")
         st.markdown("##### check_for_wrong_exon_alignments function :")
         st.write(" This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene. The Needleman Wunsch algorithm randomly alignes fractions of non-identical exons since the optimization of the algorithm is to maximize matches (which makes sense with homologues but not with isoforms). This function discards such fractions of the alignment by rejecting exons shorter than the defined minimal length (in AA).")
+        st.write("\n")
         st.markdown("#### Contact:")
         st.write("\n")
         st.write("Please get in touch for suggestions or to report bugs :)")
-        st.text('''Jacob Hanimann\n E-mail: GianJacob.Hanimann@usz.ch\n Phone: +41765596015''')
+        st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
+        st.write('https://clinicalcompbio.org/')
         #st.text('LinkedIn: ')
         #st.markdown("#### Functions:")
         #code = '''
