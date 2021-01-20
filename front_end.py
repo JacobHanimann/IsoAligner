@@ -21,6 +21,17 @@ def get_binary_file_downloader_html(bin_file, file_label='File', name_button='do
     href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">{name_button} {file_label}</a>'
     return href
 
+
+def get_table_download_link(df,name_of_file = "AA_isoforms_mapped_positions.tsv" ):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+    href = f'<a href="data:file/csv;base64,{b64}">'+name_of_file+'</a>'
+    return href
+
 #@st.cache
 #def import_list_of_gene_objects(file):
 #    with open(file,"rb") as fp:  # Pickling
@@ -96,10 +107,9 @@ def main():
     st.title(" Amino Acid Isoform Aligner")
 
     #Sidebar
-    activity = ['Alignment Tool', 'Download Pre-computed Data', 'About & Source Code']
-    st.sidebar.markdown("### 📍Navigation")
+    activity = ['Alignment Tool', 'Download Pre-Computed Data', 'About & Source Code']
+    st.sidebar.markdown("## 📍Navigation")
     choice = st.sidebar.radio("", activity)
-    st.sidebar.write("\n")
     st.sidebar.write("\n")
 
     #Alignment tool section
@@ -201,17 +211,23 @@ def main():
                 st.write("\n")
                 st.write("\n")
                 st.markdown("##### Table of correctly mapped AA positions:")
-                generated_table = write_results_to_tsv_file(maped_tuple,'/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv')
+                generated_table = create_pandas_dataframe_raw_aa_sequence(maped_tuple)
+                st.write(generated_table)
                 st.write("\n")
-                st.write(generated_table[1])
                 st.write("\n")
                 st.markdown("##### Download Dataframe:")
-                st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv', '','AA_Isoforms_Mapped_Positions.tsv'), unsafe_allow_html=True)
+                st.markdown(get_table_download_link(generated_table), unsafe_allow_html=True)
                 st.write("--------------------------")
 
+        #Clear all button
+        placehold, clear_all = st.beta_columns([4.5, 1])
+        with clear_all:
+           reset= st.button('Clear All')
+        if reset:
+            ss.run_id +=1
 
-    elif choice == 'Download Pre-computed Data':
-        st.header("Pre-computed mapped isoforms")
+    elif choice == 'Download Pre-Computed Data':
+        st.header("Pre-Computed mapped isoforms")
         st.write("--------------------------")
         st.markdown("#### Refseq (4GB):")
         st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv','', 'Refseq_Isoforms.tsv'), unsafe_allow_html=True)
@@ -250,11 +266,6 @@ def main():
         #'''
         #st.code(code, language='python')
 
-    placehold, clear_all = st.beta_columns([4.5, 1])
-    with clear_all:
-       reset= st.button('Clear All')
-    if reset:
-        ss.run_id +=1
 
 #Execution
 

@@ -372,18 +372,24 @@ def sidebar_pop_up_parameters():
 
 
 
-def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign for different inputs
-    'to be written'
-    print('Writing results to csv file...')
-    with open(file_location, 'w') as output_file:
-        tsv_writer = csv.writer(output_file, delimiter='\t')
-        tsv_writer.writerow(['AA','ReferencePos','IsoformPos'])
-        for indexiterator in range(0,len(mapped_tuple[1])):
-            tsv_writer.writerow([mapped_tuple[1][indexiterator],mapped_tuple[2][indexiterator],mapped_tuple[3][indexiterator]])
-    df = pd.read_csv(file_location, sep='\t')
-    return (file_location,df)
+#def write_results_to_tsv_file(mapped_tuple,file_location): #has to be redesign for different inputs
+#    'to be written'
+#    print('Writing results to csv file...')
+#    with open(file_location, 'w') as output_file:
+#        tsv_writer = csv.writer(output_file, delimiter='\t')
+#        tsv_writer.writerow(['AA','ReferencePos','IsoformPos'])
+#        for indexiterator in range(0,len(mapped_tuple[1])):
+#            tsv_writer.writerow([mapped_tuple[1][indexiterator],mapped_tuple[2][indexiterator],mapped_tuple[3][indexiterator]])
+#    df = pd.read_csv(file_location, sep='\t')
+#    return (file_location,df)
 
 
+
+def create_pandas_dataframe_raw_aa_sequence(mapped_tuple):
+    nested_list = [[mapped_tuple[1][indexiterator],mapped_tuple[2][indexiterator],mapped_tuple[3][indexiterator]] for indexiterator in range(0,len(mapped_tuple[1]))]
+    print(nested_list)
+    df = pd.DataFrame(nested_list, columns=('AA', 'sequence1', 'sequence2'))
+    return df
 
 
 #classes
