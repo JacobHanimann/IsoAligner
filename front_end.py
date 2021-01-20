@@ -235,8 +235,8 @@ def main():
         st.markdown("#### Contact:")
         st.write("\n")
         st.write("Please get in touch for suggestions or to report bugs :)")
-        st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015\nBioinformatics group: https://clinicalcompbio.org/ ''')
-        st.write('https://clinicalcompbio.org/')
+        st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
+        st.write('Bioinformatics group: https://clinicalcompbio.org/')
         #st.text('LinkedIn: ')
         #st.markdown("#### Functions:")
         #code = '''
