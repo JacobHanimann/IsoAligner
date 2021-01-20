@@ -110,7 +110,7 @@ def main():
 
         #fixed in put area
         st.markdown("#### Input")
-        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''')
+        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', st.write('hello'))
         input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
@@ -139,7 +139,7 @@ def main():
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
-            st.markdown(" ######  ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+            st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
             st.write('\n')
             st.text('\n')
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
