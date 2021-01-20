@@ -211,6 +211,7 @@ def main():
                 st.write("\n")
                 st.write("\n")
                 st.markdown("##### Table of correctly mapped AA positions:")
+                st.write("\n")
                 generated_table = create_pandas_dataframe_raw_aa_sequence(maped_tuple)
                 st.write(generated_table)
                 st.write("\n")

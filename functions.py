@@ -387,7 +387,6 @@ def sidebar_pop_up_parameters():
 
 def create_pandas_dataframe_raw_aa_sequence(mapped_tuple):
     nested_list = [[mapped_tuple[1][indexiterator],mapped_tuple[2][indexiterator],mapped_tuple[3][indexiterator]] for indexiterator in range(0,len(mapped_tuple[1]))]
-    print(nested_list)
     df = pd.DataFrame(nested_list, columns=('AA', 'sequence1', 'sequence2'))
     return df
 
