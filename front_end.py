@@ -234,10 +234,7 @@ def main():
         st.markdown("#### Contact:")
         st.write("\n")
         st.write("Please get in touch for suggestions or to report bugs :)")
-        st.text('''Jacob Hanimann
-        Hello world \n its a nice new day''')
-        st.text('E-mail: GianJacob.Hanimann@usz.ch')
-        st.text('Phone: +41765596015')
+        st.text('''Jacob Hanimann\n E-mail: GianJacob.Hanimann@usz.ch\n Phone: +41765596015''')
         #st.text('LinkedIn: ')
         #st.markdown("#### Functions:")
         #code = '''
