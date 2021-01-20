@@ -98,7 +98,7 @@ def main():
     #Sidebar
     activity = ['Alignment Tool', 'Download Pre-computed Data', 'About & Source Code']
     st.sidebar.markdown("### 📍Navigation")
-    choice = st.sidebar.selectbox("", activity)
+    choice = st.sidebar.radio("", activity)
     st.sidebar.write("\n")
     st.sidebar.write("\n")
 
