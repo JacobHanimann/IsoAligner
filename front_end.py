@@ -109,7 +109,7 @@ def main():
         st.sidebar.write("\n")
 
         #fixed in put area
-        title, example_button = st.beta_columns([1,4])
+        title, example_button = st.beta_columns([1,6])
         with title:
             st.markdown("#### Input")
         with example_button:
