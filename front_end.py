@@ -105,6 +105,8 @@ def main():
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️ Organism")
         st.sidebar.selectbox('', ['Homo Sapiens 🧍🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
+        st.sidebar.write("\n")
+        st.sidebar.write("\n")
 
         #fixed in put area
         st.markdown("#### Input")
