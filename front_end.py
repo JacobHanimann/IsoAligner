@@ -97,22 +97,21 @@ def main():
 
     #Sidebar
     activity = ['Mapping Tool', 'Download Pre-computed Data', 'About & Source Code']
-    st.sidebar.markdown("### 📍 Navigation")
+    st.sidebar.markdown("### 📍Navigation")
     choice = st.sidebar.selectbox("", activity)
     st.sidebar.write("\n")
     st.sidebar.write("\n")
 
     #Mapping tool section
     if choice == 'Mapping Tool':
-        image1 = Image.open('Isoform_picture.png')
-        st.image(image1,
-                 use_column_width=True)
+        #image1 = Image.open('Isoform_picture.png')
+        #st.image(image1,use_column_width=True)
         st.subheader("A simple tool to map amino acid positions across isoforms")
         st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
 
         st.write("--------------------------")
-        st.sidebar.markdown("### 🧬️ Organism")
+        st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('', ['Homo Sapiens 🧍🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
         st.sidebar.write("\n")
         st.sidebar.write("\n")
@@ -251,7 +250,9 @@ def main():
         #'''
         #st.code(code, language='python')
 
-
+    placehold, clear_all = st.beta_columns([4.1, 1])
+    with clear_all:
+        st.button('Clear All')
 
 #Execution
 
