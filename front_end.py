@@ -82,6 +82,12 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 #title = st.text_input('Movie title', 'Life of Brian')
 #st.write('The current movie title is', title)
 
+
+from PIL import Image
+image = Image.open('sunrise.jpg')
+st.image(image, caption='Sunrise by the mountains',
+         use_column_width=True)
+
 #Streamlit website
 
 def main():
@@ -109,7 +115,7 @@ def main():
         st.sidebar.write("\n")
 
         #fixed in put area
-        title, example_button = st.beta_columns([4,1])
+        title, example_button = st.beta_columns([4.1,1])
         with title:
             st.markdown("#### Input")
         with example_button:
