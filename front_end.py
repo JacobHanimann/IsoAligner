@@ -91,19 +91,19 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 #Streamlit website
 
 def main():
-    """ Isoform Mapping Tool """
+    """ Isoform Alignment Tool """
     #Title
     st.title(" Amino Acid Isoform Aligner")
 
     #Sidebar
-    activity = ['Mapping Tool', 'Download Pre-computed Data', 'About & Source Code']
+    activity = ['Alignment Tool', 'Download Pre-computed Data', 'About & Source Code']
     st.sidebar.markdown("### 📍Navigation")
     choice = st.sidebar.selectbox("", activity)
     st.sidebar.write("\n")
     st.sidebar.write("\n")
 
-    #Mapping tool section
-    if choice == 'Mapping Tool':
+    #Alignment tool section
+    if choice == 'Alignment Tool':
         #image1 = Image.open('Isoform_picture.png')
         #st.image(image1,use_column_width=True)
         st.subheader("A simple tool to map amino acid positions across isoforms")
