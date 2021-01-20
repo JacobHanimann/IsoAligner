@@ -103,8 +103,8 @@ def main():
                  " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
 
         st.write("--------------------------")
-
-        st.sidebar.selectbox("Choose organism: ", ['Homo Sapiens 🙋🏽‍️', 'D. melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
+        st.sidebar.markdown("### Organism 🧬️")
+        st.sidebar.selectbox('', ['Homo Sapiens 🙋🏽‍🧬️', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
 
         #fixed in put area
         st.markdown("#### Input")
