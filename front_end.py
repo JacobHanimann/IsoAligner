@@ -83,10 +83,10 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 #st.write('The current movie title is', title)
 
 
-from PIL import Image
-image = Image.open('sunrise.jpg')
-st.image(image, caption='Sunrise by the mountains',
-         use_column_width=True)
+
+#image = Image.open('sunrise.jpg')
+#st.image(image, caption='Sunrise by the mountains',
+         #use_column_width=True)
 
 #Streamlit website
 
@@ -221,6 +221,9 @@ def main():
     elif choice == 'About & Source Code':
         st.header("Details")
         st.write("--------------------------")
+        image = Image.open('Isoform_mapping_problem.png')
+        st.image(image, caption='Sunrise by the mountains',
+        use_column_width=True)
         st.markdown("#### About this code:")
         st.write("\n")
         st.markdown("##### Needleman-Wunsch Algorithm:")
