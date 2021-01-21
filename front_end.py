@@ -12,31 +12,8 @@ ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False,
 #move classes from database to functions script
 
 
-#Functions for the front-end:
-
-def get_binary_file_downloader_html(bin_file, file_label='File', name_button='download'):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    bin_str = base64.b64encode(data).decode()
-    href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">{name_button} {file_label}</a>'
-    return href
 
 
-def get_table_download_link(df,name_of_file = "AA_isoforms_mapped_positions.tsv" ):
-    """Generates a link allowing the data in a given panda dataframe to be downloaded
-    in:  dataframe
-    out: href string
-    """
-    csv = df.to_csv(index=False, sep="\t")
-    b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
-    href = f'<a href="data:file/csv;base64,{b64}">'+name_of_file+'</a>'
-    return href
-
-#@st.cache
-#def import_list_of_gene_objects(file):
-#    with open(file,"rb") as fp:  # Pickling
-#        list_of_gene_objects = pickle.load(fp)
-#    return list_of_gene_objects
 
 
 @st.cache(allow_output_mutation=True)
@@ -108,9 +85,10 @@ def main():
 
     #Sidebar
     activity = ['Alignment Tool', 'Download Pre-Computed Data', 'About & Source Code']
-    st.sidebar.markdown("## 📍Navigation")
-    choice = st.sidebar.radio("", activity)
+    st.sidebar.markdown("## Navigation")
+    choice = st.sidebar.radio("Go to", activity)
     st.sidebar.write("\n")
+
 
     #Alignment tool section
     if choice == 'Alignment Tool':
@@ -122,9 +100,8 @@ def main():
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
-        st.sidebar.selectbox('', ['Homo Sapiens 🧍🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
-        st.sidebar.write("\n")
-        st.sidebar.write("\n")
+        st.sidebar.selectbox('Choose species', ['Homo Sapiens 🧍🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
+        st.sidebar.write("--------------------------")
 
         #fixed in put area
         title, example_button = st.beta_columns([4.1,1])
@@ -204,20 +181,29 @@ def main():
                 maped_tuple = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1, input2, match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
                 #st.text(Alignment_preview)
                 st.write("\n")
-                st.markdown("##### Alignment:")
+                st.markdown("##### Alignment")
                 st.write("\n")
                 st.text(visualise_alignment_dynamically(maped_tuple[5],maped_tuple[6],maped_tuple[4]))
                 st.markdown(" ###### ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
                 st.write("\n")
                 st.write("\n")
-                st.markdown("##### Table of correctly mapped AA positions:")
-                st.write("\n")
                 generated_table = create_pandas_dataframe_raw_aa_sequence(maped_tuple)
-                st.write(generated_table)
+                table, whitespace, download = st.beta_columns([1,0.2,1])
                 st.write("\n")
-                st.write("\n")
-                st.markdown("##### Download Dataframe:")
-                st.markdown(get_table_download_link(generated_table), unsafe_allow_html=True)
+                with download:
+                    st.write("\n")
+                    st.write("\n")
+                    st.markdown("#### 📁 Download")
+                    sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
+                    if sep_choice == "tsv":
+                        sep = '\t'
+                    else:
+                        sep = ','
+                    st.markdown(get_table_download_link(generated_table, 'dataframe.' + sep_choice, sep),unsafe_allow_html=True)
+                with table:
+                    st.markdown("##### Correctly mapped AA positions")
+                    st.write("\n")
+                    st.write(generated_table)
                 st.write("--------------------------")
 
         #Clear all button
