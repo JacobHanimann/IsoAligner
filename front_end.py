@@ -100,7 +100,7 @@ def main():
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
-        st.sidebar.selectbox('Choose species', ['Homo Sapiens 🧍🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
+        st.sidebar.selectbox('Select species', ['Homo Sapiens 🧍🏽‍', 'D. Melanogaster 🪰', 'Mouse 🐁', 'Frog 🐸', 'Mermaid 🧜🏼‍'])
         st.sidebar.write("--------------------------")
 
         #fixed in put area

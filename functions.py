@@ -55,7 +55,7 @@ def select_canonical_sequence(isoforms):
 
 #Back-end code (biological aspects)
 
-def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list,sequence1='sequence1', sequence2='sequence2'):
+def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list,percentage_reference,percentage_isoform,sequence1='sequence1', sequence2='sequence2',):
     '''Function that returns an alignment of two sequences according to the AA_match_evalutation list generated from
      the check_for_wrong_exon_alignments() function in a visually pleasing fashion
      Input: 3 lists
@@ -63,8 +63,8 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     correct_match_character = "|"
     wrong_match_character = "x"
     alignment_character_list = [" " if score =="gap" else correct_match_character if score=="correct" else wrong_match_character for score in AA_match_evalutation_list]
-    whitespace = len(sequence1)*" "+"  "
-    output_alignment_string= sequence1+": "+''.join(reference_sequence_list)+'\n'+whitespace+''.join(alignment_character_list)+"\n"+sequence2+": "+''.join(isoform_sequence_list)
+    whitespace = len(sequence1)*" "+"         "
+    output_alignment_string= sequence1+":("+str(round(100*percentage_reference,1))+'%) '+''.join(reference_sequence_list)+'\n'+whitespace+''.join(alignment_character_list)+"\n"+sequence2+":("+str(round(100*percentage_isoform,1))+'%) '+''.join(isoform_sequence_list)
     return output_alignment_string
 
 
@@ -79,27 +79,28 @@ def display_alignment_for_one_gene_from_database(reference_transcript,list_of_ge
         if getattr(transcript, ID_type) == reference_transcript:
             reference_protein_sequence = getattr(transcript, "protein_sequence")
             break
+    transcript_number = 1
     for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
         if getattr(transcript, ID_type) == reference_transcript:
             continue
-        #st.text('Alignment')
-        #st.text(reference_protein_sequence)
-        #st.text(transcript.protein_sequence)
         isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)[4:7]
-        matches, positions_total_reference, percentage = calculate_percentage_of_mapped_positions(isoform_pattern_check,reference_protein_sequence)
-        st.write('mapped positions: '+str(round(100*percentage,2))+"%")
-        st.text(visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,sequence1 =reference_transcript,sequence2= transcript.ENST))
+        percentage_reference, percentage_isoform = calculate_percentage_of_mapped_positions(isoform_pattern_check,reference_protein_sequence,transcript.protein_sequence)
+        st.write('Alignment '+str(transcript_number))
+        st.text(visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform,sequence1 =reference_transcript,sequence2= transcript.ENST))
         st.text('\n')
+        transcript_number +=1
 
-def calculate_percentage_of_mapped_positions(isoform_check, reference_protein_sequence):
+def calculate_percentage_of_mapped_positions(isoform_check, reference_protein_sequence,isoform_protein_sequence):
     '''
     :return: percentage of mapped positions
     '''
     positions_total_reference = len(reference_protein_sequence)
+    positions_total_isoform = len(isoform_protein_sequence)
     counter_dict = Counter(isoform_check)
     matches= counter_dict['correct']
-    percentage = matches / positions_total_reference
-    return matches,positions_total_reference, percentage
+    percentage_reference = matches / positions_total_reference
+    percentage_isoform = matches / positions_total_isoform
+    return percentage_reference,percentage_isoform
 
 
 
