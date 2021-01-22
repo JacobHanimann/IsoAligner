@@ -415,6 +415,7 @@ def create_pandas_dataframe_raw_aa_sequence(needleman_mapped):
     df = pd.DataFrame(nested_list, columns=(['AA', 'sequence1', 'sequence2']))
     return df
 
+
 def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, index_of_gene,chosen_columns, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type="ENSP"):
     '''
     function to create a pandas dataframe for only one gene object
@@ -449,7 +450,6 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
                 column_values.append(getattr(transcript,"ENSG"))
                 column_names.append("ENSG")
 
-
             column_names = column_names + ['AA','ReferencePos', 'IsoformPos']
             return column_values, column_names
 
@@ -462,7 +462,6 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
     df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
 
     return df
-
 
 
 #classes
