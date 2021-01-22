@@ -148,9 +148,24 @@ def main():
                 'Select columns',
                 ['Gene name', 'Ensembl Gene ID','Ensembl Transcript ID','Ensembl Protein ID','Refseq Gene ID','Refseq Transcript ID','Uniprot Accession ID','Uniprot Isoform ID', 'Uniparc ID','Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version','HGNC gene symbol'],
                 ['Gene name', 'Ensembl Protein ID'])
-            df = create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            generated_table = create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.text('\n')
-            st.write(df)
+            st.write(generated_table)
+            st.text('\n')
+            download, format = st.beta_columns([0.19,1])
+            with download:
+                st.markdown("#### 📁 Download")
+                sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
+                if sep_choice == "tsv":
+                    sep = '\t'
+                else:
+                    sep = ','
+            with format:
+                st.text('\n')
+                st.text('\n')
+                st.text('\n')
+                st.text('\n')
+                st.markdown(get_table_download_link(generated_table, 'DataframeMappedIsoforms.' + sep_choice, sep),unsafe_allow_html=True)
 
 
         #case of using multiple ID's
