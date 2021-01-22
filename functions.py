@@ -430,8 +430,9 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
         if getattr(transcript, ID_type) == chosen_reference:
             reference_protein_sequence = getattr(transcript, "protein_sequence")
             break
-    for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
+    for index,transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
         if getattr(transcript, ID_type) == chosen_reference:
+            index_reference_transcript = index
             continue
         aminoacids, reference_position_list, isoform_positions_list = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
 
@@ -442,13 +443,29 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
             '''
             column_values = []
             column_names= []
+
+            #most column names missing
+
             if "Gene name" in chosen_columns:
                 column_values.append(list_of_gene_objects[index_of_gene].ensembl_gene_symbol)
                 column_names.append("Gene_name")
 
             if "Ensembl Gene ID" in chosen_columns:
-                column_values.append(getattr(transcript,"ENSG"))
+                column_values.append(transcript.ENSG)
                 column_names.append("ENSG")
+
+            if "Ensembl Transcript ID" in chosen_columns:
+                column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].ENST)
+                column_names.append("Ref_transcript_ID")
+                column_values.append(transcript.ENST)
+                column_names.append("Iso_transcript_ID")
+
+            if "Ensembl Protein ID" in chosen_columns:
+                column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                         index_reference_transcript].ENSP)
+                column_names.append("Ref_protein_ID")
+                column_values.append(transcript.ENSP)
+                column_names.append("Iso_protein_ID")
 
             column_names = column_names + ['AA','ReferencePos', 'IsoformPos']
             return column_values, column_names
