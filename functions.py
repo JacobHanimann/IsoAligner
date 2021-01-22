@@ -68,7 +68,7 @@ def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_lis
     return output_alignment_string
 
 
-def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENST'):
+def display_alignment_for_one_gene_from_database(reference_transcript,list_of_gene_objects,index_of_gene,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,ID_type='ENSP'):
     '''
     :param reference_transcript:
     :param list_of_gene_objects:
@@ -230,7 +230,7 @@ def generate_dictionary_of_canonical_IDs_from_user_input_IDs(dict_element_indexe
     '''
 
 
-def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,index_of_gene,ID="ENST"):
+def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,index_of_gene,ID="ENSP"):
     '''
     function to get IDs of the gene object to be displayed in a selectbox to choose a reference
     :param  list_of_gene_objects, index_of_gene, optional:ID_type:
@@ -412,8 +412,57 @@ def sidebar_pop_up_parameters():
 
 def create_pandas_dataframe_raw_aa_sequence(needleman_mapped):
     nested_list = [[needleman_mapped[1][indexiterator],needleman_mapped[2][indexiterator],needleman_mapped[3][indexiterator]] for indexiterator in range(0,len(needleman_mapped[1]))]
-    df = pd.DataFrame(nested_list, columns=('AA', 'sequence1', 'sequence2'))
+    df = pd.DataFrame(nested_list, columns=(['AA', 'sequence1', 'sequence2']))
     return df
+
+def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, index_of_gene,chosen_columns, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type="ENSP"):
+    '''
+    function to create a pandas dataframe for only one gene object
+    :param chosen_reference:
+    :param list_of_gene_objects:
+    :param index_of_gene:
+    :param chosen_columns:
+    :return: pandas dataframe
+    '''
+    list_of_all_alignments = []
+    for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
+        if getattr(transcript, ID_type) == chosen_reference:
+            reference_protein_sequence = getattr(transcript, "protein_sequence")
+            break
+    for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
+        if getattr(transcript, ID_type) == chosen_reference:
+            continue
+        aminoacids, reference_position_list, isoform_positions_list = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
+
+        def get_selected_columns_attributes_and_column_names(chosen_columns):
+            '''
+            function to get the column values selected for each row
+            :param chosen_columns: from multiselectbox
+            '''
+            column_values = []
+            column_names= []
+            if "Gene name" in chosen_columns:
+                column_values.append(list_of_gene_objects[index_of_gene].ensembl_gene_symbol)
+                column_names.append("Gene_name")
+
+            if "Ensembl Gene ID" in chosen_columns:
+                column_values.append(getattr(transcript,"ENSG"))
+                column_names.append("ENSG")
+
+
+            column_names = column_names + ['AA','ReferencePos', 'IsoformPos']
+            return column_values, column_names
+
+        for indexiterator in range(0, len(aminoacids)):
+            column_values,column_names = get_selected_columns_attributes_and_column_names(chosen_columns)
+            positions = [aminoacids[indexiterator], reference_position_list[indexiterator], isoform_positions_list[indexiterator]]
+            nested_list_alignment=column_values+positions
+            list_of_all_alignments.append(nested_list_alignment)
+
+    df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
+
+    return df
+
 
 
 #classes

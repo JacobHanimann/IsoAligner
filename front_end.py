@@ -139,14 +139,18 @@ def main():
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
             st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+            st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
             st.text('\n')
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.markdown("#### Table")
-            options = st.multiselect(
+            chosen_columns = st.multiselect(
                 'Choose columns',
-                ['Gene name', 'Transcript ID', 'AA', 'Ref Position', 'Isoform Position','Refseq ID', 'Uniprot_ID'],
-                ['Gene name', 'Transcript ID', 'AA', 'Ref Position'])
+                ['Gene name', 'Ensembl Gene ID', 'AA', 'Ref Position', 'Isoform Position','Refseq ID', 'Uniprot_ID'],
+                ['Gene name', 'Ensembl Gene ID', 'AA', 'Ref Position'])
+            df = create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            st.text('\n')
+            st.write(df)
 
 
         #case of using multiple ID's
