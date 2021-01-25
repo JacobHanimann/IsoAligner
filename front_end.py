@@ -108,7 +108,7 @@ def main():
         with title:
             st.markdown("#### Input")
         with example_button:
-            st.button('Load Example')
+            st.button('Show Example')
         input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''',key=ss.run_id)
         input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
         file_upload, search_button = st.beta_columns([2.4,1])
