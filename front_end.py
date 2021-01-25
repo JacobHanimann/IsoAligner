@@ -170,10 +170,18 @@ def main():
 
         #case of using multiple ID's
         elif ss.searched_clicked and len(input1_IDs) > 1:
-            st.write('multiple IDs')
             using_IDs = True
-            st.write(input1_IDs)
-            st.write(list(input1_IDs.values()))
+            st.markdown("### Alignments")
+            st.text('\n')
+            #st.write(input1_IDs)
+            #st.write(list(input1_IDs.values()))
+            genes, reference = st.beta_columns([1,1.25])
+            with genes:
+                chosen_gene = st.selectbox('Select Gene',[])
+            with reference:
+                chosen_transcript = st.selectbox('Select reference isoform', [])
+
+
         #case user types in aminoacid and clicks on search database
         elif ss.searched_clicked and extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
             st.warning("Looks like an Amino Acid sequence! Paste in your second sequence below and click 'Align' ")
