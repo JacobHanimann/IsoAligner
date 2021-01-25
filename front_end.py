@@ -173,7 +173,7 @@ def main():
             st.write('multiple IDs')
             using_IDs = True
             st.write(input1_IDs)
-            st.write(list(input1_IDs.values())[0])
+            st.write(list(input1_IDs.values()))
         #case user types in aminoacid and clicks on search database
         elif ss.searched_clicked and extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
             st.warning("Looks like an Amino Acid sequence! Paste in your second sequence below and click 'Align' ")

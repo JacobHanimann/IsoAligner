@@ -110,10 +110,11 @@ def split_elements_from_user_input_string(string):
     :param string:
     :return: list of elements
     '''
+    string = re.sub('\s','',string)
     if "\n" in string:
         list_of_elements = list(string.split('\n'))
     elif ","  in string:
-        list_of_elements = list(string.split(', '))
+        list_of_elements = list(string.split(','))
     else:
         list_of_elements = [string]
 
