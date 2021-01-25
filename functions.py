@@ -176,6 +176,16 @@ def identify_IDs_from_user_text_input(string):
 
     return dict_of_IDs
 
+
+def is_ID_in_parent_class(ID):
+    #st.write(ID)
+    parent_class = True
+    if ID in ['ENSG_version', 'ENST', 'ENST_version', 'ENSP', 'ENSP_version', 'refseq_rna', 'refseq_protein',
+              'uniprot_accession', 'uniprot_uniparc', 'uniprot_isoform']:  # list must be completed
+        parent_class = False
+    return parent_class
+
+
 def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs):
     '''
     Function that searches trough database with gettatribute()
@@ -185,9 +195,7 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
     dict_element_indexes = {}
     for element,ID in dict_of_IDs.items():
         found = False
-        parent_class = True
-        if ID in ['ENSG_version','ENST','ENST_version','ENSP','ENSP_version', 'refseq_rna', 'refseq_protein','uniprot_accession','uniprot_uniparc','uniprot_isoform']: #list must be completed
-            parent_class = False
+        parent_class = is_ID_in_parent_class(ID)
         for index,gene in enumerate(list_of_gene_objects):
             if found:
                 break
@@ -222,22 +230,56 @@ def search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
             dict_element_indexes[element] = 'not found'
     return dict_element_indexes
 
-def generate_dictionary_of_canonical_IDs_from_user_input_IDs(dict_element_indexes,list_of_gene_objects):
+
+
+def generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs,dict_element_indexes,list_of_gene_objects):
     '''
-    function that returns a dictionary in which each ID has the canonical ID as a value. If user specified ID, then key=value, if not, the canonical sequence must be extracted from the gene objecc
+    function that returns a dictionary in which each ID has the canonical ID as a value. If user specified ID, then key=value, if not, the canonical sequence must be extracted from the gene object
     :param ID_dictionary:
     :param list_of_gene_objects:
     :return: dictionary of canonical ID's used as a default reference
     '''
 
+    def pick_index_of_canonical_sequence(index_of_gene_object):
+        '''
+        :param list_of_gene_objects:
+        :return:
+        '''
+        index_of_canonical_default = 0
+        return index_of_canonical_default
 
-def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,index_of_gene,ID="ENSP"):
+    def find_index_of_reference_transcript(element):
+        for index_sequence, protein_object in enumerate(list_of_gene_objects[index].protein_sequence_isoform_collection):
+            if getattr(protein_object,dict_of_IDs[element]) == element:
+                index_of_reference_sequence = index_sequence
+                break
+        return index_of_reference_sequence
+
+    for element, index in dict_element_indexes.items():
+        #st.write(element)
+        if is_ID_in_parent_class(dict_of_IDs[element]):
+            dict_element_indexes[element] = dict({index: find_index_of_reference_transcript(element)})
+        else:
+            dict_element_indexes[element] = dict({index:pick_index_of_canonical_sequence(index)})
+
+    return dict_element_indexes
+
+
+
+
+def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,dict_element_indexes,chosen_gene,ID="ENSP"):
     '''
-    function to get IDs of the gene object to be displayed in a selectbox to choose a reference
     :param  list_of_gene_objects, index_of_gene, optional:ID_type:
     :return: list
     '''
-    list_of_transcripts=[getattr(sequence,ID) for sequence in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection]
+    if len(dict_element_indexes) >1:
+        chosen_gene_cleaned = re.split(' \(',chosen_gene)[0]
+    else:
+        chosen_gene_cleaned = chosen_gene
+    index_of_gene_object = list(dict_element_indexes[chosen_gene_cleaned].keys())[0]
+    index_of_canonical_transcript = dict_element_indexes[chosen_gene_cleaned][index_of_gene_object]
+    list_of_transcripts= [getattr(sequence,ID) for sequence in list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection if getattr(sequence,ID) != getattr(list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[index_of_canonical_transcript],ID)]
+    list_of_transcripts = [getattr(list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[index_of_canonical_transcript],ID)] + list_of_transcripts
     return list_of_transcripts
 
 

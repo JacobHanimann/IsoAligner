@@ -110,7 +110,9 @@ def main():
         with example_button:
             st.button('Show Example')
         input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''',key=ss.run_id)
-        input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,identify_IDs_from_user_text_input(input1))
+        dict_of_IDs = identify_IDs_from_user_text_input(input1)
+        input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
+        nested_dict = generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,list_of_gene_objects)
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
             agree = st.checkbox("Click here to upload list of gene names or ID's")
@@ -134,7 +136,8 @@ def main():
             st.markdown("### Alignments")
             reference_select, placeholder = st.beta_columns([1,2.5])
             with reference_select:
-                chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,list(input1_IDs.values())[0]))
+                chosen_gene = list(input1_IDs.keys())[0]
+                chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
@@ -142,6 +145,7 @@ def main():
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
             st.text('\n')
+            st.write(input1_IDs.values())
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,list(input1_IDs.values())[0],match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.markdown("#### Table")
             chosen_columns = st.multiselect(
@@ -174,12 +178,15 @@ def main():
             st.markdown("### Alignments")
             st.text('\n')
             #st.write(input1_IDs)
+            #st.write(dict_of_IDs)
             #st.write(list(input1_IDs.values()))
+            #st.write('new dict')
+            #st.write(nested_dict)
             genes, reference = st.beta_columns([1,1.25])
             with genes:
-                chosen_gene = st.selectbox('Select Gene',[])
+                chosen_gene = st.selectbox('Select Gene',[element+' ('+str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection))+' Isoforms)' for element,index in input1_IDs.items()])
             with reference:
-                chosen_transcript = st.selectbox('Select reference isoform', [])
+                chosen_transcript = st.selectbox('Select reference isoform', fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
 
 
         #case user types in aminoacid and clicks on search database
