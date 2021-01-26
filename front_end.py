@@ -177,16 +177,22 @@ def main():
             using_IDs = True
             st.markdown("### Alignments")
             st.text('\n')
-            #st.write(input1_IDs)
-            #st.write(dict_of_IDs)
-            #st.write(list(input1_IDs.values()))
-            #st.write('new dict')
-            #st.write(nested_dict)
             genes, reference = st.beta_columns([1,1.25])
             with genes:
                 chosen_gene = st.selectbox('Select Gene',[element+' ('+str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection))+' Isoforms)' for element,index in input1_IDs.items()])
             with reference:
-                chosen_transcript = st.selectbox('Select reference isoform', fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
+                chosen_reference = st.selectbox('Select reference isoform', fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
+            ss.generate = True
+            st.text('\n')
+            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
+            st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+            st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
+            st.write('\n')
+            st.text('\n')
+            gene_index = list(nested_dict[re.split(' \(',chosen_gene)[0]])[0]
+            display_alignment_for_one_gene_from_database(chosen_reference, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+
+
 
 
         #case user types in aminoacid and clicks on search database
