@@ -459,7 +459,18 @@ def create_pandas_dataframe_raw_aa_sequence(needleman_mapped):
     return df
 
 
-def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, index_of_gene,chosen_columns, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type="ENSP"):
+def create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type="ENSP"):
+    list_of_alignments= []
+    for gene in nested_dict.items():
+        index_of_gene = list(gene[1].keys())[0]
+        index_of_reference_transcript = list(gene[1].values())[0]
+        list_of_dataframe, column_names = create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_of_gene,chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type=ID_type,one_ID=False)
+        list_of_alignments = list_of_alignments + list_of_dataframe
+
+    df = pd.DataFrame(list_of_alignments, columns=(column_names))
+    return df
+
+def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, index_of_gene,chosen_columns, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type="ENSP", one_ID=True):
     '''
     function to create a pandas dataframe for only one gene object
     :param chosen_reference:
@@ -469,15 +480,26 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
     :return: pandas dataframe
     '''
     list_of_all_alignments = []
-    for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
-        if getattr(transcript, ID_type) == chosen_reference:
-            reference_protein_sequence = getattr(transcript, "protein_sequence")
-            break
+    if one_ID: #chosen_reference is a transcript name
+        for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
+            if getattr(transcript, ID_type) == chosen_reference:
+                reference_protein_sequence = getattr(transcript, "protein_sequence")
+                break
+    else:
+        reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[chosen_reference].protein_sequence #chosen_reference is an index
+
     for index,transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
-        if getattr(transcript, ID_type) == chosen_reference:
-            index_reference_transcript = index
-            continue
+        if one_ID:
+            if getattr(transcript, ID_type) == chosen_reference:
+                index_reference_transcript = index
+                continue
+        else:
+            if index == chosen_reference:
+               index_reference_transcript = index
+               continue
+
         aminoacids, reference_position_list, isoform_positions_list = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
+
 
         def get_selected_columns_attributes_and_column_names(chosen_columns):
             '''
@@ -519,9 +541,11 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
             nested_list_alignment=column_values+positions
             list_of_all_alignments.append(nested_list_alignment)
 
-    df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
-
-    return df
+    if one_ID:
+        df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
+        return df
+    else:
+        return list_of_all_alignments,column_names
 
 
 #classes

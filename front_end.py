@@ -147,7 +147,7 @@ def main():
             st.write('\n')
             st.text('\n')
             display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-            st.markdown("#### Table")
+            st.markdown("#### Mapped Amino Acid Positions Table")
             chosen_columns = st.multiselect(
                 'Select columns',
                 ['Gene name', 'Ensembl Gene ID','Ensembl Transcript ID','Ensembl Protein ID','Refseq Gene ID','Refseq Transcript ID','Uniprot Accession ID','Uniprot Isoform ID', 'Uniparc ID','Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version','HGNC gene symbol'],
@@ -190,8 +190,13 @@ def main():
             st.write('\n')
             st.text('\n')
             gene_index = list(nested_dict[re.split(' \(',chosen_gene)[0]])[0]
+            st.write(nested_dict)
+            st.write(list(list(nested_dict.values())[0].keys())[0])
             display_alignment_for_one_gene_from_database(chosen_reference, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
-
+            st.markdown("#### Mapped Amino Acid Positions Table")
+            chosen_columns = st.multiselect('Select further columns',['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID', 'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version', 'HGNC gene symbol'],['Gene name', 'Ensembl Protein ID'])
+            df_all = create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+            st.write(df_all)
 
 
 
