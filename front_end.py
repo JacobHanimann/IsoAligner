@@ -37,7 +37,7 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 
 #Playground
 
-st.slider("Slide me!", 0, 100, key=ss.run_id)
+#st.slider("Slide me!", 0, 100, key=ss.run_id)
 #
 #st.write(ss.clicked)
 #
