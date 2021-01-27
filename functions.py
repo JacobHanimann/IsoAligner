@@ -464,8 +464,9 @@ def create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chose
     for gene in nested_dict.items():
         index_of_gene = list(gene[1].keys())[0]
         index_of_reference_transcript = list(gene[1].values())[0]
-        list_of_dataframe, column_names = create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_of_gene,chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type=ID_type,one_ID=False)
-        list_of_alignments = list_of_alignments + list_of_dataframe
+        if len(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection) >1: #check if there is even more than one isoform
+            list_of_dataframe, column_names = create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_of_gene,chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, ID_type=ID_type,one_ID=False)
+            list_of_alignments = list_of_alignments + list_of_dataframe
 
     df = pd.DataFrame(list_of_alignments, columns=(column_names))
     return df
@@ -479,6 +480,7 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
     :param chosen_columns:
     :return: pandas dataframe
     '''
+
     list_of_all_alignments = []
     if one_ID: #chosen_reference is a transcript name
         for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
