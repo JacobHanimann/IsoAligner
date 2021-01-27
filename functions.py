@@ -115,6 +115,8 @@ def split_elements_from_user_input_string(string):
         list_of_elements = list(string.split('\n'))
     elif ","  in string:
         list_of_elements = list(string.split(','))
+    elif "\t" in string:
+        list_of_elements = list(string.split('\t'))
     else:
         list_of_elements = [string]
 
@@ -255,6 +257,7 @@ def generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_ID
                 break
         return index_of_reference_sequence
 
+
     for element, index in dict_element_indexes.items():
         #st.write(element)
         if is_ID_in_parent_class(dict_of_IDs[element]):
@@ -265,6 +268,24 @@ def generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_ID
     return dict_element_indexes
 
 
+def show_which_elements_were_not_found(input1_IDs):
+    '''
+
+    :param input1_IDs:
+    :return: message which contains the elements which were not identified
+    '''
+
+def remove_dict_elements_with_no_gene_object_match(input1_IDs): # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
+    '''
+    :param input1_IDs:
+    :return: dictionary which the 'not found' elements were removed
+    '''
+    for element in dict_element_indexes.items():
+        st.write(element)
+        if element[1] =="not found":
+            st.write(dict_element_indexes[element[0]])
+            dict_element_indexes.pop(element[0])
+    return dict_element_indexes
 
 
 def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,dict_element_indexes,chosen_gene,ID="ENSP"):
