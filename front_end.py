@@ -4,15 +4,17 @@ from functions import * #import all functions from the functions.py file
 import pickle
 import sys
 import SessionState
+#from streamlit.ScriptRunner import RerunException
 
 #declare session state variables
-ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0)
+ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False)
 
 
 #move classes from database to functions script
 
 
-
+st.write('session state')
+st.write(ss.run_id)
 
 
 
@@ -34,10 +36,8 @@ list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
 
 
 #Playground
-#if st.button("Search"):
-#    ss.clicked = True
-#if st.button("Reset"):
-#    ss.clicked = False
+
+st.slider("Slide me!", 0, 100, key=ss.run_id)
 #
 #st.write(ss.clicked)
 #
@@ -108,11 +108,13 @@ def main():
         with title:
             st.markdown("#### Input")
         with example_button:
-            st.button('Show Example')
-        input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR''',key=ss.run_id)
-        dict_of_IDs = identify_IDs_from_user_text_input(input1)
-        input1_IDs =  search_through_database_with_known_ID_Type(list_of_gene_objects,dict_of_IDs)
-        nested_dict = generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,list_of_gene_objects)
+            if st.button('Show Example'):
+               ss.example = True
+               ss.searched_clicked = False
+        if ss.example:
+            input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR, KRAS''',key=ss.run_id)
+        else:
+            input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''',key=ss.run_id)
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
             agree = st.checkbox("Click here to upload list of gene names or ID's")
@@ -126,6 +128,11 @@ def main():
         #set default for displaying second text_area input for input2
         using_IDs= False
 
+        if search and ss.searched_clicked:
+            dict_of_IDs = identify_IDs_from_user_text_input(input1)
+            input1_IDs = search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
+            nested_dict = generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
+                                                                                            list_of_gene_objects)
         #check what user input is
 
         #case of using one ID's
@@ -190,8 +197,8 @@ def main():
             st.write('\n')
             st.text('\n')
             gene_index = list(nested_dict[re.split(' \(',chosen_gene)[0]])[0]
-            #st.write('indexes of gene objects:')
-            #st.write(nested_dict)
+            st.write('indexes of gene objects:')
+            st.write(nested_dict)
             display_alignment_for_one_gene_from_database(chosen_reference, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             st.markdown("#### Mapped Amino Acid Positions Table")
             chosen_columns = st.multiselect('Select further columns',['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID', 'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version', 'HGNC gene symbol'],['Gene name', 'Ensembl Protein ID'])
@@ -209,7 +216,7 @@ def main():
 
         #Input 2 Area
         if using_IDs== False:
-            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''')
+            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''', key=ss.run_id)
             align=st.button('Align')
             if align:
                 ss.align_clicked = True
@@ -257,9 +264,13 @@ def main():
         st.write("--------------------------")
         placehold, clear_all = st.beta_columns([4.5, 1])
         with clear_all:
-           reset= st.button('Clear All')
-        if reset:
-            ss.run_id +=1
+           if st.button('Clear All'):
+              ss.run_id +=1
+              ss.example= False
+              st.write('click')
+              st.write(ss.run_id)
+
+
 
     elif choice == 'Download Pre-Computed Data':
         st.header("Pre-Computed mapped isoforms")
