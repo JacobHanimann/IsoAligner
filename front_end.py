@@ -105,10 +105,12 @@ def main():
         title, example_button = st.beta_columns([4.1,1])
         with title:
             st.markdown("#### Input")
-        with example_button:
-            if st.button('Show Example'):
-               ss.example = True
-               ss.searched_clicked = False
+        if ss.searched_clicked ==False:
+            with example_button:
+                if st.button('Show Example'):
+                    ss.example = True
+                    ss.searched_clicked = False
+
         if ss.example:
             input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR, KRAS''',key=ss.run_id)
         else:
