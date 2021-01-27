@@ -4,14 +4,12 @@ from functions import * #import all functions from the functions.py file
 import pickle
 import sys
 import SessionState
-#from streamlit.ScriptRunner import RerunException
 
 #declare session state variables
-ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False)
+ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
 
 
 #move classes from database to functions script
-
 
 #st.write('session state')
 #st.write(ss.run_id)
@@ -265,10 +263,13 @@ def main():
         placehold, clear_all = st.beta_columns([4.5, 1])
         with clear_all:
            if st.button('Clear All'):
+              ss.clear_button = True
               ss.run_id +=1
               ss.example= False
               st.write('click')
               st.write(ss.run_id)
+              ss.searched_clicked= False
+              raise st.script_runner.RerunException()
 
 
 
