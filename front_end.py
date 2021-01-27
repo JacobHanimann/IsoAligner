@@ -13,8 +13,8 @@ ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False,
 #move classes from database to functions script
 
 
-st.write('session state')
-st.write(ss.run_id)
+#st.write('session state')
+#st.write(ss.run_id)
 
 
 
