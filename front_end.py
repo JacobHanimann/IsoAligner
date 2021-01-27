@@ -133,7 +133,7 @@ def main():
             input1_IDs = search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
             nested_dict = generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
                                                                                             list_of_gene_objects)
-            nested_dict = remove_dict_elements_with_no_gene_object_match(nested_dict)
+            #nested_dict = remove_dict_elements_with_no_gene_object_match(nested_dict)
         #check what user input is
 
         #case of using one ID's
