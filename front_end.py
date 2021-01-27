@@ -112,7 +112,7 @@ def main():
                     ss.searched_clicked = False
 
         if ss.example:
-            input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR, KRAS''',key=ss.run_id)
+            input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR, KRAS, Q9Y6I3, FUCA2, CD9, ENSG00000074410, FAM168A, ENSP00000075430.7''',key=ss.run_id)
         else:
             input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''',key=ss.run_id)
         file_upload, search_button = st.beta_columns([2.4,1])
@@ -128,7 +128,7 @@ def main():
         #set default for displaying second text_area input for input2
         using_IDs= False
 
-        if search and ss.searched_clicked:
+        if ss.searched_clicked:
             dict_of_IDs = identify_IDs_from_user_text_input(input1)
             input1_IDs = search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
             nested_dict = generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
@@ -204,6 +204,22 @@ def main():
             chosen_columns = st.multiselect('Select further columns',['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID', 'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version', 'HGNC gene symbol'],['Gene name', 'Ensembl Protein ID'])
             df_all = create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             st.write(df_all)
+            st.text('\n')
+            download, format = st.beta_columns([0.19, 1])
+            with download:
+                st.markdown("#### 📁 Download")
+                sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
+                if sep_choice == "tsv":
+                    sep = '\t'
+                else:
+                    sep = ','
+            with format:
+                st.text('\n')
+                st.text('\n')
+                st.text('\n')
+                st.text('\n')
+                st.markdown(get_table_download_link(df_all, 'DataframeMappedIsoforms.' + sep_choice, sep),
+                            unsafe_allow_html=True)
 
 
         #case user types in aminoacid and clicks on search database
@@ -271,7 +287,7 @@ def main():
               st.write('click')
               st.write(ss.run_id)
               ss.searched_clicked= False
-              raise st.script_runner.RerunException()
+              #raise st.script_runner.RerunException()
 
 
 
