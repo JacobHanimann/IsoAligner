@@ -32,11 +32,11 @@ class Table_Generation:
         if one_ID:  # chosen_reference is a transcript name
             for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
                 if getattr(transcript, ID_type) == chosen_reference:
-                    reference_protein_sequence = getattr(transcript, "Protein_sequence")
+                    reference_protein_sequence = getattr(transcript, "Protein_isoform")
                     break
         else:
             reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
-                chosen_reference].Protein_sequence  # chosen_reference is an index
+                chosen_reference].Protein_isoform  # chosen_reference is an index
 
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if one_ID:
@@ -49,7 +49,7 @@ class Table_Generation:
                     continue
 
             aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
-                reference_protein_sequence, transcript.Protein_sequence, match, mismatch, open_gap_penalty,
+                reference_protein_sequence, transcript.Protein_isoform, match, mismatch, open_gap_penalty,
                 gap_extension_penalty, exon_length_AA)[1:4]
 
             def get_selected_columns_attributes_and_column_names(chosen_columns):

@@ -1,6 +1,7 @@
+import streamlit as st
 import SessionState
 from Gene import *
-from Protein_sequence import *
+from Protein_isoform import *
 from Streamlit_community import *
 from Input_flow import *
 from Streamlit_Pop_ups import *
@@ -69,9 +70,9 @@ def main():
         using_IDs= False
 
         if ss.searched_clicked:
-            dict_of_IDs = identify_IDs_from_user_text_input(input1)
-            input1_IDs = search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-            nested_dict = generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
+            dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
+            input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
+            nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
                                                                                             list_of_gene_objects)
             #nested_dict = remove_dict_elements_with_no_gene_object_match(nested_dict)
         #check what user input is
@@ -86,21 +87,21 @@ def main():
             with reference_select:
                 chosen_gene = list(input1_IDs.keys())[0]
                 index_gene_object = list(list(input1_IDs.values())[0].keys())[0]
-                chosen_reference = st.selectbox('Choose your reference transcript: ',fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
+                chosen_reference = st.selectbox('Choose your reference transcript: ',Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
             ss.generate = True
             st.text('\n')
-            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
+            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()
             st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
             st.text('\n')
-            display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            Visualise_Alignment.display_alignment_for_one_gene_from_database(chosen_reference,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.markdown("#### Mapped Amino Acid Positions Table")
             chosen_columns = st.multiselect(
                 'Select columns',
                 ['Gene name', 'Ensembl Gene ID','Ensembl Transcript ID','Ensembl Protein ID','Refseq Gene ID','Refseq Transcript ID','Uniprot Accession ID','Uniprot Isoform ID', 'Uniparc ID','Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version','HGNC gene symbol'],
                 ['Gene name', 'Ensembl Protein ID'])
-            generated_table = create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            generated_table = Table_Generation.create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.text('\n')
             st.write(generated_table)
             st.text('\n')
@@ -117,7 +118,7 @@ def main():
                 st.text('\n')
                 st.text('\n')
                 st.text('\n')
-                st.markdown(get_table_download_link(generated_table, 'DataframeMappedIsoforms.' + sep_choice, sep),unsafe_allow_html=True)
+                st.markdown(Streamlit_community.get_table_download_link(generated_table, 'DataframeMappedIsoforms.' + sep_choice, sep),unsafe_allow_html=True)
 
 
         #case of using multiple ID's
@@ -129,10 +130,10 @@ def main():
             with genes:
                 chosen_gene = st.selectbox('Select Gene',[element+' ('+str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection))+' Isoforms)' for element,index in input1_IDs.items()])
             with reference:
-                chosen_reference = st.selectbox('Select reference isoform', fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
+                chosen_reference = st.selectbox('Select reference isoform', Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
             ss.generate = True
             st.text('\n')
-            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
+            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()
             st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
@@ -140,10 +141,10 @@ def main():
             gene_index = list(nested_dict[re.split(' \(',chosen_gene)[0]])[0]
             #st.write('indexes of gene objects:')
             #st.write(nested_dict)
-            display_alignment_for_one_gene_from_database(chosen_reference, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+            Visualise_Alignment.display_alignment_for_one_gene_from_database(chosen_reference, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             st.markdown("#### Mapped Amino Acid Positions Table")
             chosen_columns = st.multiselect('Select further columns',['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID', 'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version', 'HGNC gene symbol'],['Gene name', 'Ensembl Protein ID'])
-            df_all = create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+            df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             st.write(df_all)
             st.text('\n')
             download, format = st.beta_columns([0.19, 1])
@@ -159,12 +160,12 @@ def main():
                 st.text('\n')
                 st.text('\n')
                 st.text('\n')
-                st.markdown(get_table_download_link(df_all, 'DataframeMappedIsoforms.' + sep_choice, sep),
+                st.markdown(Streamlit_community.get_table_download_link(df_all, 'DataframeMappedIsoforms.' + sep_choice, sep),
                             unsafe_allow_html=True)
 
 
         #case user types in aminoacid and clicks on search database
-        elif ss.searched_clicked and extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
+        elif ss.searched_clicked and Alignment.extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
             st.warning("Looks like an Amino Acid sequence! Paste in your second sequence below and click 'Align' ")
         elif ss.searched_clicked:
             st.warning("Couldn't find any ID's")
@@ -186,20 +187,20 @@ def main():
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
-                needleman_mapped = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)
+                needleman_mapped = Alignment.map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
                 #st.text(Alignment_preview)
                 st.write("\n")
                 st.markdown("##### Alignment")
                 st.write("\n")
-                percentage_reference, percentage_isoform = calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
-                st.text(visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
+                percentage_reference, percentage_isoform = Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
+                st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
                 st.write("\n")
                 st.markdown(" ###### ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
                 st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
                 st.write("\n")
                 st.write("\n")
-                generated_table = create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
+                generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
                 table, whitespace, download = st.beta_columns([1,0.2,1])
                 st.write("\n")
                 with download:
@@ -211,7 +212,7 @@ def main():
                         sep = '\t'
                     else:
                         sep = ','
-                    st.markdown(get_table_download_link(generated_table, 'dataframe.' + sep_choice, sep),unsafe_allow_html=True)
+                    st.markdown(Streamlit_community.get_table_download_link(generated_table, 'dataframe.' + sep_choice, sep),unsafe_allow_html=True)
                 with table:
                     st.markdown("##### Correctly mapped AA positions")
                     st.write("\n")
@@ -236,11 +237,11 @@ def main():
         st.header("Pre-Computed mapped isoforms")
         st.write("--------------------------")
         st.markdown("#### Refseq (4GB):")
-        st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv','', 'Refseq_Isoforms.tsv'), unsafe_allow_html=True)
+        st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'Refseq_Isoforms.tsv'), unsafe_allow_html=True)
         st.markdown("#### Ensembl (4GB):")
-        st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv','', 'Ensembl_Isoforms.tsv'), unsafe_allow_html=True)
+        st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'Ensembl_Isoforms.tsv'), unsafe_allow_html=True)
         st.markdown("#### All ID's (8GB):")
-        st.markdown(get_binary_file_downloader_html('/Users/jacob/Documents/GitHub/Mapping_Transcripts/streamlitmapping.tsv','', 'All_Isoforms.tsv'), unsafe_allow_html=True)
+        st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'All_Isoforms.tsv'), unsafe_allow_html=True)
 
     elif choice == 'About & Source Code':
         st.write("--------------------------")
