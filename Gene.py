@@ -13,3 +13,7 @@ class Gene:
         self.canonical_default = canonical_default
         self.average_exon_length= average_exon_length
         self.uniprot_ID = uniprot_ID
+
+    @staticmethod
+    def select_canonical_sequence(isoforms):
+        'function that can be dynamically applied to a set of isoform sequences'
