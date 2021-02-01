@@ -588,7 +588,7 @@ class Gene:
         self.uniprot_ID = uniprot_ID
 
 
-class Protein_sequence:
+class protein_sequence:
     def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
                 ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None):
         self.gene_name= gene_name #maybe unnecessary

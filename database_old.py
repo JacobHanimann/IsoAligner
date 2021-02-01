@@ -242,3 +242,10 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
 
 for gene in list_of_gene_objects:
     print(gene.HGNC, 'hello',gene.alias_symbols,'well',gene.previous_symbols)
+
+
+@st.cache(allow_output_mutation=True)
+def import_data(file):
+    with open(file,"rb") as fp:  # Pickling
+           list_of_gene_objects = pickle.load(fp)
+    return list_of_gene_objects

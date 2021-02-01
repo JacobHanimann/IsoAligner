@@ -1,7 +1,17 @@
 import re
+import pickle
+import streamlit as st
 
 class Input_flow:
     pass
+
+    @staticmethod
+    @st.cache(allow_output_mutation=True)
+    def import_data(file):
+        '''import reference file (database), a pickle file generated in the database.py file'''
+        with open(file, "rb") as fp:  # Pickling
+            list_of_gene_objects = pickle.load(fp)
+        return list_of_gene_objects
 
     @staticmethod
     def is_ID_in_parent_class(ID):
