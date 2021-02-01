@@ -1,6 +1,6 @@
 import re
 
-class Input_flow:
+class Input_preparation:
     pass
 
     @staticmethod
@@ -32,7 +32,7 @@ class Input_flow:
         comment: should be updated for all kinds of ID in database
         '''
         dict_of_IDs = {}
-        list_of_elements = split_elements_from_user_input_string(string)
+        list_of_elements = Input_preparation.split_elements_from_user_input_string(string)
         for element in list_of_elements:
             # ensembl
             if re.search('ENSG\d+\.\d+', element):

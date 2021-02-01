@@ -105,13 +105,13 @@ class Alignment:
                                                 gap_extension_penalty, exon_length_AA):
         'maps FMI AA on COSMIC AA and creates list of AAposition and gaps'
         print('Mapping transcripts with Needleman-Wunsch...')
-        clean_reference_fasta = extract_only_AA_of_Fasta_file(fasta1)
-        alignments = pairwise2.align.globalms(clean_reference_fasta, extract_only_AA_of_Fasta_file(fasta2), match,
+        clean_reference_fasta = Alignment.extract_only_AA_of_Fasta_file(fasta1)
+        alignments = pairwise2.align.globalms(clean_reference_fasta, Alignment.extract_only_AA_of_Fasta_file(fasta2), match,
                                               mismatch, gap_penalty, gap_extension_penalty, one_alignment_only=True,
                                               penalize_extend_when_opening=True, penalize_end_gaps=False)
         alignment_reference_fasta = list(alignments[0][0])
         alignment_isoform_fasta = list(alignments[0][1])
-        isoform_pattern_check = check_for_wrong_exon_alignments(alignment_reference_fasta, alignment_isoform_fasta,
+        isoform_pattern_check = Alignment.check_for_wrong_exon_alignments(alignment_reference_fasta, alignment_isoform_fasta,
                                                                 exon_length_AA)
         reference_position_list = []
         isoform_positions_list = []

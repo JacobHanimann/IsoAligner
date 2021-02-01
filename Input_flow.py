@@ -5,12 +5,13 @@ class Input_flow:
 
     @staticmethod
     def is_ID_in_parent_class(ID):
-        # st.write(ID)
+        '''checks wether ID is a Gene or a Protein_Sequence object attribute'''
         parent_class = True
         if ID in ['ENSG_version', 'ENST', 'ENST_version', 'ENSP', 'ENSP_version', 'refseq_rna', 'refseq_protein',
                   'uniprot_accession', 'uniprot_uniparc', 'uniprot_isoform']:  # list must be completed
             parent_class = False
         return parent_class
+
 
     @staticmethod
     def search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs):
@@ -22,7 +23,7 @@ class Input_flow:
         dict_element_indexes = {}
         for element, ID in dict_of_IDs.items():
             found = False
-            parent_class = is_ID_in_parent_class(ID)
+            parent_class = Input_flow.is_ID_in_parent_class(ID)
             for index, gene in enumerate(list_of_gene_objects):
                 if found:
                     break
@@ -87,7 +88,7 @@ class Input_flow:
 
         for element, index in dict_element_indexes.items():
             # st.write(element)
-            if is_ID_in_parent_class(dict_of_IDs[element]):
+            if Input_flow.is_ID_in_parent_class(dict_of_IDs[element]):
                 dict_element_indexes[element] = dict({index: find_index_of_reference_transcript(element)})
             else:
                 dict_element_indexes[element] = dict({index: pick_index_of_canonical_sequence(index)})
