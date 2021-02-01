@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from functions import * #import all functions from the functions.py file
+from functions_old import * #import all functions from the functions_old.py file
 import pickle
 import sys
 import SessionState
