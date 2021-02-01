@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 import streamlit as st
+from Alignment import *
 
 class Visualise_Alignment:
     pass
@@ -8,6 +9,7 @@ class Visualise_Alignment:
     @staticmethod
     def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene, ID="ENSP"):
         '''
+        function that fetches isoform IDs in form of a list with the canonical ID as the first element
         :param  list_of_gene_objects, index_of_gene, optional:ID_type:
         :return: list
         '''
@@ -63,7 +65,6 @@ class Visualise_Alignment:
         return output_alignment_string
 
 
-
     @staticmethod
     def display_alignment_for_one_gene_from_database(reference_transcript, list_of_gene_objects, index_of_gene, match,
                                                      mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,
@@ -83,16 +84,15 @@ class Visualise_Alignment:
         for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
             if getattr(transcript, ID_type) == reference_transcript:
                 continue
-            isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(
+            isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
                 reference_protein_sequence, transcript.Protein_sequence, match, mismatch, open_gap_penalty,
                 gap_extension_penalty, exon_length_AA)[4:7]
-            percentage_reference, percentage_isoform = calculate_percentage_of_mapped_positions(isoform_pattern_check,
+            percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,
                                                                                                 reference_protein_sequence,
                                                                                                 transcript.Protein_sequence)
             st.write('Alignment ' + str(transcript_number))
-            st.text(visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
+            st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
                                                     isoform_pattern_check, percentage_reference, percentage_isoform,
                                                     sequence1=reference_transcript, sequence2=transcript.ENST))
             st.text('\n')
             transcript_number += 1
-

@@ -1,10 +1,13 @@
 import pandas as pd
+from Alignment import *
 
 class Table_Generation:
     pass
 
     @staticmethod
     def create_pandas_dataframe_raw_aa_sequence(needleman_mapped):
+        '''input: 3 lists generated from the map_Needleman Wunsch function
+        output: pandas dataframe'''
         nested_list = [
             [needleman_mapped[1][indexiterator], needleman_mapped[2][indexiterator], needleman_mapped[3][indexiterator]]
             for indexiterator in range(0, len(needleman_mapped[1]))]
@@ -45,7 +48,7 @@ class Table_Generation:
                     index_reference_transcript = index
                     continue
 
-            aminoacids, reference_position_list, isoform_positions_list = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(
+            aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
                 reference_protein_sequence, transcript.Protein_sequence, match, mismatch, open_gap_penalty,
                 gap_extension_penalty, exon_length_AA)[1:4]
 
