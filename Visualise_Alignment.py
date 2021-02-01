@@ -78,18 +78,18 @@ class Visualise_Alignment:
         '''
         for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
             if getattr(transcript, ID_type) == reference_transcript:
-                reference_protein_sequence = getattr(transcript, "Protein_isoform")
+                reference_protein_sequence = getattr(transcript, "protein_sequence")
                 break
         transcript_number = 1
         for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
             if getattr(transcript, ID_type) == reference_transcript:
                 continue
             isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
-                reference_protein_sequence, transcript.Protein_isoform, match, mismatch, open_gap_penalty,
+                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,
                 gap_extension_penalty, exon_length_AA)[4:7]
             percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,
                                                                                                                     reference_protein_sequence,
-                                                                                                                    transcript.Protein_isoform)
+                                                                                                                    transcript.protein_sequence)
             st.write('Alignment ' + str(transcript_number))
             st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
                                                     isoform_pattern_check, percentage_reference, percentage_isoform,

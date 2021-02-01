@@ -182,18 +182,18 @@ def main():
             st.write("--------------------------")
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
                 #Sidebar pop up, make function out of it?
-                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = sidebar_pop_up_parameters()
+                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()
                 st.markdown("### Results")
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
-                needleman_mapped = Alignment.map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)
+                needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
                 #st.text(Alignment_preview)
                 st.write("\n")
                 st.markdown("##### Alignment")
                 st.write("\n")
-                percentage_reference, percentage_isoform = Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
+                percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
                 st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
                 st.write("\n")
                 st.markdown(" ###### ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
