@@ -1,6 +1,14 @@
 import SessionState
+from Gene import *
+from Protein_sequence import *
 from Streamlit_community import *
 from Input_flow import *
+from Streamlit_Pop_ups import *
+from Alignment import *
+from Visualise_Alignment import *
+from User_Input_Preparation import *
+from Input_flow import *
+from Table_Generation import *
 
 #declare session state variables
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
