@@ -37,7 +37,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
             previous_symbols = df.loc[index, 'previous_symbols']
             refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
             alias_symbols = df.loc[index, 'alias_symbols']
-            uniprot_ID = df.loc[index, 'UniProt ID']  # check if it the same ID as in the protein_sequence classes
+            uniprot_ID = df.loc[index, 'UniProt ID']  # check if it the same ID as in the Protein_sequence classes
             if type(previous_symbols) != float:  # None values are type float
                 if "," in previous_symbols:
                     previous_symbols = previous_symbols.split(', ')
@@ -55,7 +55,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
                   gene.previous_symbols = previous_symbols
                   gene.refseq_gene_ID = refseq_gene_ID
                   gene.alias_symbols = alias_symbols
-                  gene.uniprot_ID = uniprot_ID #check if it the same ID as in the protein_sequence classes
+                  gene.uniprot_ID = uniprot_ID #check if it the same ID as in the Protein_sequence classes
 
         if found == False:
             list_of_gene_objects.append(Gene(df.loc[index,'Ensembl gene ID'],'no HGNC_ensembl match',HGNC=HGNC, HGNC_gene_symbol = HGNC_gene_symbol, previous_symbols = previous_symbols, alias_symbols = alias_symbols, refseq_gene_ID=refseq_gene_ID))
@@ -94,8 +94,8 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
-        # create protein_sequence object to add to the gene_object
-        sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1]),
+        # create Protein_sequence object to add to the gene_object
+        sequence_object = Protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1]),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
@@ -135,7 +135,7 @@ def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
     'also get refseq data'
 
     def check_if_IDs_can_be_mapped():
-        'before creating new protein_sequence, check if it already exists'
+        'before creating new Protein_sequence, check if it already exists'
 
 
 def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
@@ -224,11 +224,11 @@ count = 0
 for gene in list_of_gene_objects:
     if len(gene.protein_sequence_isoform_collection) >1:
         print(gene.ensembl_gene_symbol,len(gene.protein_sequence_isoform_collection))
-        print(gene.protein_sequence_isoform_collection[0].protein_sequence)
+        print(gene.protein_sequence_isoform_collection[0].Protein_sequence)
         print(gene.HGNC,gene.alias_symbols)
     if len(gene.protein_sequence_isoform_collection) >=1:
         for sequence in gene.protein_sequence_isoform_collection: #muss man noch verbessern
-            if sequence.protein_sequence ==None:
+            if sequence.Protein_sequence ==None:
                 count +=1
 print('could not match protein sequence:',count)
 

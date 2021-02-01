@@ -77,14 +77,14 @@ def display_alignment_for_one_gene_from_database(reference_transcript,list_of_ge
     '''
     for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
         if getattr(transcript, ID_type) == reference_transcript:
-            reference_protein_sequence = getattr(transcript, "protein_sequence")
+            reference_protein_sequence = getattr(transcript, "Protein_sequence")
             break
     transcript_number = 1
     for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
         if getattr(transcript, ID_type) == reference_transcript:
             continue
-        isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence,transcript.protein_sequence,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)[4:7]
-        percentage_reference, percentage_isoform = calculate_percentage_of_mapped_positions(isoform_pattern_check,reference_protein_sequence,transcript.protein_sequence)
+        isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence, transcript.Protein_sequence, match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)[4:7]
+        percentage_reference, percentage_isoform = calculate_percentage_of_mapped_positions(isoform_pattern_check, reference_protein_sequence, transcript.Protein_sequence)
         st.write('Alignment '+str(transcript_number))
         st.text(visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform,sequence1 =reference_transcript,sequence2= transcript.ENST))
         st.text('\n')
@@ -506,10 +506,10 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
     if one_ID: #chosen_reference is a transcript name
         for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
             if getattr(transcript, ID_type) == chosen_reference:
-                reference_protein_sequence = getattr(transcript, "protein_sequence")
+                reference_protein_sequence = getattr(transcript, "Protein_sequence")
                 break
     else:
-        reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[chosen_reference].protein_sequence #chosen_reference is an index
+        reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[chosen_reference].Protein_sequence #chosen_reference is an index
 
     for index,transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
         if one_ID:
@@ -521,7 +521,7 @@ def create_table_for_one_gene_object(chosen_reference,list_of_gene_objects, inde
                index_reference_transcript = index
                continue
 
-        aminoacids, reference_position_list, isoform_positions_list = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
+        aminoacids, reference_position_list, isoform_positions_list = map_FMI_on_COSMIC_Needleman_Wunsch_with_exon_check(reference_protein_sequence, transcript.Protein_sequence, match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)[1:4]
 
 
         def get_selected_columns_attributes_and_column_names(chosen_columns):
@@ -588,7 +588,7 @@ class Gene:
         self.uniprot_ID = uniprot_ID
 
 
-class protein_sequence:
+class Protein_sequence:
     def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
                 ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None):
         self.gene_name= gene_name #maybe unnecessary

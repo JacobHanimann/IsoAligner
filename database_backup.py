@@ -68,8 +68,8 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fas
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
-        # create protein_sequence object to add to the gene_object
-        sequence_object = protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
+        # create Protein_sequence object to add to the gene_object
+        sequence_object = Protein_sequence(gene_name, extract_only_AA_of_Fasta_file(fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
                                            get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
@@ -101,7 +101,7 @@ def get_ensembl_fasta_sequences_and_IDs(file, list_of_gene_objects,number_of_fas
             gene.protein_sequence_isoform_collection.append(sequence_object)
 
         else:
-            list_of_gene_objects.append(Gene('no HUGO match',gene_name,protein_sequence_isoform_collection=[protein_sequence])) #takes really long to create objects both gene and protein_sequence
+            list_of_gene_objects.append(Gene('no HUGO match', gene_name, protein_sequence_isoform_collection=[Protein_sequence])) #takes really long to create objects both gene and Protein_sequence
 
              #this does not work because per object there will always be one sequence
 
@@ -121,7 +121,7 @@ def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
     'also get refseq data'
 
     def check_if_IDs_can_be_mapped():
-        'before creating new protein_sequence, check if it already exists'
+        'before creating new Protein_sequence, check if it already exists'
 
 
 def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
