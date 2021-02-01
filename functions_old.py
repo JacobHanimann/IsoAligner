@@ -58,7 +58,7 @@ def select_canonical_sequence(isoforms):
 def visualise_alignment_dynamically(reference_sequence_list,isoform_sequence_list,AA_match_evalutation_list,percentage_reference,percentage_isoform,sequence1='sequence1', sequence2='sequence2',):
     '''Function that returns an alignment of two sequences according to the AA_match_evalutation list generated from
      the check_for_wrong_exon_alignments() function in a visually pleasing fashion
-     Input: 3 lists
+     Input: 3 lists, 2 floats and 2 strings
      Output: 1 String (formatted with whitespace and newline character)'''
     correct_match_character = "|"
     wrong_match_character = "x"
