@@ -35,9 +35,17 @@ def main():
     if choice == 'Alignment Tool':
         #image1 = Image.open('Isoform_picture.png')
         #st.image(image1,use_column_width=True)
-        st.subheader("A simple tool to map amino acid positions across isoforms")
-        st.write("Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
-                 " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
+        subheader, tRNA = st.beta_columns([2, 1])
+        with subheader:
+            st.subheader("A simple tool to map amino acid positions across isoforms")
+            st.write(
+                "Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
+                " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
+        with tRNA:
+            image2 = Image.open('TransferMessengerRNA.tif')
+            st.image(image2,
+                     use_column_width=True)
+
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
