@@ -92,11 +92,6 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
 
 #Idea store fasta files that weren't a match also in list_of_gene_objects as Hugo unmatch labeled
 
-def find_gene_objects_that_are_the_same_and_group_together(list_of_gene_objects):
-    '''hardcore aligne sequences and check if these are isoforms
-    make criteria what counts a isoform
-    could also be done with all sequences, would be the most precise method at the beginning of reading fasta files
-    also add gene name to the gene object to alias symbols'''
 
 def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
     'also get refseq data'
@@ -168,15 +163,9 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
             return match_list
 
 
-def select_canonical_sequence(isoforms):
- 'function that can be dynamically applied to a set of isoform sequences'
 
 def save_all_data_in_pickle_style():
-    'see if this method is fast enough with streamlit'
-
-
-def map_isoforms_with_canonical_sequence():
-    'I dont know if this makes sense'
+    'write general function to save files in the pickle format'
 
 
 def save_results_to_tsv_file(dictionary):
@@ -186,8 +175,10 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
+#create list of gene objects
 list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
 
+#checking values
 count = 0
 for gene in list_of_gene_objects:
     if len(gene.protein_sequence_isoform_collection) >1:
@@ -200,6 +191,7 @@ for gene in list_of_gene_objects:
                 count +=1
 print('could not match protein sequence:',count)
 
+#add HCGN information
 add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 
 
@@ -207,6 +199,6 @@ add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtoo
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
 
-
+#checking values
 for gene in list_of_gene_objects:
     print(gene.HGNC, 'hello',gene.alias_symbols,'well',gene.previous_symbols)
