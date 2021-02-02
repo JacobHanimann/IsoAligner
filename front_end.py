@@ -22,10 +22,8 @@ list_of_gene_objects = Input_flow.import_data('list_of_gene_objects_with_fasta.t
 #Streamlit website
 def main():
     """ Isoform Alignment Tool """
-    #Title
-    st.title(" Amino Acid Isoform Aligner")
     #Background
-    Streamlit_community.set_png_as_page_bg('TransferMessengerRNA.png')
+    #Streamlit_community.set_png_as_page_bg('TransferMessengerRNAt.png')
 
     #Sidebar
     activity = ['Alignment Tool', 'Download Pre-Computed Data', 'About & Source Code']
@@ -35,18 +33,23 @@ def main():
 
     #Alignment tool section
     if choice == 'Alignment Tool':
+
         #image1 = Image.open('Isoform_picture.png')
         #st.image(image1,use_column_width=True)
-        subheader, tRNA = st.beta_columns([2, 1])
-        with subheader:
-            st.subheader("A simple tool to map amino acid positions across isoforms")
+        header, tRNA = st.beta_columns([3, 1.3])
+        with header:
+            # Title
+            st.title(" Amino Acid Isoform Aligner")
+            st.subheader("Map amino acid positions across isoforms")
             st.write(
                 "Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
                 " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
         with tRNA:
+            st.write('\n')
+            st.write('\n')
+            st.write('\n')
             image2 = Image.open('TransferMessengerRNA.tif')
-            st.image(image2,
-                     use_column_width=True)
+            st.image(image2,use_column_width=True, caption='TransferMessengerRNA & Ribosome in Action')
 
 
         st.write("--------------------------")
@@ -246,6 +249,7 @@ def main():
 
 
     elif choice == 'Download Pre-Computed Data':
+        st.title(" Amino Acid Isoform Aligner")
         st.header("Pre-Computed mapped isoforms")
         st.write("--------------------------")
         st.markdown("#### Refseq (4GB):")
@@ -256,11 +260,11 @@ def main():
         st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'All_Isoforms.tsv'), unsafe_allow_html=True)
 
     elif choice == 'About & Source Code':
+        st.title(" Amino Acid Isoform Aligner")
         st.write("--------------------------")
         st.markdown("#### Problem Statement:")
         image2 = Image.open('Problem_statement.png')
-        st.image(image2,
-        use_column_width=True)
+        st.image(image2,use_column_width=True)
         st.write("\n")
         st.markdown("#### About the code:")
         st.write("\n")
