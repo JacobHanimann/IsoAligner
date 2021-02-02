@@ -69,9 +69,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst_version', fasta),
                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp', fasta),
                                           get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', fasta),
-                                          uniprot_accession=get_bio_IDs_with_regex_ensembl_fasta(
-                                               'uniprot_accession',
-                                               fasta),
+                                          uniprot_accession=get_bio_IDs_with_regex_ensembl_fasta('uniprot_accession',fasta),
                                           uniprot_uniparc=get_bio_IDs_with_regex_ensembl_fasta('uniprot_uniparc',fasta))
         for gene in list_of_gene_objects:
             if found:
@@ -90,8 +88,45 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     print('Fasta files matched: ' + str(matches))
     return list_of_gene_objects
 
-#Idea store fasta files that weren't a match also in list_of_gene_objects as Hugo unmatch labeled
 
+def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file, list_of_gene_objects):
+    '''
+    add IDs to protein isoform object attributes to extend ID library
+    :param file: from Biomart
+    :return: updated list_of_gene_objects with more attributes
+    '''
+    df = pd.read_csv(file, sep='\t')
+    for index in range(0,len(df)):
+        print(index)
+        found = False
+        uniparc_ID = df.loc[index, 'UniParc ID']
+        for gene in list_of_gene_objects:
+            if found:
+                break
+            for sequence in gene.protein_sequence_isoform_collection:
+                if sequence.uniprot_uniparc == uniparc_ID:
+                    found = True
+                    sequence.refseq_rna = df.loc[index, 'RefSeq mRNA ID']
+                    sequence.transcript_name = df.loc[index, 'Transcript name']
+                    sequence.uniprot_isoform = df.loc[index, 'UniProtKB isoform ID']
+                    break
+
+
+def add_refseq_protein_IDs(file, list_of_objects):
+    '''add IDs'''
+    df = pd.read_csv(file, sep='\t')
+    for index in range(0,len(df)):
+        print(index)
+        found = False
+        uniparc_ID = df.loc[index, 'UniParc ID']
+        for gene in list_of_gene_objects:
+            if found:
+                break
+            for sequence in gene.protein_sequence_isoform_collection:
+                if sequence.uniprot_uniparc == uniparc_ID:
+                    found = True
+                    sequence.refseq_protein = df.loc[index, 'RefSeq peptide ID']
+                    break
 
 def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
     'also get refseq data'
@@ -194,6 +229,8 @@ print('could not match protein sequence:',count)
 #add HCGN information
 add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 
+#add ID's to protein_isoform class
+add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 
 #save list of gene objects to import to the subsequent script
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling

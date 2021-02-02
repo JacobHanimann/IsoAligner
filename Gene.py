@@ -10,7 +10,6 @@ class Gene:
         self.previous_symbols = previous_symbols
         self.alias_symbols = alias_symbols
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
-        self.canonical_default = canonical_default
         self.average_exon_length= average_exon_length
         self.uniprot_ID = uniprot_ID
 
