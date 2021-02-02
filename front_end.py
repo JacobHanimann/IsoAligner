@@ -24,6 +24,8 @@ def main():
     """ Isoform Alignment Tool """
     #Title
     st.title(" Amino Acid Isoform Aligner")
+    #Background
+    Streamlit_community.set_png_as_page_bg('TransferMessengerRNA.png')
 
     #Sidebar
     activity = ['Alignment Tool', 'Download Pre-Computed Data', 'About & Source Code']
