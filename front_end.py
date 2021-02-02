@@ -91,11 +91,17 @@ def main():
 
         if ss.searched_clicked:
             dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
+            st.write(dict_of_IDs)
+            #if an element is an amino acid:
+                #warning message
+            #else (no AA sequence)
             input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
+            st.write(input1_IDs)
+            Input_flow.show_which_elements_were_not_found(input1_IDs)
+            #remove unidentfied elements from dictionary
+            #execute nested dict only if dict is still existent...
             nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
                                                                                             list_of_gene_objects)
-            #nested_dict = remove_dict_elements_with_no_gene_object_match(nested_dict)
-        #check what user input is
 
         #case of using one ID's
         if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found': #check if dictionary is not empty
@@ -182,14 +188,6 @@ def main():
                 st.text('\n')
                 st.markdown(Streamlit_community.get_table_download_link(df_all, 'DataframeMappedIsoforms.' + sep_choice, sep),
                             unsafe_allow_html=True)
-
-
-        #case user types in aminoacid and clicks on search database
-        elif ss.searched_clicked and Alignment.extract_only_AA_of_Fasta_file(input1)!=None and ss.align_clicked==False:
-            st.warning("Looks like an Amino Acid sequence! Paste in your second sequence below and click 'Align' ")
-        elif ss.searched_clicked:
-            st.warning("Couldn't find any ID's")
-        st.write("\n")
 
 
         #Input 2 Area

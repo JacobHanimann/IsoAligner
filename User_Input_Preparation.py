@@ -1,4 +1,5 @@
 import re
+from Alignment import *
 
 class Input_preparation:
     pass
@@ -76,8 +77,11 @@ class Input_preparation:
                 dict_of_IDs[element] = 'refseq_prot'
                 continue
 
-            # if no ID's were found, the string is probably a gene name
-            dict_of_IDs[element] = 'gene_name'
+            if Alignment.extract_only_AA_of_Fasta_file(element)!=None:
+                dict_of_IDs[element] = 'aminoacid_sequence'
+
+            else:# if no ID's were found, the string is probably a gene name
+                dict_of_IDs[element] = 'gene_name'
 
         return dict_of_IDs
 

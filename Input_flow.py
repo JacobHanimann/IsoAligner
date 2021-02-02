@@ -71,6 +71,44 @@ class Input_flow:
 
 
     @staticmethod
+    def show_which_elements_were_not_found(input1_IDs):
+        '''
+        create streamlit notification of which genes were found and which not
+        :param input1_IDs:
+        :return: message which contains the elements which were not identified
+        '''
+        number_of_elements = len(input1_IDs)
+        nomatch = 0
+        list_of_unmatched_elements = []
+        for element,index in input1_IDs.items():
+            if index == 'not found':
+                list_of_unmatched_elements.append(element)
+                nomatch +=1
+        matched_elements = number_of_elements-nomatch
+        if nomatch ==0:
+                st.success('All elements were successfully identified.')
+        elif matched_elements==0:
+            st.warning ('No references found in the database')
+        else:
+            st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found. Unidentified Elements: '+','.join(list_of_unmatched_elements))
+
+
+    @staticmethod
+    def remove_dict_elements_with_no_gene_object_match(
+            input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
+        '''
+        :param input1_IDs:
+        :return: dictionary which the 'not found' elements were removed
+        '''
+        for element in dict_element_indexes.items():
+            st.write(element)
+            if element[1] == "not found":
+                st.write(dict_element_indexes[element[0]])
+                dict_element_indexes.pop(element[0])
+        return dict_element_indexes
+
+
+    @staticmethod
     def generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, dict_element_indexes,
                                                                         list_of_gene_objects):
         '''
@@ -103,29 +141,5 @@ class Input_flow:
             else:
                 dict_element_indexes[element] = dict({index: pick_index_of_canonical_sequence(index)})
 
-        return dict_element_indexes
-
-
-    @staticmethod
-    def show_which_elements_were_not_found(input1_IDs):
-        '''
-
-        :param input1_IDs:
-        :return: message which contains the elements which were not identified
-        '''
-
-
-    @staticmethod
-    def remove_dict_elements_with_no_gene_object_match(
-            input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
-        '''
-        :param input1_IDs:
-        :return: dictionary which the 'not found' elements were removed
-        '''
-        for element in dict_element_indexes.items():
-            st.write(element)
-            if element[1] == "not found":
-                st.write(dict_element_indexes[element[0]])
-                dict_element_indexes.pop(element[0])
         return dict_element_indexes
 
