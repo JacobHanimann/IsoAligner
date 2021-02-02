@@ -2,24 +2,8 @@ import pandas as pd
 from functions_old import * #import all functions from the functions_old.py file
 from collections.abc import Iterable
 import pickle
-
-
-#keep in mind that code also has to be descriptive to generate pre-computed offline data and not only for the dynamic stuff
-
-
-class Gene:
-    def __init__(self, ENSG, ensembl_gene_symbol,refseq_gene_ID=None, HGNC=None, HGNC_gene_symbol=None, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, canonical_default=None, average_exon_length=None, uniprot_ID=None):
-        self.ENSG = ENSG
-        self.ensembl_gene_symbol = ensembl_gene_symbol
-        self.refseq_gene_ID = refseq_gene_ID
-        self.HGNC = HGNC
-        self.HGNC_gene_symbol = HGNC_gene_symbol
-        self.previous_symbols = previous_symbols
-        self.alias_symbols = alias_symbols
-        self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
-        self.canonical_default = canonical_default
-        self.average_exon_length= average_exon_length
-        self.uniprot_ID = uniprot_ID
+from Gene import *
+from Protein_isoform import *
 
 
 def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects):
@@ -62,23 +46,6 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
 
     return list_of_gene_objects
 
-
-class Protein_isoform:
-    def __init__(self,gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None,
-                ENSP_version=None, refseq_rna=None, refseq_protein=None, uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None):
-        self.gene_name= gene_name #maybe unnecessary
-        self.protein_sequence = protein_sequence
-        self.ENSG = ENSG
-        self.ENSG_version = ENSG_version
-        self.ENST = ENST
-        self.ENST_version = ENST_version
-        self.ENSP = ENSP
-        self.ENSP_version = ENSP_version
-        self.refseq_rna = refseq_rna
-        self.refseq_protein = refseq_protein
-        self.uniprot_accession = uniprot_accession
-        self.uniprot_uniparc = uniprot_uniparc
-        self.uniprot_isoform = uniprot_isoform
 
 def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     '''extract fasta files one by one and add them to the gene objects'''
@@ -216,6 +183,7 @@ def save_results_to_tsv_file(dictionary):
     'to be pre-computed values'
 
 
+
 #Execution
 
 list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
@@ -242,10 +210,3 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
 
 for gene in list_of_gene_objects:
     print(gene.HGNC, 'hello',gene.alias_symbols,'well',gene.previous_symbols)
-
-
-@st.cache(allow_output_mutation=True)
-def import_data(file):
-    with open(file,"rb") as fp:  # Pickling
-           list_of_gene_objects = pickle.load(fp)
-    return list_of_gene_objects
