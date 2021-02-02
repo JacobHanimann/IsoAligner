@@ -116,7 +116,7 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
                 continue
 
 def add_refseq_protein_IDs(file, list_of_gene_objects):
-    '''add IDs'''
+    '''add IDs from Biomart file'''
     df = pd.read_csv(file, sep='\t')
     for index in range(0,len(df)):
         print(index)
