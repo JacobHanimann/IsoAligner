@@ -12,6 +12,7 @@ from User_Input_Preparation import *
 from Input_flow import *
 from Table_Generation import *
 from PIL import Image
+import urllib
 
 #declare session state variables
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
@@ -34,8 +35,12 @@ def main():
     #Alignment tool section
     if choice == 'Alignment Tool':
 
-        #image1 = Image.open('Isoform_picture.png')
-        #st.image(image1,use_column_width=True)
+        #url = 'https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing'
+        #path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
+        #file = urllib.request.urlopen(path)
+        #with open(file, "rb") as fp:  # Pickling
+         #   list_of_gene_objects = pickle.load(fp)
+        #st.write(list_of_gene_objects)
         header, tRNA = st.beta_columns([3, 1.3])
         with header:
             # Title

@@ -45,3 +45,4 @@ class Streamlit_community:
         ''' % bin_str
         st.markdown(page_bg_img, unsafe_allow_html=True)
         return
+
