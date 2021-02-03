@@ -91,12 +91,12 @@ def main():
 
         if ss.searched_clicked:
             dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-            st.write(dict_of_IDs)
+            #st.write(dict_of_IDs)
             #if an element is an amino acid:
                 #warning message
             #else (no AA sequence)
             input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-            st.write(input1_IDs)
+            #st.write(input1_IDs)
             Input_flow.show_which_elements_were_not_found(input1_IDs)
             #remove unidentfied elements from dictionary
             #execute nested dict only if dict is still existent...
