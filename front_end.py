@@ -35,7 +35,7 @@ def main():
     #Alignment tool section
     if choice == 'Alignment Tool':
 
-        url = 'https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing'
+        url = 'https://drive.google.com/file/d/11wnJHxJmlVCl368klVkxechJsFgnLRnu/view?usp=sharing'
         path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
         file = urllib.request.urlopen(path)
         data = file.read()
@@ -45,7 +45,7 @@ def main():
         st.write(type(data))
         st.write(len(data))
         list_of_gene_objects = pickle.loads(data)
-        st.write(list_of_gene_objects)
+        #st.write(list_of_gene_objects)
         header, tRNA = st.beta_columns([3, 1.3])
         with header:
             # Title

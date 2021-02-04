@@ -96,7 +96,7 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
     :return: updated list_of_gene_objects with more attributes
     '''
     df = pd.read_csv(file, sep='\t')
-    for index in range(0,len(df)):
+    for index in range(0,5000):
         print(index)
         found = False
         uniparc_ID = df.loc[index, 'UniParc ID']
@@ -110,7 +110,6 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
                         sequence.refseq_rna = df.loc[index, 'RefSeq mRNA ID']
                         sequence.transcript_name = df.loc[index, 'Transcript name']
                         sequence.uniprot_isoform = df.loc[index, 'UniProtKB isoform ID']
-                        print(sequence.transcript_name)
                         break
             else:
                 continue
@@ -118,7 +117,7 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
 def add_refseq_protein_IDs(file, list_of_gene_objects):
     '''add IDs from Biomart file'''
     df = pd.read_csv(file, sep='\t')
-    for index in range(0,len(df)):
+    for index in range(0,5000):
         print(index)
         found = False
         uniparc_ID = df.loc[index, 'UniParc ID']
@@ -129,8 +128,10 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
                 for sequence in gene.protein_sequence_isoform_collection:
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
+                        #if df.loc[index, 'RefSeq peptide ID']=='nan':
+                            #print('its nan')
                         sequence.refseq_protein = df.loc[index, 'RefSeq peptide ID']
-                        print(sequence.refseq_protein)
+                        #print(type(df.loc[index, 'RefSeq peptide ID']))
                         break
             else:
                 continue
@@ -237,8 +238,8 @@ list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objec
 add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
 
 #add ID's to protein_isoform class
-#add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
-add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/id2.txt',list_of_gene_objects)
+add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 
 #save list of gene objects to import to the subsequent script
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_4_feb.txt", "wb") as fp:  # Pickling
