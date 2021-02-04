@@ -6,13 +6,13 @@ from Gene import *
 from Protein_isoform import *
 
 
-def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects):
+def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects,number_of_Ids=100):
     '''complement list of gene objects
     input: list of gene objects
     output: list of gene objects with added attribute values
     '''
     df = pd.read_csv(file_of_gene_names, sep='\t')
-    for index in range(0,40):
+    for index in range(0,number_of_Ids):
         print(index)
         found = False
         for gene in list_of_gene_objects:
@@ -47,7 +47,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     return list_of_gene_objects
 
 
-def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
+def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_fastas=25000):
     '''extract fasta files one by one and add them to the gene objects'''
     with open(file, "r") as f:
         expenses_txt = f.readlines()
@@ -57,7 +57,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     fasta_count = 0
     matches = 0
     list_of_gene_objects =[]
-    for fasta in splittext[1:25000]:
+    for fasta in splittext[1:number_of_fastas]:
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
@@ -218,7 +218,7 @@ def save_results_to_tsv_file(dictionary):
 #Execution
 
 #create list of gene objects
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',113657)
 
 #checking values
 #count = 0
@@ -234,14 +234,14 @@ list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objec
 #print('could not match protein sequence:',count)
 
 #add HCGN information
-add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
+add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
 
 #add ID's to protein_isoform class
 #add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/id2.txt',list_of_gene_objects)
 
 #save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta.txt", "wb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_4_feb.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
 
 #checking values
