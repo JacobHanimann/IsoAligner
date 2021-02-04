@@ -35,12 +35,17 @@ def main():
     #Alignment tool section
     if choice == 'Alignment Tool':
 
-        #url = 'https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing'
-        #path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
-        #file = urllib.request.urlopen(path)
-        #with open(file, "rb") as fp:  # Pickling
-         #   list_of_gene_objects = pickle.load(fp)
-        #st.write(list_of_gene_objects)
+        url = 'https://drive.google.com/file/d/1C1To0a_y88LG811fIqvivvB4dT2SNF8G/view?usp=sharing'
+        path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
+        file = urllib.request.urlopen(path)
+        data = file.read()
+        #decoded2 = str(data, 'utf-8')
+        #st.write(type(decoded2))
+        st.write(data[0:100])
+        st.write(type(data))
+        st.write(len(data))
+        list_of_gene_objects = pickle.loads(data)
+        st.write(list_of_gene_objects)
         header, tRNA = st.beta_columns([3, 1.3])
         with header:
             # Title
@@ -91,12 +96,12 @@ def main():
 
         if ss.searched_clicked:
             dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-            #st.write(dict_of_IDs)
+            st.write(dict_of_IDs)
             #if an element is an amino acid:
                 #warning message
             #else (no AA sequence)
             input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-            #st.write(input1_IDs)
+            st.write(input1_IDs)
             Input_flow.show_which_elements_were_not_found(input1_IDs)
             #remove unidentfied elements from dictionary
             #execute nested dict only if dict is still existent...
