@@ -12,7 +12,6 @@ from User_Input_Preparation import *
 from Input_flow import *
 from Table_Generation import *
 from PIL import Image
-import urllib
 
 #declare session state variables
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
