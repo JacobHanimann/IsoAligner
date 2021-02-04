@@ -1,13 +1,24 @@
 import re
 import pickle
 import streamlit as st
+import urllib
 
 class Input_flow:
     pass
 
     @staticmethod
     @st.cache(allow_output_mutation=True)
-    def import_data(file):
+    def import_data_from_url(url):
+        path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
+        file = urllib.request.urlopen(path)
+        data = file.read()
+        list_of_gene_objects = pickle.loads(data)
+        return list_of_gene_objects
+
+
+    @staticmethod
+    @st.cache(allow_output_mutation=True)
+    def import_data_from_github(file):
         '''import reference file (database), a pickle file generated in the database.py file'''
         with open(file, "rb") as fp:  # Pickling
             list_of_gene_objects = pickle.load(fp)

@@ -18,7 +18,7 @@ import urllib
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
 
 #import database
-list_of_gene_objects = Input_flow.import_data('list_of_gene_objects_with_fasta.txt')
+list_of_gene_objects = Input_flow.import_data_from_url('https://drive.google.com/file/d/11wnJHxJmlVCl368klVkxechJsFgnLRnu/view?usp=sharing')
 
 #Streamlit website
 def main():
@@ -34,18 +34,6 @@ def main():
 
     #Alignment tool section
     if choice == 'Alignment Tool':
-
-        url = 'https://drive.google.com/file/d/11wnJHxJmlVCl368klVkxechJsFgnLRnu/view?usp=sharing'
-        path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
-        file = urllib.request.urlopen(path)
-        data = file.read()
-        #decoded2 = str(data, 'utf-8')
-        #st.write(type(decoded2))
-        st.write(data[0:100])
-        st.write(type(data))
-        st.write(len(data))
-        list_of_gene_objects = pickle.loads(data)
-        #st.write(list_of_gene_objects)
         header, tRNA = st.beta_columns([3, 1.3])
         with header:
             # Title
