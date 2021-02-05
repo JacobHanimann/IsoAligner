@@ -144,9 +144,9 @@ def main():
             using_IDs = True
             st.markdown("### Alignments")
             st.text('\n')
-            genes, reference = st.beta_columns([2,1])
+            genes, reference = st.beta_columns([2,1.7])
             with genes:
-                chosen_gene = st.selectbox('Select Gene',[element+' ('+str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection))+' Isoforms)' for element,index in input1_IDs.items()])
+                chosen_gene = st.selectbox('Select Gene',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,input1_IDs))
             with reference:
                 chosen_reference = st.selectbox('Select reference isoform', Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
             ss.generate = True

@@ -7,6 +7,32 @@ class Visualise_Alignment:
     pass
 
     @staticmethod
+    def create_list_gene_selection(list_of_gene_objects, input1_IDs):
+        '''
+        returns list of gene names, associated isoform count and user input
+        also, looks like a nightmare
+        :param list_of_gene_objects:
+        :param input1_IDs:
+        :return: list for the gene selection box
+        '''
+        gene_list = \
+         [list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
+         ' (' +
+         str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
+         ' Isoforms) | '
+         + element
+          if element != list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol else
+          list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
+          ' (' +
+          str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
+          ' Isoforms)'
+         for element, index in input1_IDs.items()]
+
+        return gene_list
+
+
+
+    @staticmethod
     def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene, ID="ENSP"):
         '''
         function that fetches isoform IDs in form of a list with the canonical ID as the first element
