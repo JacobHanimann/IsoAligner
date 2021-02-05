@@ -44,7 +44,6 @@ def main():
         with tRNA:
             st.write('\n')
             st.write('\n')
-            st.write('\n')
             image2 = Image.open('TransferMessengerRNA.tif')
             st.image(image2,use_column_width=True, caption='TransferMessengerRNA & Ribosome in Action')
 
@@ -70,9 +69,10 @@ def main():
             input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''',key=ss.run_id)
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
-            agree = st.checkbox("Click here to upload list of gene names or ID's")
-            if agree:
+            file_wanted = st.checkbox("upload list of gene names or ID's")
+            if file_wanted:
                 input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
+            raw_aa = st.checkbox("insert raw amino acid sequences")
         with search_button:
             search = st.button('Search Database for IDs')
             if search:
@@ -83,12 +83,12 @@ def main():
 
         if ss.searched_clicked:
             dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-            st.write(dict_of_IDs)
+            #st.write(dict_of_IDs)
             #if an element is an amino acid:
                 #warning message
             #else (no AA sequence)
             input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-            st.write(input1_IDs)
+            #st.write(input1_IDs)
             Input_flow.show_which_elements_were_not_found(input1_IDs)
             #remove unidentfied elements from dictionary
             #execute nested dict only if dict is still existent...
@@ -183,7 +183,7 @@ def main():
 
 
         #Input 2 Area
-        if using_IDs== False:
+        if using_IDs== False and raw_aa:
             input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''', key=ss.run_id)
             align=st.button('Align')
             if align:
