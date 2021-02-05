@@ -39,20 +39,43 @@ class Visualise_Alignment:
         :param  list_of_gene_objects, index_of_gene, optional:ID_type:
         :return: list
         '''
-        if len(dict_element_indexes) > 1:
+        if len(dict_element_indexes) > 1: #multiple IDs
             chosen_gene_cleaned = re.split(' \(', chosen_gene)[0]
-        else:
+        else: #one ID
             chosen_gene_cleaned = chosen_gene
+
         index_of_gene_object = list(dict_element_indexes[chosen_gene_cleaned].keys())[0]
         index_of_canonical_transcript = dict_element_indexes[chosen_gene_cleaned][index_of_gene_object]
-        list_of_transcripts = [getattr(sequence, ID) for sequence in
-                               list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection if
-                               getattr(sequence, ID) != getattr(
-                                   list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[
-                                       index_of_canonical_transcript], ID)]
-        list_of_transcripts = [getattr(list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[
-                                           index_of_canonical_transcript], ID)] + list_of_transcripts
-        return list_of_transcripts
+
+        list_of_transcripts = []
+        index_count = 0
+        for sequence in list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection:
+            canonical=False
+            if index_count==index_of_canonical_transcript:
+                canonical = True
+            if getattr(sequence, 'transcript_name') !=None:
+                if not canonical:
+                    list_of_transcripts.append(sequence.transcript_name)
+                else: canonical_element =[sequence.transcript_name]
+            elif getattr(sequence, 'ENSP') !=None:
+                 if not canonical:
+                    list_of_transcripts.append(sequence.ENSP)
+                 else:
+                     canonical_element = [sequence.ENSP]
+            elif getattr(sequence, 'uniprot_isoform') != None:
+                if not canonical:
+                    list_of_transcripts.append(sequence.uniprot_isoform)
+                else:
+                    canonical_element = [sequence.uniprot_isoform]
+            elif getattr(sequence, 'refseq_protein') != None:
+                if not canonical:
+                    list_of_transcripts.append(sequence.refseq_protein) #additional IDs have to be added
+                else:
+                    canonical_element = [sequence.refseq_protein]
+            index_count +=1
+
+        final_transcript_list = canonical_element + list_of_transcripts
+        return final_transcript_list
 
 
     @staticmethod
