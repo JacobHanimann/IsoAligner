@@ -64,17 +64,17 @@ def main():
                     ss.searched_clicked = False
 
         if ss.example:
-            input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''EGFR, KRAS, Q9Y6I3, FUCA2, CD9, ENSG00000074410, FAM168A, ENSP00000075430.7''',key=ss.run_id)
+            input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, KRAS, Q9Y6I3, FUCA2, CD9, ENSG00000074410, FAM168A, ENSP00000075430.7''',key=ss.run_id)
         else:
-            input1 = st.text_area('Paste gene names, IDs or raw amino acid sequence of reference isoform: ', '''''',key=ss.run_id)
+            input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=ss.run_id)
         file_upload, search_button = st.beta_columns([2.4,1])
         with file_upload:
-            file_wanted = st.checkbox("upload list of gene names or ID's")
+            file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
                 input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
-            raw_aa = st.checkbox("insert raw amino acid sequences")
+            raw_aa = st.checkbox("insert 2nd raw amino acid manually")
         with search_button:
-            search = st.button('Search Database for IDs')
+            search = st.button('Search Library for ID\'s')
             if search:
                 ss.searched_clicked =True
 
@@ -90,10 +90,9 @@ def main():
             input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
             st.write(input1_IDs)
             Input_flow.show_which_elements_were_not_found(input1_IDs)
-            #remove unidentfied elements from dictionary
+            cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
             #execute nested dict only if dict is still existent...
-            nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, input1_IDs,
-                                                                                            list_of_gene_objects)
+            nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
             st.write(nested_dict)
 
         #case of using one ID's
@@ -104,8 +103,8 @@ def main():
             st.markdown("### Alignments")
             reference_select, placeholder = st.beta_columns([1,2.5])
             with reference_select:
-                chosen_gene = list(input1_IDs.keys())[0]
-                index_gene_object = list(list(input1_IDs.values())[0].keys())[0]
+                chosen_gene = list(nested_dict.keys())[0]
+                index_gene_object = list(list(nested_dict.values())[0].keys())[0]
                 chosen_reference = st.selectbox('Choose your reference transcript: ',Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
             ss.generate = True
             st.text('\n')
@@ -147,7 +146,7 @@ def main():
             st.text('\n')
             genes, reference = st.beta_columns([2,1.7])
             with genes:
-                chosen_gene = st.selectbox('Select Gene',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,input1_IDs))
+                chosen_gene = st.selectbox('Select Gene',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
             with reference:
                 chosen_reference = st.selectbox('Select reference isoform', Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene))
             ss.generate = True
@@ -190,7 +189,6 @@ def main():
             if align:
                 ss.align_clicked = True
                 ss.searched_clicked = False
-            st.write("--------------------------")
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
                 #Sidebar pop up, make function out of it?
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()

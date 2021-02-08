@@ -101,22 +101,22 @@ class Input_flow:
         elif matched_elements==0:
             st.warning ('No references found in the database')
         else:
-            st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found. Unidentified Elements: '+','.join(list_of_unmatched_elements))
+            st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found. Unidentified elements: '+','.join(list_of_unmatched_elements))
 
 
     @staticmethod
-    def remove_dict_elements_with_no_gene_object_match(
-            input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
+    def remove_dict_elements_with_no_gene_object_match(input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
         '''
         :param input1_IDs:
         :return: dictionary which the 'not found' elements were removed
         '''
-        for element in dict_element_indexes.items():
-            st.write(element)
-            if element[1] == "not found":
-                st.write(dict_element_indexes[element[0]])
-                dict_element_indexes.pop(element[0])
-        return dict_element_indexes
+        cleaned_Input1_IDs = dict()
+        for element,index in input1_IDs.items():
+            if index == "not found":
+                continue
+            else:
+                cleaned_Input1_IDs[element] = index
+        return cleaned_Input1_IDs
 
 
     @staticmethod
@@ -153,4 +153,3 @@ class Input_flow:
                 dict_element_indexes[element] = dict({index: find_index_of_reference_transcript(element)})
 
         return dict_element_indexes
-
