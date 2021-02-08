@@ -78,8 +78,7 @@ class Table_Generation:
                     column_names.append("Iso_transcript_ID")
 
                 if "Ensembl Protein ID" in chosen_columns:
-                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
-                                             index_reference_transcript].ENSP)
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].ENSP)
                     column_names.append("Ref_protein_ID")
                     column_values.append(transcript.ENSP)
                     column_names.append("Iso_protein_ID")
