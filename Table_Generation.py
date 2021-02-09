@@ -1,5 +1,6 @@
 import pandas as pd
 from Alignment import *
+import streamlit as st
 
 class Table_Generation:
     pass
@@ -27,7 +28,7 @@ class Table_Generation:
         :param chosen_columns:
         :return: pandas dataframe
         '''
-
+        st.write(chosen_reference)
         list_of_all_alignments = []
         if one_ID:  # chosen_reference is a transcript name
             for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
@@ -40,6 +41,8 @@ class Table_Generation:
 
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if one_ID:
+                st.write('one ID')
+                st.write(transcript)
                 if getattr(transcript, ID_type) == chosen_reference:
                     index_reference_transcript = index
                     continue
