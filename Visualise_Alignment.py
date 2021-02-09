@@ -30,7 +30,16 @@ class Visualise_Alignment:
 
         return gene_list
 
-
+    @staticmethod
+    def clean_chosen_gene(chosen_gene):
+        '''clean chosen gene from 'select Gene' string for further use back-end'''
+        if '|' in chosen_gene:
+            chosen_gene_cleaned = re.split(' \| ', chosen_gene)[1]
+        elif "(" in chosen_gene:
+            chosen_gene_cleaned = re.split(' \(', chosen_gene)[0]
+        else: #one ID
+            chosen_gene_cleaned = chosen_gene
+        return chosen_gene_cleaned
 
     @staticmethod
     def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene, ID="ENSP"):
@@ -39,10 +48,7 @@ class Visualise_Alignment:
         :param  list_of_gene_objects, index_of_gene, optional:ID_type:
         :return: list
         '''
-        if len(dict_element_indexes) > 1: #multiple IDs
-            chosen_gene_cleaned = re.split(' \(', chosen_gene)[0]
-        else: #one ID
-            chosen_gene_cleaned = chosen_gene
+        chosen_gene_cleaned = Visualise_Alignment.clean_chosen_gene(chosen_gene)
 
         index_of_gene_object = list(dict_element_indexes[chosen_gene_cleaned].keys())[0]
         index_of_canonical_transcript = dict_element_indexes[chosen_gene_cleaned][index_of_gene_object]

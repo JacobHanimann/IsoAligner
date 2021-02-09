@@ -156,7 +156,7 @@ def main():
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
             st.text('\n')
-            gene_index = list(nested_dict[re.split(' \(',chosen_gene)[0]])[0]
+            gene_index = list(nested_dict[re.split(' \(',Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
             #st.write('indexes of gene objects:')
             #st.write(nested_dict)
             Visualise_Alignment.display_alignment_for_one_gene_from_database(chosen_reference, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
