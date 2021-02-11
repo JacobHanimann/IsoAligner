@@ -21,14 +21,15 @@ class Table_Generation:
                                          mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,
                                          ID_type="ENSP", one_ID=True):
         '''
-        function to create a pandas dataframe for only one gene object
-        :param chosen_reference:
-        :param list_of_gene_objects:
+        one_ID: function returns pandas dataframe directly of alignments
+        multiple IDs: function returns with list of the computed alignments which is then further used in create_table_for_dict_of_gene_objects function
+
+        :param chosen_reference: transcript name (one gene object) or index (multiple IDs)
+        :param list_of_gene_objects: (library)
         :param index_of_gene:
-        :param chosen_columns:
-        :return: pandas dataframe
+        :param chosen_columns: (choosed from selectbox)
+        :return: pandas dataframe or lists of computed alignment
         '''
-        st.write(chosen_reference)
         list_of_all_alignments = []
 
         #select reference protein sequence
@@ -52,9 +53,13 @@ class Table_Generation:
                     index_reference_transcript = index
                     continue
 
+        #create alignment for each alternative isoform
+        for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
+            if index == index_reference_transcript: #do not align the reference transcript with itself
+                continue
             aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
-                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,
-                gap_extension_penalty, exon_length_AA)[1:4]
+                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
+
 
             def get_selected_columns_attributes_and_column_names(chosen_columns):
                 '''
@@ -90,12 +95,14 @@ class Table_Generation:
                 column_names = column_names + ['AA', 'ReferencePos', 'IsoformPos']
                 return column_values, column_names
 
-        for indexiterator in range(0, len(aminoacids)):
-            column_values, column_names = get_selected_columns_attributes_and_column_names(chosen_columns)
-            positions = [aminoacids[indexiterator], reference_position_list[indexiterator],isoform_positions_list[indexiterator]]
-            nested_list_alignment = column_values + positions
-            list_of_all_alignments.append(nested_list_alignment)
+            #save the results of each alignment in a list outside the loop
+            for indexiterator in range(0, len(aminoacids)):
+                column_values, column_names = get_selected_columns_attributes_and_column_names(chosen_columns)
+                positions = [aminoacids[indexiterator], reference_position_list[indexiterator],isoform_positions_list[indexiterator]]
+                nested_list_alignment = column_values + positions
+                list_of_all_alignments.append(nested_list_alignment)
 
+        #if multiple ID's list are returned and the pandas dataframe is created later in the create_table_for_dict_of_gene_objects
         if one_ID:
             df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
             return df
