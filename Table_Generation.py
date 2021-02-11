@@ -30,6 +30,8 @@ class Table_Generation:
         '''
         st.write(chosen_reference)
         list_of_all_alignments = []
+
+        #select reference protein sequence
         if one_ID:  # chosen_reference is a transcript name
             for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
                 if getattr(transcript, ID_type) == chosen_reference:
@@ -37,12 +39,11 @@ class Table_Generation:
                     break
         else:
             reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
-                chosen_reference].protein_sequence  # chosen_reference is an index
+                chosen_reference].protein_sequence  # chosen_reference is an index (table generation for multiple ID's)
 
+        #get the index of the reference transcript
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if one_ID:
-                st.write('one ID')
-                st.write(transcript)
                 if getattr(transcript, ID_type) == chosen_reference:
                     index_reference_transcript = index
                     continue
@@ -89,12 +90,11 @@ class Table_Generation:
                 column_names = column_names + ['AA', 'ReferencePos', 'IsoformPos']
                 return column_values, column_names
 
-            for indexiterator in range(0, len(aminoacids)):
-                column_values, column_names = get_selected_columns_attributes_and_column_names(chosen_columns)
-                positions = [aminoacids[indexiterator], reference_position_list[indexiterator],
-                             isoform_positions_list[indexiterator]]
-                nested_list_alignment = column_values + positions
-                list_of_all_alignments.append(nested_list_alignment)
+        for indexiterator in range(0, len(aminoacids)):
+            column_values, column_names = get_selected_columns_attributes_and_column_names(chosen_columns)
+            positions = [aminoacids[indexiterator], reference_position_list[indexiterator],isoform_positions_list[indexiterator]]
+            nested_list_alignment = column_values + positions
+            list_of_all_alignments.append(nested_list_alignment)
 
         if one_ID:
             df = pd.DataFrame(list_of_all_alignments, columns=(column_names))

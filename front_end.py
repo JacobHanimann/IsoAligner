@@ -26,7 +26,7 @@ def main():
     #Streamlit_community.set_png_as_page_bg('TransferMessengerRNAt.png')
 
     #Sidebar
-    activity = ['Alignment Tool', 'Download Pre-Computed Data', 'About & Source Code']
+    activity = ['Alignment Tool', 'REST API & Downloads', 'Manual & About']
     st.sidebar.markdown("## Navigation")
     choice = st.sidebar.radio("Go to", activity)
     st.sidebar.write("\n")
