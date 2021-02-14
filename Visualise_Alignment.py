@@ -42,7 +42,7 @@ class Visualise_Alignment:
         return chosen_gene_cleaned
 
     @staticmethod
-    def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene, ID="ENSP"):
+    def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene):
         '''
         function that fetches isoform IDs in form of a list with the canonical ID as the first element
         :param  list_of_gene_objects, index_of_gene, optional:ID_type:
@@ -154,6 +154,6 @@ class Visualise_Alignment:
             st.write('Alignment ' + str(transcript_number))
             st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
                                                     isoform_pattern_check, percentage_reference, percentage_isoform,
-                                                    sequence1=reference_transcript, sequence2=transcript.ENST))
+                                                    sequence1=reference_transcript, sequence2=transcript.ENSP))
             st.text('\n')
             transcript_number += 1
