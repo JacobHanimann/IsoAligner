@@ -101,7 +101,7 @@ class Input_flow:
         elif matched_elements==0:
             st.warning ('No references found in the database')
         else:
-            st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found. Unidentified elements: '+','.join(list_of_unmatched_elements))
+            st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found. Unidentified elements: '+', '.join(list_of_unmatched_elements))
 
 
     @staticmethod

@@ -72,6 +72,9 @@ def main():
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
                 input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot (Accession/Uniparc)", type=["gz", "txt"])
+                if input1 is not None:
+                    input1 = input1.getvalue().decode("UTF-8")
+                    ss.searched_clicked = True
             raw_aa = st.checkbox("insert 2nd raw amino acid manually")
         with search_button:
             search = st.button('Search Library for ID\'s')
