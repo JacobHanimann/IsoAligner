@@ -242,18 +242,14 @@ def main():
 
 
 
-    elif choice == 'Download Pre-Computed Data':
+    elif choice == 'REST API & Downloads':
         st.title(" Amino Acid Isoform Aligner")
-        st.header("Pre-Computed mapped isoforms")
+        st.header("REST API")
         st.write("--------------------------")
-        st.markdown("#### Refseq (4GB):")
-        st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'Refseq_Isoforms.tsv'), unsafe_allow_html=True)
-        st.markdown("#### Ensembl (4GB):")
-        st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'Ensembl_Isoforms.tsv'), unsafe_allow_html=True)
-        st.markdown("#### All ID's (8GB):")
-        st.markdown(Streamlit_community.get_binary_file_downloader_html('https://www.bag.admin.ch/bag/de/home.html','', 'All_Isoforms.tsv'), unsafe_allow_html=True)
+        st.header("Downloads")
+        st.write("--------------------------")
 
-    elif choice == 'About & Source Code':
+    elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")
         st.write("--------------------------")
         st.markdown("#### Problem Statement:")
