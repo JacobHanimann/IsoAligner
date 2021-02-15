@@ -103,12 +103,14 @@ class Table_Generation:
                 list_of_all_alignments.append(nested_list_alignment)
 
         #if multiple ID's list are returned and the pandas dataframe is created later in the create_table_for_dict_of_gene_objects
-        if one_ID:
-            df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
-            return df
+        if "column_names" in locals(): #column_values, column_names are only generated if len(aminoacid) >0, which means that there has to be at least one match
+            if one_ID:
+                df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
+                return df
+            else:
+                return list_of_all_alignments, column_names
         else:
-            return list_of_all_alignments, column_names
-
+            return ('no','matches')
 
 
     @staticmethod
@@ -127,7 +129,9 @@ class Table_Generation:
                                                                                    gap_extension_penalty,
                                                                                    exon_length_AA, ID_type=ID_type,
                                                                                    one_ID=False)
-                list_of_alignments = list_of_alignments + list_of_dataframe
+
+                if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
+                    list_of_alignments = list_of_alignments + list_of_dataframe
 
         df = pd.DataFrame(list_of_alignments, columns=(column_names))
         return df
