@@ -143,6 +143,7 @@ class Visualise_Alignment:
         '''
         checks which transcript names exists and returns hierarchical
         :return: transcript name (string)
+        Note: selection of attributes has to be in the same order as in the fetch_Isoform_IDs_of_sequence_collection() function
         '''
         sequence = list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[index_of_transcript]
         if getattr(sequence, 'transcript_name') != None: #has to be complemented with all attributes
