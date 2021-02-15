@@ -104,7 +104,6 @@ class Alignment:
     def map_AA_Needleman_Wunsch_with_exon_check(fasta1, fasta2, match, mismatch, gap_penalty,
                                                 gap_extension_penalty, exon_length_AA):
         'maps FMI AA on COSMIC AA and creates list of AAposition and gaps'
-        print('Mapping transcripts with Needleman-Wunsch...')
         clean_reference_fasta = Alignment.extract_only_AA_of_Fasta_file(fasta1)
         alignments = pairwise2.align.globalms(clean_reference_fasta, Alignment.extract_only_AA_of_Fasta_file(fasta2), match,
                                               mismatch, gap_penalty, gap_extension_penalty, one_alignment_only=True,
