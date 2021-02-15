@@ -61,23 +61,23 @@ class Visualise_Alignment:
                 canonical = True
             if getattr(sequence, 'transcript_name') !=None:
                 if not canonical:
-                    list_of_transcripts.append(sequence.transcript_name)
-                else: canonical_element =[sequence.transcript_name]
+                    list_of_transcripts.append((sequence.transcript_name,index_count))
+                else: canonical_element =[(sequence.transcript_name,index_count)]
             elif getattr(sequence, 'ENSP') !=None:
                  if not canonical:
-                    list_of_transcripts.append(sequence.ENSP)
+                    list_of_transcripts.append((sequence.ENSP,index_count))
                  else:
-                     canonical_element = [sequence.ENSP]
+                     canonical_element = [(sequence.ENSP,index_count)]
             elif getattr(sequence, 'uniprot_isoform') != None:
                 if not canonical:
-                    list_of_transcripts.append(sequence.uniprot_isoform)
+                    list_of_transcripts.append((sequence.uniprot_isoform,index_count))
                 else:
-                    canonical_element = [sequence.uniprot_isoform]
+                    canonical_element = [(sequence.uniprot_isoform,index_count)]
             elif getattr(sequence, 'refseq_protein') != None:
                 if not canonical:
-                    list_of_transcripts.append(sequence.refseq_protein) #additional IDs have to be added
+                    list_of_transcripts.append((sequence.refseq_protein,index_count)) #additional IDs have to be added
                 else:
-                    canonical_element = [sequence.refseq_protein]
+                    canonical_element = [(sequence.refseq_protein, index_count)]
             index_count +=1
 
         final_transcript_list = canonical_element + list_of_transcripts
