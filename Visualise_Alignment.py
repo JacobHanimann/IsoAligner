@@ -30,6 +30,7 @@ class Visualise_Alignment:
 
         return gene_list
 
+
     @staticmethod
     def clean_chosen_gene(chosen_gene):
         '''clean chosen gene from 'select Gene' string for further use back-end'''
@@ -40,6 +41,7 @@ class Visualise_Alignment:
         else: #one ID
             chosen_gene_cleaned = chosen_gene
         return chosen_gene_cleaned
+
 
     @staticmethod
     def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene):
@@ -127,33 +129,70 @@ class Visualise_Alignment:
 
 
     @staticmethod
-    def display_alignment_for_one_gene_from_database(reference_transcript, list_of_gene_objects, index_of_gene, match,
-                                                     mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,
-                                                     ID_type='ENSP'):
+    def get_index_of_chosen_transcript(chosen_transcript, transcript_index_list):
+        '''
+        :return: index of transcript (int) in the Gene.collection_of_protein_sequences attribute
+        '''
+        for transcript in transcript_index_list:
+            if chosen_transcript == transcript[0]:
+                return transcript[1] #second element of tuple is the index of the transcript in the collection of protein sequences attribute
+
+
+    @staticmethod
+    def fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene_object,index_of_transcript):
+        '''
+        checks which transcript names exists and returns hierarchical
+        :return: transcript name (string)
+        '''
+        sequence = list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[index_of_transcript]
+        if getattr(sequence, 'transcript_name') != None: #has to be complemented with all attributes
+            return getattr(sequence, 'transcript_name')
+        elif getattr(sequence, 'ENSP') != None:
+            return  getattr(sequence, 'ENSP')
+        elif getattr(sequence, 'uniprot_isoform') != None:
+            return getattr(sequence, 'uniprot_isoform')
+        elif getattr(sequence, 'refseq_protein') != None:
+            return getattr(sequence, 'refseq_protein')
+
+
+    @staticmethod
+    def display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects, index_of_gene, match,
+                                                     mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA):
         '''
         executes the visualisation of the alignments for a gene with a given reference_transcript
         :param reference_transcript:
         :param list_of_gene_objects:
         :param index_of_gene:
         :return: streamlit write and text commands
+
+        set reference protein sequence
+        iterate through others
+        create a function for names of sequence1 and sequence2, has to be the same sequence as generating the transcript_index_list for consistency
+
         '''
-        for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
-            if getattr(transcript, ID_type) == reference_transcript:
-                reference_protein_sequence = getattr(transcript, "protein_sequence")
-                break
+        #get reference AA sequence
+        reference_protein_sequence = getattr(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_of_reference_transcript], "protein_sequence")
+
         transcript_number = 1
-        for transcript in list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection:
-            if getattr(transcript, ID_type) == reference_transcript:
+        sequence1_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index_of_reference_transcript)
+        for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
+            if index == index_of_reference_transcript: #skip reference AA
                 continue
+
+            #compute alignment
             isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
                 reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,
                 gap_extension_penalty, exon_length_AA)[4:7]
+
+            #calculate statistics of alignment output
             percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,
                                                                                                                     reference_protein_sequence,
-                                                                                                                    transcript.protein_sequence)
+                                                                                                        transcript.protein_sequence)
             st.write('Alignment ' + str(transcript_number))
+            #extract transcript name of alternative isoform
+            sequence2_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index)
             st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
                                                     isoform_pattern_check, percentage_reference, percentage_isoform,
-                                                    sequence1=reference_transcript, sequence2=transcript.ENSP))
+                                                    sequence1=sequence1_name, sequence2=sequence2_name))
             st.text('\n')
             transcript_number += 1
