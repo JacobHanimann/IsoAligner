@@ -32,6 +32,7 @@ class Streamlit_community:
             data = f.read()
         return base64.b64encode(data).decode()
 
+
     @staticmethod
     def set_png_as_page_bg(png_file):
         bin_str = Streamlit_community.get_base64_of_bin_file(png_file)
