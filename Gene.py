@@ -12,7 +12,3 @@ class Gene:
         self.protein_sequence_isoform_collection = protein_sequence_isoform_collection
         self.average_exon_length= average_exon_length
         self.uniprot_ID = uniprot_ID
-
-    @staticmethod
-    def select_canonical_sequence(isoforms):
-        'function that can be dynamically applied to a set of isoform sequences'
