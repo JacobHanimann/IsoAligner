@@ -50,7 +50,7 @@ def main():
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
-        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🪰 D. Melanogaster', '🐁 Mouse', '🐸 Frog', '🧜🏼 Mermaid'])
+        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse', '🪰 D. Melanogaster',])
         st.sidebar.write("--------------------------")
 
         #fixed in put area
@@ -118,29 +118,13 @@ def main():
             st.write('\n')
             st.text('\n')
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-            st.markdown("#### Mapped Amino Acid Positions Table")
-            chosen_columns = st.multiselect(
-                'Select columns',
-                ['Gene name', 'Ensembl Gene ID','Ensembl Transcript ID','Ensembl Protein ID','Refseq Gene ID','Refseq Transcript ID','Uniprot Accession ID','Uniprot Isoform ID', 'Uniparc ID','Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version','HGNC gene symbol'],
-                ['Gene name', 'Ensembl Protein ID'])
+            #Table section
+            chosen_columns = Input_flow.chose_columns()
             generated_table = Table_Generation.create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.text('\n')
             st.write(generated_table)
             st.text('\n')
-            download, format = st.beta_columns([0.19,1])
-            with download:
-                st.markdown("#### 📁 Download")
-                sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
-                if sep_choice == "tsv":
-                    sep = '\t'
-                else:
-                    sep = ','
-            with format:
-                st.text('\n')
-                st.text('\n')
-                st.text('\n')
-                st.text('\n')
-                st.markdown(Streamlit_community.get_table_download_link(generated_table, 'DataframeMappedIsoforms.' + sep_choice, sep),unsafe_allow_html=True)
+            Input_flow.generate_download_section(generated_table)
 
 
         #case of using multiple ID's
@@ -166,26 +150,12 @@ def main():
             #st.write('indexes of gene objects:')
             #st.write(nested_dict)
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
-            st.markdown("#### Mapped Amino Acid Positions Table")
-            chosen_columns = st.multiselect('Select further columns',['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID', 'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version', 'HGNC gene symbol'],['Gene name', 'Ensembl Protein ID'])
+            # Table section
+            chosen_columns = Input_flow.chose_columns()
             df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             st.write(df_all)
             st.text('\n')
-            download, format = st.beta_columns([0.19, 1])
-            with download:
-                st.markdown("#### 📁 Download")
-                sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
-                if sep_choice == "tsv":
-                    sep = '\t'
-                else:
-                    sep = ','
-            with format:
-                st.text('\n')
-                st.text('\n')
-                st.text('\n')
-                st.text('\n')
-                st.markdown(Streamlit_community.get_table_download_link(df_all, 'DataframeMappedIsoforms.' + sep_choice, sep),
-                            unsafe_allow_html=True)
+            Input_flow.generate_download_section(df_all)
 
 
         #Input 2 Area

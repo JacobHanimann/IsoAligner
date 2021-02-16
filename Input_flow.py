@@ -2,6 +2,7 @@ import re
 import pickle
 import streamlit as st
 import urllib
+from Streamlit_community import *
 
 class Input_flow:
     pass
@@ -136,7 +137,7 @@ class Input_flow:
             :param list_of_gene_objects:
             :return: index of longest protein_isoform object
             '''
-            list_of_AA_sequences = [protein_isoform.protein_sequence for protein_isoform in list_of_gene_objects[index].protein_sequence_isoform_collection]
+            list_of_AA_sequences = [protein_isoform.protein_sequence for protein_isoform in list_of_gene_objects[index].protein_sequence_isoform_collection if protein_isoform.protein_sequence !=None]
             index_of_longest_AA = list_of_AA_sequences.index(max(list_of_AA_sequences))
             return index_of_longest_AA
 
@@ -154,3 +155,33 @@ class Input_flow:
                 dict_element_indexes[element] = dict({index: find_index_of_reference_transcript(element)})
 
         return dict_element_indexes
+
+    @staticmethod
+    def chose_columns():
+        st.markdown("#### Mapped Amino Acid Positions Table")
+        return st.multiselect(
+            'Select further columns',
+            ['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Transcript name',
+             'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
+             'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version',
+             'HGNC gene symbol'],
+            ['Gene name', 'Ensembl Protein ID', 'Transcript name'])
+
+    @staticmethod
+    def generate_download_section(df):
+        download, format = st.beta_columns([0.22, 1])
+        with download:
+            st.markdown("#### 📁 Download")
+            sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
+            if sep_choice == "tsv":
+                sep = '\t'
+            else:
+                sep = ','
+        with format:
+            st.text('\n')
+            st.text('\n')
+            st.text('\n')
+            st.text('\n')
+            st.markdown(
+                Streamlit_community.get_table_download_link(df, 'DataframeMappedIsoforms.' + sep_choice, sep),
+                unsafe_allow_html=True)

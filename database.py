@@ -234,7 +234,7 @@ list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objec
 #                count +=1
 #print('could not match protein sequence:',count)
 
-#add HCGN information
+#add HCGN adn NCBI gene information
 add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
 
 #add ID's to protein_isoform class
