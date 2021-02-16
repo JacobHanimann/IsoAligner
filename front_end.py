@@ -97,7 +97,7 @@ def main():
             nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
             #st.write(nested_dict)
 
-        #case of using one ID's
+        #case of using one ID
         if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found': #check if dictionary is not empty
             using_IDs = True
             #st.write(input1_IDs)
@@ -120,7 +120,7 @@ def main():
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             #Table section
             chosen_columns = Input_flow.chose_columns()
-            generated_table = Table_Generation.create_table_for_one_gene_object(chosen_reference,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             st.text('\n')
             st.write(generated_table)
             st.text('\n')

@@ -98,7 +98,10 @@ class Input_flow:
                 nomatch +=1
         matched_elements = number_of_elements-nomatch
         if nomatch ==0:
-                st.success('All elements were successfully identified.')
+                if number_of_elements >1:
+                    st.success('All '+ str(number_of_elements)+' elements were successfully identified.')
+                else:
+                    st.success('Element succesfully identified')
         elif matched_elements==0:
             st.warning ('No references found in the database')
         else:
