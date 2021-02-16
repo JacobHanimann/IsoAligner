@@ -246,7 +246,6 @@ def main():
 
 
 
-
     elif choice == 'REST API & Downloads':
         st.title(" Amino Acid Isoform Aligner")
         st.header("REST API")
