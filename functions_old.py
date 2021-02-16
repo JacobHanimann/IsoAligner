@@ -47,7 +47,6 @@ def get_table_download_link(df,name_of_file = "dataframe.tsv" ,sep='\t'):
     return href
 
 
-
 #new function ideas
 
 def select_canonical_sequence(isoforms):

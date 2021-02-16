@@ -57,11 +57,10 @@ def main():
         title, example_button = st.beta_columns([4.1,1])
         with title:
             st.markdown("#### Input")
-        if ss.searched_clicked ==False:
-            with example_button:
-                if st.button('Show Example'):
-                    ss.example = True
-                    ss.searched_clicked = False
+        with example_button:
+            if st.button('Show Example'):
+                ss.example = True
+                ss.searched_clicked = False
 
         if ss.example:
             input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, KRAS, Q9Y6I3, FUCA2, CD9, ENSG00000074410, FAM168A, ENSP00000075430.7''',key=ss.run_id)
@@ -236,16 +235,15 @@ def main():
 
         #Clear all button
         st.write("--------------------------")
-        placehold, clear_all = st.beta_columns([4.5, 1])
+        placehold, clear_all = st.beta_columns([6.85, 1])
         with clear_all:
            if st.button('Clear All'):
               ss.clear_button = True
               ss.run_id +=1
               ss.example= False
-              st.write('click')
-              st.write(ss.run_id)
               ss.searched_clicked= False
-              #raise st.script_runner.RerunException()
+              Streamlit_community.rerun_script_from_top()
+
 
 
 
