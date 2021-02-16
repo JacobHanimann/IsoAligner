@@ -11,7 +11,7 @@ class Streamlit_pop_ups:
         st.sidebar.markdown("### Function Parameters")
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Minimal Exon Length (AA):")
-        exon_length_AA = st.sidebar.number_input("", min_value=None, max_value=None, value=5, step=None,
+        exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
                                                  format=None, key=None)
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
@@ -20,9 +20,9 @@ class Streamlit_pop_ups:
                                         key=None)
         mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
                                            format=None, key=None)
-        open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=None, value=-1.75,
+        open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=0., value=-1.75,
                                                    step=None, format=None, key=None)
-        gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=None,
+        gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=0,
                                                         value=0,
                                                         step=None, format=None, key=None)
         st.sidebar.write("\n")

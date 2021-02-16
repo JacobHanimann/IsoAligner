@@ -153,9 +153,12 @@ def main():
             # Table section
             chosen_columns = Input_flow.chose_columns()
             df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
-            st.write(df_all)
-            st.text('\n')
-            Input_flow.generate_download_section(df_all)
+            if not df_all.empty:
+                st.write(df_all)
+                st.text('\n')
+                Input_flow.generate_download_section(df_all)
+            else:
+                st.warning('No amino acid positions mapped currently. Tweak function parameters to generate matches.')
 
 
         #Input 2 Area
@@ -186,22 +189,25 @@ def main():
                 st.write("\n")
                 st.write("\n")
                 generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
-                table, whitespace, download = st.beta_columns([1,0.2,1])
-                st.write("\n")
-                with download:
+                if not generated_table.empty:
+                    table, whitespace, download = st.beta_columns([1,0.2,1])
                     st.write("\n")
-                    st.write("\n")
-                    st.markdown("#### 📁 Download")
-                    sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
-                    if sep_choice == "tsv":
-                        sep = '\t'
-                    else:
-                        sep = ','
-                    st.markdown(Streamlit_community.get_table_download_link(generated_table, 'dataframe.' + sep_choice, sep),unsafe_allow_html=True)
-                with table:
-                    st.markdown("##### Correctly mapped AA positions")
-                    st.write("\n")
-                    st.write(generated_table)
+                    with download:
+                        st.write("\n")
+                        st.write("\n")
+                        st.markdown("#### 📁 Download")
+                        sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
+                        if sep_choice == "tsv":
+                            sep = '\t'
+                        else:
+                            sep = ','
+                        st.markdown(Streamlit_community.get_table_download_link(generated_table, 'dataframe.' + sep_choice, sep),unsafe_allow_html=True)
+                    with table:
+                        st.markdown("##### Correctly mapped AA positions")
+                        st.write("\n")
+                        st.write(generated_table)
+                else:
+                    st.warning('No amino acid positions mapped currently. Tweak function parameters to generate matches.')
 
         #Clear all button
         st.write("--------------------------")
