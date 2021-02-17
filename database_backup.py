@@ -145,7 +145,7 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         version = True
 
    # #Refseq
-   # elif ID_type=='refseq_rna':
+   # elif ID_type=='refseq_NM':
    #      pattern = 'NM_\d+'
    # elif ID_type=='refseq_rna_version':
    #      pattern = 'NM_\d+\.\d+'

@@ -75,7 +75,7 @@ class Visualise_Alignment:
                     list_of_transcripts.append((sequence.uniprot_isoform,index_count))
                 else:
                     canonical_element = [(sequence.uniprot_isoform,index_count)]
-            elif getattr(sequence, 'refseq_protein') != None:
+            elif getattr(sequence, 'refseq_NP') != None:
                 if not canonical:
                     list_of_transcripts.append((sequence.refseq_protein,index_count)) #additional IDs have to be added
                 else:
@@ -152,8 +152,8 @@ class Visualise_Alignment:
             return  getattr(sequence, 'ENSP')
         elif getattr(sequence, 'uniprot_isoform') != None:
             return getattr(sequence, 'uniprot_isoform')
-        elif getattr(sequence, 'refseq_protein') != None:
-            return getattr(sequence, 'refseq_protein')
+        elif getattr(sequence, 'refseq_NP') != None:
+            return getattr(sequence, 'refseq_NP')
 
 
     @staticmethod

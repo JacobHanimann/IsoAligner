@@ -29,7 +29,7 @@ class Input_flow:
     def is_ID_in_parent_class(ID):
         '''checks wether ID is a Gene or a Protein_Sequence object attribute'''
         parent_class = True
-        if ID in ['ENSG_version', 'ENST', 'ENST_version', 'ENSP', 'ENSP_version', 'refseq_rna', 'refseq_protein',
+        if ID in ['ENSG_version', 'ENST', 'ENST_version', 'ENSP', 'ENSP_version', 'refseq_NM', 'refseq_NP',
                   'uniprot_accession', 'uniprot_uniparc', 'uniprot_isoform']:  # list must be completed
             parent_class = False
         return parent_class

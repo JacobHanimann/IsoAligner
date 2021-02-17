@@ -68,7 +68,7 @@ class Input_preparation:
                 dict_of_IDs[element] = 'refseq_rna_version'
                 continue
             elif re.search('NM_\d+', element):
-                dict_of_IDs[element] = 'refseq_rna'
+                dict_of_IDs[element] = 'refseq_NM'
                 continue
             if re.search('NP_\d+\.\d+', element):
                 dict_of_IDs[element] = 'refseq_prot_version'

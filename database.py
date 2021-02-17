@@ -107,7 +107,7 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
                 for sequence in gene.protein_sequence_isoform_collection:
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
-                        sequence.refseq_rna = df.loc[index, 'RefSeq mRNA ID']
+                        sequence.refseq_NM = df.loc[index, 'RefSeq mRNA ID']
                         sequence.transcript_name = df.loc[index, 'Transcript name']
                         sequence.uniprot_isoform = df.loc[index, 'UniProtKB isoform ID']
                         break
@@ -164,7 +164,7 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         version = True
 
     #Refseq
-    elif ID_type=='refseq_rna':
+    elif ID_type=='refseq_NM':
          pattern = 'NM_\d+'
     elif ID_type=='refseq_rna_version':
          pattern = 'NM_\d+\.\d+'

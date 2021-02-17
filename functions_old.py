@@ -163,7 +163,7 @@ def identify_IDs_from_user_text_input(string):
             dict_of_IDs[element] = 'refseq_rna_version'
             continue
         elif re.search('NM_\d+', element):
-            dict_of_IDs[element] = 'refseq_rna'
+            dict_of_IDs[element] = 'refseq_NM'
             continue
         if re.search('NP_\d+\.\d+', element):
             dict_of_IDs[element] = 'refseq_prot_version'
@@ -181,7 +181,7 @@ def identify_IDs_from_user_text_input(string):
 def is_ID_in_parent_class(ID):
     #st.write(ID)
     parent_class = True
-    if ID in ['ENSG_version', 'ENST', 'ENST_version', 'ENSP', 'ENSP_version', 'refseq_rna', 'refseq_protein',
+    if ID in ['ENSG_version', 'ENST', 'ENST_version', 'ENSP', 'ENSP_version', 'refseq_NM', 'refseq_NP',
               'uniprot_accession', 'uniprot_uniparc', 'uniprot_isoform']:  # list must be completed
         parent_class = False
     return parent_class
