@@ -136,11 +136,13 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
             else:
                 continue
 
-def get_refseq_fasta_sequences_and_IDs(file, list_of_objects):
-    'also get refseq data'
+def add_refseq_fasta_sequences(file, list_of_objects):
+    'complement library with fasta sequences from refseq'
 
-    def check_if_IDs_can_be_mapped():
-        'before creating new Protein_isoform, check if it already exists'
+
+
+def add_uniprot_fasta_files(file,list_of_objects):
+    '''complement library with fasta sequences from uniprot'''
 
 
 def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
