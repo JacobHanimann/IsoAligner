@@ -20,7 +20,7 @@ class Alignment:
         if len(raw_AA_seq_list) >= 1:
             return raw_AA_seq_list[0]  # string
         else:
-            return None
+            return 'no AA sequence found'
 
 
     @staticmethod
