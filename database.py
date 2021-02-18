@@ -60,17 +60,17 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
     for fasta in splittext[1:number_of_fastas]:
         fasta_count += 1
         found = False
-        gene_name = get_bio_IDs_with_regex_ensembl_fasta('gene_name',fasta)
+        gene_name = get_bio_IDs_with_regex('gene_name', fasta)
         # create Protein_isoform object to add to the gene_object
         sequence_object = Protein_isoform(gene_name, extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1]),
-                                          get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg', fasta),
-                                          get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensg_version', fasta),
-                                          get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst', fasta),
-                                          get_bio_IDs_with_regex_ensembl_fasta('ensembl_enst_version', fasta),
-                                          get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp', fasta),
-                                          get_bio_IDs_with_regex_ensembl_fasta('ensembl_ensp_version', fasta),
-                                          uniprot_accession=get_bio_IDs_with_regex_ensembl_fasta('uniprot_accession',fasta),
-                                          uniprot_uniparc=get_bio_IDs_with_regex_ensembl_fasta('uniprot_uniparc',fasta))
+                                          get_bio_IDs_with_regex('ensembl_ensg', fasta),
+                                          get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
+                                          get_bio_IDs_with_regex('ensembl_enst', fasta),
+                                          get_bio_IDs_with_regex('ensembl_enst_version', fasta),
+                                          get_bio_IDs_with_regex('ensembl_ensp', fasta),
+                                          get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
+                                          uniprot_accession=get_bio_IDs_with_regex('uniprot_accession', fasta),
+                                          uniprot_uniparc=get_bio_IDs_with_regex('uniprot_uniparc', fasta))
         for gene in list_of_gene_objects:
             if found:
                 break
@@ -148,19 +148,30 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
         expenses_txt = f.readlines()
         # Put all the lines into a single string
     whole_txt = "".join(expenses_txt)
-    splittext = re.split("//", whole_txt)
+    splittext = re.split("//\n", whole_txt)
 
     fasta_count = 0
     matches = 0
     for entry in splittext:
         fasta_count += 1
-        print(entry)
 
         #extract information out of entry
-        NP_ID = 'x'
-        NP_version = 'x'
-        NM_ID_version = 'x'
-        HGNC_ID = 'x'
+        print('new entry')
+        NP_IDs = re.findall("VERSION.*\n",entry)[0]
+        print(NP_IDs)
+        NP_ID = get_bio_IDs_with_regex('refseq_prot',NP_IDs)
+        NP_version = get_bio_IDs_with_regex('refseq_prot_version',NP_IDs)
+        NM_ID_version = get_bio_IDs_with_regex('refseq_rna_version',re.findall("DBSOURCE.*\n",entry)[0])
+        try:
+            HGNC_ID = get_bio_IDs_with_regex('HGNC',re.findall('/db_xref="HGNC:HGNC:\d+',entry)[0])
+        except:
+            try:
+                NCBI_ID = re.findall('\d+',re.findall('/db_xref=\"GeneID:\d+\"',entry)[0])
+                print('this is the id',NCBI_ID)
+                print(entry)
+            except:
+                print('no HGNC or NCBI gene ID found')
+                print(entry)
         protein_sequence = 'x'
         already_in = False
         isoform_processed = False
@@ -175,16 +186,19 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                         break
                     if isoform.refseq_NP == NP_ID:
                         if isoform.protein_sequence == protein_sequence:
+                            isoform.refseq_NP_version= NP_version
+                            isoform.refseq_NM_version=NM_ID_version
                             isoform_processed = True
                             break
                         else:
                             print('same NP ID but not same sequence')
                     else:
                         print('new sequence found')
-                        gene.protein_sequence_isoform_collection.append(Protein_sequence(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
+                        gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
                         isoform_processed = True
             else: #idea: try to match NCBI ID
-                print('could not match HGNC ID')
+                #print('could not match HGNC ID')
+                pass
 
 
 def add_uniprot_fasta_files(file,list_of_objects):
@@ -192,7 +206,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
 
 
 
-def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
+def get_bio_IDs_with_regex(ID_type, string):
     'generic functions to extract certain ID types from different databases'
     version = False
     #Ensembl
@@ -238,6 +252,12 @@ def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
         else:
             #remove \n with regex
             return match_list[0][1:-1] #remove \n
+
+    #HGNC
+
+    elif ID_type == 'HGNC':
+        pattern = "HGNC:\d+"
+
 
 #execute regular expression
     match_list = re.findall(pattern,string)
