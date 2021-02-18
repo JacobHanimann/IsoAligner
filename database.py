@@ -155,6 +155,8 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     HCGN_found = False
     NCBI_ID_found = False
     no_match =0
+    sequences_added=0
+    match_but_no_isoforms =0
     for entry in splittext[0:-1]:
         fasta_count += 1
 
@@ -209,16 +211,21 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                                 print('new sequence found')
                                 gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
                                 isoform_processed = True
+                                sequences_added += 1
                     else:
                         print('match but no isoforms saved in gene object')
+                        match_but_no_isoforms =+1
                 else:
                     #print('could not match HGNC ID or NCBI ID')
                     no_match +=1
                     pass
         else:
             not_NP +=1
+    print('total entries: ',len(splittext))
     print('not NP: ',not_NP)
     print('no matches: ',no_match)
+    print('sequences added: ',sequences_added)
+    print('match but no isoforms:',match_but_no_isoforms)
 
 
 def extract_protein_sequence_from_refseq_entry(entry):
@@ -238,7 +245,6 @@ def extract_protein_sequence_from_refseq_entry(entry):
 
 def add_uniprot_fasta_files(file,list_of_objects):
     '''complement library with fasta sequences from uniprot'''
-
 
 
 def get_bio_IDs_with_regex(ID_type, string):
