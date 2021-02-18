@@ -219,8 +219,6 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
 def extract_protein_sequence_from_refseq_entry(entry):
     '''extract protein sequence and format it correctly'''
     section = re.split("ORIGIN", entry)[1]
-    print(entry)
-    print(section)
     without_newline = re.sub('\n', '', section)
     without_newline_and_whitespice = re.sub('\s', '', without_newline)
     without_numbers= re.sub("\d+",'',without_newline_and_whitespice)
