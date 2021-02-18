@@ -47,7 +47,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     return list_of_gene_objects
 
 
-def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_fastas=25000):
+def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_fastas=2500):
     '''extract fasta files one by one and add them to the gene objects'''
     with open(file, "r") as f:
         expenses_txt = f.readlines()
@@ -136,13 +136,60 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
             else:
                 continue
 
-def add_refseq_fasta_sequences(file, list_of_objects):
-    'complement library with fasta sequences from refseq'
+def add_refseq_fasta_sequences(file, list_of_gene_objects):
+    '''complement library with fasta sequences from refseq
+    idea: first check if IDs can be found in the protein_isoform object
+    if not: check if protein sequence is unique in the gene object
+    if unique: add protein_isoform object
+    if not unique: complement ID's'''
 
+    #prepare file
+    with open(file, "r") as f:
+        expenses_txt = f.readlines()
+        # Put all the lines into a single string
+    whole_txt = "".join(expenses_txt)
+    splittext = re.split("//", whole_txt)
+
+    fasta_count = 0
+    matches = 0
+    for entry in splittext:
+        fasta_count += 1
+        print(entry)
+
+        #extract information out of entry
+        NP_ID = 'x'
+        NP_version = 'x'
+        NM_ID_version = 'x'
+        HGNC_ID = 'x'
+        protein_sequence = 'x'
+        already_in = False
+        isoform_processed = False
+
+        #search for a match in gene list
+        for gene in list_of_gene_objects:
+            if isoform_processed:
+                break
+            if gene.HGNC==HGNC_ID:
+                for isoform in gene.protein_sequence_isoform_collection:
+                    if isoform_processed:
+                        break
+                    if isoform.refseq_NP == NP_ID:
+                        if isoform.protein_sequence == protein_sequence:
+                            isoform_processed = True
+                            break
+                        else:
+                            print('same NP ID but not same sequence')
+                    else:
+                        print('new sequence found')
+                        gene.protein_sequence_isoform_collection.append(Protein_sequence(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
+                        isoform_processed = True
+            else: #idea: try to match NCBI ID
+                print('could not match HGNC ID')
 
 
 def add_uniprot_fasta_files(file,list_of_objects):
     '''complement library with fasta sequences from uniprot'''
+
 
 
 def get_bio_IDs_with_regex_ensembl_fasta(ID_type,string):
@@ -221,7 +268,9 @@ def save_results_to_tsv_file(dictionary):
 #Execution
 
 #create list of gene objects
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',113657)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',1000)
+
+add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
 #checking values
 #count = 0
@@ -242,6 +291,9 @@ add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtoo
 #add ID's to protein_isoform class
 add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+
+#add refseq fasta files and IDs
+add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff.gz',list_of_gene_objects)
 
 #save list of gene objects to import to the subsequent script
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_4_feb.txt", "wb") as fp:  # Pickling
