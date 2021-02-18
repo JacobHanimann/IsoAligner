@@ -154,6 +154,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     not_NP = 0
     HCGN_found = False
     NCBI_ID_found = False
+    no_match =0
     for entry in splittext[0:-1]:
         fasta_count += 1
 
@@ -177,7 +178,6 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
             except:
                 pass
             protein_sequence = extract_protein_sequence_from_refseq_entry(entry)
-            print(protein_sequence)
             isoform_processed = False
 
             #search for a match in gene list
@@ -209,11 +209,13 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                                 gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
                                 isoform_processed = True
                 else: #idea: try to match NCBI ID
-                    #print('could not match HGNC ID or NCBI ID')
+                    print('could not match HGNC ID or NCBI ID')
+                    no_match +=1
                     pass
         else:
             not_NP +=1
     print('not NP: ',not_NP)
+    print('no matches: ',no_match)
 
 
 def extract_protein_sequence_from_refseq_entry(entry):
@@ -318,9 +320,10 @@ def save_results_to_tsv_file(dictionary):
 #Execution
 
 #create list of gene objects
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',1000)
+print('generating gene list')
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',13000)
 
-add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
 #checking values
 #count = 0
@@ -336,13 +339,17 @@ add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_f
 #print('could not match protein sequence:',count)
 
 #add HCGN adn NCBI gene information
-add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
+print('adding HCGN information')
+add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,1000)
 
 #add ID's to protein_isoform class
+print('add uniprot IDs')
 add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+print('add refseq Ids')
 add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 
 #add refseq fasta files and IDs
+print('add refseq fasta')
 add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff.gz',list_of_gene_objects)
 
 #save list of gene objects to import to the subsequent script
