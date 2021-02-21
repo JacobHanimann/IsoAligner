@@ -157,6 +157,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     no_match =0
     sequences_added=0
     match_but_no_isoforms =0
+
     for entry in splittext[0:-1]:
         fasta_count += 1
 
@@ -169,57 +170,59 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
             NP_ID = get_bio_IDs_with_regex('refseq_prot',NP_IDs)
             NP_version = get_bio_IDs_with_regex('refseq_prot_version',NP_IDs)
             NM_ID_version = get_bio_IDs_with_regex('refseq_rna_version',re.findall("DBSOURCE.*\n",entry)[0])
-            try:
-                HGNC_ID = get_bio_IDs_with_regex('HGNC',re.findall('/db_xref="HGNC:HGNC:\d+',entry)[0])
-                HCGN_found = True
-            except:
-                pass
-            try:
-                NCBI_ID = re.findall('\d+',re.findall('/db_xref=\"GeneID:\d+\"',entry)[0])
-                NCBI_ID_found = True
-            except:
-                pass
-            protein_sequence = extract_protein_sequence_from_refseq_entry(entry)
-            isoform_processed = False
-
-            #search for a match in gene list
-            found = False
-            for gene in list_of_gene_objects:
-                if isoform_processed:
-                    break
-                if HCGN_found:
-                    if gene.HGNC==HGNC_ID:
-                        found = True
-                if NCBI_ID_found:
-                    if gene.refseq_gene_ID == NCBI_ID:
-                        found = True
-                if found:
-                    if type(gene.protein_sequence_isoform_collection) == list:
-                        for isoform in gene.protein_sequence_isoform_collection:
-                            if isoform_processed:
-                                break
-                            if isoform.refseq_NP == NP_ID:
-                                if isoform.protein_sequence == protein_sequence:
-                                    isoform.refseq_NP_version= NP_version
-                                    isoform.refseq_NM_version=NM_ID_version
-                                    print('ID versions added')
-                                    isoform_processed = True
-                                    break
-                                else:
-                                    print('same NP ID but not same sequence')
-                            else:
-                                print('new sequence found')
-                                gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
-                                isoform_processed = True
-                                sequences_added += 1
-                    else:
-                        print('match but no isoforms saved in gene object')
-                        match_but_no_isoforms =+1
-                else:
-                    #print('could not match HGNC ID or NCBI ID')
-                    no_match +=1
-                    pass
+            #try:
+            #    HGNC_ID = get_bio_IDs_with_regex('HGNC',re.findall('/db_xref="HGNC:HGNC:\d+',entry)[0])
+            #    HCGN_found = True
+            #except:
+            #    pass
+            #try:
+            #    NCBI_ID = re.findall('\d+',re.findall('/db_xref=\"GeneID:\d+\"',entry)[0])
+            #    NCBI_ID_found = True
+            #except:
+            #    pass
+            #protein_sequence = extract_protein_sequence_from_refseq_entry(entry)
+            #isoform_processed = False
+#
+            ##search for a match in gene list
+            #found = False
+            #for gene in list_of_gene_objects:
+            #    if isoform_processed:
+            #        break
+            #    if HCGN_found:
+            #        if gene.HGNC==HGNC_ID:
+            #            found = True
+            #    if NCBI_ID_found:
+            #        if gene.refseq_gene_ID == NCBI_ID:
+            #            found = True
+            #    if found:
+            #        if type(gene.protein_sequence_isoform_collection) == list:
+            #            for isoform in gene.protein_sequence_isoform_collection:
+            #                if isoform_processed:
+            #                    break
+            #                if isoform.refseq_NP == NP_ID:
+            #                    if isoform.protein_sequence == protein_sequence:
+            #                        isoform.refseq_NP_version= NP_version
+            #                        isoform.refseq_NM_version=NM_ID_version
+            #                        print('ID versions added')
+            #                        isoform_processed = True
+            #                        break
+            #                    else:
+            #                        print('same NP ID but not same sequence')
+            #                else:
+            #                    print('new sequence found')
+            #                    gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
+            #                    isoform_processed = True
+            #                    sequences_added += 1
+            #        else:
+            #            print('match but no isoforms saved in gene object')
+            #            match_but_no_isoforms =+1
+            #    else:
+            #        #print('could not match HGNC ID or NCBI ID')
+            #        no_match +=1
+            #        pass
         else:
+            print(NP_IDs)
+            print(entry)
             not_NP +=1
     print('total entries: ',len(splittext))
     print('not NP: ',not_NP)
@@ -330,9 +333,9 @@ def save_results_to_tsv_file(dictionary):
 
 #create list of gene objects
 print('generating gene list')
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',13000)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',3000)
 
-#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
 #checking values
 #count = 0
