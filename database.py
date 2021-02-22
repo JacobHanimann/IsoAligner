@@ -14,24 +14,32 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
     df = pd.read_csv(file_of_gene_names, sep='\t')
     for index in range(0,number_of_Ids):
         print(index)
+        #extract data line by line
+        HGNC = df.loc[index, 'HGNC']
+        HGNC_gene_symbol = df.loc[index, 'approved_symbol']
+        previous_symbols = df.loc[index, 'previous_symbols']
+        refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
+        alias_symbols = df.loc[index, 'alias_symbols']
+        uniprot_ID = df.loc[index, 'UniProt ID']  # check if it the same ID as in the Protein_isoform classes
+
+        #transfrom data in correct format
+        if type(previous_symbols) != float:  # None values are type float
+            if "," in previous_symbols:
+                previous_symbols = previous_symbols.split(', ')
+            else:
+                previous_symbols = [
+                    previous_symbols]  # either way create a list because it facilitates later search functions
+        if type(alias_symbols) != float:
+            if "," in alias_symbols:
+                alias_symbols = alias_symbols.split(', ')
+            else:
+                alias_symbols = [alias_symbols]
+
         found = False
+        #search for a match
         for gene in list_of_gene_objects:
-            HGNC = df.loc[index, 'HGNC']
-            HGNC_gene_symbol = df.loc[index, 'approved_symbol']
-            previous_symbols = df.loc[index, 'previous_symbols']
-            refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
-            alias_symbols = df.loc[index, 'alias_symbols']
-            uniprot_ID = df.loc[index, 'UniProt ID']  # check if it the same ID as in the Protein_isoform classes
-            if type(previous_symbols) != float:  # None values are type float
-                if "," in previous_symbols:
-                    previous_symbols = previous_symbols.split(', ')
-                else:
-                    previous_symbols = [previous_symbols]  # either way create a list because it facilitates later search functions
-            if type(alias_symbols) != float:
-                if "," in alias_symbols:
-                    alias_symbols = alias_symbols.split(', ')
-                else:
-                    alias_symbols = [alias_symbols]
+            if found:
+                break
             if gene.ENSG == df.loc[index,'Ensembl gene ID']:
                   found = True
                   gene.HGNC = HGNC
@@ -42,7 +50,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
                   gene.uniprot_ID = uniprot_ID #check if it the same ID as in the Protein_isoform classes
 
         if found == False:
-            list_of_gene_objects.append(Gene(df.loc[index,'Ensembl gene ID'],'no HGNC_ensembl match',HGNC=HGNC, HGNC_gene_symbol = HGNC_gene_symbol, previous_symbols = previous_symbols, alias_symbols = alias_symbols, refseq_gene_ID=refseq_gene_ID))
+            list_of_gene_objects.append(Gene(ENSG=df.loc[index,'Ensembl gene ID'],HGNC=HGNC, HGNC_gene_symbol = HGNC_gene_symbol, previous_symbols = previous_symbols, alias_symbols = alias_symbols, refseq_gene_ID=refseq_gene_ID))
 
     return list_of_gene_objects
 
@@ -87,7 +95,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
             list_of_gene_objects.append(Gene(sequence_object.ENSG,gene_name,protein_sequence_isoform_collection=[sequence_object]))
 
 
-        #print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
+        print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
     print('Fasta files matched: ' + str(matches))
     return list_of_gene_objects
 
@@ -231,7 +239,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                     gene_found = True
             if NCBI_ID_found:
                 if gene.refseq_gene_ID == NCBI_ID:
-                    gene_found = True
+                   gene_found = True
             if gene_found:
                 if isoform_processed:
                     break
@@ -463,7 +471,7 @@ list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objec
 
 #add HCGN adn NCBI gene information
 print('adding HCGN information')
-#add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
+add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
 
 #add ID's to protein_isoform class
 print('add uniprot IDs')
