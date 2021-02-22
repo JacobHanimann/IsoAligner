@@ -157,6 +157,9 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     no_match =0
     sequences_added=0
     match_but_no_isoforms =0
+    NP= False
+    XP = False
+    YP = False
 
     for entry in splittext[0:-1]:
         fasta_count += 1
@@ -173,22 +176,22 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
             NP_ID = get_bio_IDs_with_regex('refseq_prot',Ids)
             NP_version = get_bio_IDs_with_regex('refseq_prot_version',Ids)
             NM_ID_version = get_bio_IDs_with_regex('refseq_rna_version',re.findall("DBSOURCE.*\n",entry)[0])
-            print('its NP')
+            NP=True
 
         elif "XP_" in Ids:
             XP_ID = get_bio_IDs_with_regex('refseq_prot_predict', Ids)
             XP_version = get_bio_IDs_with_regex('refseq_prot_predict_version', Ids)
             XM_ID_version = get_bio_IDs_with_regex('refseq_rna_predict_version', re.findall("DBSOURCE.*\n", entry)[0])
-            print('its XP')
+            #print(entry)
 
         elif "YP_" in Ids:
             YP_ID = get_bio_IDs_with_regex('refseq_mitocho', Ids)
             YP_version = get_bio_IDs_with_regex('refseq_mitocho_version', Ids)
-            NC_ID_version = get_bio_IDs_with_regex('refseq_rna_chromosome_version', re.findall("DBSOURCE.*\n", entry)[0])
-            print('its YP')
+            NC_ID_version = get_bio_IDs_with_regex('refseq_chromosome_version', re.findall("DBSOURCE.*\n", entry)[0])
+            print(entry)
 
         else:
-            print('weder noch')
+            print('no known Version ID')
             print(Ids)
             not_NP += 1
 
@@ -205,44 +208,52 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
             pass
         protein_sequence = extract_protein_sequence_from_refseq_entry(entry)
 
-        #search for a match in gene list
-        gene_found = False
-        isoform_processed = False
-        for gene in list_of_gene_objects:
-            if isoform_processed:
-                break
-            if HCGN_found:
-                if gene.HGNC==HGNC_ID:
-                    gene_found = True
-            if NCBI_ID_found:
-                if gene.refseq_gene_ID == NCBI_ID:
-                    gene_found = True
-            if gene_found:
-                if type(gene.protein_sequence_isoform_collection) == list:
-                    for isoform in gene.protein_sequence_isoform_collection:
-                        if isoform_processed:
-                            break
-                        if isoform.refseq_NP == NP_ID:
-                            if isoform.protein_sequence == protein_sequence:
-                                isoform.refseq_NP_version= NP_version
-                                isoform.refseq_NM_version=NM_ID_version
-                                print('ID versions added')
-                                isoform_processed = True
+        if NP==True:
+            #search for a match in gene list
+            gene_found = False
+            isoform_processed = False
+            for gene in list_of_gene_objects:
+                if isoform_processed:
+                    break
+                if HCGN_found:
+                    if gene.HGNC==HGNC_ID:
+                        gene_found = True
+                if NCBI_ID_found:
+                    if gene.refseq_gene_ID == NCBI_ID:
+                        gene_found = True
+                if gene_found:
+                    if isoform_processed:
+                        break
+                    if type(gene.protein_sequence_isoform_collection) == list:
+                        for isoform in gene.protein_sequence_isoform_collection:
+                            if isoform_processed:
                                 break
+                            if isoform.refseq_NP == NP_ID:
+                                if isoform.protein_sequence == protein_sequence:
+                                    isoform.refseq_NP_version= NP_version
+                                    isoform.refseq_NM_version=NM_ID_version
+                                    print('ID versions added')
+                                    isoform_processed = True
+                                    break
+                                else:
+                                    print('same NP ID but not same sequence')
                             else:
-                                print('same NP ID but not same sequence')
-                        else:
-                            print('new sequence gene_found')
-                            gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
-                            isoform_processed = True
-                            sequences_added += 1
-                else:
-                    print('match but no isoforms saved in gene object')
-                    match_but_no_isoforms =+1
-            else:
-                #print('could not match HGNC ID or NCBI ID')
-                no_match +=1
-                pass
+                                print('new sequence gene_found')
+                                gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
+                                isoform_processed = True
+                                sequences_added += 1
+                    else:
+                        print('match but no isoforms saved in gene object')
+                        match_but_no_isoforms =+1
+        if not gene_found:
+            #print('no match for this entry')
+            #print(entry)
+            #maybe create new gene object?
+            pass
+
+        if XP==True:
+            pass
+
 
     print('total entries: ',len(splittext))
     print('not NP: ',not_NP)
