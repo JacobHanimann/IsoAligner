@@ -53,6 +53,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
         expenses_txt = f.readlines()
     # Put all the lines into a single string
     whole_txt = "".join(expenses_txt)
+    print(whole_txt)
     splittext = re.split(">", whole_txt)
     fasta_count = 0
     matches = 0
@@ -71,6 +72,9 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
                                           get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
                                           uniprot_accession=get_bio_IDs_with_regex('uniprot_accession', fasta),
                                           uniprot_uniparc=get_bio_IDs_with_regex('uniprot_uniparc', fasta))
+        if extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1])==None:
+            print('its None')
+            print(fasta)
         for gene in list_of_gene_objects:
             if found:
                 break
@@ -84,7 +88,7 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
             list_of_gene_objects.append(Gene(sequence_object.ENSG,gene_name,protein_sequence_isoform_collection=[sequence_object]))
 
 
-        print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
+        #print('Fasta files processed: ' + str(fasta_count) + '/' + str(len(splittext)))
     print('Fasta files matched: ' + str(matches))
     return list_of_gene_objects
 
@@ -436,7 +440,7 @@ def save_results_to_tsv_file(dictionary):
 
 #create list of gene objects
 print('generating gene list')
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',3000)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',113000)
 
 add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
