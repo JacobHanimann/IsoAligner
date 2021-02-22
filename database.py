@@ -154,6 +154,8 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     not_NP = 0
     HCGN_found = False
     NCBI_ID_found = False
+    HCGN_count = 0
+    NCBI_count = 0
     no_match =0
     sequences_added=0
     match_but_no_isoforms =0
@@ -199,11 +201,13 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
         try:
             HGNC_ID = get_bio_IDs_with_regex('HGNC',re.findall('/db_xref="HGNC:HGNC:\d+',entry)[0])
             HCGN_found = True
+            HCGN_count +=1
         except:
             pass
         try:
             NCBI_ID = re.findall('\d+',re.findall('/db_xref=\"GeneID:\d+\"',entry)[0])
             NCBI_ID_found = True
+            NCBI_count += 1
         except:
             pass
         protein_sequence = extract_protein_sequence_from_refseq_entry(entry)
@@ -271,17 +275,41 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                             isoform_processed = True
                             print('new collection YP')
 
+        #no match in list of gene objects
         if not gene_found:
-            #print('no match for this entry')
-            #print(entry)
-            #maybe create new gene object?
-            pass
+            if NP:
+                if HCGN_found:
+                    list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
+                                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID,refseq_NP_version=NP_version)]))
+                else:
+                    list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
+                                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID,refseq_NP_version=NP_version)]))
+
+            elif XP:
+                if HCGN_found:
+                    list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
+                                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_XM_version=XM_ID_version,refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
+                else:
+                    list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
+                                                     protein_sequence_isoform_collection=[
+                                                         Protein_isoform(protein_sequence, refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
+            elif YP:
+                if HCGN_found:
+                    list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
+                                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_YP=YP_ID,refseq_NC_version=NC_ID_version,refseq_YP_version=YP_version)]))
+                else:
+                    list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
+                                                     protein_sequence_isoform_collection=[
+                                                         Protein_isoform(protein_sequence,refseq_YP=YP_ID,refseq_NC_version=NC_ID_version,refseq_YP_version=YP_version)]))
+
 
     print('total entries: ',len(splittext))
     print('not NP: ',not_NP)
     print('no matches: ',no_match)
     print('sequences added: ',sequences_added)
     print('match but no isoforms:',match_but_no_isoforms)
+    print('HCGN count', HCGN_count)
+    print('NCBI count', NCBI_count)
 
 
 def extract_protein_sequence_from_refseq_entry(entry):

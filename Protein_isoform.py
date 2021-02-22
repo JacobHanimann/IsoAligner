@@ -2,7 +2,7 @@
 
 class Protein_isoform:
     '''objects stored in protein_sequence_isoform_collection attribute of the Gene Class'''
-    def __init__(self, gene_name, protein_sequence, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None, ENSP_version=None,transcript_name=None,
+    def __init__(self,  protein_sequence, gene_name=None, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None, ENSP_version=None,transcript_name=None,
                  refseq_NM=None, refseq_NM_version=None, refseq_NP_version=None, refseq_NP=None, refseq_NC_version=None,refseq_XM_version=None,
                  refseq_XP=None, refseq_XP_version=None, refseq_YP_version=None, refseq_YP=None,
                  uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None):
