@@ -103,6 +103,8 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
         print(index)
         found = False
         uniparc_ID = df.loc[index, 'UniParc ID']
+        if type(uniparc_ID) ==float:
+            continue
         for gene in list_of_gene_objects:
             if found:
                 break
@@ -110,9 +112,12 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
                 for sequence in gene.protein_sequence_isoform_collection:
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
-                        sequence.refseq_NM = df.loc[index, 'RefSeq mRNA ID']
-                        sequence.transcript_name = df.loc[index, 'Transcript name']
-                        sequence.uniprot_isoform = df.loc[index, 'UniProtKB isoform ID']
+                        if type(df.loc[index, 'RefSeq mRNA ID'])!=float:
+                            sequence.refseq_NM = df.loc[index, 'RefSeq mRNA ID']
+                        if type(df.loc[index, 'Transcript name'])!=float:
+                            sequence.transcript_name = df.loc[index, 'Transcript name']
+                        if type( df.loc[index, 'UniProtKB isoform ID'])!=float:
+                            sequence.uniprot_isoform = df.loc[index, 'UniProtKB isoform ID']
                         break
             else:
                 continue
@@ -124,6 +129,8 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
         print(index)
         found = False
         uniparc_ID = df.loc[index, 'UniParc ID']
+        if type(uniparc_ID)!=float:
+            continue
         for gene in list_of_gene_objects:
             if found:
                 break
@@ -131,11 +138,9 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
                 for sequence in gene.protein_sequence_isoform_collection:
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
-                        #if df.loc[index, 'RefSeq peptide ID']=='nan':
-                            #print('its nan')
-                        sequence.refseq_protein = df.loc[index, 'RefSeq peptide ID']
-                        #print(type(df.loc[index, 'RefSeq peptide ID']))
-                        break
+                        if type( df.loc[index, 'RefSeq peptide ID'])!=float:
+                            sequence.refseq_protein = df.loc[index, 'RefSeq peptide ID']
+                            break
             else:
                 continue
 
@@ -439,9 +444,9 @@ def save_results_to_tsv_file(dictionary):
 
 #create list of gene objects
 print('generating gene list')
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',113000)
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt',5000)
 
-add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
 #checking values
 #count = 0
@@ -458,7 +463,7 @@ add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_f
 
 #add HCGN adn NCBI gene information
 print('adding HCGN information')
-add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
+#add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects,200)
 
 #add ID's to protein_isoform class
 print('add uniprot IDs')
