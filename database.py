@@ -120,6 +120,8 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
                 break
             if type(gene.protein_sequence_isoform_collection) == list:
                 for sequence in gene.protein_sequence_isoform_collection:
+                    if found:
+                        break
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
                         if type(df.loc[index, 'RefSeq mRNA ID'])!=float:
@@ -147,6 +149,8 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
                 break
             if type(gene.protein_sequence_isoform_collection) == list:
                 for sequence in gene.protein_sequence_isoform_collection:
+                    if found:
+                        break
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
                         if type( df.loc[index, 'RefSeq peptide ID'])!=float:
@@ -185,6 +189,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     print('total length: ',len(splittext))
     for entry in splittext[0:-1]:
         fasta_count += 1
+        print(fasta_count)
 
         #extract information out of entry
         #extract which type of ID is used
@@ -247,25 +252,34 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
             if gene_found:
                 if isoform_processed:
                     break
+                #print(gene.HGNC, HGNC_ID)
                 if NP:
                     if type(gene.protein_sequence_isoform_collection) == list:
                         for isoform in gene.protein_sequence_isoform_collection:
                             if isoform_processed:
                                 break
-                        if isoform.refseq_NP == NP_ID:
+                            #print(isoform.refseq_NP, NP_ID)
+                            if isoform.refseq_NP == NP_ID:
+                                if isoform.protein_sequence == protein_sequence:
+                                    isoform.refseq_NP_version= NP_version
+                                    isoform.refseq_NM_version=NM_ID_version
+                                    print('ID versions added')
+                                    isoform_processed = True
+                                    break
+                                else:
+                                    print('same NP ID but not same sequence')
                             if isoform.protein_sequence == protein_sequence:
-                                isoform.refseq_NP_version= NP_version
-                                isoform.refseq_NM_version=NM_ID_version
-                                print('ID versions added')
+                                isoform.refseq_NP = NP_ID
+                                isoform.refseq_NP_version = NP_version
+                                isoform.refseq_NM_version = NM_ID_version
+                                print('same sequence, added IDs know')
+
+                        if not isoform_processed:
+                                #print(gene.HGNC, HGNC_ID, NCBI_ID,gene.refseq_gene_ID,NP_ID)
+                                gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
                                 isoform_processed = True
-                                break
-                            else:
-                                print('same NP ID but not same sequence')
-                        else:
-                            print('new sequence gene_found')
-                            gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
-                            isoform_processed = True
-                            sequences_added += 1
+                                #print('added isoform')
+                                sequences_added += 1
                 elif XP:
                     if type(gene.protein_sequence_isoform_collection) == list:
                         gene.protein_sequence_isoform_collection.append(
@@ -454,23 +468,33 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-#create list of gene objects
-print('generating gene list')
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+##create list of gene objects
+#print('generating gene list')
+#list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+#
+##add HCGN adn NCBI gene information
+#print('adding HCGN information')
+#add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
+#
+##add ID's to protein_isoform class
+#print('add uniprot IDs')
+#add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+#print('add refseq Ids')
+#add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+#
+##save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
 
-#add HCGN adn NCBI gene information
-print('adding HCGN information')
-add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "rb") as fp:  # Pickling
+        list_of_gene_objects = pickle.load(fp)
 
-#add ID's to protein_isoform class
-print('add uniprot IDs')
-add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
-print('add refseq Ids')
-add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+for gene in list_of_gene_objects:
+    if type(gene.protein_sequence_isoform_collection)==list:
+        for isoform in gene.protein_sequence_isoform_collection:
+            if isoform.refseq_NM!=None:
+                print(isoform.refseq_NM)
 
-#save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
 
 #add refseq fasta files and IDs
 print('add refseq fasta')
