@@ -1,9 +1,9 @@
 import pandas as pd
-from functions_old import * #import all functions from the functions_old.py file
 from collections.abc import Iterable
 import pickle
 from Gene import *
 from Protein_isoform import *
+from Alignment import *
 
 
 def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects,number_of_Ids=100):
@@ -53,7 +53,6 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
         expenses_txt = f.readlines()
     # Put all the lines into a single string
     whole_txt = "".join(expenses_txt)
-    print(whole_txt)
     splittext = re.split(">", whole_txt)
     fasta_count = 0
     matches = 0
@@ -63,7 +62,10 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
         found = False
         gene_name = get_bio_IDs_with_regex('gene_name', fasta)
         # create Protein_isoform object to add to the gene_object
-        sequence_object = Protein_isoform(gene_name, extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1]),
+        aa_sequence = Alignment.extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1])
+        if aa_sequence==None: #sequence shorter than 7 AA long
+            continue
+        sequence_object = Protein_isoform(gene_name, aa_sequence,
                                           get_bio_IDs_with_regex('ensembl_ensg', fasta),
                                           get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
                                           get_bio_IDs_with_regex('ensembl_enst', fasta),
@@ -72,9 +74,6 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file,number_of_f
                                           get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
                                           uniprot_accession=get_bio_IDs_with_regex('uniprot_accession', fasta),
                                           uniprot_uniparc=get_bio_IDs_with_regex('uniprot_uniparc', fasta))
-        if extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1])==None:
-            print('its None')
-            print(fasta)
         for gene in list_of_gene_objects:
             if found:
                 break

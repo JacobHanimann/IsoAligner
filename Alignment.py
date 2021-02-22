@@ -15,12 +15,12 @@ class Alignment:
         without_newline = re.sub('\n', '', fasta_file)
         without_newline_and_whitespice = re.sub('\s', '', without_newline)
         sequence_of_AA_acronym = '[A-Z]+'
-        minimal_length_of_AA_seq = '[A-Z]{10}'
+        minimal_length_of_AA_seq = '[A-Z]{7}'
         raw_AA_seq_list = re.findall(sequence_of_AA_acronym + minimal_length_of_AA_seq, without_newline_and_whitespice)
         if len(raw_AA_seq_list) >= 1:
             return raw_AA_seq_list[0]  # string
         else:
-            return 'no AA sequence found'
+            return None
 
 
     @staticmethod
