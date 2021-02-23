@@ -142,7 +142,7 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
         print(index)
         found = False
         uniparc_ID = df.loc[index, 'UniParc ID']
-        if type(uniparc_ID)!=float:
+        if type(uniparc_ID)==float:
             continue
         for gene in list_of_gene_objects:
             if found:
@@ -153,7 +153,7 @@ def add_refseq_protein_IDs(file, list_of_gene_objects):
                         break
                     if sequence.uniprot_uniparc == uniparc_ID:
                         found = True
-                        if type( df.loc[index, 'RefSeq peptide ID'])!=float:
+                        if type(df.loc[index, 'RefSeq peptide ID'])!=float:
                             sequence.refseq_protein = df.loc[index, 'RefSeq peptide ID']
                             break
             else:
@@ -495,11 +495,18 @@ for gene in list_of_gene_objects:
             if isoform.refseq_NM!=None:
                 print(isoform.refseq_NM)
 
+add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+
+
+#save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_23_feb_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
+
 
 #add refseq fasta files and IDs
 print('add refseq fasta')
 add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
 #save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb_second.txt", "wb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_23_feb_third.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
