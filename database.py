@@ -489,11 +489,11 @@ def save_results_to_tsv_file(dictionary):
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
 
-for gene in list_of_gene_objects:
-    if type(gene.protein_sequence_isoform_collection)==list:
-        for isoform in gene.protein_sequence_isoform_collection:
-            if isoform.refseq_NM!=None:
-                print(isoform.refseq_NM)
+#for gene in list_of_gene_objects:
+#    if type(gene.protein_sequence_isoform_collection)==list:
+#        for isoform in gene.protein_sequence_isoform_collection:
+#            if isoform.refseq_NM!=None:
+#                print(isoform.refseq_NM)
 
 add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 
