@@ -66,15 +66,16 @@ def get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects(file):
     fasta_count = 0
     matches = 0
     list_of_gene_objects =[]
-    for fasta in splittext[1:]:
+    for fasta in splittext[1:10000]:
         fasta_count += 1
         found = False
         gene_name = get_bio_IDs_with_regex('gene_name', fasta)
         # create Protein_isoform object to add to the gene_object
         aa_sequence = Alignment.extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1])
+        print(aa_sequence)
         if aa_sequence==None: #sequence shorter than 7 AA long
             continue
-        sequence_object = Protein_isoform(gene_name, aa_sequence,
+        sequence_object = Protein_isoform(aa_sequence, gene_name,
                                           get_bio_IDs_with_regex('ensembl_ensg', fasta),
                                           get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
                                           get_bio_IDs_with_regex('ensembl_enst', fasta),
@@ -406,18 +407,35 @@ def add_uniprot_fasta_files(file,list_of_objects):
                     break
                 list_of_gene_names = [gene.ensembl_gene_symbol] + [gene.HGNC_gene_symbol]
                 if type(gene.alias_symbols) ==list:
-                    list_of_gene_names = list_of_gene_names +gene.alias_symbols
+                    list_of_gene_names = list_of_gene_names + gene.alias_symbols
                 if type(gene.previous_symbols)==list:
-                    list_of_gene_names = list_of_gene_names +gene.previous_symbols
+                    list_of_gene_names = list_of_gene_names + gene.previous_symbols
                 if gene_name in list_of_gene_names:
                     gene_identified= True
                     gene_index = index
-
                     break
 
             # if gene name was found in list of gene objects
             if gene_identified:
-                pass
+                if type(gene.protein_sequence_isoform_collection)==list:
+                    for isoform in gene.protein_sequence_isoform_collection:
+                        if isoform.uniprot_accession == accession:
+                            if isoform.protein_sequence == protein_sequence:
+                                print('already in')
+                            else:
+                                print('not the same sequence accession')
+                                print('in database:',isoform.protein_sequence)
+                                print('middle')
+                                print('uniprot:',protein_sequence)
+                                print('here')
+                        elif isoform.uniprot_isoform == accession:
+                            if isoform.protein_sequence == protein_sequence:
+                                print('already in')
+                            else:
+                                print('not the same sequence uniprot isoform')
+                        else:
+                            pass
+
 
             # gene name was not found in list of gene objects
             else:
@@ -536,10 +554,15 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-##create list of gene objects
-#print('generating gene list')
-#list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
-#
+#create list of gene objects
+print('generating gene list')
+list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+
+for gene in list_of_gene_objects:
+    if type(gene.protein_sequence_isoform_collection)==list:
+        for isoform in gene.protein_sequence_isoform_collection:
+            print(isoform.protein_sequence)
+
 ##add HCGN adn NCBI gene information
 #print('adding HCGN information')
 #add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
@@ -554,16 +577,21 @@ def save_results_to_tsv_file(dictionary):
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "wb") as fp:  # Pickling
 #    pickle.dump(list_of_gene_objects, fp)
 
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "rb") as fp:  # Pickling
-        list_of_gene_objects = pickle.load(fp)
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "rb") as fp:  # Pickling
+        #list_of_gene_objects = pickle.load(fp)
+
+for gene in list_of_gene_objects:
+    if type(gene.protein_sequence_isoform_collection)==list:
+        for isoform in gene.protein_sequence_isoform_collection:
+            print(isoform.protein_sequence)
 
 add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
 
-#for gene in list_of_gene_objects:
-#    if type(gene.protein_sequence_isoform_collection)==list:
-#        for isoform in gene.protein_sequence_isoform_collection:
-#            if isoform.refseq_NM!=None:
-#                print(isoform.refseq_NM)
+for gene in list_of_gene_objects:
+    if type(gene.protein_sequence_isoform_collection)==list:
+        for isoform in gene.protein_sequence_isoform_collection:
+            if isoform.refseq_NM!=None:
+                print(isoform.refseq_NM)
 
 add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 
