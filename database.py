@@ -396,8 +396,9 @@ def add_uniprot_fasta_files(file,list_of_objects):
         except:
             print('no AA sequence found')
 
-
+        #if fasta file contains a gene name
         if gene_name_found:
+
             #find gene object
             gene_identified = False
             for index, gene in enumerate(list_of_gene_objects):
@@ -413,10 +414,14 @@ def add_uniprot_fasta_files(file,list_of_objects):
                     gene_index = index
 
                     break
+
+            # if gene name was found in list of gene objects
             if gene_identified:
-                print('it true')
+                pass
+
+            # gene name was not found in list of gene objects
             else:
-                print('new seq')
+                pass
 
 
     print('fasta files with no gene names:', no_gene_name)
