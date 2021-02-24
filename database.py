@@ -378,25 +378,48 @@ def add_uniprot_fasta_files(file,list_of_objects):
     for fasta in splittext:
 
         #organisation
-        gene_name_found = False
+        gene_name_found = True
 
         #extracting information
         try:
-            accession_number = re.split('\|',fasta)[1]
+            accession = re.split('\|',fasta)[1]
         except:
             print('no accession number')
             print(fasta)
         try:
             gene_name = re.findall("GN=[A-Z,0-9]+",fasta)[0][3:]
-            gene_name_found=True
         except:
             no_gene_name +=1
+            gene_name_found=False
         try:
             protein_sequence = Alignment.extract_only_AA_of_Fasta_file(re.split("\n",fasta,maxsplit=1)[1])
         except:
             print('no AA sequence found')
-    print('fasta files with no gene names:',no_gene_name)
 
+
+        if gene_name_found:
+            #find gene object
+            gene_identified = False
+            for index, gene in enumerate(list_of_gene_objects):
+                if gene_identified:
+                    break
+                list_of_gene_names = [gene.ensembl_gene_symbol] + [gene.HGNC_gene_symbol]
+                if type(gene.alias_symbols) ==list:
+                    list_of_gene_names = list_of_gene_names +gene.alias_symbols
+                if type(gene.previous_symbols)==list:
+                    list_of_gene_names = list_of_gene_names +gene.previous_symbols
+                if gene_name in list_of_gene_names:
+                    gene_identified= True
+                    gene_index = index
+
+                    break
+            if gene_identified:
+                print('it true')
+            else:
+                print('new seq')
+
+
+    print('fasta files with no gene names:', no_gene_name)
 
 
 
