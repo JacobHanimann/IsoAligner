@@ -166,6 +166,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
     if unique: add protein_isoform object
     if not unique: complement ID's'''
 
+
     #prepare file
     with open(file, "r") as f:
         expenses_txt = f.readlines()
@@ -363,6 +364,41 @@ def extract_protein_sequence_from_refseq_entry(entry):
 def add_uniprot_fasta_files(file,list_of_objects):
     '''complement library with fasta sequences from uniprot'''
 
+    #prepare file
+    with open(file, "r") as f:
+        expenses_txt = f.readlines()
+        # Put all the lines into a single string
+    whole_txt = "".join(expenses_txt)
+    splittext = re.split("\n>", whole_txt)
+
+    #iterate
+    for fasta in splittext:
+
+        #organisation
+        gene_name_found = False
+
+        #extracting information
+        try:
+            accession_number = re.split('\|',fasta)[1]
+        except:
+            print('no accession number')
+            print(fasta)
+        try:
+            gene_name = re.findall("GN=[A-Z,0-9]+",fasta)[0][3:]
+            gene_name_found=True
+        except:
+            print('no gene name found')
+            print(fasta)
+        try:
+            protein_sequence = Alignment.extract_only_AA_of_Fasta_file(re.split("\n",fasta,maxsplit=1)[1])
+        except:
+            print('no AA sequence found')
+
+
+
+
+
+
 
 def get_bio_IDs_with_regex(ID_type, string):
     'generic functions to extract certain ID types from different databases'
@@ -488,6 +524,8 @@ def save_results_to_tsv_file(dictionary):
 
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
+
+add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
 
 #for gene in list_of_gene_objects:
 #    if type(gene.protein_sequence_isoform_collection)==list:
