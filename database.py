@@ -429,24 +429,34 @@ def add_uniprot_fasta_files(file,list_of_objects):
             # if gene name was found in list of gene objects
             if gene_identified:
                 if type(gene.protein_sequence_isoform_collection)==list:
+                    found = False
                     for isoform in gene.protein_sequence_isoform_collection:
+                        if found:
+                            break
                         if isoform.uniprot_accession == accession:
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_accession += 1
-                                break
+                                found = True
                             else:
                                 accession_in_but_other_sequence += 1
-                                break
+                                isoform.uniprot_accession = None  # delete (false) attribute of isoform
+                                gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession, gene_name=gene_name)) #add isoform to collection
+                                found = True
 
                         elif isoform.uniprot_isoform == accession:
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_uniprot_isoform += 1
-                                break
+                                found = True
                             else:
                                 uniprot_isoform_not_same_seq +=1
-                        else:
+                                isoform.uniprot_isoform = None  # delete (false) attribute of isoform
+                                gene.protein_sequence_isoform_collection.append(
+                                    Protein_isoform(protein_sequence, uniprot_isoform=accession, gene_name=gene_name)) #add isoform to collection #also add uniprot accession
+                                found = True
+
+                    if not found:
                             new_isoform_for_gene += 1
-                            break
+
 
 
             # gene name was not found in list of gene objects
