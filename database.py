@@ -420,19 +420,26 @@ def add_uniprot_fasta_files(file,list_of_objects):
                     for isoform in gene.protein_sequence_isoform_collection:
                         if isoform.uniprot_accession == accession:
                             if isoform.protein_sequence == protein_sequence:
-                                print('already in')
+                                #print('already in accession')
+                                pass
                             else:
-                                print('not the same sequence accession')
+                                pass
+                                #print('not the same sequence accession')
+                                #print('in database:',isoform.protein_sequence)
+                                #print('middle')
+                                #print('uniprot:',protein_sequence)
+                                #print('here')
+                        elif isoform.uniprot_isoform == accession:
+                            if isoform.protein_sequence == protein_sequence:
+                                #print('already in uniprot isoform')
+                                pass
+                            else:
+                                print('not the same sequence uniprot isoform')
                                 print('in database:',isoform.protein_sequence)
                                 print('middle')
                                 print('uniprot:',protein_sequence)
                                 print('here')
-                        elif isoform.uniprot_isoform == accession:
-                            if isoform.protein_sequence == protein_sequence:
-                                print('already in')
-                            else:
-                                print('not the same sequence uniprot isoform')
-                        else:
+                        else: #two distinct isoformss
                             pass
 
 
@@ -553,52 +560,52 @@ def save_results_to_tsv_file(dictionary):
 
 #Execution
 
-#create list of gene objects
-print('generating gene list')
-list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
-
-#save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_first.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
-
-#add HCGN adn NCBI gene information
-print('adding HCGN information')
-add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
-
-#save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_second.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
-
-#add ID's to protein_isoform class
-print('add uniprot IDs')
-add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
-
-#save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_third.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
-
-print('add refseq Ids')
-add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
-
-#save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
-
-#add refseq fasta files and IDs
-print('add refseq fasta')
-add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
-
-#save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fifth.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
-
-
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_22_feb.txt", "rb") as fp:  # Pickling
-        #list_of_gene_objects = pickle.load(fp)
-
-
-#add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+##create list of gene objects
+#print('generating gene list')
+#list_of_gene_objects = get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
 #
+##save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_first.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+#
+##add HCGN adn NCBI gene information
+#print('adding HCGN information')
+#add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
+#
+##save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_second.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+#
+##add ID's to protein_isoform class
+#print('add uniprot IDs')
+#add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+#
+##save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_third.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+#
+#print('add refseq Ids')
+#add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+#
+##save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+#
+##add refseq fasta files and IDs
+#print('add refseq fasta')
+#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+#
+##save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fifth.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+
+
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
+        list_of_gene_objects = pickle.load(fp)
+
+
+add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+
 #for gene in list_of_gene_objects:
 #    if type(gene.protein_sequence_isoform_collection)==list:
 #        for isoform in gene.protein_sequence_isoform_collection:
