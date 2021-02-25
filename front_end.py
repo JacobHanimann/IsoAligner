@@ -17,7 +17,7 @@ from PIL import Image
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
 
 #import database
-list_of_gene_objects = Input_flow.import_data_from_url('https://drive.google.com/file/d/1hKq8ksU1I8A61zvqOkKrx8WIfbP32TG4/view?usp=sharing')
+list_of_gene_objects = Input_flow.import_data_from_url('https://drive.google.com/file/d/1rmkH0uc50XNsdJ4M7vic8ikEtkY1Q2UM/view?usp=sharing')
 
 #Streamlit website
 def main():
