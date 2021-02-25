@@ -373,12 +373,24 @@ def add_uniprot_fasta_files(file,list_of_objects):
 
     #organisation
     no_gene_name = 0
+    already_in_accession = 0
+    accession_in_but_other_sequence = 0
+    already_in_uniprot_isoform = 0
+    uniprot_isoform_not_same_seq = 0
+    new_isoform_for_gene = 0
+    no_gene_match_found = 0
+    fasta_count = 0
+
+
+    print(len(splittext))
 
     #iterate
-    for fasta in splittext:
+    for fasta in splittext[1:10000]:
 
         #organisation
         gene_name_found = True
+        fasta_count += 1
+        print(fasta_count)
 
         #extracting information
         try:
@@ -420,35 +432,37 @@ def add_uniprot_fasta_files(file,list_of_objects):
                     for isoform in gene.protein_sequence_isoform_collection:
                         if isoform.uniprot_accession == accession:
                             if isoform.protein_sequence == protein_sequence:
-                                #print('already in accession')
-                                pass
+                                already_in_accession += 1
+                                break
                             else:
-                                pass
-                                #print('not the same sequence accession')
-                                #print('in database:',isoform.protein_sequence)
-                                #print('middle')
-                                #print('uniprot:',protein_sequence)
-                                #print('here')
+                                accession_in_but_other_sequence += 1
+                                break
+
                         elif isoform.uniprot_isoform == accession:
                             if isoform.protein_sequence == protein_sequence:
-                                #print('already in uniprot isoform')
-                                pass
+                                already_in_uniprot_isoform += 1
+                                break
                             else:
-                                print('not the same sequence uniprot isoform')
-                                print('in database:',isoform.protein_sequence)
-                                print('middle')
-                                print('uniprot:',protein_sequence)
-                                print('here')
-                        else: #two distinct isoformss
-                            pass
+                                uniprot_isoform_not_same_seq +=1
+                        else:
+                            new_isoform_for_gene += 1
+                            break
 
 
             # gene name was not found in list of gene objects
             else:
+                no_gene_match_found +=1
                 pass
 
 
     print('fasta files with no gene names:', no_gene_name)
+    print('already in accession',already_in_accession)
+    print('accession but other sequence',accession_in_but_other_sequence)
+    print('already in uniprot isoform',already_in_uniprot_isoform)
+    print('uniprot_isoform_not_same_seq',uniprot_isoform_not_same_seq)
+    print('new_isoform_for_gene',new_isoform_for_gene)
+    print('no_gene_match_found',no_gene_match_found)
+
 
 
 
