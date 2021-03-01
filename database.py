@@ -301,7 +301,6 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                             Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
                                             refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
                                             refseq_XP_version=XP_version))
-                        sequences_added += 1
                     else:
                         gene.protein_sequence_isoform_collection = [Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
                                             refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
@@ -314,7 +313,6 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                         gene.protein_sequence_isoform_collection.append(
                         Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
                                         refseq_YP_version=YP_version, refseq_YP=YP_ID, refseq_NC_version=NC_ID_version))
-                        sequences_added += 1
                     else:
                         gene.protein_sequence_isoform_collection= [Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
                                         refseq_YP_version=YP_version, refseq_YP=YP_ID, refseq_NC_version=NC_ID_version)]
@@ -323,6 +321,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
         #no match in list of gene objects
         #make a new gene object
         if not gene_found:
+            no_match += 1
             if NP:
                 if HCGN_found:
                     list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
@@ -350,9 +349,9 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
 
 
     print('total entries: ',len(splittext))
-    print('not NP: ',not_any_type)
+    print('not any type: ',not_any_type)
     print('no matches: ',no_match)
-    print('sequences added: ',sequences_added)
+    print('NP sequences added: ',sequences_added)
     print('match but no isoforms:',match_but_no_isoforms)
     print('HCGN count', HCGN_count)
     print('NCBI count', NCBI_count)
@@ -649,14 +648,17 @@ def get_bio_IDs_with_regex(ID_type, string):
 #    pickle.dump(list_of_gene_objects, fp)
 
 
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
+#        list_of_gene_objects = pickle.load(fp)
+#
+#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+#
+###save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
-
-add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
-
-##save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
 
 add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
 
