@@ -188,7 +188,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
 
 
     print('total length: ',len(splittext))
-    for entry in splittext[0:10000]:
+    for entry in splittext[0:-1]:
 
         #counting info
         NP = False
@@ -655,6 +655,9 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
 
 add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 
+##save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
 
 
 #add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
