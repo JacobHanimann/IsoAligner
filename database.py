@@ -380,21 +380,25 @@ def add_uniprot_fasta_files(file,list_of_objects):
     new_isoform_for_gene = 0
     no_gene_match_found = 0
     fasta_count = 0
+    protein_sequence_already_without_uniprot_ID = 0
 
 
     print(len(splittext))
 
     #iterate
-    for fasta in splittext[1:10000]:
+    for fasta in splittext[1:2000]:
 
         #organisation
         gene_name_found = True
         fasta_count += 1
         print(fasta_count)
+        uniprot_isoform = False
 
         #extracting information
         try:
             accession = re.split('\|',fasta)[1]
+            if "-" in accession:
+                uniprot_isoform= True
         except:
             print('no accession number')
             print(fasta)
@@ -440,7 +444,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
                             else:
                                 accession_in_but_other_sequence += 1
                                 isoform.uniprot_accession = None  # delete (false) attribute of isoform
-                                gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession, gene_name=gene_name)) #add isoform to collection
+                                gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession, uniprot_isoform=accession+"-1", gene_name=gene_name)) #add isoform to collection
                                 found = True
 
                         elif isoform.uniprot_isoform == accession:
@@ -451,8 +455,16 @@ def add_uniprot_fasta_files(file,list_of_objects):
                                 uniprot_isoform_not_same_seq +=1
                                 isoform.uniprot_isoform = None  # delete (false) attribute of isoform
                                 gene.protein_sequence_isoform_collection.append(
-                                    Protein_isoform(protein_sequence, uniprot_isoform=accession, gene_name=gene_name)) #add isoform to collection #also add uniprot accession
+                                    Protein_isoform(protein_sequence, uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession),uniprot_isoform=accession, gene_name=gene_name))
                                 found = True
+
+                        elif isoform.protein_sequence == protein_sequence:
+                             protein_sequence_already_without_uniprot_ID +=1
+                             if uniprot_isoform:
+                                isoform.uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession)
+                                isoform.uniprot_isoform = accession
+                             else:
+                                 isoform.uniprot_accession = accession
 
                     if not found:
                             new_isoform_for_gene += 1
@@ -472,6 +484,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
     print('uniprot_isoform_not_same_seq',uniprot_isoform_not_same_seq)
     print('new_isoform_for_gene',new_isoform_for_gene)
     print('no_gene_match_found',no_gene_match_found)
+    print('protein sequence match but no uniprot_ID associated: ', protein_sequence_already_without_uniprot_ID)
 
 
 
