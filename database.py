@@ -386,7 +386,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
     print(len(splittext))
 
     #iterate
-    for fasta in splittext[1:2000]:
+    for fasta in splittext[1:10000]:
 
         #organisation
         gene_name_found = True
@@ -440,6 +440,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
                         if isoform.uniprot_accession == accession:
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_accession += 1
+                                isoform.uniprot_isoform = accession+'-1'
                                 found = True
                             else:
                                 accession_in_but_other_sequence += 1
@@ -459,15 +460,22 @@ def add_uniprot_fasta_files(file,list_of_objects):
                                 found = True
 
                         elif isoform.protein_sequence == protein_sequence:
+                             found = True
                              protein_sequence_already_without_uniprot_ID +=1
                              if uniprot_isoform:
                                 isoform.uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession)
                                 isoform.uniprot_isoform = accession
                              else:
                                  isoform.uniprot_accession = accession
+                                 isoform.uniprot_isoform = accession+'-1'
 
                     if not found:
-                            new_isoform_for_gene += 1
+                        new_isoform_for_gene += 1
+                        if uniprot_isoform:
+                            gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence,uniprot_accession=get_bio_IDs_with_regex('uniprot_accession', accession),
+                                            uniprot_isoform=accession, gene_name=gene_name))
+                        else:
+                            gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession,uniprot_isoform=accession+'-1', gene_name=gene_name))
 
 
 
@@ -583,15 +591,6 @@ def get_bio_IDs_with_regex(ID_type, string):
             return match_list[0]
         else:
             return match_list
-
-
-
-def save_all_data_in_pickle_style():
-    'write general function to save files in the pickle format'
-
-
-def save_results_to_tsv_file(dictionary):
-    'to be pre-computed values'
 
 
 
