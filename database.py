@@ -402,7 +402,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
     print(len(splittext))
 
     #iterate
-    for fasta in splittext[1:10000]:
+    for fasta in splittext[1:len(splittext)]:
 
         #organisation
         gene_name_found = True
