@@ -3,6 +3,7 @@ import pickle
 import streamlit as st
 import urllib
 from Streamlit_community import *
+import gzip
 
 class Input_flow:
     pass
@@ -21,7 +22,7 @@ class Input_flow:
     @st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
         '''import reference file (database), a pickle file generated in the database.py file'''
-        with open(file, "rb") as fp:  # Pickling
+        with gzip.open(file, "rb") as fp:  # Pickling
             list_of_gene_objects = pickle.load(fp)
         return list_of_gene_objects
 
