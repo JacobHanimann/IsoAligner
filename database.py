@@ -605,6 +605,34 @@ def get_bio_IDs_with_regex(ID_type, string):
             return match_list
 
 
+def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
+    '''
+    check out if there were IDs and Seq that are the same but escaped the match
+    :param list_of_gene_objects:
+    :return:
+    '''
+
+    def duplicates(lst, item):
+        return [i for i, x in enumerate(lst) if x == item]
+
+    genes_without_AA_seq = 0
+    duplicates_number = 0
+    for gene in list_of_gene_objects:
+        if type(gene.protein_sequence_isoform_collection)==list:
+            List = [sequence.protein_sequence for sequence in gene.protein_sequence_isoform_collection]
+            duplicates_dict = dict((x, duplicates(List, x)) for x in set(List) if List.count(x) > 1)
+            if len(duplicates_dict) !=0:
+                if list(duplicates_dict.keys())[0]!=None:
+                    duplicates_number += 1
+                    print(duplicates_dict)
+        else:
+            genes_without_AA_seq += 1
+
+    print('number of genes: ', len(list_of_gene_objects))
+    print('genes with no AA seq: ', genes_without_AA_seq)
+    print('number of duplicates: ',duplicates_number)
+
+
 
 #Execution
 
@@ -657,14 +685,14 @@ def get_bio_IDs_with_regex(ID_type, string):
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "wb") as fp:  # Pickling
 #    pickle.dump(list_of_gene_objects, fp)
 
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "rb") as fp:  # Pickling
-        list_of_gene_objects = pickle.load(fp)
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "rb") as fp:  # Pickling
+        #list_of_gene_objects = pickle.load(fp)
 
-add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
-
-##save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march_second.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
+#add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+#
+###save list of gene objects to import to the subsequent script
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march_second.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
 
 #add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
 
@@ -673,3 +701,8 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
 #        for isoform in gene.protein_sequence_isoform_collection:
 #            if isoform.refseq_NM!=None:
 #                print(isoform.refseq_NM)
+
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march_second.txt","rb") as fp:  # Pickling
+        list_of_gene_objects = pickle.load(fp)
+
+check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
