@@ -10,7 +10,6 @@ class Statistics:
         :param list_of_gene_objects:
         :return: dictionary
         '''
-        stats = dict()
         total_number_of_genes = len(list_of_gene_objects)
         total_number_of_isoforms = 0
         genes_without_isoforms = 0
@@ -23,4 +22,4 @@ class Statistics:
 
             else:
                 genes_without_isoforms += 1
-            return total_number_of_genes, total_number_of_isoforms, genes_without_isoforms
+        return total_number_of_genes, total_number_of_isoforms, genes_without_isoforms

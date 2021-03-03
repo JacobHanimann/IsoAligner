@@ -635,9 +635,6 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
 
 
 
-
-
-
 #Execution
 
 ##create list of gene objects

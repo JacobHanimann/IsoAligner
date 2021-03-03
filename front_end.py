@@ -245,6 +245,7 @@ def main():
         total_number_of_genes, total_number_of_isoforms, genes_without_isoforms = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         st.write('Number of genes: ',total_number_of_genes)
         st.write('Number of isoforms in total: ',total_number_of_isoforms)
+        st.write('gene objects without isoforms: ',genes_without_isoforms)
         st.write('Number of Ensembl IDs: ')
         st.write('Number of Refseq IDs: ')
         st.write('Number of Uniprot IDs: ')
