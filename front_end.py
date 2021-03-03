@@ -12,6 +12,7 @@ from User_Input_Preparation import *
 from Input_flow import *
 from Table_Generation import *
 from PIL import Image
+from Statistics import *
 
 #declare session state variables
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
@@ -239,6 +240,14 @@ def main():
         image2 = Image.open('Problem_statement.png')
         st.image(image2,use_column_width=True)
         st.write("\n")
+        st.markdown("#### About the human isoform library:")
+        st.write('\n')
+        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        st.write('Number of genes: ',total_number_of_genes)
+        st.write('Number of isoforms in total: ',total_number_of_isoforms)
+        st.write('Number of Ensembl IDs: ')
+        st.write('Number of Refseq IDs: ')
+        st.write('Number of Uniprot IDs: ')
         st.markdown("#### About the code:")
         st.write("\n")
         st.markdown("##### Needleman-Wunsch Algorithm:")

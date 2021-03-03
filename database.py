@@ -4,6 +4,7 @@ import pickle
 from Gene import *
 from Protein_isoform import *
 from Alignment import *
+import streamlit as st
 
 
 def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects):
@@ -631,6 +632,9 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
     print('number of genes: ', len(list_of_gene_objects))
     print('genes with no AA seq: ', genes_without_AA_seq)
     print('number of duplicates: ',duplicates_number)
+
+
+
 
 
 
