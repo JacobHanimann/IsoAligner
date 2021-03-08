@@ -618,6 +618,8 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
 
     genes_without_AA_seq = 0
     duplicates_number = 0
+    genes_without_duplicates = 0
+    genes_with_more_than_one_duplicate =0
     for gene in list_of_gene_objects:
         if type(gene.protein_sequence_isoform_collection)==list:
             List = [sequence.protein_sequence for sequence in gene.protein_sequence_isoform_collection]
@@ -625,14 +627,20 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
             if len(duplicates_dict) !=0:
                 if list(duplicates_dict.keys())[0]!=None:
                     duplicates_number += 1
+                    print('new gene: ',gene.ensembl_gene_symbol)
                     print(duplicates_dict)
+                if len(duplicates_dict) >1:
+                    genes_with_more_than_one_duplicate +=1
+            else:
+                genes_without_duplicates +=1
         else:
             genes_without_AA_seq += 1
 
     print('number of genes: ', len(list_of_gene_objects))
     print('genes with no AA seq: ', genes_without_AA_seq)
-    print('number of duplicates: ',duplicates_number)
-
+    print('number of genes with duplicates: ',duplicates_number)
+    print('number of genes without duplicates: ',genes_without_duplicates)
+    print('number of genes with more than one duplicate: ',genes_with_more_than_one_duplicate)
 
 
 #Execution
