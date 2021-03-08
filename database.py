@@ -512,8 +512,6 @@ def add_uniprot_fasta_files(file,list_of_objects):
     print('protein sequence match but no uniprot_ID associated: ', protein_sequence_already_without_uniprot_ID)
 
 
-
-
 def get_bio_IDs_with_regex(ID_type, string):
     'generic functions to extract certain ID types from different databases'
     version = False
@@ -652,6 +650,24 @@ def fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_gen
     :param duplicate_genes_dict:
     :return: updated list_of_gene_objects
     '''
+    for gene,duplicates_dict in duplicate_genes_dict.items():
+        print('new gene')
+        for duplicate_AA in duplicates_dict.items():
+            print(duplicate_AA[1])
+            for isoform in duplicate_AA[1]:
+                print(list_of_gene_objects[gene].protein_sequence_isoform_collection[isoform].__dict__)
+
+
+def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
+    '''somewhere in the database generation gene name and protein sequence attribute of a protein isoform object are being falsely switched'''
+    false_assigned_gene_name_isoform = 0
+    for gene in list_of_gene_objects:
+        if type(gene.protein_sequence_isoform_collection) == list:
+            for isoform in gene.protein_sequence_isoform_collection:
+                if type(isoform.gene_name)==str:
+                    if Alignment.extract_only_AA_of_Fasta_file(isoform.gene_name)!= None:
+                        false_assigned_gene_name_isoform +=1
+    print('number of falsely assigned AA seq to gene_name:',false_assigned_gene_name_isoform)
 
 
 #Execution
@@ -725,4 +741,8 @@ def fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_gen
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march_second.txt","rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
 
-check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
+gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
+
+fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+
+check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
