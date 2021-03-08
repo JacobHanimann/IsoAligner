@@ -620,14 +620,14 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
     duplicates_number = 0
     genes_without_duplicates = 0
     genes_with_more_than_one_duplicate =0
-    duplicate_genes = dict()
+    duplicate_genes_dict = dict()
     for index,gene in enumerate(list_of_gene_objects):
         if type(gene.protein_sequence_isoform_collection)==list:
             List = [sequence.protein_sequence for sequence in gene.protein_sequence_isoform_collection]
             duplicates_dict = dict((x, duplicates(List, x)) for x in set(List) if List.count(x) > 1)
             if len(duplicates_dict) !=0:
                 if list(duplicates_dict.keys())[0]!=None:
-                    duplicate_genes[index] = duplicates_dict
+                    duplicate_genes_dict[index] = duplicates_dict
                     duplicates_number += 1
                     print('new gene: ',gene.ensembl_gene_symbol)
                     print(duplicates_dict)
@@ -643,7 +643,15 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
     print('number of genes with duplicates: ',duplicates_number)
     print('number of genes without duplicates: ',genes_without_duplicates)
     print('number of genes with more than one duplicate: ',genes_with_more_than_one_duplicate)
-    return duplicate_genes
+    return duplicate_genes_dict
+
+
+def fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_genes_dict):
+    '''
+    :param list_of_gene_objects:
+    :param duplicate_genes_dict:
+    :return: updated list_of_gene_objects
+    '''
 
 
 #Execution
