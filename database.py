@@ -290,7 +290,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
 
                         if not isoform_processed:
                                 #print(gene.HGNC, HGNC_ID, NCBI_ID,gene.refseq_gene_ID,NP_ID)
-                                gene.protein_sequence_isoform_collection.append(Protein_isoform(gene.ensembl_gene_symbol,protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
+                                gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID, refseq_NP_version= NP_version))
                                 isoform_processed = True
                                 #print('added isoform')
                                 sequences_added += 1
@@ -299,11 +299,11 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                     isoform_processed = True
                     if type(gene.protein_sequence_isoform_collection) == list:
                         gene.protein_sequence_isoform_collection.append(
-                            Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
+                            Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,
                                             refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
                                             refseq_XP_version=XP_version))
                     else:
-                        gene.protein_sequence_isoform_collection = [Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
+                        gene.protein_sequence_isoform_collection = [Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,
                                             refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
                                             refseq_XP_version=XP_version)]
                         print('new collection XP')
@@ -312,10 +312,10 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                     isoform_processed = True
                     if type(gene.protein_sequence_isoform_collection) == list:
                         gene.protein_sequence_isoform_collection.append(
-                        Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
+                        Protein_isoform( protein_sequence,gene_name=gene.ensembl_gene_symbol,
                                         refseq_YP_version=YP_version, refseq_YP=YP_ID, refseq_NC_version=NC_ID_version))
                     else:
-                        gene.protein_sequence_isoform_collection= [Protein_isoform(gene.ensembl_gene_symbol, protein_sequence,
+                        gene.protein_sequence_isoform_collection= [Protein_isoform(protein_sequence, gene_name=gene.ensembl_gene_symbol,
                                         refseq_YP_version=YP_version, refseq_YP=YP_ID, refseq_NC_version=NC_ID_version)]
                         print('new collection YP')
 
@@ -712,34 +712,31 @@ def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
 #    pickle.dump(list_of_gene_objects, fp)
 
 
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
-#        list_of_gene_objects = pickle.load(fp)
-#
-#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
-#
-###save list of gene objects to import to the subsequent script
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "wb") as fp:  # Pickling
-#    pickle.dump(list_of_gene_objects, fp)
-
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march.txt", "rb") as fp:  # Pickling
-        #list_of_gene_objects = pickle.load(fp)
-
-#add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
-#
-###save list of gene objects to import to the subsequent script
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march_second.txt", "wb") as fp:  # Pickling
-#    pickle.dump(list_of_gene_objects, fp)
-
-#add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
-
-#for gene in list_of_gene_objects:
-#    if type(gene.protein_sequence_isoform_collection)==list:
-#        for isoform in gene.protein_sequence_isoform_collection:
-#            if isoform.refseq_NM!=None:
-#                print(isoform.refseq_NM)
-
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_1_march_second.txt","rb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
+
+add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+
+##save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
+
+add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+
+##save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
+
+add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+
+for gene in list_of_gene_objects:
+    if type(gene.protein_sequence_isoform_collection)==list:
+        for isoform in gene.protein_sequence_isoform_collection:
+            if isoform.refseq_NM!=None:
+                print(isoform.refseq_NM)
+
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt","rb") as fp:  # Pickling
+#        list_of_gene_objects = pickle.load(fp)
 
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
 
