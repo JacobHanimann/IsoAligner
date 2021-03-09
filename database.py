@@ -322,6 +322,7 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
         #no match in list of gene objects
         #make a new gene object
         if not gene_found:
+            isoform_processed=True
             no_match += 1
             if NP:
                 if HCGN_found:
@@ -638,10 +639,52 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
 
     print('number of genes: ', len(list_of_gene_objects))
     print('genes with no AA seq: ', genes_without_AA_seq)
-    print('number of genes with duplicates: ',duplicates_number)
-    print('number of genes without duplicates: ',genes_without_duplicates)
-    print('number of genes with more than one duplicate: ',genes_with_more_than_one_duplicate)
+    print('number of genes with AA seq duplicates: ',duplicates_number)
+    print('number of genes without AA seq duplicates: ',genes_without_duplicates)
+    print('number of genes with more than one AA seq duplicate: ',genes_with_more_than_one_duplicate)
     return duplicate_genes_dict
+
+
+
+def check_if_there_are_exact_duplicates(list_of_gene_objects):
+    '''
+    check out if there were IDs and Seq that are the same but escaped the match
+    :param list_of_gene_objects:
+    :return: dictionary of gene indexes as key and dictionary of duplicates of the isoform collection
+    '''
+
+    def duplicates(lst, item):
+        return [i for i, x in enumerate(lst) if x == item]
+
+    genes_without_AA_seq = 0
+    duplicates_number = 0
+    genes_without_duplicates = 0
+    genes_with_more_than_one_duplicate =0
+    duplicate_genes_dict = dict()
+    for index,gene in enumerate(list_of_gene_objects):
+        if type(gene.protein_sequence_isoform_collection)==list:
+            List = [tuple(list(sequence.__dict__.items())) for sequence in gene.protein_sequence_isoform_collection]
+            duplicates_dict = dict((x, duplicates(List, x)) for x in set(List) if List.count(x) > 1)
+            if len(duplicates_dict) !=0:
+                if list(duplicates_dict.keys())[0]!=None:
+                    duplicate_genes_dict[index] = duplicates_dict
+                    duplicates_number += 1
+                    print('new gene: ',gene.ensembl_gene_symbol)
+                    print(duplicates_dict)
+                if len(duplicates_dict) >1:
+                    genes_with_more_than_one_duplicate +=1
+            else:
+                genes_without_duplicates +=1
+        else:
+            genes_without_AA_seq += 1
+
+    print('number of genes: ', len(list_of_gene_objects))
+    print('genes with no AA seq: ', genes_without_AA_seq)
+    print('number of genes with exact duplicates: ',duplicates_number)
+    print('number of genes without exact duplicates: ',genes_without_duplicates)
+    print('number of genes with more than one exact duplicate: ',genes_with_more_than_one_duplicate)
+    return duplicate_genes_dict
+
 
 
 
@@ -715,17 +758,28 @@ def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
 #    pickle.dump(list_of_gene_objects, fp)
 
 
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
-#        list_of_gene_objects = pickle.load(fp)
-#
-#add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
-#
-###save list of gene objects to import to the subsequent script
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march.txt", "wb") as fp:  # Pickling
-#    pickle.dump(list_of_gene_objects, fp)
-#
-#add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_fourth.txt", "rb") as fp:  # Pickling
+        list_of_gene_objects = pickle.load(fp)
 
+gene_duplicates_dict =check_if_there_are_exact_duplicates(list_of_gene_objects)
+
+fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+
+add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
+
+##save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_first.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
+
+gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
+
+fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+
+add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+
+##save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
 
 #for gene in list_of_gene_objects:
 #    if type(gene.protein_sequence_isoform_collection)==list:
@@ -737,7 +791,6 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
         list_of_gene_objects = pickle.load(fp)
 
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
-
 
 fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
 
