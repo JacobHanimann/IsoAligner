@@ -690,7 +690,6 @@ def check_if_there_are_exact_duplicates(list_of_gene_objects):
 
 
 
-
 def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_genes_dict):
     '''
     function that fuses protein isoform objects if the attributes can complement each other to one big object, otherwise the duplicates will stay separated.
