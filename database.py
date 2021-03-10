@@ -649,7 +649,6 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
     return duplicate_genes_dict, duplicates_number,genes_without_duplicates,redundant_sequences,genes_with_more_than_one_duplicate
 
 
-
 def check_if_there_are_exact_duplicates(list_of_gene_objects):
     '''
     check out if there were IDs and Seq that are the same but escaped the match
@@ -694,17 +693,45 @@ def check_if_there_are_exact_duplicates(list_of_gene_objects):
 
 def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_genes_dict):
     '''
+    function that fuses protein isoform objects if the attributes can complement each other to one big object, otherwise the duplicates will stay separated.
     :param list_of_gene_objects:
     :param duplicate_genes_dict:
     :return: updated list_of_gene_objects
     '''
+    reduced_isoform_count = 0
     for gene,duplicates_dict in duplicate_genes_dict.items():
         for duplicate_AA in duplicates_dict.items():
-            if len(duplicate_AA[1])>2:
-                print('new gene')
-                print(duplicate_AA[1])
+            print('gene index:',gene)
+            print(duplicate_AA[1])
+            new_object_attributes = Protein_isoform(duplicate_AA[0])
+            isoform_dict = dict()
+            list_of_attributes = [a for a in dir(new_object_attributes) if not a.startswith('__')]
+            different_attributes = False
+            for isoform in duplicate_AA[1]:
+                if different_attributes:
+                    break
+                isoform = list_of_gene_objects[gene].protein_sequence_isoform_collection[isoform]
+                for attribute in list_of_attributes:
+                    if different_attributes:
+                        break
+                    if getattr(new_object_attributes,attribute)==None:
+                        if getattr(isoform,attribute)!=None:
+                            setattr(new_object_attributes,attribute,getattr(isoform,attribute))
+                    else:
+                        if getattr(isoform, attribute) != None:
+                           if getattr(isoform, attribute) == getattr(new_object_attributes,attribute):
+                               pass #attributes are the same, protein object can still be fused
+                           else: #stop process, IDs differ from each other
+                               different_attributes=True
+            if different_attributes== False:
+                print(new_object_attributes.__dict__)
                 for isoform in duplicate_AA[1]:
                     print(list_of_gene_objects[gene].protein_sequence_isoform_collection[isoform].__dict__)
+                for ele in sorted(duplicate_AA[1], reverse=True):
+                    del list_of_gene_objects[gene].protein_sequence_isoform_collection[ele]
+                list_of_gene_objects[gene].protein_sequence_isoform_collection.append(new_object_attributes)
+                reduced_isoform_count +=1
+                print("reduced count:",reduced_isoform_count)
 
 
 
@@ -801,4 +828,4 @@ check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 
-#fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
