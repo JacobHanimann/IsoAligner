@@ -854,3 +854,7 @@ print('Updated')
 check_if_there_are_exact_duplicates(list_of_gene_objects)
 check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
+
+#save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_10_march_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
