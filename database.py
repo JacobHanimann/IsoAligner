@@ -747,6 +747,24 @@ def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
     print('number of falsely assigned AA seq to gene_name:',false_assigned_gene_name_isoform)
 
 
+def delete_genes_with_no_AA_seq(list_of_gene_obejcts):
+    '''
+    function that delets empty gene_objects
+    :param list_of_gene_obejcts:
+    :return: upaded list of gene objects
+    '''
+    tobedeletedgene = []
+    for index,gene in enumerate(list_of_gene_objects):
+        if type(gene.protein_sequence_isoform_collection) != list:
+            tobedeletedgene.append(index)
+    if tobedeletedgene:
+        for ele in sorted(tobedeletedgene, reverse=True):
+            del list_of_gene_objects[ele]
+    return list_of_gene_obejcts
+
+
+
+
 #Execution
 
 ##create list of gene objects
@@ -822,14 +840,16 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with
         list_of_gene_objects = pickle.load(fp)
 
 check_if_there_are_exact_duplicates(list_of_gene_objects)
-
 check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 
 list_of_gene_objects = fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
 
-print('UDPATED')
+list_of_gene_objects= delete_genes_with_no_AA_seq(list_of_gene_objects)
+
+print('\n')
+print('Updated')
 
 check_if_there_are_exact_duplicates(list_of_gene_objects)
 check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
