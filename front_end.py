@@ -246,7 +246,6 @@ def main():
         st.write('Number of genes: ',total_number_of_genes)
         st.write('Number of isoforms in total: ',total_number_of_isoforms)
         st.write('gene objects without isoforms: ',genes_without_isoforms)
-        st.write('number of genes: ', len(list_of_gene_objects))
         duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate = Statistics.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
         st.write('number of genes with AA seq duplicates: ', duplicates_number)
         st.write('number of genes without AA seq duplicates: ', genes_without_duplicates)

@@ -60,6 +60,5 @@ class Statistics:
             else:
                 genes_without_AA_seq += 1
 
-
         return duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate
 
