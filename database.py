@@ -629,8 +629,6 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
                 if list(duplicates_dict.keys())[0]!=None:
                     duplicate_genes_dict[index] = duplicates_dict
                     duplicates_number += 1
-                    print('new gene now: ',gene.ensembl_gene_symbol)
-                    print(duplicates_dict)
                     for sequence,objects in duplicates_dict.items():
                         redundant_sequences = redundant_sequences + len(objects)
                 if len(duplicates_dict) >1:
@@ -672,8 +670,6 @@ def check_if_there_are_exact_duplicates(list_of_gene_objects):
                 if list(duplicates_dict.keys())[0]!=None:
                     duplicate_genes_dict[index] = duplicates_dict
                     duplicates_number += 1
-                    print('new gene: ',gene.ensembl_gene_symbol)
-                    print(duplicates_dict)
                 if len(duplicates_dict) >1:
                     genes_with_more_than_one_duplicate +=1
             else:
@@ -698,10 +694,12 @@ def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects
     :return: updated list_of_gene_objects
     '''
     reduced_isoform_count = 0
+    couldnotmatch = 0
+    duplicates_in_total = 0
     for gene,duplicates_dict in duplicate_genes_dict.items():
+        tobedeleted= []
+        duplicates_in_total = duplicates_in_total + len(duplicates_dict)
         for duplicate_AA in duplicates_dict.items():
-            print('gene index:',gene)
-            print(duplicate_AA[1])
             new_object_attributes = Protein_isoform(duplicate_AA[0])
             isoform_dict = dict()
             list_of_attributes = [a for a in dir(new_object_attributes) if not a.startswith('__')]
@@ -722,16 +720,19 @@ def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects
                                pass #attributes are the same, protein object can still be fused
                            else: #stop process, IDs differ from each other
                                different_attributes=True
+                               couldnotmatch +=1
             if different_attributes== False:
-                print(new_object_attributes.__dict__)
-                for isoform in duplicate_AA[1]:
-                    print(list_of_gene_objects[gene].protein_sequence_isoform_collection[isoform].__dict__)
-                for ele in sorted(duplicate_AA[1], reverse=True):
-                    del list_of_gene_objects[gene].protein_sequence_isoform_collection[ele]
+                tobedeleted.extend(duplicate_AA[1])
                 list_of_gene_objects[gene].protein_sequence_isoform_collection.append(new_object_attributes)
                 reduced_isoform_count +=1
-                print("reduced count:",reduced_isoform_count)
+        if tobedeleted:
+            for ele in sorted(tobedeleted, reverse=True):
+                del list_of_gene_objects[gene].protein_sequence_isoform_collection[ele]
 
+    print('duplicates in total:', duplicates_in_total)
+    print('duplicates that could not be matched:',couldnotmatch)
+    print('duplicates that could be matched:',reduced_isoform_count)
+    return list_of_gene_objects
 
 
 def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
@@ -743,7 +744,6 @@ def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
                 if type(isoform.gene_name)==str:
                     if Alignment.extract_only_AA_of_Fasta_file(isoform.gene_name)!= None:
                         false_assigned_gene_name_isoform +=1
-                        print(isoform.gene_name)
     print('number of falsely assigned AA seq to gene_name:',false_assigned_gene_name_isoform)
 
 
@@ -827,4 +827,10 @@ check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 
-fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+list_of_gene_objects = fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+
+print('UDPATED')
+
+check_if_there_are_exact_duplicates(list_of_gene_objects)
+check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
+gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
