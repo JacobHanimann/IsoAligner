@@ -619,6 +619,7 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
     duplicates_number = 0
     genes_without_duplicates = 0
     genes_with_more_than_one_duplicate =0
+    redundant_sequences = 0
     duplicate_genes_dict = dict()
     for index,gene in enumerate(list_of_gene_objects):
         if type(gene.protein_sequence_isoform_collection)==list:
@@ -628,8 +629,10 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
                 if list(duplicates_dict.keys())[0]!=None:
                     duplicate_genes_dict[index] = duplicates_dict
                     duplicates_number += 1
-                    print('new gene: ',gene.ensembl_gene_symbol)
+                    print('new gene now: ',gene.ensembl_gene_symbol)
                     print(duplicates_dict)
+                    for sequence,objects in duplicates_dict.items():
+                        redundant_sequences = redundant_sequences + len(objects)
                 if len(duplicates_dict) >1:
                     genes_with_more_than_one_duplicate +=1
             else:
@@ -641,8 +644,9 @@ def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
     print('genes with no AA seq: ', genes_without_AA_seq)
     print('number of genes with AA seq duplicates: ',duplicates_number)
     print('number of genes without AA seq duplicates: ',genes_without_duplicates)
+    print('number of redundant AA sequences:', redundant_sequences)
     print('number of genes with more than one AA seq duplicate: ',genes_with_more_than_one_duplicate)
-    return duplicate_genes_dict
+    return duplicate_genes_dict, duplicates_number,genes_without_duplicates,redundant_sequences,genes_with_more_than_one_duplicate
 
 
 
@@ -688,18 +692,19 @@ def check_if_there_are_exact_duplicates(list_of_gene_objects):
 
 
 
-def fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_genes_dict):
+def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,duplicate_genes_dict):
     '''
     :param list_of_gene_objects:
     :param duplicate_genes_dict:
     :return: updated list_of_gene_objects
     '''
     for gene,duplicates_dict in duplicate_genes_dict.items():
-        print('new gene')
         for duplicate_AA in duplicates_dict.items():
-            print(duplicate_AA[1])
-            for isoform in duplicate_AA[1]:
-                print(list_of_gene_objects[gene].protein_sequence_isoform_collection[isoform].__dict__)
+            if len(duplicate_AA[1])>2:
+                print('new gene')
+                print(duplicate_AA[1])
+                for isoform in duplicate_AA[1]:
+                    print(list_of_gene_objects[gene].protein_sequence_isoform_collection[isoform].__dict__)
 
 
 
@@ -794,6 +799,6 @@ check_if_there_are_exact_duplicates(list_of_gene_objects)
 
 check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 
-gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
+gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 
 #fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
