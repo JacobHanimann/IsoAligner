@@ -723,6 +723,7 @@ def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects
                                couldnotmatch +=1
             if different_attributes== False:
                 tobedeleted.extend(duplicate_AA[1])
+                print(new_object_attributes.__dict__)
                 list_of_gene_objects[gene].protein_sequence_isoform_collection.append(new_object_attributes)
                 reduced_isoform_count +=1
         if tobedeleted:
