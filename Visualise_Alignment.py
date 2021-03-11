@@ -163,6 +163,11 @@ class Visualise_Alignment:
             return getattr(sequence, 'uniprot_isoform')
         elif getattr(sequence, 'refseq_NP') != None:
             return getattr(sequence, 'refseq_NP')
+        else:
+            list_of_attributes = [a for a in dir(sequence) if not a.startswith('__') and not a.startswith('gene_name') and not a.startswith("protein_sequence")]
+            for attribute in list_of_attributes:
+                if getattr(sequence, attribute) != None:
+                    return getattr(sequence, attribute)
 
 
     @staticmethod
