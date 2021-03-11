@@ -80,6 +80,15 @@ class Visualise_Alignment:
                     list_of_transcripts.append((sequence.refseq_NP,index_count)) #additional IDs have to be added
                 else:
                     canonical_element = [(sequence.refseq_NP, index_count)]
+            else:
+                list_of_attributes = [a for a in dir(sequence) if not a.startswith('__') and not a.startswith('gene_name') and not a.startswith("protein_sequence")]
+                for attribute in list_of_attributes:
+                    if getattr(sequence,attribute)!=None:
+                        if not canonical:
+                            list_of_transcripts.append((getattr(sequence,attribute), index_count))  # additional IDs have to be added
+                        else:
+                            canonical_element = [(getattr(sequence,attribute), index_count)]
+                        break
             index_count +=1
 
         final_transcript_list = canonical_element + list_of_transcripts

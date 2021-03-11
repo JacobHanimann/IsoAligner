@@ -751,7 +751,7 @@ def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
     '''
     function that delets empty gene_objects
     :param list_of_gene_obejcts:
-    :return: upaded list of gene objects
+    :return: uptaded list of gene objects
     '''
     tobedeletedgene = []
     for index,gene in enumerate(list_of_gene_objects):
@@ -774,7 +774,6 @@ def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
 
     print('no AA seq Isoforms deleted:',deleted)
     return list_of_gene_objects
-
 
 
 
