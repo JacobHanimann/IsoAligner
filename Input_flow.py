@@ -165,11 +165,12 @@ class Input_flow:
         st.markdown("#### Mapped Amino Acid Positions Table")
         return st.multiselect(
             'Select further columns',
-            ['Gene name', 'Ensembl Gene ID', 'Ensembl Transcript ID', 'Ensembl Protein ID', 'Transcript name',
-             'Refseq Gene ID', 'Refseq Transcript ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
-             'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version',
+            ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)', 'Transcript name',
+             'Refseq Gene ID', 'Refseq Transcript ID (NM)','Refseq Protein ID (NP/YP)', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
+             'Ensembl Gene ID version', 'Ensembl Transcript ID version', 'Ensembl Protein ID version', 'Refseq Transcript ID version','Refseq Protein ID','Refseq predict Transcript ID (XM)',
+             'Refseq predict Transcript ID version (XM)', 'Refseq predict Protein ID (XP)', 'Refseq predict Protein ID version (XP)',
              'HGNC gene symbol'],
-            ['Gene name', 'Ensembl Protein ID', 'Transcript name'])
+            ['Gene name', 'Transcript name'])
 
     @staticmethod
     def generate_download_section(df):
