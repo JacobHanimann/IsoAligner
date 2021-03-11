@@ -723,7 +723,6 @@ def fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects
                                couldnotmatch +=1
             if different_attributes== False:
                 tobedeleted.extend(duplicate_AA[1])
-                print(new_object_attributes.__dict__)
                 list_of_gene_objects[gene].protein_sequence_isoform_collection.append(new_object_attributes)
                 reduced_isoform_count +=1
         if tobedeleted:
@@ -748,7 +747,7 @@ def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
     print('number of falsely assigned AA seq to gene_name:',false_assigned_gene_name_isoform)
 
 
-def delete_genes_with_no_AA_seq(list_of_gene_obejcts):
+def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
     '''
     function that delets empty gene_objects
     :param list_of_gene_obejcts:
@@ -761,7 +760,20 @@ def delete_genes_with_no_AA_seq(list_of_gene_obejcts):
     if tobedeletedgene:
         for ele in sorted(tobedeletedgene, reverse=True):
             del list_of_gene_objects[ele]
-    return list_of_gene_obejcts
+
+    deleted = 0
+    for index_gene,gene in enumerate(list_of_gene_objects):
+        tobedeletedisoform = []
+        for index, isoform in enumerate(gene.protein_sequence_isoform_collection):
+            if isoform.protein_sequence==None:
+                tobedeletedisoform.append(index)
+        if tobedeletedisoform:
+            for ele in sorted(tobedeletedisoform, reverse=True):
+                del list_of_gene_objects[index_gene].protein_sequence_isoform_collection[ele]
+                deleted +=1
+
+    print('no AA seq Isoforms deleted:',deleted)
+    return list_of_gene_objects
 
 
 
@@ -847,7 +859,7 @@ gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
 
 list_of_gene_objects = fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
 
-list_of_gene_objects= delete_genes_with_no_AA_seq(list_of_gene_objects)
+list_of_gene_objects= delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects)
 
 print('\n')
 print('Updated')
@@ -857,5 +869,5 @@ check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 
 #save list of gene objects to import to the subsequent script
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_10_march_second.txt", "wb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_11_march_second.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
