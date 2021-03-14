@@ -58,18 +58,18 @@ class Table_Generation:
                     column_values.append(list_of_gene_objects[index_of_gene].ensembl_gene_symbol)
                     column_names.append("Gene_name")
 
-                if "Ensembl Gene ID" in chosen_columns:
+                if "Ensembl Gene ID (ENSG)" in chosen_columns:
                     column_values.append(transcript.ENSG)
                     column_names.append("ENSG")
 
-                if "Ensembl Transcript ID" in chosen_columns:
+                if 'Ensembl Transcript ID (ENST)' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
                                              index_reference_transcript].ENST)
                     column_names.append("Ref_transcript_ID")
                     column_values.append(transcript.ENST)
                     column_names.append("Iso_transcript_ID")
 
-                if "Ensembl Protein ID" in chosen_columns:
+                if 'Ensembl Protein ID (ENSP)' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].ENSP)
                     column_names.append("Ref_protein_ID")
                     column_values.append(transcript.ENSP)
@@ -81,6 +81,10 @@ class Table_Generation:
                     column_names.append("Ref_transcript_name")
                     column_values.append(transcript.transcript_name)
                     column_names.append("Iso_transcript_name")
+
+                if 'Refseq Gene ID (Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].refseq_gene_ID)
+                    column_names.append("Gene_name")
 
                 column_names = column_names + ['AA', 'ReferencePos', 'IsoformPos']
                 return column_values, column_names
