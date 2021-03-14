@@ -49,8 +49,6 @@ class Statistics:
                     if list(duplicates_dict.keys())[0] != None:
                         duplicate_genes_dict[index] = duplicates_dict
                         duplicates_number += 1
-                        print('new gene now: ', gene.ensembl_gene_symbol)
-                        print(duplicates_dict)
                         for sequence, objects in duplicates_dict.items():
                             redundant_sequences = redundant_sequences + len(objects)
                     if len(duplicates_dict) > 1:

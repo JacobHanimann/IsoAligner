@@ -54,7 +54,7 @@ def main():
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
-        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse', '🪰 D. Melanogaster',])
+        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse (next release)', '🪰 D. Melanogaster (next release)',])
         st.sidebar.write("--------------------------")
 
         #fixed in put area
@@ -70,7 +70,7 @@ def main():
             input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, KRAS, Q9Y6I3, FUCA2, CD9, ENSG00000074410, FAM168A, ENSP00000075430.7''',key=ss.run_id)
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=ss.run_id)
-        file_upload, search_button = st.beta_columns([2.4,1])
+        file_upload, search_button = st.beta_columns([2.65,1])
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
