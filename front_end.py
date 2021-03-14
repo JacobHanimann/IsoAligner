@@ -43,8 +43,8 @@ def main():
             st.title(" Amino Acid Isoform Aligner")
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
-                "Align isoforms with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions (random matches) of two distinct exons."
-                " The table of correctly mapped positions can be downloaded as a file in several formats. A preview of the alignments is displayed dynamically. ")
+                "Align isoforms dynamically with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
+                " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot & Refseq.")
         with tRNA:
             st.write('\n')
             st.write('\n')
@@ -65,6 +65,7 @@ def main():
             if st.button('Show Example'):
                 ss.example = True
                 ss.searched_clicked = False
+
 
         if ss.example:
             input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, KRAS, Q9Y6I3, FUCA2, CD9, ENSG00000074410, FAM168A, ENSP00000075430.7''',key=ss.run_id)
