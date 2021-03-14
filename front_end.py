@@ -48,6 +48,8 @@ def main():
         with tRNA:
             st.write('\n')
             st.write('\n')
+            #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
+            #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
             image2 = Image.open('TransferMessengerRNA.tif')
             st.image(image2,use_column_width=True, caption='TransferMessengerRNA & Ribosome in Action')
 
