@@ -84,7 +84,31 @@ class Table_Generation:
 
                 if 'Refseq Gene ID (Number)' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].refseq_gene_ID)
-                    column_names.append("Gene_name")
+                    column_names.append("Refseg_Gene_ID")
+
+                if 'Refseq Transcript ID (NM)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].refseq_NM)
+                    column_names.append("Ref_NM_ID")
+                    column_values.append(transcript.refseq_NM)
+                    column_names.append("Iso_NM_ID")
+
+                if 'Refseq Protein ID (NP/YP)' in chosen_columns:
+
+                    if list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].refseq_YP==None:
+                        column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].refseq_NP)
+                        column_names.append("Ref_NP_ID")
+                        column_values.append(transcript.refseq_NP)
+                        column_names.append("Iso_NP_ID")
+                    else:
+                        column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[ #check if this works with example: YP_003024026 when mitochondrial genes are integrated in search function
+                                                 index_reference_transcript].refseq_YP)
+                        column_names.append("Ref_YP_ID")
+                        column_values.append(transcript.refseq_YP)
+                        column_names.append("Iso_YP_ID")
+
+
 
                 column_names = column_names + ['AA', 'ReferencePos', 'IsoformPos']
                 return column_values, column_names
