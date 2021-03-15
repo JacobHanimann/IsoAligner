@@ -37,7 +37,7 @@ def main():
 
     #Alignment tool section
     if choice == 'Alignment Tool':
-        header, tRNA = st.beta_columns([3, 1.3])
+        header, tRNA = st.beta_columns([3, 1.])
         with header:
             # Title
             st.title(" Amino Acid Isoform Aligner")
@@ -47,12 +47,10 @@ def main():
                 " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot & Refseq.")
         with tRNA:
             st.write('\n')
-            st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
             #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
-            image2 = Image.open('TransferMessengerRNA.tif')
-            st.image(image2,use_column_width=True, caption='TransferMessengerRNA & Ribosome in Action')
-
+            image2 = Image.open('Spliceosome_yeast_small.tif')
+            st.image(image2,use_column_width=True, caption='Spliceosome recognizing the end of an intron in a pre-mRNA.')
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")

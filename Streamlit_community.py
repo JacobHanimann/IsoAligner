@@ -46,5 +46,13 @@ class Streamlit_community:
         return
 
     @staticmethod
+    def display_picture_with_hyperlink(picture_path,link): #figure out how to set the size of the picture
+        with open(picture_path, "rb") as img_file:
+            my_string = base64.b64encode(img_file.read())
+        final_link = '\\\\'+link
+        html = f"<a href='{final_link}'><img src='data:image/png;base64,{my_string.decode('utf-8')}'></a>"
+        st.markdown(html, unsafe_allow_html=True)
+
+    @staticmethod
     def rerun_script_from_top():
         raise st.script_runner.RerunException(st.script_request_queue.RerunData(None))
