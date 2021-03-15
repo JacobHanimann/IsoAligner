@@ -234,14 +234,23 @@ def main():
         st.header("Downloads")
         st.write("--------------------------")
 
-    elif choice == 'Manual & About':
-        st.title(" Amino Acid Isoform Aligner")
-        st.write("--------------------------")
-        st.markdown("#### Problem Statement:")
-        image2 = Image.open('Problem_statement.png')
-        st.image(image2,use_column_width=True)
+    if choice == 'Manual & About':
+        header, tRNA = st.beta_columns([3, 1.2])
+        with header:
+            # Title
+            st.title(" Amino Acid Isoform Aligner")
+            st.write('\n')
+            st.subheader("Map Amino Acid Positions Across Isoforms")
+            st.write('\n')
+            st.write('\n')
+            st.markdown("#### Biological Appropriate Alignment of Isoforms:")
+        with tRNA:
+            image2 = Image.open('Spliceosome_yeast_big.tif')
+            st.image(image2, use_column_width=True)
+
+        st.write('A set of protein isoforms may be formed from alternative splicings, variable promoter usage, or other post-transcriptional modifications of a single gene; post-translational modifications are generally not considered. Through RNA splicing mechanisms, mRNA has the ability to select different protein-coding segments (exons) of a gene, or even different parts of exons from RNA to form different mRNA s')
         st.write("\n")
-        st.markdown("#### About the human isoform library:")
+        st.markdown("#### Current Human Isoform library:")
         st.write('\n')
         total_number_of_genes, total_number_of_isoforms, genes_without_isoforms = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         st.write('Number of genes: ',total_number_of_genes)
@@ -255,12 +264,6 @@ def main():
         st.write('Number of Ensembl IDs: ')
         st.write('Number of Refseq IDs: ')
         st.write('Number of Uniprot IDs: ')
-        st.markdown("#### About the code:")
-        st.write("\n")
-        st.markdown("##### Needleman-Wunsch Algorithm:")
-        st.write("It is also sometimes referred to as the optimal matching algorithm and the global alignment technique. The Needleman–Wunsch algorithm is still widely used for optimal global alignment, particularly when the quality of the global alignment is of the utmost importance.")
-        st.markdown("##### check_for_wrong_exon_alignments function :")
-        st.write(" This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene. The Needleman Wunsch algorithm randomly alignes fractions of non-identical exons since the optimization of the algorithm is to maximize matches (which makes sense with homologues but not with isoforms). This function discards such fractions of the alignment by rejecting exons shorter than the defined minimal length (in AA).")
         st.write("\n")
         st.markdown("#### Contact:")
         st.write("\n")
