@@ -235,34 +235,31 @@ def main():
         st.write("--------------------------")
 
     if choice == 'Manual & About':
-        header, tRNA = st.beta_columns([3, 1.2])
-        with header:
-            # Title
-            st.title(" Amino Acid Isoform Aligner")
-            st.write('\n')
-            st.subheader("Map Amino Acid Positions Across Isoforms")
-            st.write('\n')
-            st.write('\n')
-            st.markdown("#### Biologically Appropriate Alignment of Isoforms:")
-        with tRNA:
-            image2 = Image.open('Spliceosome_yeast_big.tif')
-            st.image(image2, use_column_width=True)
+
+        st.title(" Amino Acid Isoform Aligner")
+        st.markdown("### Biologically Appropriate Alignment of Isoforms:")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly as can be seen in the scheme below.'
                  ' The IsoAligner algorithm exploits the biological characteristics of isoforms by simply confining the parameters of the Needleman Wunsch global alignment to assure positional mapping of only biologically comprehensive amino acid positions.  ')
         problem_schema = Image.open('Mapping_problem_schema.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (like Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
-        st.markdown("#### Needleman-Wunsch global alignment")
-        st.write(" - Big open gap penalty (Default -2) \n"
+        needleman, minimal = st.beta_columns([1, 1.])
+        with needleman:
+            st.markdown("#### Needleman-Wunsch global alignment")
+            st.write(" - Big open gap penalty (Default -2) \n"
                  "- Small extend gap penalty (Default 0)")
-        st.markdown("#### Discard falsely matched positions")
-        st.write('- By definition of a minimal exon length (Default 5 AA)')
+        with minimal:
+            st.markdown("#### Discard falsely matched positions")
+            st.write('- By definition of a minimal exon length (Default 5 AA)')
+        st.write("Example:")
+        example = Image.open('example_schema.png')
+        st.image(example, use_column_width=True)
         st.write('\n')
-        st.markdown("#### Manual Alignment Tool")
+        st.markdown("### Manual Alignment Tool")
         st.write('\n')
         st.write('\n')
         st.write('\n')
-        st.markdown("#### Human Isoform Library:")
+        st.markdown("### Human Isoform Library:")
         st.write('\n')
         total_number_of_genes, total_number_of_isoforms, genes_without_isoforms = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         st.write('Number of genes: ',total_number_of_genes)
