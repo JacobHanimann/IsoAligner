@@ -251,10 +251,10 @@ def main():
         with minimal:
             st.markdown("#### Discard falsely matched positions")
             st.write('- By definition of a minimal exon length (Default 5 AA)')
-        st.write("Example:")
+        st.markdown("### Alignment example:")
+        st.write("In one hand, alignment solutions matching identical exons are preferred and on the other hand, the generated matches are verified in a second step. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
         example = Image.open('example_schema.png')
         st.image(example, use_column_width=True)
-        st.write('\n')
         st.markdown("### Manual Alignment Tool")
         st.write('\n')
         st.write('\n')
@@ -279,6 +279,7 @@ def main():
         st.write("Please get in touch for suggestions or to report bugs :)")
         st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
         st.write('Bioinformatics group: https://clinicalcompbio.org/')
+
         #st.markdown("#### Functions:")
         #code = '''
         #def transform_uploaded_data_type_accordingly(file):
