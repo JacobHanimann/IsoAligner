@@ -1,4 +1,5 @@
 import streamlit as st
+from Protein_isoform import *
 
 class Statistics:
     pass
@@ -14,15 +15,17 @@ class Statistics:
         total_number_of_isoforms = 0
         genes_without_isoforms = 0
         IDs_in_total = 0
+        isoform_attributes = Protein_isoform.list_of_attributes()
         for gene in list_of_gene_objects:
             if type(gene.protein_sequence_isoform_collection) == list:
                 total_number_of_isoforms = total_number_of_isoforms + len(gene.protein_sequence_isoform_collection)
                 for sequence in gene.protein_sequence_isoform_collection:
-                    pass
-
+                    for attribute in isoform_attributes:
+                        if getattr(sequence,attribute)!=None:
+                            IDs_in_total +=1
             else:
                 genes_without_isoforms += 1
-        return total_number_of_genes, total_number_of_isoforms, genes_without_isoforms
+        return total_number_of_genes, total_number_of_isoforms, genes_without_isoforms, IDs_in_total
 
 
     @staticmethod

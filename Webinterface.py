@@ -44,7 +44,7 @@ def main():
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
                 "Align isoforms dynamically with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
-                " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot, Refseq and HGNC.")
+                " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~1.5M mapped isoform ID's from Ensembl, Uniprot, Refseq and HGNC.")
         with tRNA:
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
@@ -261,7 +261,7 @@ def main():
         st.markdown("### Manual Alignment Tool")
         st.write("Quick Start: Click on 'Show Example' and then 'Search Library for IDs' to get a overview.")
         st.write("1. Paste ID's, gene names or raw amino acid sequences"
-                 "\n    - The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types."
+                 "\n    - The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~1.5M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types."
                  "\n    - Press 'Search Library for IDs' or 'Align' to compute alignments"
                  "\n 2. Tweak function parameters in the sidebar and inspect the alignment previews"
                  "\n    - Set the mininmal exon length (in AA)"
@@ -275,10 +275,13 @@ def main():
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
-        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         st.write('Genes: ',total_number_of_genes)
         st.write('Isoforms in total: ',total_number_of_isoforms)
-        st.write("ID's in total:",)
+        st.write('Average number of isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
+        st.write("ID's in total:",Ids_in_total)
+        st.write("Average number of ID's per protein sequence:", round(Ids_in_total/total_number_of_isoforms,1))
+        st.write("Collection of Isoform ID's includes:",Protein_isoform.list_of_attributes())
         #st.write('gene objects without isoforms: ',genes_without_isoforms)
         duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate = Statistics.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
         #st.write('Genes with AA seq duplicates: ', duplicates_number)
