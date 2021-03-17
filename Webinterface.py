@@ -260,9 +260,12 @@ def main():
         st.write("1. Paste ID's, gene names or raw amino acid sequences"
                  "\n    - The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types."
                  "\n    - Press 'Search Library for IDs' or 'Align' to compute alignments"
-                 "\n 2. Tweak function parameters in the sidebar"
+                 "\n 2. Tweak function parameters in the sidebar and inspect the alignment previews"
                  "\n    - Set the mininmal exon length (in AA)"
-                 "\n""    - Set Needleman-Wunsch parameters")
+                 "\n""    - Set Needleman-Wunsch parameters"
+                "\n 3. Select ID's to be included in the mapping table."
+                "\n    - Download dataframe: tab or comma separated (tsv/csv) "
+    )
         st.write('\n')
         st.write('\n')
         st.write('\n')
