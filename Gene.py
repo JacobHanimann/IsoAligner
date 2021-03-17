@@ -13,3 +13,12 @@ class Gene:
         self.average_exon_length= average_exon_length
         self.uniprot_ID = uniprot_ID
 
+
+    @staticmethod
+    def list_of_attributes():
+        list_of_attributes_genes = [a for a in dir(Gene()) if not a.startswith('__') and not a.startswith('list_')]
+        print(list_of_attributes_genes)
+        return list_of_attributes_genes
+
+
+Gene.list_of_attributes()
