@@ -36,7 +36,4 @@ class Protein_isoform:
     @staticmethod
     def list_of_attributes():
         list_of_attributes_isoform = [a for a in dir(Protein_isoform("AJ")) if not a.startswith('__') and not a.startswith('gene_name') and not a.startswith('protein_seq') and not a.startswith('list')]
-        print(list_of_attributes_isoform)
         return list_of_attributes_isoform
-
-Protein_isoform.list_of_attributes()
