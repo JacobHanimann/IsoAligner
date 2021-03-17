@@ -44,7 +44,7 @@ def main():
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
                 "Align isoforms dynamically with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
-                " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot & Refseq.")
+                " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot, Refseq and HGNC.")
         with tRNA:
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
@@ -249,7 +249,7 @@ def main():
             st.write(" - Big open gap penalty (Default -2) \n"
                  "- Small extend gap penalty (Default 0)")
         with minimal:
-            st.markdown("#### discard falsely matched positions")
+            st.markdown("#### Discard falsely matched positions")
             st.write('- By definition of a minimal exon length (Default 5 AA)')
         st.markdown("### Alignment example:")
         st.write("In general, alignment solutions matching identical exons are preferred. The generated matches are then additionally inspected and verified. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
@@ -265,11 +265,12 @@ def main():
                  "\n""    - Set Needleman-Wunsch parameters"
                 "\n 3. Select ID's to be included in the mapping table."
                 "\n    - Download dataframe: tab or comma separated (tsv/csv) "
-    )
+                 )
+        st.markdown("#### ⚠️ Important:")
+        st.write("As soon as multiple ID's are entered, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
+                 " If Gene names or ID's are given as the input, the isoform with the longest sequence is used as the reference to align against.")
         st.write('\n')
-        st.write('\n')
-        st.write('\n')
-        st.markdown("### Human Isoform Library:")
+        st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
         total_number_of_genes, total_number_of_isoforms, genes_without_isoforms = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         st.write('Number of genes: ',total_number_of_genes)
