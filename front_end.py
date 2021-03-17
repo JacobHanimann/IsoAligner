@@ -249,7 +249,7 @@ def main():
             st.write(" - Big open gap penalty (Default -2) \n"
                  "- Small extend gap penalty (Default 0)")
         with minimal:
-            st.markdown("#### Discard falsely matched positions")
+            st.markdown("#### discard falsely matched positions")
             st.write('- By definition of a minimal exon length (Default 5 AA)')
         st.markdown("### Alignment example:")
         st.write("In one hand, alignment solutions matching identical exons are preferred and on the other hand, the generated matches are verified in a second step. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
