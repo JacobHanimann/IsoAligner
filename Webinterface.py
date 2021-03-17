@@ -37,7 +37,7 @@ def main():
 
     #Alignment tool section
     if choice == 'Alignment Tool':
-        header, tRNA = st.beta_columns([3, 1.])
+        header, tRNA = st.beta_columns([3, 1.1])
         with header:
             # Title
             st.title(" Amino Acid Isoform Aligner")
@@ -50,7 +50,7 @@ def main():
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
             #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
             image2 = Image.open('Spliceosome_yeast_small.tif')
-            st.image(image2,use_column_width=True, caption='Spliceosome recognizing the end of an intron in a pre-mRNA.')
+            st.image(image2,use_column_width=True)
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
@@ -252,10 +252,17 @@ def main():
             st.markdown("#### discard falsely matched positions")
             st.write('- By definition of a minimal exon length (Default 5 AA)')
         st.markdown("### Alignment example:")
-        st.write("In one hand, alignment solutions matching identical exons are preferred and on the other hand, the generated matches are verified in a second step. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
+        st.write("In general, alignment solutions matching identical exons are preferred. The generated matches are then additionally inspected and verified. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
         example = Image.open('example_schema.png')
         st.image(example, use_column_width=True)
         st.markdown("### Manual Alignment Tool")
+        st.write("Quick Start: Click on 'Show Example' and then 'Search Library for IDs' to get a overview.")
+        st.write("1. Paste ID's, gene names or raw amino acid sequences"
+                 "\n    - The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~500k mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types."
+                 "\n    - Press 'Search Library for IDs' or 'Align' to compute alignments"
+                 "\n 2. Tweak function parameters in the sidebar"
+                 "\n    - Set the mininmal exon length (in AA)"
+                 "\n""    - Set Needleman-Wunsch parameters")
         st.write('\n')
         st.write('\n')
         st.write('\n')
