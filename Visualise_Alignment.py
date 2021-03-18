@@ -111,6 +111,7 @@ class Visualise_Alignment:
 
 
     @staticmethod
+    @st.cache(allow_output_mutation=True)
     def visualise_alignment_dynamically(reference_sequence_list, isoform_sequence_list, AA_match_evalutation_list,
                                         percentage_reference, percentage_isoform, sequence1='sequence1',
                                         sequence2='sequence2', ):
