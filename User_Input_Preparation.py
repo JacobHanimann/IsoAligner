@@ -94,4 +94,3 @@ class Input_preparation:
         '''uploaded files can be different types of files. A transformation is needed to interpret the data correctly
         Type of input: FASTA, FA and TXT
         Output type: depends on the case'''
-

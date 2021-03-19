@@ -103,7 +103,7 @@ def main():
             #st.write(nested_dict)
 
         #case of using one ID
-        if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found': #check if dictionary is not empty
+        if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found' and list(input1_IDs.values())[0] != "aminoacid_sequence": #check if dictionary is not empty
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])

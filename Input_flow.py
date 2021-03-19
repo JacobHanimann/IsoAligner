@@ -45,6 +45,9 @@ class Input_flow:
         '''
         dict_element_indexes = {}
         for element, ID in dict_of_IDs.items():
+            if ID == "aminoacid_sequence":
+                dict_element_indexes[element] = 'aminoacid_sequence'
+                continue
             found = False
             parent_class = Input_flow.is_ID_in_parent_class(ID)
             for index, gene in enumerate(list_of_gene_objects):
@@ -94,7 +97,7 @@ class Input_flow:
         nomatch = 0
         list_of_unmatched_elements = []
         for element,index in input1_IDs.items():
-            if index == 'not found':
+            if index == 'not found' or index == "aminoacid_sequence":
                 list_of_unmatched_elements.append(element)
                 nomatch +=1
         matched_elements = number_of_elements-nomatch
@@ -104,7 +107,10 @@ class Input_flow:
                 else:
                     st.success('Element succesfully identified')
         elif matched_elements==0:
-            st.warning ('No references found in the database')
+            if number_of_elements==1 and list(input1_IDs.values())[0]=='aminoacid_sequence':
+                st.warning("Looks like an amino acid sequence. Click on 'Clear' and 'add 2nd sequence'")
+            else:
+                st.warning ('No references found in the library')
         else:
             st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found.')
             st.warning('Unidentified elements: '+', '.join(list_of_unmatched_elements))
@@ -118,7 +124,7 @@ class Input_flow:
         '''
         cleaned_Input1_IDs = dict()
         for element,index in input1_IDs.items():
-            if index == "not found":
+            if index == "not found" or index =="aminoacid_sequence":
                 continue
             else:
                 cleaned_Input1_IDs[element] = index
