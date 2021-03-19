@@ -295,18 +295,19 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                                 #print('added isoform')
                                 sequences_added += 1
                 elif XP:
-                    XP_added += 1
-                    isoform_processed = True
-                    if type(gene.protein_sequence_isoform_collection) == list:
-                        gene.protein_sequence_isoform_collection.append(
-                            Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,
-                                            refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
-                                            refseq_XP_version=XP_version))
-                    else:
-                        gene.protein_sequence_isoform_collection = [Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,
-                                            refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
-                                            refseq_XP_version=XP_version)]
-                        print('new collection XP')
+                    pass
+                    #XP_added += 1
+                    #isoform_processed = True
+                    #if type(gene.protein_sequence_isoform_collection) == list:
+                    #    gene.protein_sequence_isoform_collection.append(
+                    #        Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,
+                    #                        refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
+                    #                        refseq_XP_version=XP_version))
+                    #else:
+                    #    gene.protein_sequence_isoform_collection = [Protein_isoform(protein_sequence,gene_name=gene.ensembl_gene_symbol,
+                    #                        refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,
+                    #                        refseq_XP_version=XP_version)]
+                    #    print('new collection XP')
                 elif YP:
                     YP_added += 1
                     isoform_processed = True
@@ -333,13 +334,14 @@ def add_refseq_fasta_sequences(file, list_of_gene_objects):
                                                      protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_NM_version=NM_ID_version,refseq_NP=NP_ID,refseq_NP_version=NP_version)]))
 
             elif XP:
-                if HCGN_found:
-                    list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
-                                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_XM_version=XM_ID_version,refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
-                else:
-                    list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
-                                                     protein_sequence_isoform_collection=[
-                                                         Protein_isoform(protein_sequence, refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
+                pass
+                #if HCGN_found:
+                #    list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
+                #                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_XM_version=XM_ID_version,refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
+                #else:
+                #    list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
+                #                                     protein_sequence_isoform_collection=[
+                #                                         Protein_isoform(protein_sequence, refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
             elif YP:
                 if HCGN_found:
                     list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
