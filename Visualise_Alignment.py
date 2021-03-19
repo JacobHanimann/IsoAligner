@@ -19,13 +19,13 @@ class Visualise_Alignment:
          [list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
          ' (' +
          str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
-         ' Isoforms) | '
+         ' Entries) | '
          + element
           if element != list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol else
           list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
           ' (' +
           str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
-          ' Isoforms)'
+          ' Entries)'
          for element, index in input1_IDs.items()]
 
         return gene_list

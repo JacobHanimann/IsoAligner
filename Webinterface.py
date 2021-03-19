@@ -54,7 +54,7 @@ def main():
 
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
-        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse (next release)', '🪰 D. Melanogaster (next release)',])
+        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse (next release)'])
         st.sidebar.write("--------------------------")
 
         #fixed in put area
