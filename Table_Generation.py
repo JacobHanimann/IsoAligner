@@ -109,7 +109,6 @@ class Table_Generation:
                         column_names.append("Iso_YP_ID")
 
 
-
                 column_names = column_names + ['AA', 'ReferencePos', 'IsoformPos']
                 return column_values, column_names
 
