@@ -1,3 +1,6 @@
 # AA_mapping_webtool
 
-Streamlit Website to align isoforms based on the Needleman-Wunsch algorithm and a minimal exon length function to discard falsely mapped positions (random matches) of distinct exons. A preview of the alignments is displayed dynamically and the table of correctly mapped positions can be downloaded as a file in several formats.
+Align isoforms dynamically with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions. The current human library consists of ~24k protein coding genes covering ~190k protein sequences and +1.M mapped isoform ID's from Ensembl, Uniprot, Refseq and HGNC
+
+https://share.streamlit.io/jacobhanimann/isoaligner/main/Webinterface.py
+
