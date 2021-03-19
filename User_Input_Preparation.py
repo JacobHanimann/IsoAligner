@@ -11,13 +11,16 @@ class Input_preparation:
         :param string:
         :return: list of elements
         '''
-        string = re.sub(' ', '', string)
         if "\n" in string:
+            string = re.sub(' ', '', string)
             list_of_elements = list(string.split('\n'))
         elif "," in string:
+            string = re.sub(' ', '', string)
             list_of_elements = list(string.split(','))
         elif "\t" in string:
             list_of_elements = list(string.split('\t'))
+        elif " " in string:
+            list_of_elements = list(string.split(' '))
         else:
             list_of_elements = [string]
 
