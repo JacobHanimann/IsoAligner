@@ -101,9 +101,12 @@ def main():
             #execute nested dict only if dict is still existent...
             nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
             #st.write(nested_dict)
+            no_elements = False
+            if len (nested_dict)==0:
+                no_elements = True
 
         #case of using one ID
-        if ss.searched_clicked and bool(input1_IDs) and len(input1_IDs) == 1 and list(input1_IDs.values())[0] != 'not found' and list(input1_IDs.values())[0] != "aminoacid_sequence": #check if dictionary is not empty
+        if ss.searched_clicked and not no_elements: #check if dictionary is not empty
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
@@ -133,7 +136,7 @@ def main():
 
 
         #case of using multiple ID's
-        elif ss.searched_clicked and len(input1_IDs) > 1:
+        elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
             using_IDs = True
             st.markdown("### Alignments")
             st.text('\n')
