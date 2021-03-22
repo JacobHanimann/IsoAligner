@@ -417,6 +417,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
         #extracting information
         try:
             accession = re.split('\|',fasta)[1]
+            uniprot_ID = re.findall(".*_HUMAN",re.split('\|',fasta)[2])
             if "-" in accession:
                 uniprot_isoform= True
         except:
@@ -461,22 +462,24 @@ def add_uniprot_fasta_files(file,list_of_objects):
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_accession += 1
                                 isoform.uniprot_isoform = accession+'-1'
+                                isoform.uniprot_ID = uniprot_ID
                                 found = True
                             else:
                                 accession_in_but_other_sequence += 1
                                 isoform.uniprot_accession = None  # delete (false) attribute of isoform
-                                gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession, uniprot_isoform=accession+"-1", gene_name=gene_name)) #add isoform to collection
+                                gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession, uniprot_isoform=accession+"-1", gene_name=gene_name,uniprot_ID=uniprot_ID)) #add isoform to collection
                                 found = True
 
                         elif isoform.uniprot_isoform == accession:
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_uniprot_isoform += 1
+                                isoform.uniprot_ID = uniprot_ID
                                 found = True
                             else:
                                 uniprot_isoform_not_same_seq +=1
                                 isoform.uniprot_isoform = None  # delete (false) attribute of isoform
                                 gene.protein_sequence_isoform_collection.append(
-                                    Protein_isoform(protein_sequence, uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession),uniprot_isoform=accession, gene_name=gene_name))
+                                    Protein_isoform(protein_sequence, uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession),uniprot_isoform=accession, gene_name=gene_name,uniprot_ID=uniprot_ID))
                                 found = True
 
                         elif isoform.protein_sequence == protein_sequence:
@@ -485,17 +488,19 @@ def add_uniprot_fasta_files(file,list_of_objects):
                              if uniprot_isoform:
                                 isoform.uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession)
                                 isoform.uniprot_isoform = accession
+                                isoform.uniprot_ID = uniprot_ID
                              else:
                                  isoform.uniprot_accession = accession
                                  isoform.uniprot_isoform = accession+'-1'
+                                 isoform.uniprot_ID = uniprot_ID
 
                     if not found:
                         new_isoform_for_gene += 1
                         if uniprot_isoform:
                             gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence,uniprot_accession=get_bio_IDs_with_regex('uniprot_accession', accession),
-                                            uniprot_isoform=accession, gene_name=gene_name))
+                                            uniprot_isoform=accession, gene_name=gene_name, uniprot_ID = uniprot_ID))
                         else:
-                            gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession,uniprot_isoform=accession+'-1', gene_name=gene_name))
+                            gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence, uniprot_accession=accession,uniprot_isoform=accession+'-1', gene_name=gene_name, uniprot_ID= uniprot_ID))
 
 
 
@@ -749,16 +754,21 @@ def check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects):
     print('number of falsely assigned AA seq to gene_name:',false_assigned_gene_name_isoform)
 
 
-def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
+def delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects):
     '''
     function that delets empty gene_objects
     :param list_of_gene_obejcts:
     :return: uptaded list of gene objects
     '''
     tobedeletedgene = []
+    one_AA_seq = 0
     for index,gene in enumerate(list_of_gene_objects):
         if type(gene.protein_sequence_isoform_collection) != list:
             tobedeletedgene.append(index)
+        else:
+            if len(gene.protein_sequence_isoform_collection)==1:
+                tobedeletedgene.append(index)
+                one_AA_seq +=1
     if tobedeletedgene:
         for ele in sorted(tobedeletedgene, reverse=True):
             del list_of_gene_objects[ele]
@@ -775,7 +785,12 @@ def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
                 deleted +=1
 
     print('no AA seq Isoforms deleted:',deleted)
+    print('genes with just one isoform:', one_AA_seq)
     return list_of_gene_objects
+
+
+
+
 
 
 
@@ -853,6 +868,15 @@ def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt","rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
 
+
+genes_with_one_isoform = 0
+for gene in list_of_gene_objects:
+    if type(gene.protein_sequence_isoform_collection)==list:
+        if len(gene.protein_sequence_isoform_collection)==1:
+            genes_with_one_isoform +=1
+
+print('genes with one isoform:', genes_with_one_isoform)
+
 check_if_there_are_exact_duplicates(list_of_gene_objects)
 check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 
@@ -860,7 +884,7 @@ gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
 
 list_of_gene_objects = fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
 
-list_of_gene_objects= delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects)
+list_of_gene_objects= delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects)
 
 print('\n')
 print('Updated')
