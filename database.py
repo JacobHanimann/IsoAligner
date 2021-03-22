@@ -135,6 +135,39 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
             else:
                 continue
 
+
+
+def add_UCSC_and_Uniprot_ID_to_protein_attributes(file, list_of_gene_objects):
+    '''
+    add IDs to protein isoform object attributes to extend ID library
+    :param file: from Biomart
+    :return: updated list_of_gene_objects with more attributes
+    '''
+    df = pd.read_csv(file, sep='\t')
+    print('total length:',len(df))
+    for index in range(0,len(df)):
+        print(index)
+        found = False
+        uniparc_ID = df.loc[index, 'UniParc ID']
+        UCSC_stable_ID = df.loc[index, 'UCSC Stable ID']
+        if type(uniparc_ID) ==float:
+            continue
+        for gene in list_of_gene_objects:
+            if found:
+                break
+            if type(gene.protein_sequence_isoform_collection) == list:
+                for sequence in gene.protein_sequence_isoform_collection:
+                    if found:
+                        break
+                    if sequence.uniprot_uniparc == uniparc_ID:
+                        found = True
+                        if type(df.loc[index, 'UCSC Stable ID'])!=float:
+                            sequence.UCSC_stable_ID = df.loc[index, 'UCSC Stable ID']
+                        break #here the uniprotKB gene names ID could be added
+            else:
+                continue
+
+
 def add_refseq_protein_IDs(file, list_of_gene_objects):
     '''add IDs from Biomart file'''
     df = pd.read_csv(file, sep='\t')

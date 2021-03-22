@@ -5,7 +5,7 @@ class Protein_isoform:
     def __init__(self,  protein_sequence, gene_name=None, ENSG=None, ENSG_version=None, ENST=None, ENST_version=None, ENSP=None, ENSP_version=None,transcript_name=None,
                  refseq_NM=None, refseq_NM_version=None, refseq_NP_version=None, refseq_NP=None, refseq_NC_version=None,refseq_XM_version=None,
                  refseq_XP=None, refseq_XP_version=None, refseq_YP_version=None, refseq_YP=None,
-                 uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None, uniprot_ID=None):
+                 uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None, uniprot_ID=None, UCSC_stable_ID=None):
         self.gene_name= gene_name #maybe unnecessary
         self.protein_sequence = protein_sequence
         #ensembl
@@ -29,6 +29,8 @@ class Protein_isoform:
         self.uniprot_accession = uniprot_accession
         self.uniprot_uniparc = uniprot_uniparc
         self.uniprot_isoform = uniprot_isoform
+        #UCSC
+        self.UCSC_stable_ID = UCSC_stable_ID
 
 
     @staticmethod
