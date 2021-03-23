@@ -149,7 +149,6 @@ def add_UCSC_and_Uniprot_ID_to_protein_attributes(file, list_of_gene_objects):
         print(index)
         found = False
         uniparc_ID = df.loc[index, 'UniParc ID']
-        UCSC_stable_ID = df.loc[index, 'UCSC Stable ID']
         if type(uniparc_ID) ==float:
             continue
         for gene in list_of_gene_objects:
@@ -822,11 +821,6 @@ def delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects
     return list_of_gene_objects
 
 
-
-
-
-
-
 #Execution
 
 ##create list of gene objects
@@ -849,10 +843,11 @@ def delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects
 #print('add uniprot IDs')
 #add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 #
+
 ##save list of gene objects to import to the subsequent script
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_24_feb_third.txt", "wb") as fp:  # Pickling
 #    pickle.dump(list_of_gene_objects, fp)
-#
+
 #print('add refseq Ids')
 #add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 #
@@ -878,19 +873,20 @@ def delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects
 #
 #add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
 #
-###save list of gene objects to import to the subsequent script
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_first.txt", "wb") as fp:  # Pickling
-#    pickle.dump(list_of_gene_objects, fp)
-#
-#gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
-#
-#fuse_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
-#
-#add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
-#
-###save list of gene objects to import to the subsequent script
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt", "wb") as fp:  # Pickling
-#    pickle.dump(list_of_gene_objects, fp)
+##save list of gene objects to import to the subsequent script
+
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_first.txt","rb") as fp:  # Pickling
+        list_of_gene_objects = pickle.load(fp)
+
+gene_duplicates_dict =check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
+
+add_UCSC_and_Uniprot_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/UCSC_Uniprot_ID_uniparc.txt',list_of_gene_objects)
+
+add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uniprot_downloads/uniprot-proteome_UP000005640.fasta',list_of_gene_objects)
+
+##save list of gene objects to import to the subsequent script
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_23_march_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
 
 #for gene in list_of_gene_objects:
 #    if type(gene.protein_sequence_isoform_collection)==list:
@@ -898,8 +894,8 @@ def delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects
 #            if isoform.refseq_NM!=None:
 #                print(isoform.refseq_NM)
 
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt","rb") as fp:  # Pickling
-        list_of_gene_objects = pickle.load(fp)
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_with_fasta_9_march_second.txt","rb") as fp:  # Pickling
+        #list_of_gene_objects = pickle.load(fp)
 
 
 genes_with_one_isoform = 0
