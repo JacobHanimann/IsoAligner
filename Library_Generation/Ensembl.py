@@ -1,10 +1,7 @@
-import pandas as pd
-from collections.abc import Iterable
-import pickle
 from Gene import *
 from Protein_isoform import *
 from Alignment import *
-import streamlit as st
+from Extractions_BioIDs import *
 
 
 class Ensembl():

@@ -137,7 +137,7 @@ def add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes(file,
 
 
 
-def add_UCSC_and_Uniprot_ID_to_protein_attributes(file, list_of_gene_objects):
+def add_UCSC_to_protein_attributes(file, list_of_gene_objects):
     '''
     add IDs to protein isoform object attributes to extend ID library
     :param file: from Biomart
