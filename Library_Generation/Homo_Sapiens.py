@@ -37,4 +37,3 @@ print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
 print('Library Generation successfully executed.')
-
