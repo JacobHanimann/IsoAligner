@@ -14,7 +14,7 @@ app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
 
 
-@cache.cached(timeout=None,key_prefix='importing_library')
+@cache.cached(timeout=200,key_prefix='importing_library')
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling
@@ -35,10 +35,10 @@ class IsoAligner(Resource):
 
     def put(self,sequence1,sequence2):
         alignment= align_sequences(sequence1,sequence2)
-        return list_of_gene_objects[1]
+        list_of_gene_objects = import_data_from_github('list_of_gene_objects_11_march.txt.gz')
+        return list_of_gene_objects[1].ensembl_gene_symbol
 
 api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>')
 
 if __name__ == "__main__":
     app.run(debug=True)
-    list_of_gene_objects = import_data_from_github('list_of_gene_objects_11_march.txt.gz')
