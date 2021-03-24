@@ -57,23 +57,23 @@ class Refseq():
 
             # extract exact IDs
             if "NP_" in Ids:
-                NP_ID = get_bio_IDs_with_regex('refseq_prot', Ids)
-                NP_version = get_bio_IDs_with_regex('refseq_prot_version', Ids)
-                NM_ID_version = get_bio_IDs_with_regex('refseq_rna_version', re.findall("DBSOURCE.*\n", entry)[0])
+                NP_ID =Get_Bio_ID.get_bio_IDs_with_regex('refseq_prot', Ids)
+                NP_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_prot_version', Ids)
+                NM_ID_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_rna_version', re.findall("DBSOURCE.*\n", entry)[0])
                 NP = True
 
             elif "XP_" in Ids:
-                XP_ID = get_bio_IDs_with_regex('refseq_prot_predict', Ids)
-                XP_version = get_bio_IDs_with_regex('refseq_prot_predict_version', Ids)
-                XM_ID_version = get_bio_IDs_with_regex('refseq_rna_predict_version',
+                XP_ID =Get_Bio_ID.get_bio_IDs_with_regex('refseq_prot_predict', Ids)
+                XP_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_prot_predict_version', Ids)
+                XM_ID_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_rna_predict_version',
                                                        re.findall("DBSOURCE.*\n", entry)[0])
                 XP = True
                 # print(entry)
 
             elif "YP_" in Ids:
-                YP_ID = get_bio_IDs_with_regex('refseq_mitocho', Ids)
-                YP_version = get_bio_IDs_with_regex('refseq_mitocho_version', Ids)
-                NC_ID_version = get_bio_IDs_with_regex('refseq_chromosome_version',
+                YP_ID =Get_Bio_ID.get_bio_IDs_with_regex('refseq_mitocho', Ids)
+                YP_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_mitocho_version', Ids)
+                NC_ID_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_chromosome_version',
                                                        re.findall("DBSOURCE.*\n", entry)[0])
                 YP = True
                 # print(entry)
@@ -85,7 +85,7 @@ class Refseq():
 
             # try to extract HGNC_ID and NCBI_ID
             try:
-                HGNC_ID = get_bio_IDs_with_regex('HGNC', re.findall('/db_xref="HGNC:HGNC:\d+', entry)[0])
+                HGNC_ID =Get_Bio_ID.get_bio_IDs_with_regex('HGNC', re.findall('/db_xref="HGNC:HGNC:\d+', entry)[0])
                 HCGN_found = True
                 HCGN_count += 1
             except:

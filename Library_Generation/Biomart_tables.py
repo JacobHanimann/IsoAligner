@@ -1,6 +1,3 @@
-
-from Gene import *
-from Protein_isoform import *
 import pandas as pd
 
 class Biomart_tables():

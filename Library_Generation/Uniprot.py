@@ -120,7 +120,7 @@ class Uniprot():
                                 found = True
                                 protein_sequence_already_without_uniprot_ID += 1
                                 if uniprot_isoform:
-                                    isoform.uniprot_accession = get_bio_IDs_with_regex('uniprot_accession', accession)
+                                    isoform.uniprot_accession =Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession', accession)
                                     isoform.uniprot_isoform = accession
                                     isoform.uniprot_ID = uniprot_ID
                                 else:
@@ -132,7 +132,7 @@ class Uniprot():
                             new_isoform_for_gene += 1
                             if uniprot_isoform:
                                 gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence,
-                                                                                                uniprot_accession=get_bio_IDs_with_regex(
+                                                                                                uniprot_accession=Get_Bio_ID.get_bio_IDs_with_regex(
                                                                                                     'uniprot_accession',
                                                                                                     accession),
                                                                                                 uniprot_isoform=accession,

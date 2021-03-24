@@ -21,20 +21,20 @@ class Ensembl():
         for fasta in splittext[1:]:
             fasta_count += 1
             found = False
-            gene_name = get_bio_IDs_with_regex('gene_name', fasta)
+            gene_name = Get_Bio_ID.get_bio_IDs_with_regex('gene_name', fasta)
             # create Protein_isoform object to add to the gene_object
             aa_sequence = Alignment.extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1])
             if aa_sequence == None:  # sequence shorter than 7 AA long
                 continue
             sequence_object = Protein_isoform(aa_sequence, gene_name,
-                                              get_bio_IDs_with_regex('ensembl_ensg', fasta),
-                                              get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
-                                              get_bio_IDs_with_regex('ensembl_enst', fasta),
-                                              get_bio_IDs_with_regex('ensembl_enst_version', fasta),
-                                              get_bio_IDs_with_regex('ensembl_ensp', fasta),
-                                              get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
-                                              uniprot_accession=get_bio_IDs_with_regex('uniprot_accession', fasta),
-                                              uniprot_uniparc=get_bio_IDs_with_regex('uniprot_uniparc', fasta))
+                                             Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg', fasta),
+                                             Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
+                                             Get_Bio_ID.get_bio_IDs_with_regex('ensembl_enst', fasta),
+                                             Get_Bio_ID.get_bio_IDs_with_regex('ensembl_enst_version', fasta),
+                                             Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensp', fasta),
+                                             Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
+                                              uniprot_accession=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession', fasta),
+                                              uniprot_uniparc=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_uniparc', fasta))
             for gene in list_of_gene_objects:
                 if found:
                     break
