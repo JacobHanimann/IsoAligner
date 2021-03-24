@@ -3,6 +3,7 @@ from HGNC import *
 from Biomart_tables import *
 from Refseq import *
 from Uniprot import *
+from Validation_of_library import *
 
 print('Creating list of gene objects with Ensembl Fasta files...')
 list_of_gene_objects =Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
@@ -23,5 +24,12 @@ Uniprot.add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/ref
 
 
 print('Validating and Correcting Library...')
-
-
+print('Statistics before Clean-up:')
+Validate_library.check_if_gene_name_and_prot_seq_are_switched()
+Validate_library.check_if_there_are_exact_duplicates()
+Validate_library.check_if_there_are_AA_seq_duplicates()
+print('Correcting library...')
+Validate_library.fuse_attributes_of_duplicated_AA_seq_within_gene_object()
+Validate_library.delete_genes_and_protein_isoforms_with_no_or_one_AA_seq()
+print('Statistics after Clean-up:')
+print('Library Generation successfully executed.')
