@@ -28,11 +28,12 @@ print('Validating and Correcting Library...') #missing variables and function in
 print('Statistics before Clean-up:')
 Validate_library.check_if_gene_name_and_prot_seq_are_switched()
 Validate_library.check_if_there_are_exact_duplicates()
-Validate_library.check_if_there_are_AA_seq_duplicates()
+gene_duplicates_dict =Validate_library.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 print('Correcting library...')
-list_of_gene_objects = Validate_library.fuse_attributes_of_duplicated_AA_seq_within_gene_object()
-list_of_gene_objects = Validate_library.delete_genes_and_protein_isoforms_with_no_or_one_AA_seq()
+list_of_gene_objects = Validate_library.fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
+list_of_gene_objects = Validate_library.delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects)
 print('Statistics after Clean-up:')
+
 print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
