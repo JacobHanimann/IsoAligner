@@ -21,7 +21,7 @@ class Input_flow:
     @staticmethod
     @st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
-        '''import reference file (database), a pickle file generated in the database.py file'''
+        '''import reference file (database), a pickle file generated in the database_old.py file'''
         with gzip.open(file, "rb") as fp:  # Pickling
             list_of_gene_objects = pickle.load(fp)
         return list_of_gene_objects

@@ -49,7 +49,7 @@ def main():
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
             #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
-            image2 = Image.open('Spliceosome_yeast_small.tif')
+            image2 = Image.open('Pictures/Spliceosome_yeast_small.tif')
             st.image(image2,use_column_width=True)
 
         st.write("--------------------------")
@@ -245,7 +245,7 @@ def main():
         st.markdown("### Biologically Appropriate Alignment of Isoforms:")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly as can be seen in the scheme below.'
                  ' The IsoAligner algorithm exploits the biological characteristics of isoforms by simply confining the parameters of the Needleman Wunsch global alignment to assure positional mapping of biologically comprehensive amino acid positions only.  ')
-        problem_schema = Image.open('Mapping_problem_schema.png')
+        problem_schema = Image.open('Pictures/Mapping_problem_schema.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (like Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
         needleman, minimal = st.beta_columns([1, 1.])
@@ -258,7 +258,7 @@ def main():
             st.write('- By definition of a minimal exon length (Default 5 AA)')
         st.markdown("### Alignment example:")
         st.write("In general, alignment solutions matching identical exons are preferred. The generated matches are then additionally inspected and verified. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
-        example = Image.open('example_schema.png')
+        example = Image.open('Pictures/example_schema.png')
         st.image(example, use_column_width=True)
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")

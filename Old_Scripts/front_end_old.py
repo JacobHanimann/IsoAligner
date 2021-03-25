@@ -30,7 +30,7 @@ def import_data(file):
 #st.write('https://drive.google.com/uc?export=download&id='+url.split('/')[-2])
 #df = pd.read_csv(path)
 
-list_of_gene_objects = import_data('list_of_gene_objects_with_fasta.txt')
+list_of_gene_objects = import_data('../list_of_gene_objects_with_fasta.txt')
 
 
 #Playground
@@ -305,7 +305,7 @@ def main():
     elif choice == 'About & Source Code':
         st.write("--------------------------")
         st.markdown("#### Problem Statement:")
-        image2 = Image.open('Problem_statement.png')
+        image2 = Image.open('../Pictures/Problem_statement.png')
         st.image(image2,
         use_column_width=True)
         st.write("\n")

@@ -1,7 +1,6 @@
-import pandas as pd
 import matplotlib
 matplotlib.use("TkAgg")
-from functions_old import * #import all functions from the functions_old.py file
+from Old_Scripts.functions_old import * #import all functions from the functions_old.py file
 from collections.abc import Iterable
 import pickle
 
