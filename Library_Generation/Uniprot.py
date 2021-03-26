@@ -1,7 +1,7 @@
-from Gene import *
+from Extractions_BioIDs import *
 from Protein_isoform import *
 from Alignment import *
-from Extractions_BioIDs import *
+import re
 
 
 class Uniprot():
@@ -33,6 +33,7 @@ class Uniprot():
         print(len(splittext))
 
         # iterate
+
         for fasta in splittext[1:len(splittext)]:
 
             # organisation
@@ -110,7 +111,7 @@ class Uniprot():
                                     isoform.uniprot_isoform = None  # delete (false) attribute of isoform
                                     gene.protein_sequence_isoform_collection.append(
                                         Protein_isoform(protein_sequence,
-                                                        uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',
+                                                        uniprot_accession=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession',
                                                                                                  accession),
                                                         uniprot_isoform=accession, gene_name=gene_name,
                                                         uniprot_ID=uniprot_ID))
