@@ -45,7 +45,7 @@ class Uniprot():
             # extracting information
             try:
                 accession = re.split('\|', fasta)[1]
-                uniprot_ID = re.findall(".*_HUMAN", re.split('\|', fasta)[2])
+                uniprot_ID = re.findall(".*_HUMAN", re.split('\|', fasta)[2])[0]
                 if "-" in accession:
                     uniprot_isoform = True
             except:

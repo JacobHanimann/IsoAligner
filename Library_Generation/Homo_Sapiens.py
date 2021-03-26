@@ -19,7 +19,6 @@ import pickle
 #print('Pickling list of gene objects and saving file...')
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_second.txt", "wb") as fp:  # Pickling
 #    pickle.dump(list_of_gene_objects, fp)
-
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_second.txt", "rb") as fp:  # Pickling
 #    list_of_gene_objects = pickle.load(fp)
 #
@@ -38,7 +37,6 @@ import pickle
 #print('Pickling list of gene objects and saving file...')
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_fourth.txt", "wb") as fp:  # Pickling
 #    pickle.dump(list_of_gene_objects, fp)
-#
 
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_fourth.txt", "rb") as fp:  # Pickling
     list_of_gene_objects = pickle.load(fp)
@@ -49,6 +47,9 @@ Uniprot.add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uni
 print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_fifth.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
+
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_fifth.txt", "rb") as fp:  # Pickling
+    list_of_gene_objects = pickle.load(fp)
 
 print('Validating and Correcting Library...') #missing variables and function input
 print('Statistics before Clean-up:')
