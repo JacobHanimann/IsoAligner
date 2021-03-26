@@ -111,13 +111,15 @@ def main():
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
             st.markdown("### Alignments")
-            reference_select, placeholder = st.beta_columns([1,2.5])
+            reference_select, number_of_entries = st.beta_columns([1,2.5])
             with reference_select:
                 chosen_gene = list(nested_dict.keys())[0]
                 index_gene_object = list(list(nested_dict.values())[0].keys())[0]
                 transcript_list = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
+            with number_of_entries:
+                st.write('Number of entries:',len(transcript_list))
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()
