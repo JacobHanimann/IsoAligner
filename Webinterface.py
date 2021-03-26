@@ -121,6 +121,7 @@ def main():
             with number_of_entries:
                 st.write('\n')
                 st.write('\n')
+                st.write('\n')
                 st.write('Number of entries:',len(transcript_list))
             ss.generate = True
             st.text('\n')
@@ -288,6 +289,7 @@ def main():
         st.write('Average number of isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
         st.write("ID's in total:",Ids_in_total)
         st.write("Average number of ID's per protein sequence:", round(Ids_in_total/total_number_of_isoforms,1))
+        st.write("Gene object attributes:", Gene.list_of_attributes())
         st.write("Collection of Isoform ID's includes:",Protein_isoform.list_of_attributes())
         #st.write('gene objects without isoforms: ',genes_without_isoforms)
         duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate = Statistics.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)

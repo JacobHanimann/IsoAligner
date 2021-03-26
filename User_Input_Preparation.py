@@ -68,16 +68,16 @@ class Input_preparation:
                 continue
             # refseq
             if re.search('NM_\d+\.\d+', element):
-                dict_of_IDs[element] = 'refseq_rna_version'
+                dict_of_IDs[element] = 'refseq_NM_version}'
                 continue
             elif re.search('NM_\d+', element):
                 dict_of_IDs[element] = 'refseq_NM'
                 continue
             if re.search('NP_\d+\.\d+', element):
-                dict_of_IDs[element] = 'refseq_prot_version'
+                dict_of_IDs[element] = 'refseq_NP_version'
                 continue
             elif re.search('NP_\d+', element):
-                dict_of_IDs[element] = 'refseq_prot'
+                dict_of_IDs[element] = 'refseq_NP'
                 continue
 
             if Alignment.extract_only_AA_of_Fasta_file(element)!=None:
