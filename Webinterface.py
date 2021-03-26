@@ -106,7 +106,7 @@ def main():
                 no_elements = True
 
         #case of using one ID
-        if ss.searched_clicked and not no_elements: #check if dictionary is not empty
+        if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1: #check if dictionary is not empty
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
