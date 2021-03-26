@@ -70,7 +70,6 @@ class Validate_library():
         for index, gene in enumerate(list_of_gene_objects):
             if type(gene.protein_sequence_isoform_collection) == list:
                 List = [tuple(list(sequence.__dict__.items())) for sequence in gene.protein_sequence_isoform_collection]
-                print(List)
                 print(dict((x, duplicates(List, x)) for x in set(List) if List.count(x) > 1))
                 duplicates_dict = dict((x, duplicates(List, x)) for x in set(List) if List.count(x) > 1)
                 if len(duplicates_dict) != 0:

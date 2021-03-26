@@ -119,6 +119,8 @@ def main():
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
             with number_of_entries:
+                st.write('\n')
+                st.write('\n')
                 st.write('Number of entries:',len(transcript_list))
             ss.generate = True
             st.text('\n')
