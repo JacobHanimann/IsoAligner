@@ -57,6 +57,9 @@ class Input_preparation:
             elif re.search('ENSP\d{11}', element):
                 dict_of_IDs[element] = 'ENSP'
                 continue
+            if re.search('.*-\d+', element):
+                dict_of_IDs[element] = 'transcript_name'
+                continue
             # uniprot
             if re.search(
                     '[OPQ][0-9][0-9A-Z]{3}[0-9]|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]',
