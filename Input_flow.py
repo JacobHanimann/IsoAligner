@@ -173,7 +173,7 @@ class Input_flow:
             ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)', 'Transcript name',
              'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)','Refseq Protein ID (NP)','UCSC Stable ID (uc)','Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
              'Ensembl Gene ID version (ENSG.Number)', 'Ensembl Transcript ID version (ENST.Number)', 'Ensembl Protein ID version (ENSP.Number)', 'Refseq Transcript ID version (NM.Number)', 'Refseq Transcript ID version (NP.Number)',
-             'HGNC gene symbol (HGNC:Number)'],
+             'HGNC ID (HGNC:Number)'],
             ['Gene name', 'Transcript name'])
 
     @staticmethod

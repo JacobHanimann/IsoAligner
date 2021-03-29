@@ -52,11 +52,17 @@ class Table_Generation:
                 column_values = []
                 column_names = []
 
-                # most column names missing
-
                 if "Gene name" in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].ensembl_gene_symbol)
                     column_names.append("Gene_name")
+
+                if 'HGNC ID (HGNC:Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].HGNC)
+                    column_names.append("HGNC_ID")
+
+                if 'Refseq Gene ID (Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].refseq_gene_ID)
+                    column_names.append("Refseq_Gene_ID")
 
                 if "Ensembl Gene ID (ENSG)" in chosen_columns:
                     column_values.append(transcript.ENSG)
@@ -97,9 +103,6 @@ class Table_Generation:
                     column_values.append(transcript.transcript_name)
                     column_names.append("Iso_transcript_name")
 
-                if 'Refseq Gene ID (Number)' in chosen_columns:
-                    column_values.append(list_of_gene_objects[index_of_gene].refseq_gene_ID)
-                    column_names.append("Refseg_Gene_ID")
 
                 if 'Refseq Transcript ID (NM)' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
@@ -126,6 +129,42 @@ class Table_Generation:
                     column_names.append("Ref_NP_ID")
                     column_values.append(transcript.refseq_NP_version)
                     column_names.append("Iso_NP_ID")
+
+                if 'UCSC Stable ID (uc)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].UCSC_stable_ID)
+                    column_names.append("Ref_UCSC_ID")
+                    column_values.append(transcript.UCSC_stable_ID)
+                    column_names.append("Iso_UCSC_ID")
+
+                if 'Uniprot Name ID' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].uniprot_ID)
+                    column_names.append("Ref_uniprot_name_ID")
+                    column_values.append(transcript.uniprot_ID)
+                    column_names.append("Iso_uniprot_name_ID")
+                if 'Uniprot Accession ID' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].uniprot_accession)
+                    column_names.append("Ref_uniprot_accession")
+                    column_values.append(transcript.uniprot_accession)
+                    column_names.append("Iso_uniprot_accession")
+                if 'Uniparc ID' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].uniprot_uniparc)
+                    column_names.append("Ref_uniprot_uniparc")
+                    column_values.append(transcript.uniprot_uniparc)
+                    column_names.append("Iso_uniprot_uniparc")
+                if 'Uniprot Isoform ID' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].uniprot_isoform)
+                    column_names.append("Ref_uniprot_isoform")
+                    column_values.append(transcript.uniprot_isoform)
+                    column_names.append("Iso_uniprot_isoform")
+
+                if 'HGNC ID (HGNC:Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].HGNC)
+                    column_names.append("Gene_name")
 
 
 
