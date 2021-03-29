@@ -76,16 +76,16 @@ class Input_preparation:
                 continue
 
             if re.search('_HUMAN', element):
-                dict_of_IDs[element] = 'uniprot_name_ID'
+                dict_of_IDs[element] = 'uniprot_ID'
                 continue
             #HGNC
-            if re.search('HGNC:\s\d+', element):
+            if re.search('HGNC:\d+', element):
                 dict_of_IDs[element] = 'HGNC'
                 continue
 
             # refseq
             if re.search('NM_\d+\.\d+', element):
-                dict_of_IDs[element] = 'refseq_NM_version}'
+                dict_of_IDs[element] = 'refseq_NM_version'
                 continue
             elif re.search('NM_\d+', element):
                 dict_of_IDs[element] = 'refseq_NM'
@@ -97,13 +97,13 @@ class Input_preparation:
                 dict_of_IDs[element] = 'refseq_NP'
                 continue
             #UCSC
-            if re.search('uc\.\d+.*', element):
+            if re.search('uc\d+.*', element):
                 dict_of_IDs[element] = 'UCSC_stable_ID'
                 continue
 
             # refseq again
             if re.search('\d+', element):
-                dict_of_IDs[element] = 'refseq_gene_ID}'
+                dict_of_IDs[element] = 'refseq_gene_ID'
                 continue
 
             if Alignment.extract_only_AA_of_Fasta_file(element)!=None:
