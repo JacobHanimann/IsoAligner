@@ -63,6 +63,11 @@ class Input_preparation:
                     element):
                 dict_of_IDs[element] = 'uniprot_accession'
                 continue
+            if re.search(
+                    '[OPQ][0-9][0-9A-Z]{3}[0-9]|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]',
+                    element) and '-' in element:
+                dict_of_IDs[element] = 'uniprot_isoform'
+                continue
             if re.search('UPI[0-9A-F]+', element):
                 dict_of_IDs[element] = 'uniprot_uniparc'
                 continue
