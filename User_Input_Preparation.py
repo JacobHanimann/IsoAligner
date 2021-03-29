@@ -96,6 +96,15 @@ class Input_preparation:
             elif re.search('NP_\d+', element):
                 dict_of_IDs[element] = 'refseq_NP'
                 continue
+            #UCSC
+            if re.search('uc\.\d+.*', element):
+                dict_of_IDs[element] = 'UCSC_stable_ID'
+                continue
+
+            # refseq again
+            if re.search('\d+', element):
+                dict_of_IDs[element] = 'refseq_gene_ID}'
+                continue
 
             if Alignment.extract_only_AA_of_Fasta_file(element)!=None:
                 dict_of_IDs[element] = 'aminoacid_sequence'
@@ -104,10 +113,3 @@ class Input_preparation:
                 dict_of_IDs[element] = 'gene_name'
 
         return dict_of_IDs
-
-
-    @staticmethod
-    def transform_uploaded_data_type_accordingly(file):
-        '''uploaded files can be different types of files. A transformation is needed to interpret the data correctly
-        Type of input: FASTA, FA and TXT
-        Output type: depends on the case'''
