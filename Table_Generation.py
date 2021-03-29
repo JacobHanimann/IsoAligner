@@ -61,6 +61,9 @@ class Table_Generation:
                 if "Ensembl Gene ID (ENSG)" in chosen_columns:
                     column_values.append(transcript.ENSG)
                     column_names.append("ENSG")
+                if 'Ensembl Gene ID version (ENSG.Number)' in chosen_columns:
+                    column_values.append(transcript.ENSG_version)
+                    column_names.append("ENSG_version")
 
                 if 'Ensembl Transcript ID (ENST)' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
@@ -68,12 +71,24 @@ class Table_Generation:
                     column_names.append("Ref_transcript_ID")
                     column_values.append(transcript.ENST)
                     column_names.append("Iso_transcript_ID")
+                if 'Ensembl Transcript ID version (ENST.Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].ENST_version)
+                    column_names.append("Ref_ts_ID_version")
+                    column_values.append(transcript.ENST_version)
+                    column_names.append("Iso_ts_ID_version")
 
                 if 'Ensembl Protein ID (ENSP)' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].ENSP)
                     column_names.append("Ref_protein_ID")
                     column_values.append(transcript.ENSP)
                     column_names.append("Iso_protein_ID")
+                if 'Ensembl Protein ID version (ENSP.number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].ENSP_version)
+                    column_names.append("Ref_prot_ID_ver")
+                    column_values.append(transcript.ENSP_version)
+                    column_names.append("Iso_prot_ID_ver")
 
                 if "Transcript name" in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
@@ -92,21 +107,26 @@ class Table_Generation:
                     column_names.append("Ref_NM_ID")
                     column_values.append(transcript.refseq_NM)
                     column_names.append("Iso_NM_ID")
+                if 'Refseq Transcript ID version (NM.Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].refseq_NM_version)
+                    column_names.append("Ref_NM_ID_ver")
+                    column_values.append(transcript.refseq_NM_version)
+                    column_names.append("Iso_NM_ID_ver")
 
-                if 'Refseq Protein ID (NP/YP)' in chosen_columns:
-
-                    if list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].refseq_YP==None:
-                        column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                if 'Refseq Protein ID (NP)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
                                              index_reference_transcript].refseq_NP)
-                        column_names.append("Ref_NP_ID")
-                        column_values.append(transcript.refseq_NP)
-                        column_names.append("Iso_NP_ID")
-                    else:
-                        column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[ #check if this works with example: YP_003024026 when mitochondrial genes are integrated in search function
-                                                 index_reference_transcript].refseq_YP)
-                        column_names.append("Ref_YP_ID")
-                        column_values.append(transcript.refseq_YP)
-                        column_names.append("Iso_YP_ID")
+                    column_names.append("Ref_NP_ID")
+                    column_values.append(transcript.refseq_NP)
+                    column_names.append("Iso_NP_ID")
+                if 'Refseq Protein ID version (NP.Number)' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+                                             index_reference_transcript].refseq_NP_version)
+                    column_names.append("Ref_NP_ID")
+                    column_values.append(transcript.refseq_NP_version)
+                    column_names.append("Iso_NP_ID")
+
 
 
                 column_names = column_names + ['AA', 'ReferencePos', 'IsoformPos']
