@@ -66,6 +66,11 @@ class Input_preparation:
             if re.search('UPI[0-9A-F]+', element):
                 dict_of_IDs[element] = 'uniprot_uniparc'
                 continue
+
+            if re.search('_HUMAN', element):
+                dict_of_IDs[element] = 'uniprot_name_ID'
+                continue
+
             # refseq
             if re.search('NM_\d+\.\d+', element):
                 dict_of_IDs[element] = 'refseq_NM_version}'
