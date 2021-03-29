@@ -19,7 +19,7 @@ class Input_preparation:
             list_of_elements = list(string.split(','))
         elif "\t" in string:
             list_of_elements = list(string.split('\t'))
-        elif " " in string:
+        elif " " in string and not 'HGNC' in string:
             list_of_elements = list(string.split(' '))
         else:
             list_of_elements = [string]
@@ -60,13 +60,13 @@ class Input_preparation:
             # uniprot
             if re.search(
                     '[OPQ][0-9][0-9A-Z]{3}[0-9]|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]',
-                    element):
-                dict_of_IDs[element] = 'uniprot_accession'
+                    element) and '-' in element:
+                dict_of_IDs[element] = 'uniprot_isoform'
                 continue
             if re.search(
                     '[OPQ][0-9][0-9A-Z]{3}[0-9]|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]',
-                    element) and '-' in element:
-                dict_of_IDs[element] = 'uniprot_isoform'
+                    element):
+                dict_of_IDs[element] = 'uniprot_accession'
                 continue
             if re.search('UPI[0-9A-F]+', element):
                 dict_of_IDs[element] = 'uniprot_uniparc'
@@ -74,6 +74,10 @@ class Input_preparation:
 
             if re.search('_HUMAN', element):
                 dict_of_IDs[element] = 'uniprot_name_ID'
+                continue
+            #HGNC
+            if re.search('HGNC:\s\d+', element):
+                dict_of_IDs[element] = 'HGNC'
                 continue
 
             # refseq
