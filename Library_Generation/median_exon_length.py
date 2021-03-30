@@ -13,16 +13,13 @@ class Exon_Information():
     def read_Ensembl_GRCh38_gtf_file_generate_nested_dict(file):
         '''extract fasta files one by one and add them to the gene objects'''
         with open(file, "r") as f:
-            expenses_txt = f.readlines()
-        for line in expenses_txt:
-            print(line)
-        whole_txt = "".join(expenses_txt)
-        splittext = re.split(">", whole_txt)
-        fasta_count = 0
-        matches = 0
-        list_of_gene_objects = []
-        for fasta in splittext[1:]:
-            fasta_count += 1
+            all_lines = f.readlines()
+        gene_dict={}
+        exon_dict={}
+        list_of_nested_dict =[]
+        for line in all_lines:
+            Exon()
+
 
 
     @staticmethod
