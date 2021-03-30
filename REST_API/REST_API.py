@@ -35,8 +35,9 @@ class IsoAligner(Resource):
 
     def put(self,sequence1,sequence2):
         alignment= align_sequences(sequence1,sequence2)
-        list_of_gene_objects = import_data_from_github('../list_of_gene_objects_11_march.txt.gz')
-        return list_of_gene_objects[1].ensembl_gene_symbol
+        #list_of_gene_objects = import_data_from_github('../list_of_gene_objects_11_march.txt.gz')
+        #return list_of_gene_objects[1].ensembl_gene_symbol
+        return alignment
 
 api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>')
 
