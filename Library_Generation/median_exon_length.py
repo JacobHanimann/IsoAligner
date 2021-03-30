@@ -17,14 +17,16 @@ class Exon_Information():
             all_lines = f.readlines()
         #organisation
         gene_dict={}
-        print(gene_dict)
-        for line in all_lines:
+        print('lines in total:', len(all_lines))
+        for index, line in enumerate(all_lines):
+            if index % 100000==0:
+                print(100*round(index/len(all_lines),2),'%')
             splitted = re.split('\t',line)
             #extracting information
             ENSG = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg',splitted[8])
             start_end = [int(splitted[3]),int(splitted[4])]
             exon_length = (start_end[1]-start_end[0]+1)/3 #Lösung finden
-            print('exon length:', exon_length)
+            #print('exon length:', exon_length)
             ENSE = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ense',splitted[8])
             if ENSE == 'not found':
                 ENSE = None
@@ -58,7 +60,7 @@ def add_exon_objects_to_protein_objects():
 
 #Execution
 
-Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
+gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
 
 #nested dict as an output
 
