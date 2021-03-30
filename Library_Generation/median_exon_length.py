@@ -11,7 +11,7 @@ class Exon_Information():
 
     @staticmethod
     def read_Ensembl_GRCh38_gtf_file_generate_nested_dict(file):
-        '''extract fasta files one by one and add them to the gene objects'''
+        '''extraction of exon infos of protein coding genes, generates exon objects and stores them in dictionary with ENSG IDs as keys'''
         #read file
         with open(file, "r") as f:
             all_lines = f.readlines()
