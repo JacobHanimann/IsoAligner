@@ -5,6 +5,8 @@ from Protein_isoform import *
 from Alignment import *
 from Extractions_BioIDs import *
 from Exon import *
+import statistics
+import pickle
 
 class Exon_Information():
     pass
@@ -47,25 +49,37 @@ class Exon_Information():
 
 
     @staticmethod
-    def pick_exon_length_median_from_nested_dict():
+    def pick_exon_length_median_from_nested_dict(gene_dict):
+        '''
+        functions that takes the median of the exon length per gene and stores it in a dict
+        :param gene_dict: dictionary generated from read ensembl gtf file
+        :return: dict
+        '''
+        gene_dict_only_median = {}
+        for gene,exon_list in gene_dict.items():
+            exon_lengths = [exon.exon_length_in_AA for exon in exon_list]
+            median_of_gene = statistics.median(exon_lengths)
+            gene_dict_only_median[gene] = median_of_gene
+
+        return gene_dict_only_median
+
+
+    @staticmethod
+    def add_exon_median_to_gene_objects(list_of_gene_objects,gene_dict_median):
         pass
 
 
-def add_exon_median_to_gene_objects():
-    pass
-
-def add_exon_objects_to_protein_objects():
-    pass
+    @staticmethod
+    def add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict):
+        pass
 
 
 #Execution
 
 gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
 
-#nested dict as an output
+print('Pickling genes dict')
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/genes_dict", "wb") as fp:  # Pickling
+    pickle.dump(gene_dict, fp)
 
-#newdict with median of each ENSG
-
-#assign new dict to gene object
-
-#assign exon objects to protein isoforms if wanted
+genes_dict_median = Exon_Information.pick_exon_length_median_from_nested_dict(gene_dict)
