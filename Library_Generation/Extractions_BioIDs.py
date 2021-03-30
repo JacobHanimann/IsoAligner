@@ -25,6 +25,11 @@ class Get_Bio_ID():
         elif ID_type == 'ensembl_ensp_version':
             pattern = 'ENSP\d+\.\d+'
             version = True
+        elif ID_type == 'ensembl_ense':
+            pattern = 'ENSE\d{11}'
+        elif ID_type == 'ensembl_ense_version':
+            pattern = 'ENSE\d+\.\d+'
+            version = True
 
         # Refseq
         # known
