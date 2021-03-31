@@ -76,7 +76,7 @@ class Input_preparation:
                 continue
 
             if re.search('_HUMAN', element):
-                dict_of_IDs[element] = 'uniprot_ID'
+                dict_of_IDs[element] = 'uniprot_name_ID'
                 continue
             #HGNC
             if re.search('HGNC:\d+', element):

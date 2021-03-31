@@ -49,7 +49,7 @@ class HGNC():
                     gene.previous_symbols = previous_symbols
                     gene.refseq_gene_ID = refseq_gene_ID
                     gene.alias_symbols = alias_symbols
-                    gene.uniprot_ID = uniprot_ID  # check if it the same ID as in the Protein_isoform classes
+                    gene.uniprot_name_ID = uniprot_ID  # check if it the same ID as in the Protein_isoform classes
 
             if found == False:
                 list_of_gene_objects.append(

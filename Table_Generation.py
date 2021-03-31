@@ -139,9 +139,9 @@ class Table_Generation:
 
                 if 'Uniprot Name ID' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
-                                             index_reference_transcript].uniprot_ID)
+                                             index_reference_transcript].uniprot_name_ID)
                     column_names.append("Ref_uniprot_name_ID")
-                    column_values.append(transcript.uniprot_ID)
+                    column_values.append(transcript.uniprot_name_ID)
                     column_names.append("Iso_uniprot_name_ID")
                 if 'Uniprot Accession ID' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[

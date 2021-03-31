@@ -49,7 +49,7 @@ def add_HCGN_information_to_gene_objects(file_of_gene_names,list_of_gene_objects
                   gene.previous_symbols = previous_symbols
                   gene.refseq_gene_ID = refseq_gene_ID
                   gene.alias_symbols = alias_symbols
-                  gene.uniprot_ID = uniprot_ID #check if it the same ID as in the Protein_isoform classes
+                  gene.uniprot_name_ID = uniprot_ID #check if it the same ID as in the Protein_isoform classes
 
         if found == False:
             list_of_gene_objects.append(Gene(ENSG=df.loc[index,'Ensembl gene ID'],HGNC=HGNC, HGNC_gene_symbol = HGNC_gene_symbol, previous_symbols = previous_symbols, alias_symbols = alias_symbols, refseq_gene_ID=refseq_gene_ID))
@@ -494,7 +494,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_accession += 1
                                 isoform.uniprot_isoform = accession+'-1'
-                                isoform.uniprot_ID = uniprot_ID
+                                isoform.uniprot_name_ID = uniprot_ID
                                 found = True
                             else:
                                 accession_in_but_other_sequence += 1
@@ -505,7 +505,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
                         elif isoform.uniprot_isoform == accession:
                             if isoform.protein_sequence == protein_sequence:
                                 already_in_uniprot_isoform += 1
-                                isoform.uniprot_ID = uniprot_ID
+                                isoform.uniprot_name_ID = uniprot_ID
                                 found = True
                             else:
                                 uniprot_isoform_not_same_seq +=1
@@ -520,11 +520,11 @@ def add_uniprot_fasta_files(file,list_of_objects):
                              if uniprot_isoform:
                                 isoform.uniprot_accession=get_bio_IDs_with_regex('uniprot_accession',accession)
                                 isoform.uniprot_isoform = accession
-                                isoform.uniprot_ID = uniprot_ID
+                                isoform.uniprot_name_ID = uniprot_ID
                              else:
                                  isoform.uniprot_accession = accession
                                  isoform.uniprot_isoform = accession+'-1'
-                                 isoform.uniprot_ID = uniprot_ID
+                                 isoform.uniprot_name_ID = uniprot_ID
 
                     if not found:
                         new_isoform_for_gene += 1
@@ -549,7 +549,7 @@ def add_uniprot_fasta_files(file,list_of_objects):
     print('uniprot_isoform_not_same_seq',uniprot_isoform_not_same_seq)
     print('new_isoform_for_gene',new_isoform_for_gene)
     print('no_gene_match_found',no_gene_match_found)
-    print('protein sequence match but no uniprot_ID associated: ', protein_sequence_already_without_uniprot_ID)
+    print('protein sequence match but no uniprot_name_ID associated: ', protein_sequence_already_without_uniprot_ID)
 
 
 def get_bio_IDs_with_regex(ID_type, string):
