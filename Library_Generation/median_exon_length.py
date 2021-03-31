@@ -29,7 +29,7 @@ class Exon_Information():
             ENSG = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg',splitted[8])
             start_end = [int(splitted[3]),int(splitted[4])]
             exon_length = (start_end[1]-start_end[0]+1)/3 #Lösung finden
-            print('exon length:', exon_length)
+            #print('exon length:', exon_length)
             ENSE = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ense',splitted[8])
             if ENSE == 'not found':
                 ENSE = None
@@ -67,20 +67,50 @@ class Exon_Information():
 
     @staticmethod
     def add_exon_median_to_gene_objects(list_of_gene_objects,gene_dict_median):
-        pass
+        print('total length:',len(gene_dict_median))
+        index = 0
+        for ENSG, exon_length in gene_dict_median.items():
+            index += 1
+            if index % 1000 == 0:
+                print(100 * round(index / len(gene_dict_median), 2), '%')
+            for gene in list_of_gene_objects:
+                if ENSG==gene.ENSG:
+                    gene.median_exon_length = exon_length
+                    break
 
 
     @staticmethod
     def add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict):
-        pass
+        index = 0
+        for ENSG, exon_list in gene_dict.items():
+            index += 1
+            if index % 1000 == 0:
+                print(100 * round(index / len(gene_dict), 2), '%')
+            for gene in list_of_gene_objects:
+                if ENSG == gene.ENSG:
+                    for exon in exon_list:
+                        for isoform in gene.protein_sequence_isoform_collection:
+                            if exon.ENST==isoform.ENST:
+                                if isoform.collection_of_exons ==None:
+                                    isoform.collection_of_exons = [exon]
+                                else:
+                                    isoform.collection_of_exons.append(exon)
+                                print('zugewiesen')
+                                break
 
 
 #Execution
-
 gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens_GRCh38_exons.gtf')
 
-print('Pickling genes dict')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/genes_dict", "wb") as fp:  # Pickling
-    pickle.dump(gene_dict, fp)
+#print('Pickling genes dict')
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/genes_dict", "wb") as fp:  # Pickling
+#    pickle.dump(gene_dict, fp)
 
 genes_dict_median = Exon_Information.pick_exon_length_median_from_nested_dict(gene_dict)
+
+
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_fourth.txt", "rb") as fp:  # Pickling
+    list_of_gene_objects = pickle.load(fp)
+
+#Exon_Information.add_exon_median_to_gene_objects(list_of_gene_objects,genes_dict_median)
+Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
