@@ -45,7 +45,7 @@ class Uniprot():
             # extracting information
             try:
                 accession = re.split('\|', fasta)[1]
-                if "sp" in fasta:
+                if "sp|" in fasta:
                     uniprot_name_ID = re.findall(".*_HUMAN", re.split('\|', fasta)[2])[0]
                     sp_human_ID = True
                 else:
