@@ -148,6 +148,7 @@ class Refseq():
                                 # print('added isoform')
                                 sequences_added += 1
                     elif XP:
+                        isoform_processed = True
                         pass
                         # XP_added += 1
                         # isoform_processed = True
@@ -162,19 +163,20 @@ class Refseq():
                         #                        refseq_XP_version=XP_version)]
                         #    print('new collection XP')
                     elif YP:
-                        YP_added += 1
                         isoform_processed = True
-                        if type(gene.protein_sequence_isoform_collection) == list:
-                            gene.protein_sequence_isoform_collection.append(
-                                Protein_isoform(protein_sequence, gene_name=gene.ensembl_gene_symbol,
-                                                refseq_YP_version=YP_version, refseq_YP=YP_ID,
-                                                refseq_NC_version=NC_ID_version))
-                        else:
-                            gene.protein_sequence_isoform_collection = [
-                                Protein_isoform(protein_sequence, gene_name=gene.ensembl_gene_symbol,
-                                                refseq_YP_version=YP_version, refseq_YP=YP_ID,
-                                                refseq_NC_version=NC_ID_version)]
-                            print('new collection YP')
+                        #YP_added += 1
+                        #isoform_processed = True
+                        #if type(gene.protein_sequence_isoform_collection) == list:
+                        #    gene.protein_sequence_isoform_collection.append(
+                        #        Protein_isoform(protein_sequence, gene_name=gene.ensembl_gene_symbol,
+                        #                        refseq_YP_version=YP_version, refseq_YP=YP_ID,
+                        #                        refseq_NC_version=NC_ID_version))
+                        #else:
+                        #    gene.protein_sequence_isoform_collection = [
+                        #        Protein_isoform(protein_sequence, gene_name=gene.ensembl_gene_symbol,
+                        #                        refseq_YP_version=YP_version, refseq_YP=YP_ID,
+                        #                        refseq_NC_version=NC_ID_version)]
+                        #    print('new collection YP')
 
             # no match in list of gene objects
             # make a new gene object
@@ -199,6 +201,7 @@ class Refseq():
 
                 elif XP:
                     pass
+                    isoform_processed = True
                     # if HCGN_found:
                     #    list_of_gene_objects.append(Gene(HGNC=HGNC_ID,refseq_gene_ID=NCBI_ID,
                     #                                     protein_sequence_isoform_collection=[Protein_isoform(protein_sequence,refseq_XM_version=XM_ID_version,refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
@@ -207,18 +210,20 @@ class Refseq():
                     #                                     protein_sequence_isoform_collection=[
                     #                                         Protein_isoform(protein_sequence, refseq_XM_version=XM_ID_version, refseq_XP=XP_ID,refseq_XP_version=XP_version)]))
                 elif YP:
-                    if HCGN_found:
-                        list_of_gene_objects.append(Gene(HGNC=HGNC_ID, refseq_gene_ID=NCBI_ID,
-                                                         protein_sequence_isoform_collection=[
-                                                             Protein_isoform(protein_sequence, refseq_YP=YP_ID,
-                                                                             refseq_NC_version=NC_ID_version,
-                                                                             refseq_YP_version=YP_version)]))
-                    else:
-                        list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
-                                                         protein_sequence_isoform_collection=[
-                                                             Protein_isoform(protein_sequence, refseq_YP=YP_ID,
-                                                                             refseq_NC_version=NC_ID_version,
-                                                                             refseq_YP_version=YP_version)]))
+                    pass
+                    isoform_processed = True
+                    #if HCGN_found:
+                    #    list_of_gene_objects.append(Gene(HGNC=HGNC_ID, refseq_gene_ID=NCBI_ID,
+                    #                                     protein_sequence_isoform_collection=[
+                    #                                         Protein_isoform(protein_sequence, refseq_YP=YP_ID,
+                    #                                                         refseq_NC_version=NC_ID_version,
+                    #                                                         refseq_YP_version=YP_version)]))
+                    #else:
+                    #    list_of_gene_objects.append(Gene(refseq_gene_ID=NCBI_ID,
+                    #                                     protein_sequence_isoform_collection=[
+                    #                                         Protein_isoform(protein_sequence, refseq_YP=YP_ID,
+                    #                                                         refseq_NC_version=NC_ID_version,
+                    #                                                         refseq_YP_version=YP_version)]))
 
         print('total entries: ', len(splittext))
         print('not any type: ', not_any_type)
