@@ -25,7 +25,6 @@ class Protein_isoform:
         self.refseq_YP_version = refseq_YP_version
         self.refseq_YP = refseq_YP
         #uniprot
-        self.uniprot_ID = uniprot_ID
         self.uniprot_accession = uniprot_accession
         self.uniprot_uniparc = uniprot_uniparc
         self.uniprot_isoform = uniprot_isoform
