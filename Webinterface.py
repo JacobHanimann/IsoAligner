@@ -44,7 +44,7 @@ def main():
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
                 "Align isoforms dynamically with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
-                " The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~1.5M mapped isoform ID's from Ensembl, Uniprot, Refseq and HGNC.")
+                " The current human isoform library consists of ~18k protein coding genes covering ~130k protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq and HGNC.")
         with tRNA:
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
@@ -250,7 +250,7 @@ def main():
         st.title(" Amino Acid Isoform Aligner")
         st.markdown("### Biologically Appropriate Alignment of Isoforms:")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly as can be seen in the scheme below.'
-                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by simply confining the parameters of the Needleman Wunsch global alignment to assure positional mapping of biologically comprehensive amino acid positions only.  ')
+                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by simply confining the parameters of the Needleman Wunsch global alignment to assure positional mapping of biologically corresponding amino acid positions only.  ')
         problem_schema = Image.open('Pictures/Mapping_problem_schema.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (like Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
