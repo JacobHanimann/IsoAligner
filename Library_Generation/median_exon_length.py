@@ -122,20 +122,3 @@ class Exon_Information():
                                 else:
                                     isoform.collection_of_exons.append(exon)
                                 break
-
-
-#Execution
-gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
-
-#print('Pickling genes dict')
-#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/genes_dict", "wb") as fp:  # Pickling
-#    pickle.dump(gene_dict, fp)
-
-genes_dict_median = Exon_Information.pick_exon_length_median_from_nested_dict(gene_dict)
-
-
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_fourth.txt", "rb") as fp:  # Pickling
-    list_of_gene_objects = pickle.load(fp)
-
-#Exon_Information.add_exon_median_to_gene_objects(list_of_gene_objects,genes_dict_median)
-Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
