@@ -24,11 +24,12 @@ class Exon_Information():
             if index % 100000==0:
                 print(100*round(index/len(all_lines),2),'%')
             splitted = re.split('\t',line)
+            #print(splitted)
             #extracting information
             ENSG = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg',splitted[8])
             start_end = [int(splitted[3]),int(splitted[4])]
             exon_length = (start_end[1]-start_end[0]+1)/3 #Lösung finden
-            #print('exon length:', exon_length)
+            print('exon length:', exon_length)
             ENSE = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ense',splitted[8])
             if ENSE == 'not found':
                 ENSE = None
@@ -76,7 +77,7 @@ class Exon_Information():
 
 #Execution
 
-gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
+gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens_GRCh38_exons.gtf')
 
 print('Pickling genes dict')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/genes_dict", "wb") as fp:  # Pickling
