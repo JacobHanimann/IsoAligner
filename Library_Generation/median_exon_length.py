@@ -115,10 +115,11 @@ class Exon_Information():
             for gene in list_of_gene_objects:
                 if ENSG == gene.ENSG:
                     for exon in exon_list:
-                        for isoform in gene.protein_sequence_isoform_collection:
-                            if exon.ENST==isoform.ENST:
-                                if isoform.collection_of_exons ==None:
-                                    isoform.collection_of_exons = [exon]
-                                else:
-                                    isoform.collection_of_exons.append(exon)
-                                break
+                        if type(gene.protein_sequence_isoform_collection)==list:
+                            for isoform in gene.protein_sequence_isoform_collection:
+                                if exon.ENST==isoform.ENST:
+                                    if isoform.collection_of_exons ==None:
+                                        isoform.collection_of_exons = [exon]
+                                    else:
+                                        isoform.collection_of_exons.append(exon)
+                                    break
