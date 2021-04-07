@@ -54,6 +54,7 @@ class Validate_library():
     @staticmethod
     def check_if_there_are_exact_duplicates(list_of_gene_objects):
         '''
+        note: function does not work because exon collection attribute is a list which is not hashable
         check out if there were IDs and Seq that are the same but escaped the match
         :param list_of_gene_objects:
         :return: dictionary of gene indexes as key and dictionary of duplicates of the isoform collection

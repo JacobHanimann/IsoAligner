@@ -52,7 +52,7 @@ print('Adding exon information...')
 gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
 genes_dict_median = Exon_Information.pick_exon_length_median_from_nested_dict(gene_dict)
 Exon_Information.add_exon_median_to_gene_objects(list_of_gene_objects,genes_dict_median)
-Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
+#Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
 
 print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_sixth.txt", "wb") as fp:  # Pickling
@@ -61,14 +61,12 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+da
 print('Validating and Correcting Library...') #missing variables and function input
 print('Statistics before Clean-up:')
 Validate_library.check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
-Validate_library.check_if_there_are_exact_duplicates(list_of_gene_objects)
 gene_duplicates_dict = Validate_library.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 print('Correcting library...')
 list_of_gene_objects = Validate_library.fuse_attributes_of_duplicated_AA_seq_within_gene_object(list_of_gene_objects,gene_duplicates_dict)
 list_of_gene_objects = Validate_library.delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects)
 print('Statistics after Clean-up:')
 Validate_library.check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
-Validate_library.check_if_there_are_exact_duplicates(list_of_gene_objects)
 gene_duplicates_dict = Validate_library.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_final.txt", "wb") as fp:  # Pickling
