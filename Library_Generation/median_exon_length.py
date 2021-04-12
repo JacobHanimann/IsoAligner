@@ -49,7 +49,7 @@ class Exon_Information():
                 #print('new cds')
                 #print(frame)
                 #print(cds_start_end)
-                exon_length = (cds_start_end[1]-cds_start_end[0]+1-frame)/3 #stimmt immer noch nicht, mit Abdullah besprechen
+                exon_length = (cds_start_end[1]-cds_start_end[0]+1-frame)/3 #stimmt immer noch nicht
                 #print('exon length:', exon_length)
                 exon_number_extract = re.findall('exon_number\s"\d"', splitted[8])
                 if exon_number_extract:
@@ -123,3 +123,6 @@ class Exon_Information():
                                     else:
                                         isoform.collection_of_exons.append(exon)
                                     break
+
+
+gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
