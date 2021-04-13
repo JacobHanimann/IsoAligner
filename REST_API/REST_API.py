@@ -39,7 +39,8 @@ class IsoAligner(Resource):
         #return list_of_gene_objects[1].ensembl_gene_symbol
         return alignment
 
-api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>')
+
+api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>','/Convert/<string:isoform_ID>')
 
 if __name__ == "__main__":
     app.run(debug=True)
