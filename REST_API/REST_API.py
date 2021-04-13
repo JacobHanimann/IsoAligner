@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_caching import Cache
 from Visualise_Alignment import *
 from Alignment import *
@@ -12,6 +12,11 @@ api = Api(app)
 cache = Cache()
 app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
+
+
+data_args = reqparse.RequestParser()
+data_args.add_argument("match", type=int, help="match score needed")
+data_args.add_argument("mismatch", type=int, help="mismatch penalty needed",required=False)
 
 
 @cache.cached(timeout=200,key_prefix='importing_library')
@@ -39,8 +44,15 @@ class IsoAligner(Resource):
         #return list_of_gene_objects[1].ensembl_gene_symbol
         return alignment
 
+class Isoform(Resource):
+    def post(self,number):
+        args = data_args.parse_args()
+        return args
+
+data = {'isoform_ID':'name', 'gap_open':3}
 
 api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>','/Convert/<string:isoform_ID>')
+api.add_resource(Isoform,'/Post/<int:number>')
 
 if __name__ == "__main__":
     app.run(debug=True)
