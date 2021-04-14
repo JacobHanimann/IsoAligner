@@ -15,8 +15,11 @@ cache.init_app(app)
 
 
 data_args = reqparse.RequestParser()
-data_args.add_argument("match", type=int, help="match score needed")
-data_args.add_argument("mismatch", type=int, help="mismatch penalty needed",required=False)
+data_args.add_argument("match", type=int, help="set to default: 1", required=False)
+data_args.add_argument("mismatch", type=int, help="set to default: -2",required=False)
+data_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
+data_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0",required=False)
+data_args.add_argument("minimal_exon_length", type=int, help="set to default: 5",required=False)
 
 
 @cache.cached(timeout=200,key_prefix='importing_library')
@@ -44,15 +47,17 @@ class IsoAligner(Resource):
         #return list_of_gene_objects[1].ensembl_gene_symbol
         return alignment
 
-class Isoform(Resource):
-    def post(self,number):
+class Mapping_Table(Resource):
+    def post(self,Isoform_ID,alternative="optional"):
         args = data_args.parse_args()
-        return args
+        if alternative!= 'optional':
+            return alternative
+        else:
+            return Isoform_ID
 
-data = {'isoform_ID':'name', 'gap_open':3}
 
 api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>','/Convert/<string:isoform_ID>')
-api.add_resource(Isoform,'/Post/<int:number>')
+api.add_resource(Mapping_Table,'/map/<string:Isoform_ID>','/map/<string:Isoform_ID>/<string:alternative>')
 
 if __name__ == "__main__":
     app.run(debug=True)
