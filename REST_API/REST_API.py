@@ -14,12 +14,23 @@ app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
 
 
-data_args = reqparse.RequestParser()
-data_args.add_argument("match", type=int, help="set to default: 1", required=False)
-data_args.add_argument("mismatch", type=int, help="set to default: -2",required=False)
-data_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
-data_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0",required=False)
-data_args.add_argument("minimal_exon_length", type=int, help="set to default: 5",required=False)
+# Arguments in the body of the requests
+#mapping table
+map_args = reqparse.RequestParser()
+map_args.add_argument("match", type=int, help="set to default: 1", required=False)
+map_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
+map_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
+map_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0", required=False)
+map_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
+#raw alignment
+align_args = reqparse.RequestParser()
+align_args.add_argument("sequence1", type=str, help="reference raw amino acid required", required=True)
+align_args.add_argument("sequence2", type=str, help="second raw amino acid required", required=True)
+align_args.add_argument("match", type=int, help="set to default: 1", required=False)
+align_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
+align_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
+align_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0", required=False)
+align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
 
 
 @cache.cached(timeout=200,key_prefix='importing_library')
@@ -47,17 +58,24 @@ class IsoAligner(Resource):
         #return list_of_gene_objects[1].ensembl_gene_symbol
         return alignment
 
+
 class Mapping_Table(Resource):
     def post(self,Isoform_ID,alternative="optional"):
-        args = data_args.parse_args()
+        args = map_args.parse_args()
         if alternative!= 'optional':
             return alternative
         else:
             return Isoform_ID
 
 
-api.add_resource(IsoAligner,'/Align/<string:sequence1>/<string:sequence2>','/Convert/<string:isoform_ID>')
+class Raw_alignment(Resource):
+    def post(self,option='mapping_table'):
+        args = align_args.parse_args()
+        return 'it worked'
+
+
 api.add_resource(Mapping_Table,'/map/<string:Isoform_ID>','/map/<string:Isoform_ID>/<string:alternative>')
+api.add_resource(Raw_alignment, '/align', '/align/visualise')
 
 if __name__ == "__main__":
     app.run(debug=True)
