@@ -11,12 +11,23 @@ import sys
 # insert at position 1 in the path, as 0 is the path of this file.
 #sys.path.insert(1, '../')
 
+
 #Initialising Flask API and Cache
 app = Flask(__name__)
 api = Api(app)
 cache = Cache()
 app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
+
+#importing isoform library
+@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+def import_data_from_github(file):
+    '''import reference file (database), a pickle file generated in the database_old.py file'''
+    with gzip.open(file, "rb") as fp:  # Pickling
+        list_of_gene_objects = pickle.load(fp)
+    return list_of_gene_objects
+
+list_of_gene_objects = import_data_from_github('list_of_gene_objects_11_march.txt.gz')
 
 
 # Arguments in the body of the requests
@@ -38,12 +49,6 @@ align_args.add_argument("gap_extension_penalty", type=int, help="set to default:
 align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
 
 
-@cache.cached(timeout=200,key_prefix='importing_library')
-def import_data_from_github(file):
-    '''import reference file (database), a pickle file generated in the database_old.py file'''
-    with gzip.open(file, "rb") as fp:  # Pickling
-        list_of_gene_objects = pickle.load(fp)
-    return list_of_gene_objects
 
 def align_sequences(input1,input2):
     needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1, input2, 1, -2,-1.75, 0,5)
@@ -56,7 +61,6 @@ def align_sequences(input1,input2):
 class Mapping_Table(Resource):
     def post(self, reference_ID, alternative="optional", aa_position='optional'):
         args = map_args.parse_args()
-        list_of_gene_objects = import_data_from_github('list_of_gene_objects_11_march.txt.gz')
         if alternative!= 'optional':
             if aa_position!='optional':
                 return list_of_gene_objects[1].ensembl_gene_symbol
