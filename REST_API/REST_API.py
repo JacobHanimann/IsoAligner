@@ -5,6 +5,11 @@ from Visualise_Alignment import *
 from Alignment import *
 import gzip
 import pickle
+from Gene import *
+from Protein_isoform import *
+import sys
+# insert at position 1 in the path, as 0 is the path of this file.
+#sys.path.insert(1, '../')
 
 #Initialising Flask API and Cache
 app = Flask(__name__)
@@ -48,23 +53,13 @@ def align_sequences(input1,input2):
     return alignment_string
 
 
-class IsoAligner(Resource):
-    def get(self,isoform_ID):
-        return {'data':'IsoAlginer','isoform_ID_sent': isoform_ID}
-
-    def put(self,sequence1,sequence2):
-        alignment= align_sequences(sequence1,sequence2)
-        #list_of_gene_objects = import_data_from_github('../list_of_gene_objects_11_march.txt.gz')
-        #return list_of_gene_objects[1].ensembl_gene_symbol
-        return alignment
-
-
 class Mapping_Table(Resource):
     def post(self, reference_ID, alternative="optional", aa_position='optional'):
         args = map_args.parse_args()
+        list_of_gene_objects = import_data_from_github('list_of_gene_objects_11_march.txt.gz')
         if alternative!= 'optional':
             if aa_position!='optional':
-                return aa_position
+                return list_of_gene_objects[1].ensembl_gene_symbol
             return alternative
         else:
             return reference_ID
