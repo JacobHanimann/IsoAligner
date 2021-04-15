@@ -22,6 +22,7 @@ from Input_flow import *
 from Table_Generation import *
 from PIL import Image
 from Statistics import *
+from API_data_processing import *
 
 
 #Initialising Flask API and Cache
@@ -67,7 +68,6 @@ align_args.add_argument("gap_extension_penalty", type=int, help="set to default:
 align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
 
 
-
 def align_sequences(input1,input2):
     needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1, input2, 1, -2,-1.75, 0,5)
     isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
@@ -104,11 +104,14 @@ class Raw_alignment(Resource):
             needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['sequence1'], args['sequence2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
             table_json = generated_table.to_json(orient='records')
-        return table_json
+            return table_json
+        elif option=='visualise':
+            alignment_string = Data_processing.align_sequences(args['sequence1'], args['sequence2'])
+            return alignment_string
 
 
 api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative>','/map/<string:reference_ID>/<string:alternative>/position/<int:aa_position>')
-api.add_resource(Raw_alignment, '/align', '/align/visualise')
+api.add_resource(Raw_alignment, '/align', '/align/<string:option>')
 
 if __name__ == "__main__":
     app.run(debug=True)

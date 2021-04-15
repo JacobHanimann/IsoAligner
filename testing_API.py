@@ -2,18 +2,15 @@ import requests
 
 BASE = "http://127.0.0.1:5000/"
 
-response = requests.put(BASE+'Align/DBFJDLJFNLDFBJFLDBDFNLK/DFBLJDFNLJFNLDFBJDBFLJBFDN')
+data = {
+ "sequence1": "NDFKLNDFDNFKLNSDLKFNASLKFNDSLJFNDSKF",
+ "sequence2": "KDNFKLNFSDDNFKLNSDLKFNASLKFKNDFLKNS",
+  "match": 2,
+  "mismatch":4,
+  "open_gap":3
+}
 
-print(response.json())
-
-response2 = requests.get(BASE+'Convert/THisisID')
-
-print(response2)
-print(response2.json())
-
-data = {'match':3, 'mismatch':4}
-
-response3 = requests.post(BASE+'Post/3',data)
+response3 = requests.post(BASE+'align/visualise',data)
 
 print(response3)
 print(response3.json())
