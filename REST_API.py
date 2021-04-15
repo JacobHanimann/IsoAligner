@@ -3,13 +3,25 @@ from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_caching import Cache
 from Visualise_Alignment import *
 from Alignment import *
-import gzip
 import pickle
 from Gene import *
 from Protein_isoform import *
 import sys
 # insert at position 1 in the path, as 0 is the path of this file.
 #sys.path.insert(1, '../')
+import sys
+from Gene import *
+from Protein_isoform import *
+from Streamlit_community import *
+from Input_flow import *
+from Streamlit_Pop_ups import *
+from Alignment import *
+from Visualise_Alignment import *
+from User_Input_Preparation import *
+from Input_flow import *
+from Table_Generation import *
+from PIL import Image
+from Statistics import *
 
 
 #Initialising Flask API and Cache
@@ -64,9 +76,14 @@ class Mapping_Table(Resource):
         if alternative!= 'optional':
             if aa_position!='optional':
                 return list_of_gene_objects[200].ensembl_gene_symbol
-            return alternative
-        else:
-            return reference_ID
+        else: #just one reference ID given
+            dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(reference_ID)
+            gene_index = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
+            verified_gene_index = Input_flow.remove_dict_elements_with_no_gene_object_match(gene_index)
+            if not verified_gene_index:
+                return 'ID not found'
+            nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, verified_gene_index,list_of_gene_objects)
+            return nested_dict
 
 
 class Raw_alignment(Resource):
