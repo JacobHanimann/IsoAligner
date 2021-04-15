@@ -27,7 +27,7 @@ def import_data_from_github(file):
         list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-list_of_gene_objects = import_data_from_github('list_of_gene_objects_11_march.txt.gz')
+list_of_gene_objects = import_data_from_github('list_of_gene_objects_25th_march.txt.gz')
 
 
 # Arguments in the body of the requests
