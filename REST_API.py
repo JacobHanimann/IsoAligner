@@ -83,6 +83,11 @@ class Mapping_Table(Resource):
             if not verified_gene_index:
                 return 'ID not found'
             nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, verified_gene_index,list_of_gene_objects)
+            #generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
+            #                                                                    list_of_gene_objects, index_gene_object,
+            #                                                                    chosen_columns, match, mismatch,
+            #                                                                    open_gap_penalty, gap_extension_penalty,
+            #                                                                    exon_length_AA)
             return nested_dict
 
 
