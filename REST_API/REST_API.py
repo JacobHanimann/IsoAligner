@@ -60,11 +60,11 @@ class IsoAligner(Resource):
 
 
 class Mapping_Table(Resource):
-    def post(self, reference_ID, alternative="optional", aa_number='optional'):
+    def post(self, reference_ID, alternative="optional", aa_position='optional'):
         args = map_args.parse_args()
         if alternative!= 'optional':
-            if aa_number!='optional':
-                return aa_number
+            if aa_position!='optional':
+                return aa_position
             return alternative
         else:
             return reference_ID
