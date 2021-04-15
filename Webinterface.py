@@ -177,7 +177,7 @@ def main():
 
         #Input 2 Area
         if using_IDs== False and raw_aa:
-            input2 = st.text_area('Paste Amino Acid sequence of alternative isoform: ', '''''', key=ss.run_id)
+            input2 = st.text_area('Paste Amino Acid sequence of alternative_ID isoform: ', '''''', key=ss.run_id)
             align=st.button('Align')
             if align:
                 ss.align_clicked = True

@@ -34,4 +34,12 @@ class Data_processing():
         alignment_string = Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference, percentage_isoform)
         return alignment_string
 
-
+    @staticmethod
+    def search_and_generate_nested_dict(ID_to_search, list_of_gene_objects):
+        dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(ID_to_search)
+        gene_index = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
+        verified_gene_index = Input_flow.remove_dict_elements_with_no_gene_object_match(gene_index)
+        if not verified_gene_index:
+            return None
+        nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs,verified_gene_index,list_of_gene_objects)
+        return nested_dict

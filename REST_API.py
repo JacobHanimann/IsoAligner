@@ -77,18 +77,22 @@ def align_sequences(input1,input2):
 
 
 class Mapping_Table(Resource):
-    def post(self, reference_ID, alternative="optional", aa_position='optional'):
+    def post(self, reference_ID, alternative_ID="optional", aa_position='optional'):
         args = map_args.parse_args()
-        if alternative!= 'optional':
+        if alternative_ID!= 'optional':
             if aa_position!='optional':
                 return list_of_gene_objects[200].ensembl_gene_symbol
+            nested_dict_reference = Data_processing.search_and_generate_nested_dict(reference_ID,list_of_gene_objects)
+            nested_dict_alternative = Data_processing.search_and_generate_nested_dict(alternative_ID, list_of_gene_objects)
+            if nested_dict_reference and nested_dict_alternative:
+                return nested_dict_alternative
+            else:
+                return 'IDs not found'
+
         else: #just one reference ID given
-            dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(reference_ID)
-            gene_index = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-            verified_gene_index = Input_flow.remove_dict_elements_with_no_gene_object_match(gene_index)
-            if not verified_gene_index:
+            nested_dict = Data_processing.search_and_generate_nested_dict(reference_ID,list_of_gene_objects)
+            if not nested_dict:
                 return 'ID not found'
-            nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, verified_gene_index,list_of_gene_objects)
             #generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
             #                                                                    list_of_gene_objects, index_gene_object,
             #                                                                    chosen_columns, match, mismatch,
@@ -110,7 +114,7 @@ class Raw_alignment(Resource):
             return alignment_string
 
 
-api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative>','/map/<string:reference_ID>/<string:alternative>/position/<int:aa_position>')
+api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative_ID>','/map/<string:reference_ID>/<string:alternative_ID>/position/<int:aa_position>')
 api.add_resource(Raw_alignment, '/align', '/align/<string:option>')
 
 if __name__ == "__main__":

@@ -205,7 +205,7 @@ class Visualise_Alignment:
                                                                                                                     reference_protein_sequence,
                                                                                                         transcript.protein_sequence)
             st.write('Alignment ' + str(transcript_number))
-            #extract transcript name of alternative isoform
+            #extract transcript name of alternative_ID isoform
             sequence2_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index)
             st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
                                                     isoform_pattern_check, percentage_reference, percentage_isoform,

@@ -27,7 +27,7 @@ class Table_Generation:
         :param chosen_reference: index
         :param list_of_gene_objects: (library)
         :param index_of_gene:
-        :param chosen_columns: (choosed from selectbox)
+        :param chosen_columns: (chosen from selectbox)
         :return: pandas dataframe or lists of computed alignment
         '''
         list_of_all_alignments = []
@@ -36,7 +36,7 @@ class Table_Generation:
         reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].protein_sequence  # chosen_reference is an index (table generation for multiple ID's)
 
 
-        #create alignment for each alternative isoform
+        #create alignment for each alternative_ID isoform
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if index == index_reference_transcript: #do not align the reference transcript with itself
                 continue
