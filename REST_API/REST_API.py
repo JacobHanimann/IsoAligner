@@ -60,12 +60,14 @@ class IsoAligner(Resource):
 
 
 class Mapping_Table(Resource):
-    def post(self,Isoform_ID,alternative="optional"):
+    def post(self, reference_ID, alternative="optional", aa_number='optional'):
         args = map_args.parse_args()
         if alternative!= 'optional':
+            if aa_number!='optional':
+                return aa_number
             return alternative
         else:
-            return Isoform_ID
+            return reference_ID
 
 
 class Raw_alignment(Resource):
@@ -74,7 +76,7 @@ class Raw_alignment(Resource):
         return 'it worked'
 
 
-api.add_resource(Mapping_Table,'/map/<string:Isoform_ID>','/map/<string:Isoform_ID>/<string:alternative>')
+api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative>','/map/<string:reference_ID>/<string:alternative>/position/<int:aa_position>')
 api.add_resource(Raw_alignment, '/align', '/align/visualise')
 
 if __name__ == "__main__":
