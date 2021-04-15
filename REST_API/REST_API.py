@@ -63,7 +63,7 @@ class Mapping_Table(Resource):
         args = map_args.parse_args()
         if alternative!= 'optional':
             if aa_position!='optional':
-                return list_of_gene_objects[1].ensembl_gene_symbol
+                return list_of_gene_objects[200].ensembl_gene_symbol
             return alternative
         else:
             return reference_ID
