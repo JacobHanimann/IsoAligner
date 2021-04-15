@@ -41,6 +41,12 @@ def import_data_from_github(file):
 
 list_of_gene_objects = import_data_from_github('list_of_gene_objects_25th_march.txt.gz')
 
+#standard parameters if no body is sent with the request
+match = 1
+mismatch =-2
+open_gap_penalty = -1.75
+gap_extension_penalty = 0
+exon_length_AA= 5
 
 # Arguments in the body of the requests
 #mapping table
@@ -94,7 +100,11 @@ class Mapping_Table(Resource):
 class Raw_alignment(Resource):
     def post(self,option='mapping_table'):
         args = align_args.parse_args()
-        return 'it worked'
+        if option=='mapping_table':
+            needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['sequence1'], args['sequence2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
+            generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
+            table_json = generated_table.to_json(orient='records')
+        return table_json
 
 
 api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative>','/map/<string:reference_ID>/<string:alternative>/position/<int:aa_position>')
