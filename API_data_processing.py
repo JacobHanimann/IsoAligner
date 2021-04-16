@@ -43,3 +43,7 @@ class Data_processing():
             return None
         nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs,verified_gene_index,list_of_gene_objects)
         return nested_dict
+
+    @staticmethod
+    def create_mapping_table_of_two_IDs(list_of_gene_objects,index_gene_object,index_of_reference_transcript,index_of_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA):
+        pass

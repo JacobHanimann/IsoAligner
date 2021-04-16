@@ -94,6 +94,10 @@ class Mapping_Table(Resource):
             nested_dict_alternative = Data_processing.search_and_generate_nested_dict(alternative_ID, list_of_gene_objects)
             if nested_dict_reference and nested_dict_alternative:
                 return 'both IDs found'
+            if nested_dict_reference:
+                return 'reference ID found, alternative ID not found', 400
+            if nested_dict_alternative:
+                return 'alternative ID found, reference ID not found', 400
             else:
                 return 'IDs not found'
 
