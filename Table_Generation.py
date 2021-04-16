@@ -138,7 +138,7 @@ class Table_Generation:
     @staticmethod
     def create_table_for_one_gene_object(index_reference_transcript, list_of_gene_objects, index_of_gene, chosen_columns, match,
                                          mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,
-                                         ID_type="ENSP", one_ID=True):
+                                         one_ID=True):
         '''
         one_ID: function returns pandas dataframe directly of alignments
         multiple IDs: function returns with list of the computed alignments which is then further used in create_table_for_dict_of_gene_objects function
@@ -182,7 +182,7 @@ class Table_Generation:
 
     @staticmethod
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
-                                              open_gap_penalty, gap_extension_penalty, exon_length_AA, ID_type="ENSP"):
+                                              open_gap_penalty, gap_extension_penalty, exon_length_AA):
         list_of_alignments = []
         for gene in nested_dict.items():
             index_of_gene = list(gene[1].keys())[0]
@@ -194,7 +194,7 @@ class Table_Generation:
                                                                                    chosen_columns, match, mismatch,
                                                                                    open_gap_penalty,
                                                                                    gap_extension_penalty,
-                                                                                   exon_length_AA, ID_type=ID_type,
+                                                                                   exon_length_AA,
                                                                                    one_ID=False)
 
                 if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all

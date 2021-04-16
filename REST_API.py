@@ -93,7 +93,12 @@ class Mapping_Table(Resource):
             nested_dict_reference = Data_processing.search_and_generate_nested_dict(reference_ID,list_of_gene_objects)
             nested_dict_alternative = Data_processing.search_and_generate_nested_dict(alternative_ID, list_of_gene_objects)
             if nested_dict_reference and nested_dict_alternative:
-                return 'both IDs found'
+                index_of_gene = list(list(nested_dict_reference.values())[0].keys())[0]
+                index_reference_transcript = list(list(nested_dict_reference.values())[0].values())[0]
+                index_alternative_transcript = list(list(nested_dict_alternative.values())[0].values())[0]
+                mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
+                table_json = mapping_table.to_json(orient='records')
+                return table_json
             if nested_dict_reference:
                 return 'reference ID found, alternative ID not found', 400
             if nested_dict_alternative:
