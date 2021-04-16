@@ -138,6 +138,8 @@ class Table_Generation:
                     column_names.append("Iso_UCSC_ID")
 
                 if 'Uniprot Name ID' in chosen_columns:
+                    column_values.append(list_of_gene_objects[index_of_gene].uniprot_name_ID)
+                    column_names.append("Uniprot_name_ID")
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
                                              index_reference_transcript].uniprot_name_ID)
                     column_names.append("Ref_uniprot_name_ID")

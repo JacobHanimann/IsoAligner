@@ -10,7 +10,7 @@ data = {
   "open_gap":3
 }
 
-response3 = requests.post(BASE+'align/visualise',data)
+response3 = requests.post(BASE+'align',data)
 
 print(response3)
 print(response3.json())

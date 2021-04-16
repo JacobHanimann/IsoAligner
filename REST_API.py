@@ -48,6 +48,14 @@ mismatch =-2
 open_gap_penalty = -1.75
 gap_extension_penalty = 0
 exon_length_AA= 5
+#standard ID's included in mapping table
+chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)', 'Transcript name',
+ 'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)', 'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
+ 'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
+ 'Ensembl Gene ID version (ENSG.Number)', 'Ensembl Transcript ID version (ENST.Number)',
+ 'Ensembl Protein ID version (ENSP.Number)', 'Refseq Transcript ID version (NM.Number)',
+ 'Refseq Transcript ID version (NP.Number)',
+ 'HGNC ID (HGNC:Number)']
 
 # Arguments in the body of the requests
 #mapping table
@@ -93,12 +101,15 @@ class Mapping_Table(Resource):
             nested_dict = Data_processing.search_and_generate_nested_dict(reference_ID,list_of_gene_objects)
             if not nested_dict:
                 return 'ID not found'
-            #generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
-            #                                                                    list_of_gene_objects, index_gene_object,
-            #                                                                    chosen_columns, match, mismatch,
-            #                                                                    open_gap_penalty, gap_extension_penalty,
-            #                                                                    exon_length_AA)
-            return nested_dict
+            index_gene_object = list(list(nested_dict.values())[0].keys())[0]
+            index_of_reference_transcript = list(list(nested_dict.values())[0].values())[0]
+            generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
+                                                                                list_of_gene_objects, index_gene_object,
+                                                                                chosen_columns, match, mismatch,
+                                                                                open_gap_penalty, gap_extension_penalty,
+                                                                                exon_length_AA)
+            table_json = generated_table.to_json(orient='records')
+            return table_json
 
 
 class Raw_alignment(Resource):
