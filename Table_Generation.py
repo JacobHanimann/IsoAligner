@@ -140,11 +140,7 @@ class Table_Generation:
                 if 'Uniprot Name ID' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].uniprot_name_ID)
                     column_names.append("Uniprot_name_ID")
-                    column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
-                                             index_reference_transcript].uniprot_name_ID)
-                    column_names.append("Ref_uniprot_name_ID")
-                    column_values.append(transcript.uniprot_name_ID)
-                    column_names.append("Iso_uniprot_name_ID")
+
                 if 'Uniprot Accession ID' in chosen_columns:
                     column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
                                              index_reference_transcript].uniprot_accession)
@@ -163,10 +159,6 @@ class Table_Generation:
                     column_names.append("Ref_uniprot_isoform")
                     column_values.append(transcript.uniprot_isoform)
                     column_names.append("Iso_uniprot_isoform")
-
-                if 'HGNC ID (HGNC:Number)' in chosen_columns:
-                    column_values.append(list_of_gene_objects[index_of_gene].HGNC)
-                    column_names.append("Gene_name")
 
 
 
