@@ -97,8 +97,8 @@ class Mapping_Table(Resource):
                     table_json = mapping_table.to_json(orient='records')
                     return table_json
                 else:
-                    row = Data_processing.extract_specific_position_mapping_table(mapping_table,aa_position)
-                    return row
+                    AA_new_position = Data_processing.extract_specific_position_mapping_table(mapping_table,aa_position)
+                    return AA_new_position
             if nested_dict_reference:
                 return 'reference ID found, alternative ID not found', 400
             if nested_dict_alternative:

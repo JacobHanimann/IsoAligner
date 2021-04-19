@@ -83,11 +83,13 @@ class Data_processing():
         :param df: pandas dataframe
         :param position: aminoacid symbol and position, for example: A322
         :return: amino acid position of the alternative isoform
+        "AA":"Y","ReferencePos":4,"IsoformPos":4}
         '''
         match_list = re.findall('[A-Z]{1}\d+',AA_position)
         if not match_list:
             return 'not a position'
-        AA, position_number = re.split('[A-Z]',AA_position)
+        AA, position_number = 'Y',4
         row = df.loc[(df['AA'] == AA) & (df['ReferencePos'] == position_number)]
-        return position_number
+        AA_position_new = row.loc([0],['IsoformPos'])
+        return AA_position_new
 
