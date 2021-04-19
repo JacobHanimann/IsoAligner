@@ -4,7 +4,7 @@ from Biomart_tables import *
 from Refseq import *
 from Uniprot import *
 from Validation_of_library import *
-from median_exon_length import *
+from minimal_exon_length import *
 
 date = '1st_april'
 #
@@ -51,7 +51,7 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+da
 print('Adding exon information...')
 gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
 genes_dict_median = Exon_Information.pick_exon_length_median_from_nested_dict(gene_dict)
-Exon_Information.add_exon_median_to_gene_objects(list_of_gene_objects,genes_dict_median)
+Exon_Information.add_exon_minimal_to_gene_objects(list_of_gene_objects, genes_dict_median)
 #Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
 
 print('Pickling list of gene objects and saving file...')

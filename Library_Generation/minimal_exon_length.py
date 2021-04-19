@@ -82,17 +82,17 @@ class Exon_Information():
         :param gene_dict: dictionary generated from read ensembl gtf file
         :return: dict
         '''
-        gene_dict_only_median = {}
+        gene_dict_only_minimal = {}
         for gene,exon_list in gene_dict.items():
             exon_lengths = [exon.exon_length_in_AA for exon in exon_list]
-            median_of_gene = statistics.median(exon_lengths)
-            gene_dict_only_median[gene] = median_of_gene
+            minimal_of_gene = min(exon_lengths)
+            gene_dict_only_minimal[gene] = minimal_of_gene
 
-        return gene_dict_only_median
+        return gene_dict_only_minimal
 
 
     @staticmethod
-    def add_exon_median_to_gene_objects(list_of_gene_objects,gene_dict_median):
+    def add_exon_minimal_to_gene_objects(list_of_gene_objects, gene_dict_median):
         print('total length:',len(gene_dict_median))
         index = 0
         for ENSG, exon_length in gene_dict_median.items():
@@ -101,7 +101,7 @@ class Exon_Information():
                 print(100 * round(index / len(gene_dict_median), 2), '%')
             for gene in list_of_gene_objects:
                 if ENSG==gene.ENSG:
-                    gene.median_exon_length = round(exon_length) #has to be adjusted
+                    gene.minimal_exon_length = round(exon_length)
                     break
 
 
