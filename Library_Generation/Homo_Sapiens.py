@@ -6,7 +6,7 @@ from Uniprot import *
 from Validation_of_library import *
 from minimal_exon_length import *
 
-date = '1st_april'
+date = '19th_april'
 #
 #print('Creating list of gene objects with Ensembl Fasta files...')
 #list_of_gene_objects =Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
@@ -45,7 +45,7 @@ date = '1st_april'
 #with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_fifth.txt", "wb") as fp:  # Pickling
 #    pickle.dump(list_of_gene_objects, fp)
 
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_fifth.txt","rb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_1st_april_fifth.txt","rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
 
 print('Adding exon information...')

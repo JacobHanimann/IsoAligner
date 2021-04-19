@@ -124,5 +124,3 @@ class Exon_Information():
                                         isoform.collection_of_exons.append(exon)
                                     break
 
-
-gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
