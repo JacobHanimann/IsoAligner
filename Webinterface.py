@@ -124,7 +124,6 @@ def main():
                 st.write('\n')
                 st.write('\n')
                 st.write('Number of entries:',len(transcript_list))
-            st.write(list_of_gene_objects[index_gene_object].ensembl_gene_symbol,list_of_gene_objects[index_gene_object].minimal_exon_length)
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
