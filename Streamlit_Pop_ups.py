@@ -4,15 +4,20 @@ class Streamlit_pop_ups:
     pass
 
     @staticmethod
-    def sidebar_pop_up_parameters():
+    def sidebar_pop_up_parameters(list_of_gene_objects, index_gene):
         '''
         sidebar pop up for the parameters of all functions which can be dynamically adjusted.
         '''
         st.sidebar.markdown("### Function Parameters")
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Minimal Exon Length (AA):")
-        exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
+        if list_of_gene_objects[index_gene].minimal_exon_length == None:
+            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
                                                  format=None, key=None)
+        else:
+            minimal_exon_length = list_of_gene_objects[index_gene].minimal_exon_length
+            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=minimal_exon_length, step=None,
+                                                     format=None, key=None)
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
         st.sidebar.write("\n")

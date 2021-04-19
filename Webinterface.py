@@ -127,7 +127,7 @@ def main():
             st.write(list_of_gene_objects[index_gene_object].ensembl_gene_symbol,list_of_gene_objects[index_gene_object].minimal_exon_length)
             ss.generate = True
             st.text('\n')
-            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()
+            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
             st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
@@ -151,12 +151,12 @@ def main():
             with genes:
                 chosen_gene = st.selectbox('Select Gene',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
             with reference:
-                transcript_list = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene)
+                transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
             ss.generate = True
             st.text('\n')
-            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters()
+            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
             st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')

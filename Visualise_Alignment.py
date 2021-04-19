@@ -92,7 +92,7 @@ class Visualise_Alignment:
             index_count +=1
 
         final_transcript_list = canonical_element + list_of_transcripts
-        return final_transcript_list
+        return final_transcript_list, index_of_gene_object
 
 
     @staticmethod
