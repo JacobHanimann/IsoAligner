@@ -87,12 +87,18 @@ class Mapping_Table(Resource):
                 index_of_gene = list(list(nested_dict_reference.values())[0].keys())[0]
                 index_reference_transcript = list(list(nested_dict_reference.values())[0].values())[0]
                 index_alternative_transcript = list(list(nested_dict_alternative.values())[0].values())[0]
+                mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
+                                                                                index_reference_transcript,
+                                                                                index_alternative_transcript,
+                                                                                chosen_columns, match, mismatch,
+                                                                                open_gap_penalty, gap_extension_penalty,
+                                                                                exon_length_AA)
                 if aa_position=='optional':
-                    mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
                     table_json = mapping_table.to_json(orient='records')
                     return table_json
                 else:
-                    return 'you want a position'
+                    row = Data_processing.extract_specific_position_mapping_table(mapping_table,aa_position)
+                    return row
             if nested_dict_reference:
                 return 'reference ID found, alternative ID not found', 400
             if nested_dict_alternative:
@@ -128,7 +134,7 @@ class Raw_alignment(Resource):
 
 
 #adding method to server
-api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative_ID>','/map/<string:reference_ID>/<string:alternative_ID>/positions/<int:aa_position>')
+api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative_ID>','/map/<string:reference_ID>/<string:alternative_ID>/positions/<string:aa_position>')
 api.add_resource(Raw_alignment, '/align', '/align/<string:option>')
 
 if __name__ == "__main__":

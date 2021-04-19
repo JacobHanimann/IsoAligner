@@ -74,3 +74,20 @@ class Data_processing():
 
         df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
         return df
+
+
+    @staticmethod
+    def extract_specific_position_mapping_table(df,AA_position):
+        '''
+        function that extracts specified aminoacid postion from one to another isoform
+        :param df: pandas dataframe
+        :param position: aminoacid symbol and position, for example: A322
+        :return: amino acid position of the alternative isoform
+        '''
+        match_list = re.findall('[A-Z]{1}\d+',AA_position)
+        if not match_list:
+            return 'not a position'
+        AA, position_number = re.split('[A-Z]',AA_position)
+        row = df.loc[(df['AA'] == AA) & (df['ReferencePos'] == position_number)]
+        return position_number
+
