@@ -10,9 +10,10 @@ data = {
   "open_gap":3
 }
 
-response3 = requests.post(BASE+'map/KRAS',data)
+response3 = requests.post(BASE+'map/EGFR',data)
 
 print(response3)
+print(response3.text)
 print(response3.json())
 
 

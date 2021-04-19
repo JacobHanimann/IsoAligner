@@ -40,7 +40,7 @@ def import_data_from_github(file):
         list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-list_of_gene_objects = import_data_from_github('list_of_gene_objects_7_april.txt.gz')
+list_of_gene_objects = import_data_from_github('list_of_gene_objects_19th_april.txt.gz')
 
 #standard parameters if no body is sent with the request
 match = 1
@@ -115,8 +115,7 @@ class Mapping_Table(Resource):
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                 list_of_gene_objects, index_gene_object,
                                                                                 chosen_columns, match, mismatch,
-                                                                                open_gap_penalty, gap_extension_penalty,
-                                                                                exon_length_AA)
+                                                                                open_gap_penalty, gap_extension_penalty,)
             table_json = generated_table.to_json(orient='records')
             return table_json
 
