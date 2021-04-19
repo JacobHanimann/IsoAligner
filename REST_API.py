@@ -115,7 +115,7 @@ class Mapping_Table(Resource):
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                 list_of_gene_objects, index_gene_object,
                                                                                 chosen_columns, match, mismatch,
-                                                                                open_gap_penalty, gap_extension_penalty,)
+                                                                                open_gap_penalty, gap_extension_penalty)
             table_json = generated_table.to_json(orient='records')
             return table_json
 
