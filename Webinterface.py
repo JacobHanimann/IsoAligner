@@ -116,7 +116,7 @@ def main():
             with reference_select:
                 chosen_gene = list(nested_dict.keys())[0]
                 index_gene_object = list(list(nested_dict.values())[0].keys())[0]
-                transcript_list = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene)
+                transcript_list,index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
             with number_of_entries:

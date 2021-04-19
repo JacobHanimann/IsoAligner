@@ -159,7 +159,7 @@ class Table_Generation:
         if exon_length !=None and one_ID:
             exon_length_AA = exon_length
         #checking library for value
-        if list_of_gene_objects[index_of_gene].minimal_exon_length!= None or list_of_gene_objects[index_of_gene].minimal_exon_length>3:
+        elif list_of_gene_objects[index_of_gene].minimal_exon_length!= None or list_of_gene_objects[index_of_gene].minimal_exon_length>3:
             exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
         else:
             #if there is no value in the library
