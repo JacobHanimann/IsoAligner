@@ -76,29 +76,23 @@ align_args.add_argument("gap_extension_penalty", type=int, help="set to default:
 align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
 
 
-def align_sequences(input1,input2):
-    needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1, input2, 1, -2,-1.75, 0,5)
-    isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
-    percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check, input1, input2)
-    alignment_string =Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,isoform_pattern_check, percentage_reference,percentage_isoform)
-    return alignment_string
-
-
+#API methods
 class Mapping_Table(Resource):
     def post(self, reference_ID, alternative_ID="optional", aa_position='optional'):
         args = map_args.parse_args()
         if alternative_ID!= 'optional':
-            if aa_position!='optional':
-                return list_of_gene_objects[200].ensembl_gene_symbol
             nested_dict_reference = Data_processing.search_and_generate_nested_dict(reference_ID,list_of_gene_objects)
             nested_dict_alternative = Data_processing.search_and_generate_nested_dict(alternative_ID, list_of_gene_objects)
             if nested_dict_reference and nested_dict_alternative:
                 index_of_gene = list(list(nested_dict_reference.values())[0].keys())[0]
                 index_reference_transcript = list(list(nested_dict_reference.values())[0].values())[0]
                 index_alternative_transcript = list(list(nested_dict_alternative.values())[0].values())[0]
-                mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
-                table_json = mapping_table.to_json(orient='records')
-                return table_json
+                if aa_position=='optional':
+                    mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
+                    table_json = mapping_table.to_json(orient='records')
+                    return table_json
+                else:
+                    return 'you want a position'
             if nested_dict_reference:
                 return 'reference ID found, alternative ID not found', 400
             if nested_dict_alternative:
@@ -133,7 +127,8 @@ class Raw_alignment(Resource):
             return alignment_string
 
 
-api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative_ID>','/map/<string:reference_ID>/<string:alternative_ID>/position/<int:aa_position>')
+#adding method to server
+api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative_ID>','/map/<string:reference_ID>/<string:alternative_ID>/positions/<int:aa_position>')
 api.add_resource(Raw_alignment, '/align', '/align/<string:option>')
 
 if __name__ == "__main__":
