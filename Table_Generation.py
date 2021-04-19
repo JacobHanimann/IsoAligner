@@ -137,8 +137,8 @@ class Table_Generation:
 
     @staticmethod
     def create_table_for_one_gene_object(index_reference_transcript, list_of_gene_objects, index_of_gene, chosen_columns, match,
-                                         mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA,
-                                         one_ID=True):
+                                         mismatch, open_gap_penalty, gap_extension_penalty,
+                                         one_ID=True,exon_length=None):
         '''
         one_ID: function returns pandas dataframe directly of alignments
         multiple IDs: function returns with list of the computed alignments which is then further used in create_table_for_dict_of_gene_objects function
@@ -154,8 +154,18 @@ class Table_Generation:
         #select reference protein sequence
         reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].protein_sequence  # chosen_reference is an index (table generation for multiple ID's)
 
+        #set the minimal exon length
+        #by the user when looking at one gene
+        if exon_length !=None and one_ID:
+            exon_length_AA = exon_length
+        #checking library for value
+        if list_of_gene_objects[index_of_gene].minimal_exon_length!= None or list_of_gene_objects[index_of_gene].minimal_exon_length>3:
+            exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
+        else:
+            #if there is no value in the library
+            exon_length_AA = 5
 
-        #create alignment for each alternative_ID isoform
+            #create alignment for each alternative_ID isoform
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if index == index_reference_transcript: #do not align the reference transcript with itself
                 continue
@@ -182,7 +192,7 @@ class Table_Generation:
 
     @staticmethod
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
-                                              open_gap_penalty, gap_extension_penalty, exon_length_AA):
+                                              open_gap_penalty, gap_extension_penalty):
         list_of_alignments = []
         for gene in nested_dict.items():
             index_of_gene = list(gene[1].keys())[0]
@@ -194,7 +204,6 @@ class Table_Generation:
                                                                                    chosen_columns, match, mismatch,
                                                                                    open_gap_penalty,
                                                                                    gap_extension_penalty,
-                                                                                   exon_length_AA,
                                                                                    one_ID=False)
 
                 if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
