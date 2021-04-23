@@ -104,7 +104,7 @@ class Input_preparation:
                 continue
 
             # refseq again
-            if re.search('\d+', element):
+            if re.search('\d+', element) and not re.search('[A-Z]',element):
                 dict_of_IDs[element] = 'refseq_gene_ID'
                 continue
 

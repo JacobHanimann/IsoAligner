@@ -55,7 +55,7 @@ def main():
         st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse (next release)'])
-        st.sidebar.write("--------------------------")
+        st.write('\n')
 
         #fixed in put area
         title, example_button = st.beta_columns([4.1,1])
