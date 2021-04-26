@@ -1,12 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_caching import Cache
-from Visualise_Alignment import *
-from Alignment import *
-import pickle
-from Gene import *
-from Protein_isoform import *
-import sys
 # insert at position 1 in the path, as 0 is the path of this file.
 #sys.path.insert(1, '../')
 import sys
@@ -60,6 +54,7 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
 # Arguments in the body of the requests
 #mapping table
 map_args = reqparse.RequestParser()
+map_args.add_argument('id1',type=str, help="reference ID is required", required=True)
 map_args.add_argument("match", type=int, help="set to default: 1", required=False)
 map_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
 map_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
@@ -67,6 +62,7 @@ map_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0
 map_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
 #raw alignment
 align_args = reqparse.RequestParser()
+align_args.add_argument('view', type=bool, default=False, required=False, help='view alignment')
 align_args.add_argument("sequence1", type=str, help="reference raw amino acid required", required=True)
 align_args.add_argument("sequence2", type=str, help="second raw amino acid required", required=True)
 align_args.add_argument("match", type=int, help="set to default: 1", required=False)
@@ -78,7 +74,7 @@ align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5
 
 #API methods
 class Mapping_Table(Resource):
-    def post(self, reference_ID, alternative_ID="optional", aa_position='optional'):
+    def post(self, alternative_ID="optional", aa_position='optional'):
         args = map_args.parse_args()
         if alternative_ID!= 'optional':
             nested_dict_reference = Data_processing.search_and_generate_nested_dict(reference_ID,list_of_gene_objects)
@@ -121,21 +117,21 @@ class Mapping_Table(Resource):
 
 
 class Raw_alignment(Resource):
-    def post(self,option='mapping_table'):
+    def post(self):
         args = align_args.parse_args()
-        if option=='mapping_table':
+        if args['view']==False:
             needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['sequence1'], args['sequence2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
             table_json = generated_table.to_json(orient='records')
             return table_json
-        elif option=='visualise':
+        elif args['view']==True:
             alignment_string = Data_processing.align_sequences(args['sequence1'], args['sequence2'])
             return alignment_string
 
 
 #adding method to server
-api.add_resource(Mapping_Table,'/map/<string:reference_ID>','/map/<string:reference_ID>/<string:alternative_ID>','/map/<string:reference_ID>/<string:alternative_ID>/positions/<string:aa_position>')
-api.add_resource(Raw_alignment, '/align', '/align/<string:option>')
+api.add_resource(Mapping_Table,'/map','/map/positions')
+api.add_resource(Raw_alignment, '/align')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -10,7 +10,7 @@ data = {
   "open_gap":3
 }
 
-response3 = requests.post(BASE+'map/KRAS-204',data)
+response3 = requests.post(BASE+'align?view=true',data)
 
 print(response3)
 #print(response3.text)
