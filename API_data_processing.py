@@ -116,13 +116,14 @@ class Data_processing():
         :param position: aminoacid symbol and position, for example: A322
         :return: amino acid position of the alternative isoform
         '''
-        match_list = re.findall('[A-Z]{1}\d+',AA_position)
+        match_list = re.findall('\d+',AA_position)
         if not match_list:
-            return 'not a position'
-        AA, position_number = AA_position[0],int(AA_position[1:])
-        row = df.loc[(df['AA'] == AA) & (df['ReferencePos'] == position_number)]
+            return 'aa_position must be an integer'
+        position_number = int(AA_position)
+        #df.loc[(df['AA'] == AA) & (df['ReferencePos'] == position_number)]
+        row = df.loc[df['ReferencePos'] == position_number]
         if not row.empty:
-            AA_position_new = AA+ str(list(row['IsoformPos'])[0])
+            AA_position_new = str(list(row['IsoformPos'])[0])
             return AA_position_new
         else:
-            return 'position not found', 400
+            return 'position not found on reference isoform', 400
