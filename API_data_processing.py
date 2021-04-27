@@ -59,7 +59,7 @@ class Data_processing():
                       'ENSP_version':'Ensembl Protein ID version (ENSP.Number)', 'refseq_NM_version':'Refseq Transcript ID version (NM.Number)',
                       'refseq_NP_version':'Refseq Transcript ID version (NP.Number)',
                       'HGNC':'HGNC ID (HGNC:Number)'}
-        chosen_column = [attribute_column_dict[reference_ID]+attribute_column_dict[alternative_ID]]
+        chosen_column = [attribute_column_dict[reference_ID],attribute_column_dict[alternative_ID]]
         return chosen_column
 
 
