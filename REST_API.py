@@ -108,7 +108,7 @@ class Mapping_Table(Resource):
         else: #just one reference ID given
             nested_dict = Data_processing.search_and_generate_nested_dict(args['id1'],list_of_gene_objects)
             if not nested_dict:
-                return 'ID not found'
+                return 'reference ID: '+args['id1']+' found'
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             index_of_reference_transcript = list(list(nested_dict.values())[0].values())[0]
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
