@@ -10,11 +10,8 @@ data = {
   "open_gap":3
 }
 
-response3 = requests.get(BASE+'map/positions?id1=KRAS-202&id2=KRAS-203&aa_position=A34',data)
+response3 = requests.get(BASE+'map/positions?id1=KRAS-202&id2=KRAS-203&table_ids=[hgnc]',data)
 
 print(response3)
 #print(response3.text)
 print(response3.json())
-
-
-

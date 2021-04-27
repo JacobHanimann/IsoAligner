@@ -23,9 +23,11 @@ from Table_Generation import *
 from PIL import Image
 from Statistics import *
 from Table_Generation import *
+from flask_caching import Cache
 
 class Data_processing():
     pass
+
 
     @staticmethod
     def align_sequences(input1, input2):
@@ -44,6 +46,36 @@ class Data_processing():
             return None
         nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs,verified_gene_index,list_of_gene_objects)
         return nested_dict
+
+
+    @staticmethod
+    def choose_mapping_table_columns(table_ids):
+        chosen_columns = ['Gene name']
+        if table_ids!=None:
+            if 'ensembl' in table_ids:
+                chosen_columns = chosen_columns + ['Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)',
+                          'Ensembl Protein ID (ENSP)', 'Transcript name', 'Ensembl Gene ID version (ENSG.Number)', 'Ensembl Transcript ID version (ENST.Number)']
+            if 'refseq' in table_ids:
+                chosen_columns = chosen_columns + ['Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)', 'Refseq Protein ID (NP)','Refseq Transcript ID version (NM.Number)',
+                          'Refseq Transcript ID version (NP.Number)']
+            if 'uniprot' in table_ids:
+                chosen_columns = chosen_columns + ['Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID']
+            if 'ucsc' in table_ids:
+                chosen_columns = chosen_columns + [ 'UCSC Stable ID (uc)']
+            if 'hgnc' in table_ids:
+                chosen_columns = chosen_columns + ['HGNC ID (HGNC:Number)']
+
+        if table_ids==None or len(chosen_columns)==1:
+            chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)',
+                      'Ensembl Protein ID (ENSP)', 'Transcript name',
+                      'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)', 'Refseq Protein ID (NP)',
+                      'UCSC Stable ID (uc)',
+                      'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
+                      'Ensembl Gene ID version (ENSG.Number)', 'Ensembl Transcript ID version (ENST.Number)',
+                      'Ensembl Protein ID version (ENSP.Number)', 'Refseq Transcript ID version (NM.Number)',
+                      'Refseq Transcript ID version (NP.Number)',
+                      'HGNC ID (HGNC:Number)']
+        return chosen_columns
 
     @staticmethod
     def create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA):

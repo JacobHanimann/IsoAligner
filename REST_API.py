@@ -43,13 +43,7 @@ open_gap_penalty = -1.75
 gap_extension_penalty = 0
 exon_length_AA= 5
 #standard ID's included in mapping table
-chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)', 'Transcript name',
- 'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)', 'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
- 'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
- 'Ensembl Gene ID version (ENSG.Number)', 'Ensembl Transcript ID version (ENST.Number)',
- 'Ensembl Protein ID version (ENSP.Number)', 'Refseq Transcript ID version (NM.Number)',
- 'Refseq Transcript ID version (NP.Number)',
- 'HGNC ID (HGNC:Number)']
+
 
 # Arguments in the body of the requests
 #mapping table
@@ -86,6 +80,7 @@ class Mapping_Table(Resource):
                 index_of_gene = list(list(nested_dict_reference.values())[0].keys())[0]
                 index_reference_transcript = list(list(nested_dict_reference.values())[0].values())[0]
                 index_alternative_transcript = list(list(nested_dict_alternative.values())[0].values())[0]
+                chosen_columns = Data_processing.choose_mapping_table_columns(table_ids=args['table_ids'])
                 mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
                                                                                 index_reference_transcript,
                                                                                 index_alternative_transcript,
@@ -111,6 +106,7 @@ class Mapping_Table(Resource):
                 return 'reference ID: '+args['id1']+' found'
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             index_of_reference_transcript = list(list(nested_dict.values())[0].values())[0]
+            chosen_columns = Data_processing.choose_mapping_table_columns(table_ids=args['table_ids'])
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                 list_of_gene_objects, index_gene_object,
                                                                                 chosen_columns, match, mismatch,
