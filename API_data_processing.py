@@ -45,11 +45,27 @@ class Data_processing():
         if not verified_gene_index:
             return None
         nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs,verified_gene_index,list_of_gene_objects)
-        return nested_dict
+        return nested_dict,dict_of_IDs
 
 
     @staticmethod
-    def choose_mapping_table_columns(table_ids):
+    def choose_column_if_two_IDs(reference_ID, alternative_ID):
+        attribute_column_dict = {'gene_name':'Gene name','ENSG':'Ensembl Gene ID (ENSG)', 'ENST':'Ensembl Transcript ID (ENST)',
+                      'ENSP':'Ensembl Protein ID (ENSP)', 'transcript_name':'Transcript name',
+                      'refseq_gene_ID':'Refseq Gene ID (Number)', 'refseq_NM':'Refseq Transcript ID (NM)','refseq_NP': 'Refseq Protein ID (NP)',
+                      'UCSC_stable_ID':'UCSC Stable ID (uc)',
+                      'uniprot_name_ID':'Uniprot Name ID','uniprot_accession':'Uniprot Accession ID','uniprot_isoform': 'Uniprot Isoform ID','uniprot_uniparc': 'Uniparc ID',
+                      'ENSG_version':'Ensembl Gene ID version (ENSG.Number)','ENST_version':'Ensembl Transcript ID version (ENST.Number)',
+                      'ENSP_version':'Ensembl Protein ID version (ENSP.Number)', 'refseq_NM_version':'Refseq Transcript ID version (NM.Number)',
+                      'refseq_NP_version':'Refseq Transcript ID version (NP.Number)',
+                      'HGNC':'HGNC ID (HGNC:Number)'}
+        chosen_column = [attribute_column_dict[reference_ID]+attribute_column_dict[alternative_ID]]
+        return chosen_column
+
+
+
+    @staticmethod
+    def choose_mapping_table_columns(table_ids,reference_id, alternative_id,two_IDs=False):
         chosen_columns = ['Gene name']
         if table_ids!=None:
             if 'ensembl' in table_ids:
@@ -65,7 +81,7 @@ class Data_processing():
             if 'hgnc' in table_ids:
                 chosen_columns = chosen_columns + ['HGNC ID (HGNC:Number)']
 
-        if table_ids==None or len(chosen_columns)==1:
+        if table_ids==None or len(chosen_columns)==1 or 'all' in table_ids:
             chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)',
                       'Ensembl Protein ID (ENSP)', 'Transcript name',
                       'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)', 'Refseq Protein ID (NP)',
@@ -75,7 +91,10 @@ class Data_processing():
                       'Ensembl Protein ID version (ENSP.Number)', 'Refseq Transcript ID version (NM.Number)',
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
+        if two_IDs==True and table_ids==None:
+            chosen_columns = Data_processing.choose_column_if_two_IDs(reference_id,alternative_id)
         return chosen_columns
+
 
     @staticmethod
     def create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA):
