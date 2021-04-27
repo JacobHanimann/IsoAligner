@@ -43,7 +43,7 @@ class Data_processing():
         gene_index = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
         verified_gene_index = Input_flow.remove_dict_elements_with_no_gene_object_match(gene_index)
         if not verified_gene_index:
-            return None
+            return (None,None)
         nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs,verified_gene_index,list_of_gene_objects)
         return nested_dict,dict_of_IDs
 
@@ -65,7 +65,7 @@ class Data_processing():
 
 
     @staticmethod
-    def choose_mapping_table_columns(table_ids,reference_id, alternative_id,two_IDs=False):
+    def choose_mapping_table_columns(table_ids,reference_id='optional', alternative_id='optional',two_IDs=False):
         chosen_columns = ['Gene name']
         if table_ids!=None:
             if 'ensembl' in table_ids:
