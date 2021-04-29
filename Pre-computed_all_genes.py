@@ -35,8 +35,9 @@ big_nested_dict = {}
 for index,gene in enumerate(list_of_gene_objects):
     #create nested dict for one gene
     nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
-    big_nested_dict = big_nested_dict + nested_dict
-    print(index)
+    big_nested_dict.update(nested_dict)
+
+print(big_nested_dict)
 
 #create big dataframe
 big_df = Table_Generation.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
