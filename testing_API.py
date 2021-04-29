@@ -1,6 +1,6 @@
 import requests
 
-BASE = "http://127.0.0.1:8888/"
+BASE = "https://share.streamlit.io/jacobhanimann/isoaligner/main/Webinterface.py/"
 
 data = {
  "sequence1": "NDFKLNDFDNFKLNSDLKFNASLKFNDSLJFNDSKF",
@@ -13,5 +13,5 @@ data = {
 response3 = requests.get(BASE+'map?id1=KRAS',data)
 
 print(response3)
-#print(response3.text)
+print(response3.text)
 print(response3.json())
