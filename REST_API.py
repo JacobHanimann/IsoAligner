@@ -135,4 +135,4 @@ api.add_resource(Mapping_Table,'/map','/map/positions')
 api.add_resource(Raw_alignment, '/align')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

@@ -1,6 +1,6 @@
 import requests
 
-BASE = "https://share.streamlit.io/jacobhanimann/isoaligner/main/Webinterface.py/"
+BASE = "http://127.0.0.1:8888/"
 
 data = {
  "sequence1": "NDFKLNDFDNFKLNSDLKFNASLKFNDSLJFNDSKF",
