@@ -129,6 +129,19 @@ class Input_flow:
                 cleaned_Input1_IDs[element] = index
         return cleaned_Input1_IDs
 
+    @staticmethod
+    def pick_index_of_canonical_sequence(list_of_gene_objects, index):
+        '''
+        returns the index of the protein_isofrom of a gene with the longest AA sequence
+        :param list_of_gene_objects:
+        :return: index of longest protein_isoform object
+        '''
+        list_of_AA_sequences = [protein_isoform.protein_sequence for protein_isoform in
+                                list_of_gene_objects[index].protein_sequence_isoform_collection if
+                                protein_isoform.protein_sequence != None]
+        index_of_longest_AA = list_of_AA_sequences.index(max(list_of_AA_sequences))
+        return index_of_longest_AA
+
 
     @staticmethod
     def generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, dict_element_indexes,
@@ -140,15 +153,7 @@ class Input_flow:
         :return: dictionary of canonical ID's used as a default reference
         '''
 
-        def pick_index_of_canonical_sequence(index_of_gene_object):
-            '''
-            returns the index of the protein_isofrom of a gene with the longest AA sequence
-            :param list_of_gene_objects:
-            :return: index of longest protein_isoform object
-            '''
-            list_of_AA_sequences = [protein_isoform.protein_sequence for protein_isoform in list_of_gene_objects[index].protein_sequence_isoform_collection if protein_isoform.protein_sequence !=None]
-            index_of_longest_AA = list_of_AA_sequences.index(max(list_of_AA_sequences))
-            return index_of_longest_AA
+
 
         def find_index_of_reference_transcript(element):
             for index_sequence, protein_object in enumerate(list_of_gene_objects[index].protein_sequence_isoform_collection):
@@ -159,7 +164,7 @@ class Input_flow:
 
         for element, index in dict_element_indexes.items():
             if Input_flow.is_ID_in_parent_class(dict_of_IDs[element]):
-                dict_element_indexes[element] = dict({index:pick_index_of_canonical_sequence(index)})
+                dict_element_indexes[element] = dict({index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)})
             else:
                 dict_element_indexes[element] = dict({index: find_index_of_reference_transcript(element)})
 
