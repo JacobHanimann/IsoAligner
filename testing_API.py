@@ -1,6 +1,6 @@
 import requests
 
-BASE = "http://127.0.0.1:5000/"
+BASE = "http://127.0.0.1:8888/"
 
 data = {
  "sequence1": "NDFKLNDFDNFKLNSDLKFNASLKFNDSLJFNDSKF",
@@ -10,7 +10,7 @@ data = {
   "open_gap":3
 }
 
-response3 = requests.get(BASE+'map?id1=uc003tqk.5',data)
+response3 = requests.get(BASE+'map?id1=KRAS',data)
 
 print(response3)
 #print(response3.text)
