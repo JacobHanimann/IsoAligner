@@ -50,7 +50,7 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_1st_
 
 print('Adding exon information...')
 gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
-genes_dict_median = Exon_Information.pick_exon_length_median_from_nested_dict(gene_dict)
+genes_dict_median = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict)
 Exon_Information.add_exon_minimal_to_gene_objects(list_of_gene_objects, genes_dict_median)
 #Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
 

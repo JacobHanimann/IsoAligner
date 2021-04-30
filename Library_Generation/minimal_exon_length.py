@@ -76,9 +76,9 @@ class Exon_Information():
 
 
     @staticmethod
-    def pick_exon_length_median_from_nested_dict(gene_dict):
+    def pick_exon_length_minimal_from_nested_dict(gene_dict):
         '''
-        functions that takes the median of the exon length per gene and stores it in a dict
+        functions that takes the minimal of the exon length per gene and stores it in a dict
         :param gene_dict: dictionary generated from read ensembl gtf file
         :return: dict
         '''
@@ -92,13 +92,13 @@ class Exon_Information():
 
 
     @staticmethod
-    def add_exon_minimal_to_gene_objects(list_of_gene_objects, gene_dict_median):
-        print('total length:',len(gene_dict_median))
+    def add_exon_minimal_to_gene_objects(list_of_gene_objects, gene_dict_minimal):
+        print('total length:', len(gene_dict_minimal))
         index = 0
-        for ENSG, exon_length in gene_dict_median.items():
+        for ENSG, exon_length in gene_dict_minimal.items():
             index += 1
             if index % 1000 == 0:
-                print(100 * round(index / len(gene_dict_median), 2), '%')
+                print(100 * round(index / len(gene_dict_minimal), 2), '%')
             for gene in list_of_gene_objects:
                 if ENSG==gene.ENSG:
                     gene.minimal_exon_length = round(exon_length)

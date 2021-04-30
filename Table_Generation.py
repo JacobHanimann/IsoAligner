@@ -159,8 +159,13 @@ class Table_Generation:
         if exon_length !=None and one_ID:
             exon_length_AA = exon_length
         #checking library for value
-        elif list_of_gene_objects[index_of_gene].minimal_exon_length!= None or list_of_gene_objects[index_of_gene].minimal_exon_length>3:
-            exon_length_AA = list_of_gene_objects[index_of_gene].median_exon_length
+        elif list_of_gene_objects[index_of_gene].minimal_exon_length!= None:
+            print(list_of_gene_objects[index_of_gene].minimal_exon_length)
+            if list_of_gene_objects[index_of_gene].minimal_exon_length >4:
+                exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
+                print('exon_length: ',exon_length_AA)
+            else:
+                exon_length_AA = 5
         else:
             #if there is no value in the library
             exon_length_AA = 5
