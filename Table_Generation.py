@@ -160,7 +160,7 @@ class Table_Generation:
             exon_length_AA = exon_length
         #checking library for value
         elif list_of_gene_objects[index_of_gene].minimal_exon_length!= None or list_of_gene_objects[index_of_gene].minimal_exon_length>3:
-            exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
+            exon_length_AA = list_of_gene_objects[index_of_gene].median_exon_length
         else:
             #if there is no value in the library
             exon_length_AA = 5
