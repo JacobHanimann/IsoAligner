@@ -40,42 +40,42 @@ class Alignment:
         for index in range(0, len(ref)):
             score = 0  # score which determines if the position is fullfills the minimal exon length parameter
             gap = False
-            # start of array
-            if index <= exon_length_AA:
-                if ref[index] != isoform[index]:
-                    category = "gap"
-                    gap = True
-                else:  # same Aminoacid
-                    score += 1
-                    for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
-                        if ref[index + sidestep] == isoform[index + sidestep]:
-                            score += 1
-                        else:
-                            break
-                if score >= exon_length_AA and gap != True:
-                    category = 'correct'
-                elif score <= exon_length_AA and gap != True:
-                    category = 'wrong'
-                isoform_check.append(category)
-                continue
-            # end of array
-            if len(ref) - index <= exon_length_AA:
-                if ref[index] != isoform[index]:
-                    category = "gap"
-                    gap = True
-                else:  # same Aminoacid
-                    score += 1
-                    for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
-                        if ref[index - sidestep] == isoform[index - sidestep]:
-                            score += 1
-                        else:
-                            break
-                if score >= exon_length_AA and gap != True:
-                    category = 'correct'
-                elif score <= exon_length_AA and gap != True:
-                    category = 'wrong'
-                isoform_check.append(category)
-                continue
+            ## start of array
+            #if index <= exon_length_AA:
+            #    if ref[index] != isoform[index]:
+            #        category = "gap"
+            #        gap = True
+            #    else:  # same Aminoacid
+            #        score += 1
+            #        for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+            #            if ref[index + sidestep] == isoform[index + sidestep]:
+            #                score += 1
+            #            else:
+            #                break
+            #    if score >= exon_length_AA and gap != True:
+            #        category = 'correct'
+            #    elif score <= exon_length_AA and gap != True:
+            #        category = 'wrong'
+            #    isoform_check.append(category)
+            #    continue
+            ## end of array
+            #if len(ref) - index <= exon_length_AA:
+            #    if ref[index] != isoform[index]:
+            #        category = "gap"
+            #        gap = True
+            #    else:  # same Aminoacid
+            #        score += 1
+            #        for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+            #            if ref[index - sidestep] == isoform[index - sidestep]:
+            #                score += 1
+            #            else:
+            #                break
+            #    if score >= exon_length_AA and gap != True:
+            #        category = 'correct'
+            #    elif score <= exon_length_AA and gap != True:
+            #        category = 'wrong'
+            #    isoform_check.append(category)
+            #    continue
             # middle of array, checks for matches both sided
             if ref[index] != isoform[index]:
                 category = "gap"
@@ -83,11 +83,15 @@ class Alignment:
             else:  # same Aminoacid
                 score += 1
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+                    if index + sidestep == len(ref):
+                        break
                     if ref[index + sidestep] == isoform[index + sidestep]:
                         score += 1
                     else:
                         break
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+                    if index - sidestep <= 0:
+                        break
                     if ref[index - sidestep] == isoform[index - sidestep]:
                         score += 1
                     else:
