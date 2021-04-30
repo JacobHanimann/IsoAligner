@@ -14,10 +14,12 @@ class Streamlit_pop_ups:
         if list_of_gene_objects[index_gene].minimal_exon_length == None or raw==True:
             exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
                                                  format=None, key=None)
-        else:
-            minimal_exon_length = list_of_gene_objects[index_gene].minimal_exon_length
-            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=minimal_exon_length, step=None,
+        elif list_of_gene_objects[index_gene].minimal_exon_length >4:
+                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=list_of_gene_objects[index_gene].minimal_exon_length, step=None,
                                                      format=None, key=None)
+        else:
+            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
+                                                         format=None, key=None)
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
         st.sidebar.write("\n")
