@@ -28,7 +28,7 @@ app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
 
 #importing isoform library
-@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+#@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling

@@ -160,10 +160,8 @@ class Table_Generation:
             exon_length_AA = exon_length
         #checking library for value
         elif list_of_gene_objects[index_of_gene].minimal_exon_length!= None:
-            print(list_of_gene_objects[index_of_gene].minimal_exon_length)
             if list_of_gene_objects[index_of_gene].minimal_exon_length >4:
                 exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
-                print('exon_length: ',exon_length_AA)
             else:
                 exon_length_AA = 5
         else:
