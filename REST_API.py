@@ -28,7 +28,7 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 #importing isoform library
-#@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling
@@ -59,6 +59,7 @@ map_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.7
 map_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0", required=False)
 map_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
 map_args.add_argument('table_ids', type=str, help='choose which IDs should be included in the mapping table',required=False)
+
 #raw alignment
 align_args = reqparse.RequestParser()
 align_args.add_argument('view', type=bool, default=False, required=False, help='view alignment')
