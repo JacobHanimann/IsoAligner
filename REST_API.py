@@ -28,7 +28,7 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 #importing isoform library
-@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+#@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling
@@ -36,6 +36,7 @@ def import_data_from_github(file):
     return list_of_gene_objects
 
 #cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
+#list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
 
 #standard parameters if no body is sent with the request
 match = 1
@@ -75,8 +76,9 @@ class Mapping_Table(Resource):
     def get(self):
         args = map_args.parse_args()
         #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
-        cache.set("list_of_gene_objects", import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
-        list_of_gene_objects = cache.get('list_of_gene_objects')
+        #cache.set("list_of_gene_objects", import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
+        #list_of_gene_objects = cache.get('list_of_gene_objects')
+        list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
         if args['id2']!= None:
             nested_dict_reference,reference_type_dict = Data_processing.search_and_generate_nested_dict(args['id1'],list_of_gene_objects)
             nested_dict_alternative,alternative_type_dict = Data_processing.search_and_generate_nested_dict(args['id2'], list_of_gene_objects)
@@ -139,4 +141,4 @@ api.add_resource(Mapping_Table,'/map','/map/positions')
 api.add_resource(Raw_alignment, '/align')
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
