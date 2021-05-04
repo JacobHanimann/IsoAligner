@@ -15,16 +15,12 @@ from PIL import Image
 from Statistics import *
 
 
-# We'll never reach this part of the code the first time this file executes!
-
 #declare session state variables
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
 
 #import database
-list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_19th_april.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
 
-#new link = https://drive.google.com/file/d/18Rs-GIQgU06AA2yJyB5-g4ctmqqGyEm8/view?usp=sharing
-# old link = https://drive.google.com/file/d/1hKq8ksU1I8A61zvqOkKrx8WIfbP32TG4/view?usp=sharing
 
 #Streamlit website
 def main():
