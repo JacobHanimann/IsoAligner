@@ -198,7 +198,6 @@ class Table_Generation:
                                               open_gap_penalty, gap_extension_penalty):
         list_of_alignments = []
         for gene in nested_dict.items():
-            print(gene)
             index_of_gene = list(gene[1].keys())[0]
             index_of_reference_transcript = list(gene[1].values())[0]
             if len(list_of_gene_objects[

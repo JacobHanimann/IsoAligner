@@ -1,6 +1,6 @@
 import requests
 
-BASE = "https://isoaligner-api-heroku.herokuapp.com/"
+BASE = "http://127.0.0.1:5000/"
 
 data = {
  "sequence1": "NDFKLNDFDNFKLNSDLKFNASLKFNDSLJFNDSKF",
@@ -9,7 +9,7 @@ data = {
   "open_gap":3,
 }
 
-for i in range (0,100):
+for i in range (0,1):
  response3 = requests.get(BASE+'map?id1=EGFR',data)
  print(response3)
  print(response3.text)

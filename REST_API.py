@@ -35,7 +35,7 @@ def import_data_from_github(file):
         list_of_gene_objects = pickle.load(fp)
     return list_of_gene_objects
 
-#list_of_gene_objects = import_data_from_github('list_of_gene_objects_19th_april.txt.gz')
+cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
 
 #standard parameters if no body is sent with the request
 match = 1
@@ -74,7 +74,8 @@ align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5
 class Mapping_Table(Resource):
     def get(self):
         args = map_args.parse_args()
-        list_of_gene_objects = import_data_from_github('list_of_gene_objects_19th_april.txt.gz')
+        #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
+        list_of_gene_objects = cache.get('list_of_gene_objects')
         if args['id2']!= None:
             nested_dict_reference,reference_type_dict = Data_processing.search_and_generate_nested_dict(args['id1'],list_of_gene_objects)
             nested_dict_alternative,alternative_type_dict = Data_processing.search_and_generate_nested_dict(args['id2'], list_of_gene_objects)
