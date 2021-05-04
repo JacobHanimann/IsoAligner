@@ -23,8 +23,8 @@ import gunicorn
 #Initialising Flask API and Cache
 app = Flask(__name__)
 api = Api(app)
-cache = Cache()
-app.config['CACHE_TYPE'] = 'simple'
+cache = Cache(config={'CACHE_TYPE': 'filesystem', 'CACHE_DIR': '/tmp'})
+#app.config['CACHE_TYPE'] = 'simple'
 cache.init_app(app)
 
 #importing isoform library

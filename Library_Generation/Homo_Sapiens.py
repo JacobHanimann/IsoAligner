@@ -67,6 +67,6 @@ print('Statistics after Clean-up:')
 Validate_library.check_if_gene_name_and_prot_seq_are_switched(list_of_gene_objects)
 gene_duplicates_dict = Validate_library.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)[0]
 print('Pickling list of gene objects and saving file...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_25_march_final.txt", "wb") as fp:  # Pickling
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_final.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
 print('Library Generation successfully executed.')
