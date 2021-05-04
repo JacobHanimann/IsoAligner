@@ -12,7 +12,7 @@ from PIL import Image
 from Statistics import *
 
 #load library
-list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_19th_april.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
 
 #standard function parameters
 match = 1
