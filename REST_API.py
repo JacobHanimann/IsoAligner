@@ -35,6 +35,7 @@ def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling
         list_of_gene_objects = pickle.load(fp)
+        print('library loaded new')
     return list_of_gene_objects
 
 #cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
