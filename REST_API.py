@@ -25,21 +25,22 @@ from cachetools import cached, TTLCache
 app = Flask(__name__)
 api = Api(app)
 #cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
-cache = TTLCache(maxsize=100, ttl=60)
+cache = TTLCache(maxsize=100, ttl=10)
 #app.config['CACHE_TYPE'] = 'simple'
 
 #importing isoform library
 #@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
-@cached(cache)
+
+#@cached(cache)
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
-    with gzip.open(file, "rb") as fp:  # Pickling
-        list_of_gene_objects = pickle.load(fp)
-        print('library loaded new')
-    return list_of_gene_objects
+    #with gzip.open(file, "rb") as fp:  # Pickling
+        #list_of_gene_objects = pickle.load(fp)
+    print('library loaded new')
+    return 3
 
 #cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
-#list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
+list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
 
 #standard parameters if no body is sent with the request
 match = 1
@@ -82,7 +83,7 @@ class Mapping_Table(Resource):
         #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
         #cache.set("list_of_gene_objects", import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
         #list_of_gene_objects = cache.get('list_of_gene_objects')
-        list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
+        #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
         if args['id2']!= None:
             nested_dict_reference,reference_type_dict = Data_processing.search_and_generate_nested_dict(args['id1'],list_of_gene_objects)
             nested_dict_alternative,alternative_type_dict = Data_processing.search_and_generate_nested_dict(args['id2'], list_of_gene_objects)
