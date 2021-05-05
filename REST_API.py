@@ -18,17 +18,19 @@ from PIL import Image
 from Statistics import *
 from API_data_processing import *
 import gunicorn
+from cachetools import cached, TTLCache
 
 
 #Initialising Flask API and Cache
 app = Flask(__name__)
 api = Api(app)
-cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
+#cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
+cache = TTLCache(maxsize=100, ttl=60)
 #app.config['CACHE_TYPE'] = 'simple'
-cache.init_app(app)
 
 #importing isoform library
-@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+#@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+@cached(cache)
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling
