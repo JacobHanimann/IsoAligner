@@ -25,13 +25,13 @@ from cachetools import cached, TTLCache
 app = Flask(__name__)
 api = Api(app)
 #cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
-cache = TTLCache(maxsize=100, ttl=10)
+cache = TTLCache(maxsize=100, ttl=100)
 #app.config['CACHE_TYPE'] = 'simple'
 
 #importing isoform library
 #@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 
-#@cached(cache)
+@cached(cache)
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
     with gzip.open(file, "rb") as fp:  # Pickling
