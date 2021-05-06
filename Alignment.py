@@ -82,15 +82,15 @@ class Alignment:
                 gap = True
             else:  # same Aminoacid
                 score += 1
-                for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
+                for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the right
                     if index + sidestep == len(ref):
                         break
                     if ref[index + sidestep] == isoform[index + sidestep]:
                         score += 1
                     else:
                         break
-                for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
-                    if index - sidestep <= 0:
+                for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the left
+                    if index+1 - sidestep <= 0:
                         break
                     if ref[index - sidestep] == isoform[index - sidestep]:
                         score += 1

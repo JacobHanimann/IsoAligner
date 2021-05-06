@@ -4,22 +4,26 @@ class Streamlit_pop_ups:
     pass
 
     @staticmethod
-    def sidebar_pop_up_parameters(list_of_gene_objects, index_gene, raw=False):
+    def sidebar_pop_up_parameters(list_of_gene_objects, index_gene=None, raw=False):
         '''
         sidebar pop up for the parameters of all functions which can be dynamically adjusted.
         '''
         st.sidebar.markdown("### Function Parameters")
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Minimal Exon Length (AA):")
-        if list_of_gene_objects[index_gene].minimal_exon_length == None or raw==True:
-            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
-                                                 format=None, key=None)
-        elif list_of_gene_objects[index_gene].minimal_exon_length >4:
-                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=list_of_gene_objects[index_gene].minimal_exon_length, step=None,
+        if index_gene!=None:
+            if list_of_gene_objects[index_gene].minimal_exon_length == None or raw==True:
+                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
                                                      format=None, key=None)
+            elif list_of_gene_objects[index_gene].minimal_exon_length >4:
+                    exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=list_of_gene_objects[index_gene].minimal_exon_length, step=None,
+                                                         format=None, key=None)
+            else:
+                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
+                                                         format=None, key=None)
         else:
             exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=5, step=None,
-                                                         format=None, key=None)
+                                                     format=None, key=None)
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
         st.sidebar.write("\n")

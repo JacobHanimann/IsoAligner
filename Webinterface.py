@@ -175,14 +175,14 @@ def main():
 
         #Input 2 Area
         if using_IDs== False and raw_aa:
-            input2 = st.text_area('Paste Amino Acid sequence of alternative_ID isoform: ', '''''', key=ss.run_id)
+            input2 = st.text_area('Paste raw amino acid sequence of alternative isoform and click align: ', '''''', key=ss.run_id)
             align=st.button('Align')
             if align:
                 ss.align_clicked = True
                 ss.searched_clicked = False
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
                 #Sidebar pop up, make function out of it?
-                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene, raw=True)
+                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, raw=True)
                 st.markdown("### Results")
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
