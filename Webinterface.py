@@ -57,7 +57,7 @@ def main():
         st.write('\n')
 
         #fixed in put area
-        title, example_button = st.beta_columns([3.5,1])
+        title, example_button = st.beta_columns([3.85,1])
         with title:
             st.markdown("#### Input")
         with example_button:
@@ -72,7 +72,7 @@ def main():
                                   '''EGFR, Q9Y6I3 - 1, ENSG00000074410, ENSP00000075430.7, HGNC: 10728, UPI00022F85F1, NP_004702.2, SEMA5B - 211, BRAF_HUMAN, NM_001304833''',key=ss.run_id)
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=ss.run_id)
-        file_upload, search_button = st.beta_columns([2,1])
+        file_upload, search_button = st.beta_columns([2.58,1])
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
@@ -225,7 +225,7 @@ def main():
 
         #Clear all button
         st.write("--------------------------")
-        placehold, clear_all = st.beta_columns([6.85, 1])
+        placehold, clear_all = st.beta_columns([6.1, 1])
         with clear_all:
            if st.button('Clear All'):
               ss.clear_button = True
