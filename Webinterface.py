@@ -32,7 +32,7 @@ def main():
     activity = ['Alignment Tool', 'REST API & Downloads', 'Manual & About']
     st.sidebar.markdown("## Navigation")
     choice = st.sidebar.radio("Go to", activity)
-    st.sidebar.write("\n")
+
 
     #Alignment tool section
     if choice == 'Alignment Tool':
@@ -51,10 +51,8 @@ def main():
             image2 = Image.open('Pictures/Spliceosome_yeast_small.tif')
             st.image(image2,use_column_width=True)
 
-        st.write("--------------------------")
         st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse (next release)'])
-        st.write('\n')
 
         #fixed in put area
         title, example_button = st.beta_columns([3.85,1])
@@ -68,7 +66,7 @@ def main():
 
         if ss.example:
             #input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, Q9Y6I3, Q9Y6I3-1, ENSG00000074410, ENSG00000164690.2, ENSP00000005756, ENSP00000075430.7, HGNC:10728, UPI00022F85F1, uc060zgm.1, NP_004702.2, ENST00000554846.5, SEMA5B-211, BRAF_HUMAN, NM_001304833, 1232, ENST00000551640, NP_775733, NM_003769.3''',key=ss.run_id)
-            input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information',
+            input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',
                                   '''EGFR, Q9Y6I3 - 1, ENSG00000074410, ENSP00000075430.7, HGNC: 10728, UPI00022F85F1, NP_004702.2, SEMA5B - 211, BRAF_HUMAN, NM_001304833''',key=ss.run_id)
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=ss.run_id)
@@ -148,7 +146,7 @@ def main():
             st.text('\n')
             genes, reference = st.beta_columns([2,1.7])
             with genes:
-                chosen_gene = st.selectbox('Select Gene',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
+                chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
             with reference:
                 transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
