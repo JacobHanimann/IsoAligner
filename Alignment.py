@@ -22,11 +22,9 @@ class Alignment:
         else:
             return None
 
-
     @staticmethod
-    # This function also needs a sanity check
     def check_for_wrong_exon_alignments(ref, isoform,
-                                        exon_length_AA):  # Has to be adjusted so the minimal exon length can be varied with tool (more neighbours have to be counted)
+                                        exon_length_AA):
         '''
         This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene.
         The Needleman Wunsch algorithm also randomly alignes fractions of different exons but they do not represent the same aminoacid.
@@ -38,59 +36,22 @@ class Alignment:
         '''
         isoform_check = []
         for index in range(0, len(ref)):
-            score = 0  # score which determines if the position is fullfills the minimal exon length parameter
+            score = 0  # score which determines if the position is fulfills the minimal exon length parameter
             gap = False
-            ## start of array
-            #if index <= exon_length_AA:
-            #    if ref[index] != isoform[index]:
-            #        category = "gap"
-            #        gap = True
-            #    else:  # same Aminoacid
-            #        score += 1
-            #        for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
-            #            if ref[index + sidestep] == isoform[index + sidestep]:
-            #                score += 1
-            #            else:
-            #                break
-            #    if score >= exon_length_AA and gap != True:
-            #        category = 'correct'
-            #    elif score <= exon_length_AA and gap != True:
-            #        category = 'wrong'
-            #    isoform_check.append(category)
-            #    continue
-            ## end of array
-            #if len(ref) - index <= exon_length_AA:
-            #    if ref[index] != isoform[index]:
-            #        category = "gap"
-            #        gap = True
-            #    else:  # same Aminoacid
-            #        score += 1
-            #        for sidestep in range(1, exon_length_AA):  # check how many neighbours there are
-            #            if ref[index - sidestep] == isoform[index - sidestep]:
-            #                score += 1
-            #            else:
-            #                break
-            #    if score >= exon_length_AA and gap != True:
-            #        category = 'correct'
-            #    elif score <= exon_length_AA and gap != True:
-            #        category = 'wrong'
-            #    isoform_check.append(category)
-            #    continue
-            # middle of array, checks for matches both sided
             if ref[index] != isoform[index]:
                 category = "gap"
                 gap = True
             else:  # same Aminoacid
                 score += 1
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the right
-                    if index + sidestep == len(ref):
+                    if index + sidestep == len(ref): #end of array break
                         break
                     if ref[index + sidestep] == isoform[index + sidestep]:
                         score += 1
                     else:
                         break
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the left
-                    if index+1 - sidestep <= 0:
+                    if index+1 - sidestep <= 0: #start of array break
                         break
                     if ref[index - sidestep] == isoform[index - sidestep]:
                         score += 1
