@@ -35,6 +35,18 @@ class Comparison():
         response3 = requests.post(baseUrl + 'run', data)
         return response3.text
 
+    @staticmethod
+    def get_MSA_alignment_clustal(fasta_string):
+        baseUrl = u'https://www.ebi.ac.uk/Tools/services/rest/clustalo/'
+        data = {'sequence': fasta_string,
+                'outfmt': "fa",
+                'stype': 'protein',
+                'email': 'jacob.hanimann@gmail.com',
+                'title': 'trialrun'}
+        response3 = requests.post(baseUrl + 'run', data)
+        return response3.text
+
+
 
 
 
