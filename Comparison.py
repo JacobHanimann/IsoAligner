@@ -43,7 +43,7 @@ class Comparison():
                 'stype': 'protein',
                 'email': 'jacob.hanimann@gmail.com',
                 'title': 'trialrun'}
-        response3 = requests.post(baseUrl + 'run', data)
+        response3 = requests.get(baseUrl + 'run', data)
         return response3.text
 
 
