@@ -24,6 +24,12 @@ class Table_Generation:
         column_values = []
         column_names = []
 
+        if 'All Columns' in chosen_columns:
+            chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)', 'Transcript name',
+             'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)','Refseq Protein ID (NP)','UCSC Stable ID (uc)','Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID', 'Uniparc ID',
+             'Ensembl Gene ID version (ENSG.Number)', 'Ensembl Transcript ID version (ENST.Number)', 'Ensembl Protein ID version (ENSP.Number)', 'Refseq Transcript ID version (NM.Number)', 'Refseq Transcript ID version (NP.Number)',
+             'HGNC ID (HGNC:Number)']
+
         if "Gene name" in chosen_columns:
             column_values.append(list_of_gene_objects[index_of_gene].ensembl_gene_symbol)
             column_names.append("Gene_name")
@@ -69,7 +75,7 @@ class Table_Generation:
             column_values.append(transcript.ENSP_version)
             column_names.append("Iso_prot_ID_ver")
 
-        if "Transcript name" in chosen_columns:
+        if "Transcript Name" in chosen_columns:
             column_values.append(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
                                      index_reference_transcript].transcript_name)
             column_names.append("Ref_transcript_name")
