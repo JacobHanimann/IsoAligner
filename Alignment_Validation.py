@@ -32,13 +32,14 @@ list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_
 #
 #run comparison between the two lists and make statistics? similarity,
 
-for gene in list_of_gene_objects:
+for gene in list_of_gene_objects[0:1]:
     list_of_fastas = Comparison.extract_protein_sequences_in_fasta_from_gene(gene)
     if not list_of_fastas or len(list_of_fastas)<3:
         continue
 
     fasta_string = "\n".join(list_of_fastas)
     print(fasta_string)
+    print(Comparison.post_fastas_to_clustal_MSA_API(fasta_string))
 
 
 

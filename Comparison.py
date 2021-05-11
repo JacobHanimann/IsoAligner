@@ -21,12 +21,20 @@ class Comparison():
 
     @staticmethod
     def extract_protein_sequences_in_fasta_from_gene(gene_object,Id_type="ENSP"):
-        list_of_fasta_files = [sequence.ENSP+"|"+sequence.protein_sequence for sequence in gene_object.protein_sequence_isoform_collection if sequence.ENSP!=None]
+        list_of_fasta_files = [">"+sequence.ENSP+"\n"+sequence.protein_sequence for sequence in gene_object.protein_sequence_isoform_collection if sequence.ENSP!=None]
         return list_of_fasta_files
 
     @staticmethod
     def post_fastas_to_clustal_MSA_API(fasta_string):
-        pass
+        baseUrl = u'https://www.ebi.ac.uk/Tools/services/rest/clustalo/'
+        data = {'sequence': fasta_string,
+                'outfmt': "fa",
+                'stype': 'protein',
+                'email': 'jacob.hanimann@gmail.com',
+                'title': 'trialrun'}
+        response3 = requests.post(baseUrl + 'run', data)
+        return response3.text
+
 
 
 
