@@ -172,7 +172,7 @@ class Input_flow:
 
     @staticmethod
     def chose_columns():
-        st.markdown("#### Mapped Amino Acid Positions Table")
+        st.markdown("### Mapped Amino Acid Positions Table")
         container = st.beta_container()
         all = st.checkbox("Select all columns")
 

@@ -47,34 +47,3 @@ big_df.to_csv('/Users/jacob/Desktop/all_genes_mapped_12th_may.tsv')
 print(correct_aa)
 print(false_aa)
 print(false_aa/(correct_aa+false_aa))
-
-
-def isoform_form_check_stats(isoform_check_list):
-    aa_matches_total = 0
-    correct_aa = 0
-    false_aa = 0
-    for type in isoform_check_list:
-        if type == 'gap':
-            continue
-        if type =='correct':
-            aa_matches_total +=1
-            correct_aa +=1
-        if type =='wrong':
-            false_aa +=1
-            aa_matches_total +=1
-
-    correct_perc = correct_aa/aa_matches_total
-    false_perc = false_aa/aa_matches_total
-    print('total aa_matches:', aa_matches_total)
-    print('correct aa matches:', correct_aa)
-    print('false aa matches:', false_aa)
-    print('percentage correct matches:', correct_perc)
-    print('percentage false matches', false_perc)
-    return aa_matches_total, correct_aa,false_aa, correct_perc, false_perc
-
-#isoform_form_check_stats(isoform_check_list)
-
-
-
-
-

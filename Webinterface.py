@@ -42,8 +42,8 @@ def main():
             st.title(" Amino Acid Isoform Aligner")
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
-                "Align isoforms dynamically with the Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
-                " The current human isoform library consists of ~18k protein coding genes covering ~130k protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq and HGNC.")
+                "Align protein isoforms interactively with a fitted Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
+                " The current human isoform library consists of ~18K protein coding genes covering ~130K protein sequences and +1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
         with tRNA:
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
@@ -57,7 +57,7 @@ def main():
         #fixed in put area
         title, example_button = st.beta_columns([3.85,1])
         with title:
-            st.markdown("#### Input")
+            st.markdown("### Input")
         with example_button:
             if st.button('Show Example'):
                 ss.example = True
@@ -109,19 +109,16 @@ def main():
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
-            st.markdown("### Alignments")
-            reference_select, number_of_entries = st.beta_columns([1,2.5])
+            st.markdown("### Alignment Preview")
+            st.write('\n')
+            chosen_gene = list(nested_dict.keys())[0]
+            index_gene_object = list(list(nested_dict.values())[0].keys())[0]
+            transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene)
+            st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
+            reference_select, whitespace = st.beta_columns([1, 2.2])
             with reference_select:
-                chosen_gene = list(nested_dict.keys())[0]
-                index_gene_object = list(list(nested_dict.values())[0].keys())[0]
-                transcript_list,index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict,chosen_gene)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-            with number_of_entries:
-                st.write('\n')
-                st.write('\n')
-                st.write('\n')
-                st.write('Number of entries:',len(transcript_list))
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
@@ -142,7 +139,7 @@ def main():
         #case of using multiple ID's
         elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
             using_IDs = True
-            st.markdown("### Alignments")
+            st.markdown("### Alignment Preview")
             st.text('\n')
             genes, reference = st.beta_columns([2,1.7])
             with genes:
@@ -191,7 +188,7 @@ def main():
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
                 #st.text(Alignment_preview)
                 st.write("\n")
-                st.markdown("##### Alignment")
+                st.markdown("#### Alignment")
                 st.write("\n")
                 percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
                 st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
@@ -288,8 +285,8 @@ def main():
         st.write('Average number of isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
         st.write("ID's in total:",Ids_in_total)
         st.write("Average number of ID's per protein sequence:", round(Ids_in_total/total_number_of_isoforms,1))
-        st.write("Gene object attributes:", Gene.list_of_attributes())
-        st.write("Collection of Isoform ID's includes:",Protein_isoform.list_of_attributes())
+        #st.write("Gene object attributes:", Gene.list_of_attributes())
+        #st.write("Collection of Isoform ID's includes:",Protein_isoform.list_of_attributes())
         #st.write('gene objects without isoforms: ',genes_without_isoforms)
         duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate = Statistics.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
         #st.write('Genes with AA seq duplicates: ', duplicates_number)
