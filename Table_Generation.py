@@ -220,14 +220,14 @@ class Table_Generation:
             index_of_reference_transcript = list(gene[1].values())[0]
             if len(list_of_gene_objects[
                        index_of_gene].protein_sequence_isoform_collection) > 1:  # check if there is even more than one isoform
-                list_of_dataframe, column_names,gene_isoform_check_list = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
+                list_of_dataframe, column_names = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                    list_of_gene_objects, index_of_gene,
                                                                                    chosen_columns, match, mismatch,
                                                                                    open_gap_penalty,
                                                                                    gap_extension_penalty,
                                                                                    one_ID=False)
 
-                if (list_of_dataframe, column_names,gene_isoform_check_list) != ('not','one','match'): #don't add gene object alignments with no matches at all
+                if (list_of_dataframe, column_names) != ('not','one','match'): #don't add gene object alignments with no matches at all
                     list_of_alignments = list_of_alignments + list_of_dataframe
                     #correct_aa = correct_aa + gene_isoform_check_list[0]
                     #false_aa = false_aa + gene_isoform_check_list[1]
