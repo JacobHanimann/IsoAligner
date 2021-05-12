@@ -188,7 +188,7 @@ class Table_Generation:
                 positions = [aminoacids[indexiterator], reference_position_list[indexiterator],isoform_positions_list[indexiterator]]
                 nested_list_alignment = column_values + positions
                 list_of_all_alignments.append(nested_list_alignment)
-                gene_check_list.append(isoform_pattern_check)
+                gene_check_list = gene_check_list + isoform_pattern_check
 
         #if multiple ID's list are returned and the pandas dataframe is created later in the create_table_for_dict_of_gene_objects
         if "column_names" in locals(): #column_values, column_names are only generated if len(aminoacid) >0, which means that there has to be at least one match
