@@ -182,12 +182,12 @@ class Table_Generation:
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if index == index_reference_transcript: #do not align the reference transcript with itself
                 continue
-            aminoacids, reference_position_list, isoform_positions_list,isoform_pattern_check = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
-                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:5]
+            aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check( #add isoform_check_list and [1:5] and uncomment all lines with aa_correct, aa_false associations for false,positive statistics
+                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
 
-            correct, false = Statistics.isoform_form_check_stats(isoform_pattern_check)
-            aa_correct = aa_correct + correct
-            aa_false = aa_false + false
+            #correct, false = Statistics.isoform_form_check_stats(isoform_pattern_check)
+            #aa_correct = aa_correct + correct
+            #aa_false = aa_false + false
             #save the results of each alignment in a list outside the loop
             for indexiterator in range(0, len(aminoacids)):
                 column_values, column_names = Table_Generation.get_selected_columns_attributes_and_column_names(chosen_columns,index_of_gene, index_reference_transcript,transcript,list_of_gene_objects)
@@ -202,7 +202,7 @@ class Table_Generation:
                 df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
                 return df
             else:
-                return list_of_all_alignments, column_names, (aa_correct, aa_false)
+                return list_of_all_alignments, column_names, #(aa_correct, aa_false)
         else:
             return ('not','one','match')
 
@@ -212,8 +212,8 @@ class Table_Generation:
                                               open_gap_penalty, gap_extension_penalty):
         list_of_alignments = []
         total_genes = len(nested_dict)
-        correct_aa = 0
-        false_aa = 0
+        #correct_aa = 0
+        #false_aa = 0
         for count,gene in enumerate(nested_dict.items()):
             print(round(100*count/total_genes,1),'%')
             index_of_gene = list(gene[1].keys())[0]
@@ -228,12 +228,12 @@ class Table_Generation:
                                                                                    one_ID=False)
 
                 if (list_of_dataframe, column_names,gene_isoform_check_list) != ('not','one','match'): #don't add gene object alignments with no matches at all
-                    #list_of_alignments = list_of_alignments + list_of_dataframe
-                    correct_aa = correct_aa + gene_isoform_check_list[0]
-                    false_aa = false_aa + gene_isoform_check_list[1]
+                    list_of_alignments = list_of_alignments + list_of_dataframe
+                    #correct_aa = correct_aa + gene_isoform_check_list[0]
+                    #false_aa = false_aa + gene_isoform_check_list[1]
                 else:
                     print(gene)
 
-        #df = pd.DataFrame(list_of_alignments, columns=(column_names))
-        df = 1
-        return df, correct_aa, false_aa
+        df = pd.DataFrame(list_of_alignments, columns=(column_names))
+
+        return df, #correct_aa, false_aa
