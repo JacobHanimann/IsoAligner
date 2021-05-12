@@ -156,6 +156,7 @@ class Table_Generation:
         :return: pandas dataframe or lists of computed alignment
         '''
         list_of_all_alignments = []
+        gene_check_list = []
 
         #select reference protein sequence
         reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_reference_transcript].protein_sequence  # chosen_reference is an index (table generation for multiple ID's)
@@ -178,8 +179,8 @@ class Table_Generation:
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if index == index_reference_transcript: #do not align the reference transcript with itself
                 continue
-            aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
-                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
+            aminoacids, reference_position_list, isoform_positions_list,isoform_pattern_check = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
+                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:5]
 
             #save the results of each alignment in a list outside the loop
             for indexiterator in range(0, len(aminoacids)):
@@ -187,6 +188,7 @@ class Table_Generation:
                 positions = [aminoacids[indexiterator], reference_position_list[indexiterator],isoform_positions_list[indexiterator]]
                 nested_list_alignment = column_values + positions
                 list_of_all_alignments.append(nested_list_alignment)
+                gene_check_list.append(isoform_pattern_check)
 
         #if multiple ID's list are returned and the pandas dataframe is created later in the create_table_for_dict_of_gene_objects
         if "column_names" in locals(): #column_values, column_names are only generated if len(aminoacid) >0, which means that there has to be at least one match
@@ -194,7 +196,7 @@ class Table_Generation:
                 df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
                 return df
             else:
-                return list_of_all_alignments, column_names
+                return list_of_all_alignments, column_names, gene_check_list
         else:
             return ('no','matches')
 
@@ -203,12 +205,13 @@ class Table_Generation:
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
                                               open_gap_penalty, gap_extension_penalty):
         list_of_alignments = []
+        isoform_check_lists = []
         for gene in nested_dict.items():
             index_of_gene = list(gene[1].keys())[0]
             index_of_reference_transcript = list(gene[1].values())[0]
             if len(list_of_gene_objects[
                        index_of_gene].protein_sequence_isoform_collection) > 1:  # check if there is even more than one isoform
-                list_of_dataframe, column_names = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
+                list_of_dataframe, column_names,gene_isoform_check_list = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                    list_of_gene_objects, index_of_gene,
                                                                                    chosen_columns, match, mismatch,
                                                                                    open_gap_penalty,
@@ -217,6 +220,7 @@ class Table_Generation:
 
                 if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
                     list_of_alignments = list_of_alignments + list_of_dataframe
+                    isoform_check_lists = isoform_check_lists + gene_isoform_check_list
 
         df = pd.DataFrame(list_of_alignments, columns=(column_names))
-        return df
+        return df, isoform_check_lists
