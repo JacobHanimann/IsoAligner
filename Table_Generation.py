@@ -163,6 +163,7 @@ class Table_Generation:
 
         #set the minimal exon length
         #by the user when looking at one gene
+        print(list_of_gene_objects[index_of_gene].__dict__)
         if exon_length !=None and one_ID:
             exon_length_AA = exon_length
         #checking library for value
@@ -198,7 +199,7 @@ class Table_Generation:
             else:
                 return list_of_all_alignments, column_names, gene_check_list
         else:
-            return ('no','matches')
+            return ('not','one','match')
 
 
     @staticmethod
@@ -206,7 +207,9 @@ class Table_Generation:
                                               open_gap_penalty, gap_extension_penalty):
         list_of_alignments = []
         isoform_check_lists = []
-        for gene in nested_dict.items():
+        total_genes = len(nested_dict)
+        for count,gene in enumerate(nested_dict.items()):
+            print(round(100*count/total_genes,1),'%')
             index_of_gene = list(gene[1].keys())[0]
             index_of_reference_transcript = list(gene[1].values())[0]
             if len(list_of_gene_objects[

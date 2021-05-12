@@ -32,7 +32,7 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
-for index,gene in enumerate(list_of_gene_objects[0:30]):
+for index,gene in enumerate(list_of_gene_objects):
     #create nested dict for one gene
     nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
     big_nested_dict.update(nested_dict)
