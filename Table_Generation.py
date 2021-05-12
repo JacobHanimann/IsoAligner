@@ -236,4 +236,4 @@ class Table_Generation:
 
         df = pd.DataFrame(list_of_alignments, columns=(column_names))
 
-        return df  #correct_aa, false_aa
+        return df  # correct_aa, false_aa
