@@ -64,3 +64,27 @@ class Statistics:
 
         return duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate
 
+    @staticmethod
+    def isoform_form_check_stats(isoform_check_list):
+        #aa_matches_total = 0
+        correct_aa = 0
+        false_aa = 0
+        for type in isoform_check_list:
+            if type == 'gap':
+                continue
+            if type == 'correct':
+                #aa_matches_total += 1
+                correct_aa += 1
+            if type == 'wrong':
+                false_aa += 1
+                #aa_matches_total += 1
+
+        #correct_perc = correct_aa / aa_matches_total
+        #false_perc = false_aa / aa_matches_total
+        #print('total aa_matches:', aa_matches_total)
+        #print('correct aa matches:', correct_aa)
+        #print('false aa matches:', false_aa)
+        #print('percentage correct matches:', correct_perc)
+        #print('percentage false matches', false_perc)
+        return correct_aa, false_aa
+

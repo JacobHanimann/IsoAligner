@@ -12,7 +12,7 @@ from PIL import Image
 from Statistics import *
 
 #load library
-list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_19th_april.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
 
 #standard function parameters
 match = 1
@@ -32,7 +32,7 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
-for index,gene in enumerate(list_of_gene_objects):
+for index,gene in enumerate(list_of_gene_objects[0:100]):
     #create nested dict for one gene
     nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
     big_nested_dict.update(nested_dict)
@@ -40,14 +40,14 @@ for index,gene in enumerate(list_of_gene_objects):
 print(big_nested_dict)
 
 #create big dataframe
-big_df, isoform_check_list = Table_Generation.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
+big_df, correct_aa,false_aa = Table_Generation.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
 print('Writing results to csv file...')
 #big_df.to_csv('/Users/jacob/Desktop/all_genes_mapped.tsv')
 #print(isoform_check_list)
 
-print('Pickling list isoform checks...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_isoform_checks.txt", "wb") as fp:  # Pickling
-    pickle.dump(isoform_check_list, fp)
+print(correct_aa)
+print(false_aa)
+print(false_aa/(correct_aa+false_aa))
 
 
 def isoform_form_check_stats(isoform_check_list):
@@ -73,7 +73,7 @@ def isoform_form_check_stats(isoform_check_list):
     print('percentage false matches', false_perc)
     return aa_matches_total, correct_aa,false_aa, correct_perc, false_perc
 
-isoform_form_check_stats(isoform_check_list)
+#isoform_form_check_stats(isoform_check_list)
 
 
 
