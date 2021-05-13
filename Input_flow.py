@@ -193,7 +193,6 @@ class Input_flow:
         return dict_element_indexes
 
 
-
     @staticmethod
     def chose_columns(nested_dict,dict_of_IDs,run_id,parameter_change):
         st.markdown("### Mapped Amino Acid Positions Table")

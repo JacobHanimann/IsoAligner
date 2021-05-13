@@ -129,7 +129,8 @@ def main():
             st.text('\n')
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             #Table section
-            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table)
+            parameter_change = False
+            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
             st.text('\n')
             st.write(generated_table)
