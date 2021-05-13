@@ -13,6 +13,7 @@ from Input_flow import *
 from Table_Generation import *
 from PIL import Image
 from Statistics import *
+import time
 
 
 #declare session state variables
@@ -163,7 +164,8 @@ def main():
             chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs)
             df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
             if not df_all.empty:
-                st.write(df_all)
+                with st.spinner('Preparing Preview of Mapping Table . . .'):
+                    st.write(df_all)
                 st.text('\n')
                 Input_flow.generate_download_section(df_all)
             else:

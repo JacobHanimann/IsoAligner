@@ -211,30 +211,34 @@ class Table_Generation:
     @staticmethod
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
                                               open_gap_penalty, gap_extension_penalty):
+
         list_of_alignments = []
         total_genes = len(nested_dict)
         #correct_aa = 0
         #false_aa = 0
-        for count,gene in enumerate(nested_dict.items()):
-            print(round(100*count/total_genes,1),'%')
-            index_of_gene = list(gene[1].keys())[0]
-            index_of_reference_transcript = list(gene[1].values())[0]
-            if len(list_of_gene_objects[
-                       index_of_gene].protein_sequence_isoform_collection) > 1:  # check if there is even more than one isoform
-                list_of_dataframe, column_names = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
-                                                                                   list_of_gene_objects, index_of_gene,
-                                                                                   chosen_columns, match, mismatch,
-                                                                                   open_gap_penalty,
-                                                                                   gap_extension_penalty,
-                                                                                   one_ID=False)
+        with st.spinner('Generating Mapping Table . . . '):
+            my_bar = st.progress(0.0)
+            for count,gene in enumerate(nested_dict.items()):
+                percent = int(round(100*(count+1)/total_genes,1))
+                index_of_gene = list(gene[1].keys())[0]
+                index_of_reference_transcript = list(gene[1].values())[0]
+                if len(list_of_gene_objects[
+                           index_of_gene].protein_sequence_isoform_collection) > 1:  # check if there is even more than one isoform
+                    list_of_dataframe, column_names = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
+                                                                                       list_of_gene_objects, index_of_gene,
+                                                                                       chosen_columns, match, mismatch,
+                                                                                       open_gap_penalty,
+                                                                                       gap_extension_penalty,
+                                                                                       one_ID=False)
 
-                if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
-                    list_of_alignments = list_of_alignments + list_of_dataframe
-                    #correct_aa = correct_aa + gene_isoform_check_list[0]
-                    #false_aa = false_aa + gene_isoform_check_list[1]
-                else:
-                    print(gene)
-
-        df = pd.DataFrame(list_of_alignments, columns=(column_names))
+                    if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
+                        list_of_alignments = list_of_alignments + list_of_dataframe
+                        my_bar.progress(percent)
+                        #correct_aa = correct_aa + gene_isoform_check_list[0]
+                        #false_aa = false_aa + gene_isoform_check_list[1]
+                    else:
+                        print(gene)
+            my_bar.empty()
+            df = pd.DataFrame(list_of_alignments, columns=(column_names))
 
         return df  # correct_aa, false_aa
