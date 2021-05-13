@@ -196,57 +196,60 @@ class Input_flow:
     def chose_columns(nested_dict,dict_of_IDs,run_id):
         st.markdown("### Mapped Amino Acid Positions Table")
         if run_id >1:
-            st.button('Generate Mapping Table with new Parameters')
-        Input_flow.show_which_elements_are_not_canonical(nested_dict,dict_of_IDs)
-        container = st.beta_container()
-        all = st.checkbox("Select all columns")
+            st.write('\n')
+            generate_table = st.button('Click here to generate Mapping Table with updated parameters!')
 
-        if all:
-            selected_options = container.multiselect('Select further columns',
-                                                     ['Gene name', 'Ensembl Gene ID (ENSG)',
-                                                      'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
-                                                      'Transcript Name',
-                                                      'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)',
-                                                      'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
-                                                      'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID',
-                                                      'Uniparc ID',
-                                                      'Ensembl Gene ID version (ENSG.Number)',
-                                                      'Ensembl Transcript ID version (ENST.Number)',
-                                                      'Ensembl Protein ID version (ENSP.Number)',
-                                                      'Refseq Transcript ID version (NM.Number)',
-                                                      'Refseq Transcript ID version (NP.Number)',
-                                                      'HGNC ID (HGNC:Number)'],
-                                                     ['Gene name', 'Ensembl Gene ID (ENSG)',
-                                                      'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
-                                                      'Transcript Name',
-                                                      'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)',
-                                                      'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
-                                                      'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID',
-                                                      'Uniparc ID',
-                                                      'Ensembl Gene ID version (ENSG.Number)',
-                                                      'Ensembl Transcript ID version (ENST.Number)',
-                                                      'Ensembl Protein ID version (ENSP.Number)',
-                                                      'Refseq Transcript ID version (NM.Number)',
-                                                      'Refseq Transcript ID version (NP.Number)',
-                                                      'HGNC ID (HGNC:Number)'])
-        else:
-            selected_options = container.multiselect('Select further columns',
-                                                     ['Gene name', 'Ensembl Gene ID (ENSG)',
-                                                      'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
-                                                      'Transcript Name',
-                                                      'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)',
-                                                      'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
-                                                      'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID',
-                                                      'Uniparc ID',
-                                                      'Ensembl Gene ID version (ENSG.Number)',
-                                                      'Ensembl Transcript ID version (ENST.Number)',
-                                                      'Ensembl Protein ID version (ENSP.Number)',
-                                                      'Refseq Transcript ID version (NM.Number)',
-                                                      'Refseq Transcript ID version (NP.Number)',
-                                                      'HGNC ID (HGNC:Number)'],
-                                                     ['Gene name', 'Transcript Name'])
+        if  run_id==1 or generate_table:
+            Input_flow.show_which_elements_are_not_canonical(nested_dict,dict_of_IDs)
+            container = st.beta_container()
+            all = st.checkbox("Select all columns")
 
-        return selected_options
+            if all:
+                selected_options = container.multiselect('Select further columns',
+                                                         ['Gene name', 'Ensembl Gene ID (ENSG)',
+                                                          'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
+                                                          'Transcript Name',
+                                                          'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)',
+                                                          'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
+                                                          'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID',
+                                                          'Uniparc ID',
+                                                          'Ensembl Gene ID version (ENSG.Number)',
+                                                          'Ensembl Transcript ID version (ENST.Number)',
+                                                          'Ensembl Protein ID version (ENSP.Number)',
+                                                          'Refseq Transcript ID version (NM.Number)',
+                                                          'Refseq Transcript ID version (NP.Number)',
+                                                          'HGNC ID (HGNC:Number)'],
+                                                         ['Gene name', 'Ensembl Gene ID (ENSG)',
+                                                          'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
+                                                          'Transcript Name',
+                                                          'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)',
+                                                          'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
+                                                          'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID',
+                                                          'Uniparc ID',
+                                                          'Ensembl Gene ID version (ENSG.Number)',
+                                                          'Ensembl Transcript ID version (ENST.Number)',
+                                                          'Ensembl Protein ID version (ENSP.Number)',
+                                                          'Refseq Transcript ID version (NM.Number)',
+                                                          'Refseq Transcript ID version (NP.Number)',
+                                                          'HGNC ID (HGNC:Number)'])
+            else:
+                selected_options = container.multiselect('Select further columns',
+                                                         ['Gene name', 'Ensembl Gene ID (ENSG)',
+                                                          'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
+                                                          'Transcript Name',
+                                                          'Refseq Gene ID (Number)', 'Refseq Transcript ID (NM)',
+                                                          'Refseq Protein ID (NP)', 'UCSC Stable ID (uc)',
+                                                          'Uniprot Name ID', 'Uniprot Accession ID', 'Uniprot Isoform ID',
+                                                          'Uniparc ID',
+                                                          'Ensembl Gene ID version (ENSG.Number)',
+                                                          'Ensembl Transcript ID version (ENST.Number)',
+                                                          'Ensembl Protein ID version (ENSP.Number)',
+                                                          'Refseq Transcript ID version (NM.Number)',
+                                                          'Refseq Transcript ID version (NP.Number)',
+                                                          'HGNC ID (HGNC:Number)'],
+                                                         ['Gene name', 'Transcript Name'])
+
+            return selected_options
 
     @staticmethod
     def generate_download_section(df):
