@@ -4,6 +4,7 @@ import streamlit as st
 import urllib
 from Streamlit_community import *
 import gzip
+import SessionState
 
 class Input_flow:
     pass
@@ -192,8 +193,10 @@ class Input_flow:
         return dict_element_indexes
 
     @staticmethod
-    def chose_columns(nested_dict,dict_of_IDs):
+    def chose_columns(nested_dict,dict_of_IDs,run_id):
         st.markdown("### Mapped Amino Acid Positions Table")
+        if run_id >1:
+            st.button('Generate Mapping Table with new Parameters')
         Input_flow.show_which_elements_are_not_canonical(nested_dict,dict_of_IDs)
         container = st.beta_container()
         all = st.checkbox("Select all columns")

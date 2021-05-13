@@ -17,7 +17,7 @@ import time
 
 
 #declare session state variables
-ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False)
+ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False,run_id_table=1)
 
 #import database
 list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
@@ -129,7 +129,8 @@ def main():
             st.text('\n')
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             #Table section
-            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs)
+            ss.run_id_table +=1
+            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table)
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
             st.text('\n')
             st.write(generated_table)
@@ -161,7 +162,7 @@ def main():
             #st.write(nested_dict)
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             # Table section
-            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs)
+            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table)
             df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
             if not df_all.empty:
                 with st.spinner('Preparing Preview of Mapping Table . . .'):
