@@ -116,6 +116,27 @@ class Input_flow:
 
 
     @staticmethod
+    def show_which_elements_are_not_canonical(nested_dict,dict_of_IDs):
+        ''' warn the user that the reference transcript is not specified and automatically chosen
+        :param input1_IDs:
+        :return:
+        '''
+        number_of_elements = len(nested_dict)
+        notspecified = 0
+        list_of_parent_elements = []
+        for element, type in dict_of_IDs.items():
+            if Input_flow.is_ID_in_parent_class(type) and element in nested_dict.keys():
+                list_of_parent_elements.append(element)
+                notspecified += 1
+        specified_elements = number_of_elements - notspecified
+        if notspecified!=0:
+            if number_of_elements !=1:
+                st.info('Note: '+str(notspecified) + '/' + str(number_of_elements) + " reference isoform ID's of the following genes were not specified in the Input field and are automatically chosen: "+', '.join(list_of_parent_elements)+')')
+            else:
+                pass
+
+
+    @staticmethod
     def remove_dict_elements_with_no_gene_object_match(input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
         '''
         :param input1_IDs:
@@ -171,8 +192,9 @@ class Input_flow:
         return dict_element_indexes
 
     @staticmethod
-    def chose_columns():
+    def chose_columns(nested_dict,dict_of_IDs):
         st.markdown("### Mapped Amino Acid Positions Table")
+        Input_flow.show_which_elements_are_not_canonical(nested_dict,dict_of_IDs)
         container = st.beta_container()
         all = st.checkbox("Select all columns")
 

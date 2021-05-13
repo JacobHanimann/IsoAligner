@@ -201,10 +201,11 @@ class Table_Generation:
             if one_ID:
                 df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
                 return df
+
             else:
                 return list_of_all_alignments, column_names, #(aa_correct, aa_false)
         else:
-            return ('not','one','match')
+            return ('no','matches')
 
 
     @staticmethod
@@ -227,7 +228,7 @@ class Table_Generation:
                                                                                    gap_extension_penalty,
                                                                                    one_ID=False)
 
-                if (list_of_dataframe, column_names) != ('not','one','match'): #don't add gene object alignments with no matches at all
+                if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
                     list_of_alignments = list_of_alignments + list_of_dataframe
                     #correct_aa = correct_aa + gene_isoform_check_list[0]
                     #false_aa = false_aa + gene_isoform_check_list[1]
