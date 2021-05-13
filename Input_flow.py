@@ -192,14 +192,17 @@ class Input_flow:
 
         return dict_element_indexes
 
+
+
     @staticmethod
-    def chose_columns(nested_dict,dict_of_IDs,run_id):
+    def chose_columns(nested_dict,dict_of_IDs,run_id,parameter_change):
         st.markdown("### Mapped Amino Acid Positions Table")
-        if run_id >1:
+        generate_table = False
+        if  parameter_change and run_id>1:
             st.write('\n')
             generate_table = st.button('Click here to generate Mapping Table with updated parameters!')
 
-        if  run_id==1 or generate_table:
+        if  run_id==1 or generate_table or not parameter_change:
             Input_flow.show_which_elements_are_not_canonical(nested_dict,dict_of_IDs)
             container = st.beta_container()
             all = st.checkbox("Select all columns")
