@@ -271,7 +271,7 @@ def main():
         st.markdown("### Biologically Appropriate Alignment of Isoforms:")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
                  ' The IsoAligner algorithm exploits the biological characteristics of isoforms by fitting the parameters of the Needleman Wunsch global alignment and validating its solution in an extra step to assure positional mapping of biologically corresponding amino acid positions only.  ')
-        problem_schema = Image.open('Pictures/Mapping_problem_schema.png')
+        problem_schema = Image.open('Pictures/mapping_problem_may.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
         needleman, minimal = st.beta_columns([1, 1.])
@@ -285,7 +285,7 @@ def main():
             st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific or at least 5 AA per default.')
         st.markdown("### Alignment example:")
         st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded.")
-        example = Image.open('Pictures/example_schema.png')
+        example = Image.open('Pictures/example_may.png')
         st.image(example, use_column_width=True)
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")
