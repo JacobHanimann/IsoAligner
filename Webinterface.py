@@ -132,6 +132,12 @@ def main():
             parameter_change = False
             chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
+            aa_position = Table_Generation.display_filter_option_AA()
+            if aa_position == 0:
+                st.write(generated_table)
+            else:
+                filter_df = generated_table.loc[(generated_table['IsoformPos'] == aa_position) | (generated_table['ReferencePos'] == aa_position)]
+                st.write(filter_df)
             st.text('\n')
             st.write(generated_table)
             st.text('\n')
@@ -171,8 +177,12 @@ def main():
                 df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
                 if not df_all.empty:
                     with st.spinner('Preparing Preview of ˚Mapping Table . . .'):
-                        st.write(df_all)
-                        Table_Generation.display_filter_option_AA()
+                        aa_position = Table_Generation.display_filter_option_AA()
+                        if aa_position ==0:
+                            st.write(df_all)
+                        else:
+                            filter_df = df_all.loc[(df_all['IsoformPos'] == aa_position) | (df_all['ReferencePos'] == aa_position)]
+                            st.write(filter_df)
                     st.text('\n')
                     Input_flow.generate_download_section(df_all)
                 else:

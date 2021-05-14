@@ -249,4 +249,5 @@ class Table_Generation:
     def display_filter_option_AA():
         option,blankspace = st.beta_columns([1,2.5])
         with option:
-            st.number_input('Filter specific AA position', value=0, step=1)
+            aa_position = st.number_input('Filter specific AA position', value=0, step=1)
+        return aa_position
