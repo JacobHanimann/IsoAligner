@@ -137,10 +137,11 @@ def main():
                 st.write(generated_table)
             else:
                 filter_df = generated_table.loc[(generated_table['IsoformPos'] == aa_position) | (generated_table['ReferencePos'] == aa_position)]
-                st.write(filter_df)
-            st.text('\n')
-            st.write(generated_table)
-            st.text('\n')
+                if not filter_df.empty:
+                    st.write(filter_df)
+                    st.info ('Enter 0 as an input to go back to original mapping table.')
+                else:
+                    st.warning('Amino acid position '+str(aa_position)+' does not exist in the mapping table. Try other position.')
             Input_flow.generate_download_section(generated_table)
 
 
@@ -182,7 +183,12 @@ def main():
                             st.write(df_all)
                         else:
                             filter_df = df_all.loc[(df_all['IsoformPos'] == aa_position) | (df_all['ReferencePos'] == aa_position)]
-                            st.write(filter_df)
+                            if not filter_df.empty:
+                                st.write(filter_df)
+                                st.info('Enter 0 as an input to go back to original mapping table.')
+                            else:
+                                st.warning('Amino acid position ' + str(
+                                    aa_position) + ' does not exist in the mapping table. Try other position.')
                     st.text('\n')
                     Input_flow.generate_download_section(df_all)
                 else:
