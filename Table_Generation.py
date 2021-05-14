@@ -244,3 +244,9 @@ class Table_Generation:
             df = pd.DataFrame(list_of_alignments, columns=(column_names))
 
         return df  # correct_aa, false_aa
+
+    @staticmethod
+    def display_filter_option_AA():
+        option,blankspace = st.beta_columns([1,2.5])
+        with option:
+            st.number_input('Filter specific AA position', value=0, step=1)
