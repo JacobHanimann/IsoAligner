@@ -269,38 +269,42 @@ def main():
 
         st.title(" Amino Acid Isoform Aligner")
         st.markdown("### Biologically Appropriate Alignment of Isoforms:")
-        st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly as can be seen in the scheme below.'
-                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by simply confining the parameters of the Needleman Wunsch global alignment to assure positional mapping of biologically corresponding amino acid positions only.  ')
+        st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
+                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by fitting the parameters of the Needleman Wunsch global alignment and validating its solution in an extra step to assure positional mapping of biologically corresponding amino acid positions only.  ')
         problem_schema = Image.open('Pictures/Mapping_problem_schema.png')
         st.image(problem_schema,use_column_width=True)
-        st.write('To avoid and discard falsely mapped positions of distinct exons (like Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
+        st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
         needleman, minimal = st.beta_columns([1, 1.])
         with needleman:
             st.markdown("#### Needleman-Wunsch global alignment")
-            st.write(" - Big open gap penalty (Default -2) \n"
-                 "- Small extend gap penalty (Default 0)")
+            st.write(" - Big open gap penalty (Default -1.75) \n"
+                 "- Small extend gap penalty (Default 0)\n"
+                    "- Normal match and mismatch values (Default 1, -2)" )
         with minimal:
             st.markdown("#### Discard falsely matched positions")
-            st.write('- By definition of a minimal exon length (Default 5 AA)')
+            st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific or at least 5 AA per default.')
         st.markdown("### Alignment example:")
-        st.write("In general, alignment solutions matching identical exons are preferred. The generated matches are then additionally inspected and verified. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x'.")
+        st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded.")
         example = Image.open('Pictures/example_schema.png')
         st.image(example, use_column_width=True)
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")
         st.write("Quick Start: Click on 'Show Example' and then 'Search Library for IDs' to get a overview.")
         st.write("1. Paste ID's, gene names or raw amino acid sequences"
-                 "\n    - The current human library consists of ~24k protein coding genes covering ~190k protein sequences and ~1.5M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types."
-                 "\n    - Press 'Search Library for IDs' or 'Align' to compute alignments"
+                 "\n    - The current human library consists of ~18K protein coding genes covering +130K protein sequences and +1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types (See figure below)."
+                 "\n    - Click 'Search Library for IDs' or 'Align' to compute alignments"
                  "\n 2. Tweak function parameters in the sidebar and inspect the alignment previews"
                  "\n    - Set the mininmal exon length (in AA)"
                  "\n""    - Set Needleman-Wunsch parameters"
-                "\n 3. Select ID's to be included in the mapping table."
+                 "\n 3. Explore the computed mapping table."
+                "\n    - Filter for specific amino acid position "
+                "\n     - Select ID's to be included dataframe."
                 "\n    - Download dataframe: tab or comma separated (tsv/csv) "
                  )
         st.markdown("#### ⚠️ Important:")
-        st.write("As soon as multiple ID's are entered, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
-                 " If Gene names or ID's are given as the input, the isoform with the longest sequence is used as the reference to align against.")
+        st.write("When multiple ID's are entered, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
+                 " In this case, the isoform with the longest sequence is used as the reference to align against."
+                 " Also, be aware that the minimal exon length for the generation of the mapping table is likewise automatically chosen in this context. (gene-specific or at least 5 AA).")
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
@@ -327,7 +331,11 @@ def main():
         st.write("Please get in touch for suggestions or to report bugs :)")
         st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
         st.write('Bioinformatics group: https://clinicalcompbio.org/')
-
+        st.write('---------------')
+        st.markdown("#### License:")
+        st.write("\n")
+        html_string = '<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.'
+        st.markdown(html_string, unsafe_allow_html=True)
         #st.markdown("#### Functions:")
         #code = '''
         #def transform_uploaded_data_type_accordingly(file):
