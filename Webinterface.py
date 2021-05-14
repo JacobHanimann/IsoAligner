@@ -291,7 +291,7 @@ def main():
         st.markdown("### Manual Alignment Tool")
         st.write("Quick Start: Click on 'Show Example' and then 'Search Library for IDs' to get a overview.")
         st.write("1. Paste ID's, gene names or raw amino acid sequences"
-                 "\n    - The current human library consists of ~18K protein coding genes covering +130K protein sequences and +1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types (See figure below)."
+                 "\n    - The current human library consists of ~18K protein coding genes covering +130K protein sequences and +1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types (see figure below)."
                  "\n    - Click 'Search Library for IDs' or 'Align' to compute alignments"
                  "\n 2. Tweak function parameters in the sidebar and inspect the alignment previews"
                  "\n    - Set the mininmal exon length (in AA)"
