@@ -211,6 +211,7 @@ class Table_Generation:
 
 
     @staticmethod
+    @st.cache(allow_output_mutation=True)
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
                                               open_gap_penalty, gap_extension_penalty):
 
