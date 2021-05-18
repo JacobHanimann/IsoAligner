@@ -158,7 +158,7 @@ class Input_flow:
         :param list_of_gene_objects:
         :return: index of longest protein_isoform object
         '''
-        list_of_AA_sequences = [protein_isoform.protein_sequence for protein_isoform in
+        list_of_AA_sequences = [len(protein_isoform.protein_sequence) for protein_isoform in
                                 list_of_gene_objects[index].protein_sequence_isoform_collection if
                                 protein_isoform.protein_sequence != None]
         index_of_longest_AA = list_of_AA_sequences.index(max(list_of_AA_sequences))
