@@ -1,5 +1,5 @@
 import re
-from Bio import pairwise2
+from Bio import pairwise2, Align
 from Bio.pairwise2 import format_alignment
 
 class Alignment:
