@@ -252,8 +252,8 @@ class Table_Generation:
     def display_filter_option_AA():
         option,blankspace = st.beta_columns([1,2])
         with option:
-            aa_position = st.text_input('Filter for specific isoform or position', value='')
-        return aa_position
+            value = st.text_input('Filter mapping table for specific value', value='')
+        return value
 
     @staticmethod
     def filter_all_columns_of_df(value, dataframe):

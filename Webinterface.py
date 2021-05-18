@@ -181,17 +181,18 @@ def main():
                 df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
                 if not df_all.empty:
                     with st.spinner('Preparing Preview of Mapping Table . . .'):
-                        aa_position = Table_Generation.display_filter_option_AA()
-                        if aa_position ==0:
-                            st.write(df_all)
+                        slot1 = st.empty()
+                        value = Table_Generation.display_filter_option_AA()
+                        if value=="":
+                            slot1.write(df_all)
                         else:
-                            filter_df = df_all.loc[(df_all['IsoformPos'] == aa_position) | (df_all['ReferencePos'] == aa_position)]
+                            filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
                             if not filter_df.empty:
-                                st.write(filter_df)
-                                st.info('Enter 0 as an input to go back to original mapping table.')
+                                slot1.write(filter_df)
+                                st.info('ℹ️ Delete value to go back to original mapping table.')
                             else:
-                                st.warning('Amino acid position ' + str(
-                                    aa_position) + ' does not exist in the mapping table. Try other position.')
+                                st.warning('Value "' + str(
+                                    value) + '" does not exist in the dataframe.')
                     st.text('\n')
                     Input_flow.generate_download_section(df_all)
                 else:
