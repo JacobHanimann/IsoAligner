@@ -6,7 +6,6 @@ class Input_preparation:
     pass
 
     @staticmethod
-    @st.cache(allow_output_mutation=True)
     def split_elements_from_user_input_string(string):
         '''
         Function that separates gene names/ID from each other
@@ -31,7 +30,6 @@ class Input_preparation:
 
 
     @staticmethod
-    @st.cache(allow_output_mutation=True)
     def identify_IDs_from_user_text_input(string):
         '''
         Function that identifies which ID's the user typed in with regex. Returns a dict of ID_types which can be used to search through the database more efficiently
