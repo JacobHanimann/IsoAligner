@@ -87,6 +87,7 @@ class Input_flow:
 
 
     @staticmethod
+    @st.cache(allow_output_mutation=True)
     def show_which_elements_were_not_found(input1_IDs):
         '''
         create streamlit notification of which genes were found and which not
@@ -103,17 +104,18 @@ class Input_flow:
         matched_elements = number_of_elements-nomatch
         if nomatch ==0:
                 if number_of_elements >1:
-                    st.success('All '+ str(number_of_elements)+' elements were successfully identified.')
+                    pass
+                    #st.success('All '+ str(number_of_elements)+' elements were successfully identified.')
                 else:
-                    st.success('Element succesfully identified')
+                    pass
+                    #st.success('Element succesfully identified')
         elif matched_elements==0:
             if number_of_elements==1 and list(input1_IDs.values())[0]=='aminoacid_sequence':
                 st.warning("Looks like an amino acid sequence. Click on 'Clear' and 'add 2nd sequence'")
             else:
                 st.warning ('No references found in the library')
         else:
-            st.info(str(matched_elements)+'/'+str(number_of_elements)+' elements were successfully found.')
-            st.warning('Unidentified elements: '+', '.join(list_of_unmatched_elements))
+            st.warning(str(matched_elements)+'/'+str(number_of_elements)+' genes were successfully found. Unidentified input: '+', '.join(list_of_unmatched_elements))
 
 
     @staticmethod
@@ -138,6 +140,7 @@ class Input_flow:
 
 
     @staticmethod
+    @st.cache(allow_output_mutation=True)
     def remove_dict_elements_with_no_gene_object_match(input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
         '''
         :param input1_IDs:

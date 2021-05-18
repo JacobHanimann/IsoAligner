@@ -177,7 +177,7 @@ def main():
             if chosen_columns:
                 df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
                 if not df_all.empty:
-                    with st.spinner('Preparing Preview of ˚Mapping Table . . .'):
+                    with st.spinner('Preparing Preview of Mapping Table . . .'):
                         aa_position = Table_Generation.display_filter_option_AA()
                         if aa_position ==0:
                             st.write(df_all)
