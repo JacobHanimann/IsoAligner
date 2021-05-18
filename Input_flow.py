@@ -87,7 +87,6 @@ class Input_flow:
 
 
     @staticmethod
-    @st.cache(allow_output_mutation=True)
     def show_which_elements_were_not_found(input1_IDs):
         '''
         create streamlit notification of which genes were found and which not
@@ -140,7 +139,6 @@ class Input_flow:
 
 
     @staticmethod
-    @st.cache(allow_output_mutation=True)
     def remove_dict_elements_with_no_gene_object_match(input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
         '''
         :param input1_IDs:
