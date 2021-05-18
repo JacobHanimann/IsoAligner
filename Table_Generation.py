@@ -224,6 +224,7 @@ class Table_Generation:
             my_bar = st.progress(0.0)
             for count,gene in enumerate(nested_dict.items()):
                 percent = int(round(100*(count+1)/total_genes,1))
+                print(percent)
                 index_of_gene = list(gene[1].keys())[0]
                 index_of_reference_transcript = list(gene[1].values())[0]
                 if len(list_of_gene_objects[

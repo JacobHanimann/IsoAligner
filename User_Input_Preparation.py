@@ -11,6 +11,7 @@ class Input_preparation:
         :param string:
         :return: list of elements
         '''
+        string = string.upper()
         if "\n" in string:
             string = re.sub(' ', '', string)
             list_of_elements = list(string.split('\n'))
