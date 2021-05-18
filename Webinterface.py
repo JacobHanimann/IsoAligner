@@ -89,21 +89,22 @@ def main():
         using_IDs= False
 
         if ss.searched_clicked:
-            dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-            #st.write(dict_of_IDs)
-            #if an element is an amino acid:
-                #warning message
-            #else (no AA sequence)
-            input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-            #st.write(input1_IDs)
-            Input_flow.show_which_elements_were_not_found(input1_IDs)
-            cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
-            #execute nested dict only if dict is still existent...
-            nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
-            #st.write(nested_dict)
-            no_elements = False
-            if len (nested_dict)==0:
-                no_elements = True
+            with st.spinner('Checking database . . .'):
+                dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
+                #st.write(dict_of_IDs)
+                #if an element is an amino acid:
+                    #warning message
+                #else (no AA sequence)
+                input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
+                #st.write(input1_IDs)
+                Input_flow.show_which_elements_were_not_found(input1_IDs)
+                cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
+                #execute nested dict only if dict is still existent...
+                nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
+                #st.write(nested_dict)
+                no_elements = False
+                if len (nested_dict)==0:
+                    no_elements = True
 
         #case of using one ID
         if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1: #check if dictionary is not empty
@@ -127,7 +128,8 @@ def main():
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
             st.write('\n')
             st.text('\n')
-            Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+            with st.spinner('Visualising Alignments . . .'):
+                Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
             #Table section
             parameter_change = False
             chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
@@ -167,7 +169,8 @@ def main():
             gene_index = list(nested_dict[re.split(' \(',Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
             #st.write('indexes of gene objects:')
             #st.write(nested_dict)
-            Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+            with st.spinner('Visualising Alignments . . .'):
+                Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
             # Table section
             parameter_change=False
             if  [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
