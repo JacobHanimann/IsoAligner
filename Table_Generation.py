@@ -250,7 +250,21 @@ class Table_Generation:
 
     @staticmethod
     def display_filter_option_AA():
-        option,blankspace = st.beta_columns([1,2.5])
+        option,blankspace = st.beta_columns([1,2])
         with option:
-            aa_position = st.number_input('Filter specific AA position', value=0, step=1)
+            aa_position = st.text_input('Filter for specific isoform or position', value='')
         return aa_position
+
+    @staticmethod
+    def filter_all_columns_of_df(value, dataframe):
+        columns = dataframe.columns
+        if value.isnumeric():
+            value = int(value)
+        final_dataframe = pd.DataFrame(columns=columns)
+        for column in columns:
+            filter_df = dataframe.loc[(dataframe[column] == value)]
+            if not filter_df.empty:
+                final_dataframe = pd.concat([final_dataframe, filter_df], ignore_index=True).drop_duplicates()
+            else:
+                pass
+        return final_dataframe
