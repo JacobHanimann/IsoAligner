@@ -47,7 +47,7 @@ match = 1
 mismatch =-2
 open_gap_penalty = -1.75
 gap_extension_penalty = 0
-exon_length_AA= 5
+exon_length_AA= 11
 #standard ID's included in mapping table
 
 
@@ -56,24 +56,24 @@ exon_length_AA= 5
 map_args = reqparse.RequestParser()
 map_args.add_argument('id1',type=str, help="reference ID is required", required=True)
 map_args.add_argument('id2',type=str, help="alternative ID is missing", required=False)
-map_args.add_argument('aa_position',type=str, help="choose single AA position", required=False)
+map_args.add_argument('pos',type=str, help="choose single AA position", required=False)
 map_args.add_argument("match", type=int, help="set to default: 1", required=False)
 map_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
-map_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
-map_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0", required=False)
-map_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
-map_args.add_argument('table_ids', type=str, help='choose which IDs should be included in the mapping table',required=False)
+map_args.add_argument("open_gap", type=float, help="set to default: -1.75", required=False)
+map_args.add_argument("gap_ext", type=int, help="set to default: 0", required=False)
+map_args.add_argument("min_ex_len", type=int, help="set to default: 5", required=False)
+map_args.add_argument('df_ids', type=str, help='choose which IDs should be included in the mapping table',required=False)
 
 #raw alignment
 align_args = reqparse.RequestParser()
 align_args.add_argument('view', type=bool, default=False, required=False, help='view alignment')
-align_args.add_argument("sequence1", type=str, help="reference raw amino acid required", required=True)
-align_args.add_argument("sequence2", type=str, help="second raw amino acid required", required=True)
+align_args.add_argument("seq1", type=str, help="reference raw amino acid required", required=True)
+align_args.add_argument("seq2", type=str, help="second raw amino acid required", required=True)
 align_args.add_argument("match", type=int, help="set to default: 1", required=False)
 align_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
-align_args.add_argument("open_gap_penalty", type=float, help="set to default: -1.75", required=False)
-align_args.add_argument("gap_extension_penalty", type=int, help="set to default: 0", required=False)
-align_args.add_argument("minimal_exon_length", type=int, help="set to default: 5", required=False)
+align_args.add_argument("open_gap", type=float, help="set to default: -1.75", required=False)
+align_args.add_argument("gap_ext", type=int, help="set to default: 0", required=False)
+align_args.add_argument("min_ex_len", type=int, help="set to default: 5", required=False)
 
 
 #API methods
@@ -93,18 +93,18 @@ class Mapping_Table(Resource):
                 id_type_alternative = list(alternative_type_dict.values())[0]
                 index_reference_transcript = list(list(nested_dict_reference.values())[0].values())[0]
                 index_alternative_transcript = list(list(nested_dict_alternative.values())[0].values())[0]
-                chosen_columns = Data_processing.choose_mapping_table_columns(args['table_ids'],id_type_reference,id_type_alternative,two_IDs=True)
+                chosen_columns = Data_processing.choose_mapping_table_columns(args['df_ids'],id_type_reference,id_type_alternative,two_IDs=True)
                 mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
                                                                                 index_reference_transcript,
                                                                                 index_alternative_transcript,
                                                                                 chosen_columns, match, mismatch,
                                                                                 open_gap_penalty, gap_extension_penalty,
                                                                                 exon_length_AA)
-                if args['aa_position']==None:
+                if args['pos']==None:
                     table_json = mapping_table.to_json(orient='records')
                     return table_json
                 else:
-                    AA_new_position = Data_processing.extract_specific_position_mapping_table(mapping_table,args['aa_position'])
+                    AA_new_position = Data_processing.extract_specific_position_mapping_table(mapping_table,args['pos'])
                     return AA_new_position
             if nested_dict_reference:
                 return 'reference ID: '+args['id1']+' found, alternative ID: '+args['id2']+' not found', 400
@@ -119,7 +119,7 @@ class Mapping_Table(Resource):
                 return 'reference ID: '+args['id1']+' not found'
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             index_of_reference_transcript = list(list(nested_dict.values())[0].values())[0]
-            chosen_columns = Data_processing.choose_mapping_table_columns(table_ids=args['table_ids'])
+            chosen_columns = Data_processing.choose_mapping_table_columns(table_ids=args['df_ids'])
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                 list_of_gene_objects, index_gene_object,
                                                                                 chosen_columns, match, mismatch,
@@ -132,12 +132,12 @@ class Raw_alignment(Resource):
     def get(self):
         args = align_args.parse_args()
         if args['view']==False:
-            needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['sequence1'], args['sequence2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
+            needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['seq1'], args['seq2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
             table_json = generated_table.to_json(orient='records')
             return table_json
         elif args['view']==True:
-            alignment_string = Data_processing.align_sequences(args['sequence1'], args['sequence2'])
+            alignment_string = Data_processing.align_sequences(args['seq1'], args['seq2'])
             return alignment_string
 
 
