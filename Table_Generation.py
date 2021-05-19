@@ -173,10 +173,10 @@ class Table_Generation:
             if list_of_gene_objects[index_of_gene].minimal_exon_length >4:
                 exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
             else:
-                exon_length_AA = 5
+                exon_length_AA = 11
         else:
             #if there is no value in the library
-            exon_length_AA = 5
+            exon_length_AA = 11
 
             #create alignment for each alternative_ID isoform
         aa_correct = 0

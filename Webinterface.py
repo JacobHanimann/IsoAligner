@@ -313,8 +313,8 @@ def main():
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
-        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
-        picture, statistics = st.beta_columns([2, 1])
+        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        picture, statistics = st.beta_columns([2, 1.2])
         with statistics:
             st.markdown("#### Statistics:")
             st.write('\n')
@@ -323,6 +323,8 @@ def main():
             st.write(" ID's in total:", Ids_in_total)
             st.write('Ø Isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
             st.write("Ø ID's per AA seq:", round(Ids_in_total/total_number_of_isoforms,1))
+            st.write('Genes with minimal exons:', minimal_exon_lengths)
+            st.write('Median minimal exon length:', mean_exon)
         with picture:
             st.markdown("#### Generation and Structure of Library:")
             st.write('\n')
