@@ -56,18 +56,18 @@ class Input_flow:
                     break
                 if parent_class:
                     if ID == "gene_name":
-                        if getattr(gene, "ensembl_gene_symbol") == element:
+                        if getattr(gene, "ensembl_gene_symbol") == element.upper():
                             dict_element_indexes[element] = index
                             break
-                        if getattr(gene, "HGNC_gene_symbol") == element:
+                        if getattr(gene, "HGNC_gene_symbol") == element.upper():
                             dict_element_indexes[element] = index
                             break
                         if type(gene.previous_symbols) == list:  # line can be deleted since all these attributes should be lists
-                            if element in getattr(gene, "previous_symbols"):
+                            if element.upper() in getattr(gene, "previous_symbols"):
                                 dict_element_indexes[element] = index
                                 break
                         if type(gene.alias_symbols) == list:
-                            if element in getattr(gene, "alias_symbols"):
+                            if element.upper() in getattr(gene, "alias_symbols"):
                                 dict_element_indexes[element] = index
                                 break
                     else:

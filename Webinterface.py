@@ -134,16 +134,17 @@ def main():
             parameter_change = False
             chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
+            slot1 = st.empty()
             value = Table_Generation.display_filter_option_AA()
             if value == "":
-                st.write(generated_table)
+                    slot1.write(generated_table)
             else:
                 filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
                 if not filter_df.empty:
-                    st.write(filter_df)
-                    st.info ('Enter 0 as an input to go back to original mapping table.')
+                    slot1.write(filter_df)
+                    st.info('ℹ️ Delete value to go back to original mapping table.')
                 else:
-                    st.warning('Value "'+str(value)+'" does not exist in the mapping table. Try other position.')
+                    st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
             Input_flow.generate_download_section(generated_table)
 
 
