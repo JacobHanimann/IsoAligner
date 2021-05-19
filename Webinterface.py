@@ -264,7 +264,8 @@ def main():
     elif choice == 'REST API & Downloads':
         st.title(" Amino Acid Isoform Aligner")
         st.header("REST API")
-        st.write('soon available')
+        st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables between corresponding amino acid position position is available as well as the method /align to retrieve the alignment of two raw protein sequences.')
+
         st.write("--------------------------")
         st.header("Downloads")
         st.write('soon available')
