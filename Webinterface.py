@@ -318,6 +318,10 @@ def main():
             st.markdown("##### ID's in the mapping table")
             st. write("All types of associated ID's to every protein sequence were inlcuded in the mapping tables. (Listed under Manual & About)")
 
+        st.write('### 📁 Download')
+        st.write('The dataframe is ~5 GB and tab-separated (tsv).')
+        Streamlit_community.create_download_section_from_ext_link('1Xu-dHy4My3qT9iebfN4eIU8CKl0kb0Ss', 'Click here to start download')
+
 
     elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")

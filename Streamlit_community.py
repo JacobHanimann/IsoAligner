@@ -5,6 +5,12 @@ import os
 class Streamlit_community:
     pass
 
+    @staticmethod
+    def create_download_section_from_ext_link(id, name_download):
+        final_link = f'<a target="_blank" rel="noopener noreferrer" href="https://drive.google.com/u/0/uc?id='+id+'&export=download">'+name_download+'</a>'
+        st.markdown(final_link, unsafe_allow_html=True)
+
+
     @staticmethod #not in use
     def get_binary_file_downloader_html(bin_file, file_label='File', name_button='download'):
         with open(bin_file, 'rb') as f:
@@ -15,7 +21,7 @@ class Streamlit_community:
 
     @staticmethod
     def get_table_download_link(df, name_of_file="dataframe.tsv", sep='\t'):
-        """Generates a link allowing the data in a given panda dataframe to be downloaded
+        """Generates a link allowing the data in a given pandas dataframe to be downloaded
         in:  dataframe
         out: href string
         """
