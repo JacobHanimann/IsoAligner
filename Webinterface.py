@@ -275,7 +275,7 @@ def main():
             if resource=="...org/api/map":
                 parameter = st.selectbox('Parameters: ',['id1','id2','pos',"match","mismatch", "open_gap", "gap_ext","min_ex_len",'df_ids', 'ℹ️ Show All Parameters'])
             else:
-                parameter = st.selectbox('Parameters: ',['seq1','seq2',"match","mismatch", "open_gap", "gap_ext","min_ex_len", 'ℹ️ Show All Parameters'])
+                parameter = st.selectbox('Parameters: ',['seq1','seq2',"match","mismatch", "open_gap", "gap_ext","min_ex_len", 'ℹ️ show all parameters'])
         #default parameters
         match = 1
         mismatch = -2
@@ -288,8 +288,36 @@ def main():
         if resource == "...org/api/align":
             st.markdown("### Resource: /align")
             st.write('With this resource, you can align two raw amino acid sequences sent with the request and retrieve a mapping table in json format. The required parameters are seq1 and seq2.')
+        if parameter == 'id1' or parameter =='ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: id1")
+            st.write('ID of any type (Ensembl, Refseq, Uniprot, UCSC) to access the isoforms of a gene of the human isoform library. '
+                     'To define the reference protein sequence which all other splice variants are align against, use a specified splice variant identifier. Otherwise, the longest isoform is automatically chosen as the reference sequence. A list of the supported ID types can be found under Manual & About.')
+        if parameter == 'id2' or parameter =='ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: id2")
+            st.write(
+                'Specific isoform ID (Ensembl, Refseq, Uniprot, UCSC) to use as the alternative splice variant to align with the reference sequence of id1. A list of the supported ID types can be found under Manual & About.')
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
+        st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with the following default function parameters: ')
+        st.write('\n')
+        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        needleman, minimal, ids_table = st.beta_columns([1, 1,1])
+        with needleman:
+            st.markdown("##### Needleman-Wunsch function")
+            st.write(" - match: ",match," \n"
+                     " - mismatch: ",mismatch," \n"
+                     " - open gap penalty: ",gap_open," \n"
+                     " - gap extend penalty: ", gap_extend, " \n"
+
+                     )
+        with minimal:
+            st.markdown("##### Minimal exon function")
+            st.write(
+                'Gene-Specific for ', minimal_exon_lengths,'of ', total_number_of_genes,'genes. For the remaining, a minimal exon length of ', mean_exon, 'AA was used.')
+        with ids_table:
+            st.markdown("##### ID's in the mapping table")
+            st. write("All types of associated ID's to every protein sequence were inlcuded in the mapping tables. (Listed under Manual & About)")
+
 
     elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")
