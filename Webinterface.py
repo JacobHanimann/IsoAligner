@@ -264,8 +264,14 @@ def main():
     elif choice == 'REST API & Downloads':
         st.title(" Amino Acid Isoform Aligner")
         st.header("REST API")
-        st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables between corresponding amino acid position position is available as well as the method /align to retrieve the alignment of two raw protein sequences.')
-
+        st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
+        resource,method, parameters = st.beta_columns([1,1,1])
+        with resource:
+            st.selectbox('Resource', ['/map','/align'])
+        with method:
+            st.selectbox('Methods', ['GET'])
+        with parameters:
+            st.selectbox('Parameters: ',['id1','id2','pos',"match","mismatch", "open_gap", "gap_ext","min_ex_len"'df_ids'])
         st.write("--------------------------")
         st.header("Downloads")
         st.write('soon available')
