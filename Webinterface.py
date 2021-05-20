@@ -265,6 +265,7 @@ def main():
         st.title(" Amino Acid Isoform Aligner")
         st.header("REST API")
         st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
+        st.write("#### Browse Function Features")
         resource,method, parameters = st.beta_columns([1,1,1])
         with resource:
             resource = st.selectbox('Resource:', ['...org/api/map','...org/api/align'])
@@ -272,16 +273,25 @@ def main():
             method = st.selectbox('Methods:', ['GET'])
         with parameters:
             if resource=="...org/api/map":
-                parameter = st.selectbox('Parameters: ',['id1','id2','pos',"match","mismatch", "open_gap", "gap_ext","min_ex_len",'df_ids'])
+                parameter = st.selectbox('Parameters: ',['id1','id2','pos',"match","mismatch", "open_gap", "gap_ext","min_ex_len",'df_ids', 'ℹ️ Show All Parameters'])
             else:
-                parameter = st.selectbox('Parameters: ',['seq1','seq2',"match","mismatch", "open_gap", "gap_ext","min_ex_len"])
+                parameter = st.selectbox('Parameters: ',['seq1','seq2',"match","mismatch", "open_gap", "gap_ext","min_ex_len", 'ℹ️ Show All Parameters'])
+        #default parameters
+        match = 1
+        mismatch = -2
+        gap_extend = 0
+        gap_open = -1.75
+        exon_length_AA = 11
+        if resource == "...org/api/map":
+            st.markdown("### Resource: /map")
+            st.write('With this resource, you can access the human isoform library, compute alignments with specified parametes and retrieve whole mapping tables in json format or just single AA positions. The only required parameter that must be sent in the request body is id1, respectively an Isoform ID of any kind.')
+        if resource == "...org/api/align":
+            st.markdown("### Resource: /align")
+            st.write('With this resource, you can align two raw amino acid sequences sent with the request and retrieve a mapping table in json format. The required parameters are seq1 and seq2.')
         st.write("--------------------------")
-        st.header("Downloads")
-        st.write('soon available')
-        st.write("--------------------------")
+        st.header("Pre-Computed Mapped Human Isoform Library")
 
-    if choice == 'Manual & About':
-
+    elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")
         st.markdown("### Biologically Appropriate Alignment of Isoforms:")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
