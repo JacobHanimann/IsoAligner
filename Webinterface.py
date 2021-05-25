@@ -90,7 +90,6 @@ def main():
         input1_IDs = []
 
         if ss.searched_clicked and input1 !="""""":
-            ss.example = False
             with st.spinner('Checking database . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
                 #st.write(dict_of_IDs)
@@ -301,16 +300,21 @@ def main():
         if parameter == 'id1' or parameter =='ℹ️ Show All Parameters':
             st.write(" ##### Parameter: id1")
             st.write('ID of any type (Ensembl, Refseq, Uniprot, UCSC) to access the isoforms of a gene of the human isoform library. '
-                     'To define the reference protein sequence which all other splice variants are align against, use a specified splice variant identifier. Otherwise, the longest isoform is automatically chosen as the reference sequence. A list of the supported ID types can be found under Manual & About.')
+                     'To define the reference protein sequence which all other splice variants are align against, use a specified splice variant identifier. Otherwise, the longest isoform is automatically chosen as the reference sequence. A list of the supported ID types can be found under Manual & About. As a simple request example:')
+            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201</em> ",
+                    unsafe_allow_html=True)
+
         if parameter == 'id2' or parameter =='ℹ️ Show All Parameters':
             st.write(" ##### Parameter: id2")
             st.write(
-                'Specific isoform ID (Ensembl, Refseq, Uniprot, UCSC) to use as the alternative splice variant to align with the reference sequence of id1. A list of the supported ID types can be found under Manual & About.')
+                'Specific isoform ID (Ensembl, Refseq, Uniprot, UCSC) to use as the alternative splice variant to align with the reference sequence of id1. A list of the supported ID types can be found under Manual & About. Example:')
+            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207 </em> ",
+                    unsafe_allow_html=True)
         if parameter == 'pos' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: pos")
             st.write("In case of stating two ID's in the request, you can retrieve single corresponding AA positions of the alternative isoform sequence. As an example:")
-            st.markdown("Request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
-            st.markdown("Response: <em> 993 </em> ", unsafe_allow_html=True)
+            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
+            st.markdown("response: <em> 993 </em> ", unsafe_allow_html=True)
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
