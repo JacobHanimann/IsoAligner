@@ -1,6 +1,8 @@
 import re
 from Bio import pairwise2, Align
 from Bio.pairwise2 import format_alignment
+import streamlit as st
+#from Bio.SubsMat import MatrixInfo as matlist
 
 class Alignment:
     pass
@@ -72,6 +74,8 @@ class Alignment:
         alignments = pairwise2.align.globalms(clean_reference_fasta, Alignment.extract_only_AA_of_Fasta_file(fasta2), match,
                                               mismatch, gap_penalty, gap_extension_penalty, one_alignment_only=True,
                                               penalize_extend_when_opening=True, penalize_end_gaps=False)
+        #matrix = matlist.available_matrices
+        #help(pairwise2.align.globalms)
         alignment_reference_fasta = list(alignments[0][0])
         alignment_isoform_fasta = list(alignments[0][1])
         isoform_pattern_check = Alignment.check_for_wrong_exon_alignments(alignment_reference_fasta, alignment_isoform_fasta,
