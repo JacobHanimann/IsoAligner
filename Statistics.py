@@ -29,7 +29,7 @@ class Statistics:
                             IDs_in_total +=1
             else:
                 genes_without_isoforms += 1
-        minimal_exon_lengths = [exon for exon in minimal_exon_lengths if exon >=3]
+        minimal_exon_lengths = [exon for exon in minimal_exon_lengths if exon >=5]
         median_exon = statistics.median(minimal_exon_lengths)
         return total_number_of_genes, total_number_of_isoforms, genes_without_isoforms, IDs_in_total, len(minimal_exon_lengths), round(median_exon)
 

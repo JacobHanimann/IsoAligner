@@ -340,7 +340,7 @@ def main():
             st. write("All types of associated ID's to every protein sequence were inlcuded in the mapping tables. (Listed under Manual & About)")
 
         st.write('### 📁 Download')
-        st.write('The dataframe is ~5 GB and tab-separated (tsv).')
+        st.write('The dataframe is ~5 GB and tab-separated (.tsv).')
         Streamlit_community.create_download_section_from_ext_link('1Xu-dHy4My3qT9iebfN4eIU8CKl0kb0Ss', 'Click here to start download')
 
 
@@ -423,7 +423,7 @@ def main():
         st.write('---------------')
         st.markdown("#### License:")
         st.write("\n")
-        html_string = '<a rel="license" a target=”_blank” href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.'
+        html_string = '<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.'
         st.markdown(html_string, unsafe_allow_html=True)
         #st.markdown("#### Functions:")
         #code = '''
