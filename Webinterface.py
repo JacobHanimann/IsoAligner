@@ -59,10 +59,9 @@ def main():
         title, example_button = st.beta_columns([3.85,1])
         with title:
             st.markdown("### Input")
-        with example_button:
-            if st.button('Show Example'):
-                ss.example = True
-                ss.searched_clicked = False
+            with example_button:
+                if st.button('Show Example'):
+                    ss.example = True
 
 
         if ss.example:
@@ -87,8 +86,11 @@ def main():
 
         #set default for displaying second text_area input for input2
         using_IDs= False
+        no_elements = False
+        input1_IDs = []
 
-        if ss.searched_clicked:
+        if ss.searched_clicked and input1 !="""""":
+            ss.example = False
             with st.spinner('Checking database . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
                 #st.write(dict_of_IDs)
@@ -102,17 +104,26 @@ def main():
                 #execute nested dict only if dict is still existent...
                 nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
                 #st.write(nested_dict)
-                no_elements = False
                 if len (nested_dict)==0:
                     no_elements = True
+
 
         #case of using one ID
         if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1: #check if dictionary is not empty
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
-            st.markdown("### Alignment Preview")
-            st.write('\n')
+            title, clear_button = st.beta_columns([6,1])
+            with title:
+                st.markdown("### Alignment Preview")
+            with clear_button:
+                st.write('\n')
+                if st.button('Clear All'):
+                    ss.clear_button = True
+                    ss.run_id += 1
+                    ss.example = False
+                    ss.searched_clicked = False
+                    Streamlit_community.rerun_script_from_top()
             chosen_gene = list(nested_dict.keys())[0]
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene)
@@ -151,8 +162,17 @@ def main():
         #case of using multiple ID's
         elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
             using_IDs = True
-            st.markdown("### Alignment Preview")
-            st.text('\n')
+            title, clear_button = st.beta_columns([6, 1])
+            with title:
+                st.markdown("### Alignment Preview")
+            with clear_button:
+                st.write('\n')
+                if st.button('Clear All'):
+                    ss.clear_button = True
+                    ss.run_id += 1
+                    ss.example = False
+                    ss.searched_clicked = False
+                    Streamlit_community.rerun_script_from_top()
             genes, reference = st.beta_columns([2,1.7])
             with genes:
                 chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
@@ -248,16 +268,6 @@ def main():
                 else:
                     st.warning('No amino acid positions mapped currently. Tweak function parameters to generate matches.')
 
-        #Clear all button
-        st.write("--------------------------")
-        placehold, clear_all = st.beta_columns([6.1, 1])
-        with clear_all:
-           if st.button('Clear All'):
-              ss.clear_button = True
-              ss.run_id +=1
-              ss.example= False
-              ss.searched_clicked= False
-              Streamlit_community.rerun_script_from_top()
 
 
 
