@@ -306,6 +306,12 @@ def main():
             st.write(" ##### Parameter: id2")
             st.write(
                 'Specific isoform ID (Ensembl, Refseq, Uniprot, UCSC) to use as the alternative splice variant to align with the reference sequence of id1. A list of the supported ID types can be found under Manual & About.')
+        if parameter == 'pos' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: pos")
+            st.write("In case of stating two ID's in the request, you can retrieve single corresponding AA positions of the alternative isoform sequence. As an example:")
+            st.markdown("Request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
+            st.markdown("Response: <em> 993 </em> ", unsafe_allow_html=True)
+
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
         st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with the following default function parameters: ')
