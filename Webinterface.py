@@ -205,6 +205,7 @@ def main():
                         value = Table_Generation.display_filter_option_AA()
                         if value=="":
                             slot1.write(df_all)
+                            #st.dataframe(df_all.style.highlight_(axis=0))
                         else:
                             filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
                             if not filter_df.empty:
@@ -422,7 +423,7 @@ def main():
         st.write('---------------')
         st.markdown("#### License:")
         st.write("\n")
-        html_string = '<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.'
+        html_string = '<a rel="license" a target=”_blank” href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.'
         st.markdown(html_string, unsafe_allow_html=True)
         #st.markdown("#### Functions:")
         #code = '''
