@@ -23,13 +23,52 @@ class Exon_Information():
         ENSE= None
         cds_exon_number = None
         exon_number = None
+        start_codon=False
+        exon=False
+        cds=False
+
         print('lines in total:', len(all_lines))
         for index, line in enumerate(all_lines):
             if index % 100000==0:
                 print(100*round(index/len(all_lines),2),'%')
             splitted = re.split('\t',line)
 
+            if splitted[2] != 'exon' and splitted[2]!='CDS':
+               start_codon=True #actually any other category
+               exon=False
+               cds=False
+               continue
+
+            if exon and cds and not start_codon:
+                #creating Exon_objects
+                if exon_length!=None and ENSE!=None and cds_exon_number!=None and cds_exon_number==exon_number:
+                    exon_object = Exon(exon_start_end=start_end,exon_length=exon_length,ENSE=ENSE,ENST=ENST,exon_number=exon_number)
+                    #saving exon object in gene dict
+                    if ENSG in gene_dict:
+                        gene_dict[ENSG].append(exon_object)
+                    else:
+                        gene_dict[ENSG] = [exon_object]
+                    if exon_length <=2:
+                        print(exon_length)
+                        print(cds_start_end)
+                        print(exon_object.__dict__)
+                    exon_length=None
+                    ENSE=None
+                    cds_exon_number = None
+                    exon_number = None
+                    cds_start_end = None
+                    start_end = None
+                    exon=False
+                    cds=False
+
+                    #print(splitted)
+                    #print(exon_object.__dict__)
+
+
+
             if splitted[2]=='exon':
+                exon=True
+                start_codon=False
             #extracting information
                 ENSG = Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg',splitted[8])
                 start_end = [int(splitted[3]),int(splitted[4])]
@@ -43,7 +82,10 @@ class Exon_Information():
                 else:
                     exon_number = None
 
+
             if splitted[2]=="CDS":
+                cds=True
+                start_codon=False
                 cds_start_end = [int(splitted[3]), int(splitted[4])]
                 frame = int(splitted[7])
                 #print('new cds')
@@ -58,20 +100,6 @@ class Exon_Information():
                     cds_exon_number = None
 
 
-            #creating Exon_objects
-            if exon_length!=None and ENSE!=None and cds_exon_number!=None and cds_exon_number==exon_number:
-                exon_object = Exon(exon_start_end=start_end,exon_length=exon_length,ENSE=ENSE,ENST=ENST,exon_number=exon_number)
-                #saving exon object in gene dict
-                if ENSG in gene_dict:
-                    gene_dict[ENSG].append(exon_object)
-                else:
-                    gene_dict[ENSG] = [exon_object]
-                exon_length=None
-                ENSE=None
-                cds_exon_number = None
-                exon_number = None
-                #print(splitted)
-                #print(exon_object.__dict__)
         return gene_dict
 
 
@@ -124,3 +152,7 @@ class Exon_Information():
                                         isoform.collection_of_exons.append(exon)
                                     break
 
+
+#testing
+
+Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
