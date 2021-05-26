@@ -91,7 +91,7 @@ class Refseq():
             except:
                 pass
             try:
-                NCBI_ID = int(re.findall('\d+', re.findall('/db_xref=\"GeneID:\d+\"', entry)[0])[0])
+                NCBI_ID = str(re.findall('\d+', re.findall('/db_xref=\"GeneID:\d+\"', entry)[0])[0])
                 NCBI_ID_found = True
                 NCBI_count += 1
             except:
