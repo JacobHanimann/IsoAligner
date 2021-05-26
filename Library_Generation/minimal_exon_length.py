@@ -33,36 +33,35 @@ class Exon_Information():
                 print(100*round(index/len(all_lines),2),'%')
             splitted = re.split('\t',line)
 
-            if splitted[2] != 'exon' and splitted[2]!='CDS':
-               start_codon=True #actually any other category
-               exon=False
-               cds=False
-               continue
+            #if splitted[2] != 'exon' and splitted[2]!='CDS':
+            #   start_codon=True #actually any other category
+            #   exon=False
+            #   cds=False
+            #   continue
 
-            if exon and cds and not start_codon:
+            if exon and cds:
                 #creating Exon_objects
-                if exon_length!=None and ENSE!=None and cds_exon_number!=None and cds_exon_number==exon_number:
-                    exon_object = Exon(exon_start_end=start_end,exon_length=exon_length,ENSE=ENSE,ENST=ENST,exon_number=exon_number)
-                    #saving exon object in gene dict
-                    if ENSG in gene_dict:
-                        gene_dict[ENSG].append(exon_object)
-                    else:
-                        gene_dict[ENSG] = [exon_object]
-                    if exon_length <=2:
-                        print(exon_length)
-                        print(cds_start_end)
-                        print(exon_object.__dict__)
-                    exon_length=None
-                    ENSE=None
-                    cds_exon_number = None
-                    exon_number = None
-                    cds_start_end = None
-                    start_end = None
-                    exon=False
-                    cds=False
+                if exon_length >= 2.5: #coding sequence has to at least 2 AA long
+                    if exon_length!=None and ENSE!=None and cds_exon_number!=None and cds_exon_number==exon_number:
+                        exon_object = Exon(exon_start_end=start_end,exon_length=exon_length,ENSE=ENSE,ENST=ENST,exon_number=exon_number)
+                        #saving exon object in gene dict
+                        if ENSG in gene_dict:
+                            gene_dict[ENSG].append(exon_object)
+                        else:
+                            gene_dict[ENSG] = [exon_object]
 
-                    #print(splitted)
-                    #print(exon_object.__dict__)
+                else:
+                    pass
+
+                #reset
+                exon_length = None
+                ENSE = None
+                cds_exon_number = None
+                exon_number = None
+                cds_start_end = None
+                start_end = None
+                exon = False
+                cds = False
 
 
 
@@ -155,4 +154,7 @@ class Exon_Information():
 
 #testing
 
-Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
+#gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
+#gene_dict_only_minimal = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict)
+#print(len(gene_dict_only_minimal))
+#print(gene_dict_only_minimal)
