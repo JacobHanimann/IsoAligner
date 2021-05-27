@@ -199,8 +199,10 @@ class Table_Generation_match:
     #@st.cache()
     #@st.cache(hash_funcs={Alignment.map_AA_Needleman_Wunsch_with_exon_check: hash})
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
-                                              open_gap_penalty, gap_extension_penalty):
+                                              open_gap_penalty, gap_extension_penalty, conventional=False):
 
+        if conventional:
+            open_gap_penalty=0
         list_of_alignments = []
         total_genes = len(nested_dict)
         correct_aa = 0
@@ -209,7 +211,7 @@ class Table_Generation_match:
             my_bar = st.progress(0.0)
             for count,gene in enumerate(nested_dict.items()):
                 percent = int(round(100*(count+1)/total_genes,1))
-                print(percent)
+                print(percent,"%")
                 index_of_gene = list(gene[1].keys())[0]
                 index_of_reference_transcript = list(gene[1].values())[0]
                 if len(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection) > 1:  # check if there is even more than one isoform

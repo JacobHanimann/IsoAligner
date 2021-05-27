@@ -11,15 +11,17 @@ from Table_Generation_match_statistics import *
 from PIL import Image
 from Statistics import *
 
+#choose if standard needleman-wunsch should be used
+conventional = True
+
 #load library
 list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_4th_may.txt.gz')
 
 #standard function parameters
 match = 1
 mismatch =-2
-open_gap_penalty = -1.75
+open_gap_penalty = -2
 gap_extension_penalty = 0
-minimal_exon_length = 5
 
 #default include all columns
 chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID (ENST)',
@@ -32,7 +34,7 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
-for index,gene in enumerate(list_of_gene_objects[0:100]):
+for index,gene in enumerate(list_of_gene_objects[0:3000]):
     #create nested dict for one gene
     nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
     big_nested_dict.update(nested_dict)
@@ -40,7 +42,7 @@ for index,gene in enumerate(list_of_gene_objects[0:100]):
 print(big_nested_dict)
 
 #create big dataframe
-correct_aa, false_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
+correct_aa, false_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty,conventional=conventional)
 
 
 print(correct_aa)
