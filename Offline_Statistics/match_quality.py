@@ -7,12 +7,12 @@ from Alignment import *
 from Visualise_Alignment import *
 from User_Input_Preparation import *
 from Input_flow import *
-from Table_Generation import *
+from Table_Generation_match_statistics import *
 from PIL import Image
 from Statistics import *
 
 #load library
-list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_4th_may.txt.gz')
 
 #standard function parameters
 match = 1
@@ -40,10 +40,9 @@ for index,gene in enumerate(list_of_gene_objects[0:100]):
 print(big_nested_dict)
 
 #create big dataframe
-big_df = Table_Generation.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
-print('Writing results to csv file...')
-big_df.to_csv('/Users/jacob/Desktop/all_genes_mapped_18_may.tsv')
+correct_aa, false_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
 
-#print(correct_aa)
-#print(false_aa)
-#print(false_aa/(correct_aa+false_aa))
+
+print(correct_aa)
+print(false_aa)
+print(false_aa/(correct_aa+false_aa))
