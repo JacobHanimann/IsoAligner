@@ -45,6 +45,7 @@ class Alignment:
                     gap = True
                 else:
                     category='wrong'
+                    st.write('Mismatch detected')
             else:  # same Aminoacid
                 score += 1
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the right

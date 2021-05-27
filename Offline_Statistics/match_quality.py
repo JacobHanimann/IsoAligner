@@ -12,7 +12,7 @@ from PIL import Image
 from Statistics import *
 
 #choose if standard needleman-wunsch should be used
-conventional = True
+conventional = False
 
 #load library
 list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_4th_may.txt.gz')
@@ -34,7 +34,7 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
-for index,gene in enumerate(list_of_gene_objects[0:100]):
+for index,gene in enumerate(list_of_gene_objects[0:1000]):
     #create nested dict for one gene
     nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
     big_nested_dict.update(nested_dict)
