@@ -20,7 +20,7 @@ list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objec
 #standard function parameters
 match = 1
 mismatch =-2
-open_gap_penalty = -2
+open_gap_penalty = -5
 gap_extension_penalty = 0
 
 #default include all columns
@@ -34,7 +34,7 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
-for index,gene in enumerate(list_of_gene_objects[0:3000]):
+for index,gene in enumerate(list_of_gene_objects[0:100]):
     #create nested dict for one gene
     nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
     big_nested_dict.update(nested_dict)

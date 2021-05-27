@@ -40,8 +40,11 @@ class Alignment:
             score = 0  # score which determines if the position is fulfills the minimal exon length parameter
             gap = False
             if ref[index] != isoform[index]:
-                category = "gap"
-                gap = True
+                if '-' in ref[index] or '-' in isoform[index]:
+                    category = "gap"
+                    gap = True
+                else:
+                    category='wrong'
             else:  # same Aminoacid
                 score += 1
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the right
