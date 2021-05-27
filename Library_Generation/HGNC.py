@@ -15,7 +15,8 @@ class HGNC():
         df = pd.read_csv(file_of_gene_names, sep='\t')
         print('total length: ', len(df))
         for index in range(0, len(df)):
-            print(index)
+            if index % 1000 == 0:
+                print(100 * round(index / len(df), 2), '%')
             # extract data line by line
             HGNC = df.loc[index, 'HGNC']
             HGNC_gene_symbol = df.loc[index, 'approved_symbol']

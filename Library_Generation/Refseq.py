@@ -46,7 +46,8 @@ class Refseq():
             HCGN_found = False
             NCBI_ID_found = False
             fasta_count += 1
-            print(fasta_count)
+            if fasta_count % 1000 == 0:
+                print(100 * round(fasta_count / len(splittext), 2), '%')
 
             # extract information out of entry
             # extract which type of ID is used
