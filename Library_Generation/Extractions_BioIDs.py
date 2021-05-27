@@ -68,7 +68,7 @@ class Get_Bio_ID():
             pattern = 'NC_\d+\.\d+'
 
         # Uniprot IDs
-        elif ID_type == 'uniprot_accession':
+        elif ID_type == 'uniprot_accession': #apparently not working
             pattern = '\|[OPQ][0-9][0-9A-Z]{3}[0-9]\||\|[A-NR-Z][0-9][A-Z][A-Z,0-9]{2}[0-9]\||\|[A-N,R-Z][0-9][A-Z][A-Z,0-9]{2}[0-9][A-Z][A-Z,0-9]{2}[0-9]\|'
         elif ID_type == 'uniprot_uniparc':
             pattern = 'UPI[0-9A-F]+'
@@ -77,6 +77,7 @@ class Get_Bio_ID():
             pattern = "\|[^\|\n]+\n"
             match_list = re.findall(pattern, string)
             if not match_list:  # if list is empty
+                print('not found')
                 return 'not found'
             else:
                 # remove \n with regex

@@ -39,8 +39,10 @@ class Uniprot():
             # organisation
             gene_name_found = True
             fasta_count += 1
-            print(fasta_count)
+            if fasta_count % 1000 == 0:
+                print(100*round(fasta_count/len(splittext),2),'%')
             uniprot_isoform = False
+            #print(fasta)
 
             # extracting information
             try:
@@ -111,10 +113,11 @@ class Uniprot():
                                 else:
                                     uniprot_isoform_not_same_seq += 1
                                     isoform.uniprot_isoform = None  # delete (false) attribute of isoform
+                                    match_list = re.split('-',accession)
+                                    accession_raw = match_list[0]
                                     gene.protein_sequence_isoform_collection.append(
                                         Protein_isoform(protein_sequence,
-                                                        uniprot_accession=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession',
-                                                                                                 accession),
+                                                        uniprot_accession=accession_raw,
                                                         uniprot_isoform=accession, gene_name=gene_name))
                                     found = True
 
@@ -122,7 +125,9 @@ class Uniprot():
                                 found = True
                                 protein_sequence_already_without_uniprot_ID += 1
                                 if uniprot_isoform:
-                                    isoform.uniprot_accession =Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession', accession)
+                                    match_list = re.split('-', accession)
+                                    accession_raw = match_list[0]
+                                    isoform.uniprot_accession =accession_raw
                                     isoform.uniprot_isoform = accession
                                 else:
                                     isoform.uniprot_accession = accession
@@ -131,10 +136,10 @@ class Uniprot():
                         if not found:
                             new_isoform_for_gene += 1
                             if uniprot_isoform:
+                                match_list = re.split('-', accession)
+                                accession_raw = match_list[0]
                                 gene.protein_sequence_isoform_collection.append(Protein_isoform(protein_sequence,
-                                                                                                uniprot_accession=Get_Bio_ID.get_bio_IDs_with_regex(
-                                                                                                    'uniprot_accession',
-                                                                                                    accession),
+                                                                                                uniprot_accession=accession_raw,
                                                                                                 uniprot_isoform=accession,
                                                                                                 gene_name=gene_name))
                             else:
