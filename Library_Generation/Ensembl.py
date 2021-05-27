@@ -26,6 +26,12 @@ class Ensembl():
             aa_sequence = Alignment.extract_only_AA_of_Fasta_file(fasta.split('\n', 1)[1])
             if aa_sequence == None:  # sequence shorter than 7 AA long
                 continue
+            match_list = Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession', fasta)
+            for match in match_list:
+                if 'P0000' in match:
+                    continue
+                else:
+                    raw_accession = match
             sequence_object = Protein_isoform(aa_sequence, gene_name,
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg', fasta),
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
@@ -33,6 +39,7 @@ class Ensembl():
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_enst_version', fasta),
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensp', fasta),
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
+                                              uniprot_accession=raw_accession,
                                               uniprot_uniparc=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_uniparc', fasta))
             for gene in list_of_gene_objects:
                 if found:
