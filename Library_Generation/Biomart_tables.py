@@ -14,7 +14,7 @@ class Biomart_tables():
         df = pd.read_csv(file, sep='\t')
         print('total length:', len(df))
         for index in range(0, len(df)):
-            if index % 1000 == 0:
+            if index % 100 == 0:
                 print(100 * round(index / len(df), 2), '%')
             found = False
             uniparc_ID = df.loc[index, 'UniParc ID']
@@ -50,7 +50,7 @@ class Biomart_tables():
         df = pd.read_csv(file, sep='\t')
         print('total length:', len(df))
         for index in range(0, len(df)):
-            if index % 1000 == 0:
+            if index % 100 == 0:
                 print(100 * round(index / len(df), 2), '%')
             found = False
             uniparc_ID = df.loc[index, 'UniParc ID']
@@ -79,7 +79,7 @@ class Biomart_tables():
         df = pd.read_csv(file, sep='\t')
         print('total length', len(df))
         for index in range(0, len(df)):
-            if index % 1000 == 0:
+            if index % 100 == 0:
                 print(100 * round(index / len(df), 2), '%')
             found = False
             uniparc_ID = df.loc[index, 'UniParc ID']

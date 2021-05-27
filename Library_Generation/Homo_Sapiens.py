@@ -7,20 +7,20 @@ from Validation_of_library import *
 from minimal_exon_length import *
 
 date = '27th_may'
-
-print('Creating list of gene objects with Ensembl Fasta files...')
-list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+#
+#print('Creating list of gene objects with Ensembl Fasta files...')
+#list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+#
+#print('Pickling list of gene objects and saving file...')
+#with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_first.txt", "wb") as fp:  # Pickling
+#    pickle.dump(list_of_gene_objects, fp)
+#
+#print('Adding HGNC gene symbols to gene attributes...')
+#HGNC.add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 
 print('Pickling list of gene objects and saving file...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_first.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
-
-print('Adding HGNC gene symbols to gene attributes...')
-HGNC.add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
-
-print('Pickling list of gene objects and saving file...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second.txt", "rb") as fp:  # Pickling
+    list_of_gene_objects = pickle.load(fp)
 
 
 print('Adding IDs from Biomart...')
