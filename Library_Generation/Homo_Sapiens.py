@@ -22,14 +22,23 @@ print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
 
+
 print('Adding IDs from Biomart...')
 Biomart_tables.add_UCSC_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/UCSC_IDs.txt',list_of_gene_objects)
-Biomart_tables.add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
-Biomart_tables.add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+print('Pickling list of gene objects and saving file...')
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
 
+Biomart_tables.add_Uniprot_Isoform_refseqrna_transcript_name_ID_to_protein_attributes('/Users/jacob/Desktop/Isoform Mapper Webtool/NM_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
+print('Pickling list of gene objects and saving file...')
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second_third.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
+
+Biomart_tables.add_refseq_protein_IDs('/Users/jacob/Desktop/Isoform Mapper Webtool/NP_Uniprot_Isoform_uniparc.txt',list_of_gene_objects)
 print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_third.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
+
 
 print('Adding Fasta files from Refseq...')
 Refseq.add_refseq_fasta_sequences('/Users/jacob/Desktop/Isoform Mapper Webtool/refseq_fasta_and_info/GCF_000001405.39_GRCh38.p13_protein.gpff',list_of_gene_objects)
