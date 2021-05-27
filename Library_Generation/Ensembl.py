@@ -33,7 +33,6 @@ class Ensembl():
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_enst_version', fasta),
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensp', fasta),
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensp_version', fasta),
-                                              uniprot_accession=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_accession', fasta),
                                               uniprot_uniparc=Get_Bio_ID.get_bio_IDs_with_regex('uniprot_uniparc', fasta))
             for gene in list_of_gene_objects:
                 if found:
