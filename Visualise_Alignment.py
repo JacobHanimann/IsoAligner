@@ -121,6 +121,7 @@ class Visualise_Alignment:
          Output: 1 String (formatted with whitespace and newline character)'''
         correct_match_character = "|"
         wrong_match_character = "x"
+        mismatch_character = 'X'
         name_percentage_reference_string = sequence1 +":(" + str(round(100 * percentage_reference, 1)) + "%) "
         name_percentage_isoform_string = sequence2 +":(" + str(round(100 * percentage_isoform, 1)) + "%) "
         #fixing whitespace length
@@ -130,7 +131,7 @@ class Visualise_Alignment:
         else:
             whitespace = len(name_percentage_isoform_string) * " "
             name_percentage_reference_string = name_percentage_reference_string + (len(name_percentage_isoform_string)-len(name_percentage_reference_string)) * " "
-        alignment_character_list = [" " if score == "gap" else correct_match_character if score == "correct" else wrong_match_character for score in AA_match_evalutation_list]
+        alignment_character_list = [" " if score == "gap" else correct_match_character if score == "correct" else wrong_match_character if score=='wrong' else mismatch_character for score in AA_match_evalutation_list]
         #final string
         output_alignment_string = name_percentage_reference_string + ''.join(
             reference_sequence_list) + '\n' + whitespace + ''.join(

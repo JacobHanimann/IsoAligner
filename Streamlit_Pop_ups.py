@@ -29,9 +29,9 @@ class Streamlit_pop_ups:
         st.sidebar.write("\n")
         match = st.sidebar.number_input("match:", min_value=None, max_value=None, value=1, step=None, format=None,
                                         key=None)
-        mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-2, step=None,
+        mismatch = st.sidebar.number_input("mismatch:", min_value=None, max_value=None, value=-3, step=None,
                                            format=None, key=None)
-        open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=0, value=-5,
+        open_gap_penalty = st.sidebar.number_input("open gap penalty:", min_value=None, max_value=0, value=-2,
                                                    step=None, format=None, key=None)
         gap_extension_penalty = st.sidebar.number_input("gap extension penalty:", min_value=None, max_value=0,
                                                         value=0,

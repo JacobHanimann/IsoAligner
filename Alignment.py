@@ -44,8 +44,10 @@ class Alignment:
                     category = "gap"
                     gap = True
                 else:
-                    category='wrong'
+                    category='mismatch'
                     st.write('Mismatch detected')
+                    isoform_check.append(category)
+                    continue
             else:  # same Aminoacid
                 score += 1
                 for sidestep in range(1, exon_length_AA):  # check how many neighbours there are to the right
