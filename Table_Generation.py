@@ -173,23 +173,19 @@ class Table_Generation:
             if list_of_gene_objects[index_of_gene].minimal_exon_length >4:
                 exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
             else:
-                exon_length_AA = 11
+                exon_length_AA = 10
         else:
             #if there is no value in the library
-            exon_length_AA = 11
+            exon_length_AA = 10
 
             #create alignment for each alternative_ID isoform
-        aa_correct = 0
-        aa_false = 0
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
             if index == index_reference_transcript: #do not align the reference transcript with itself
                 continue
             aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check( #add isoform_check_list and [1:5] and uncomment all lines with aa_correct, aa_false associations for false,positive statistics
                 reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
 
-            #correct, false = Statistics.isoform_form_check_stats(isoform_pattern_check)
-            #aa_correct = aa_correct + correct
-            #aa_false = aa_false + false
+
             #save the results of each alignment in a list outside the loop
             for indexiterator in range(0, len(aminoacids)):
                 column_values, column_names = Table_Generation.get_selected_columns_attributes_and_column_names(chosen_columns,index_of_gene, index_reference_transcript,transcript,list_of_gene_objects)
@@ -239,14 +235,13 @@ class Table_Generation:
                     if (list_of_dataframe, column_names) != ('no','matches'): #don't add gene object alignments with no matches at all
                         list_of_alignments = list_of_alignments + list_of_dataframe
                         my_bar.progress(percent)
-                        #correct_aa = correct_aa + gene_isoform_check_list[0]
-                        #false_aa = false_aa + gene_isoform_check_list[1]
+
                     else:
                         print(gene)
             my_bar.empty()
             df = pd.DataFrame(list_of_alignments, columns=(column_names))
 
-        return df  # correct_aa, false_aa
+        return df
 
     @staticmethod
     def display_filter_option_AA():

@@ -20,7 +20,7 @@ import time
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False,run_id_table=1, parameters=[1,2,3,4,5])
 
 #import database
-list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_27th_may.txt.gz')
 
 
 #Streamlit website
@@ -343,6 +343,9 @@ def main():
         st.write('The dataframe is ~5 GB and tab-separated (.tsv).')
         Streamlit_community.create_download_section_from_ext_link('1Xu-dHy4My3qT9iebfN4eIU8CKl0kb0Ss', 'Click here to start download')
 
+        #for gene in list_of_gene_objects:
+        #        if gene.ENSG == "ENSG00000157764":
+        #            st.write(gene.__dict__)
 
     elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")

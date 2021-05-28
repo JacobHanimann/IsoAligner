@@ -45,7 +45,7 @@ class Alignment:
                     gap = True
                 else:
                     category='mismatch'
-                    st.error('mismatch detected: displayed as big letter X instead of x')
+                    st.error('mismatch detected: displayed as big letter X instead of x.')
                     isoform_check.append(category)
                     continue
             else:  # same Aminoacid

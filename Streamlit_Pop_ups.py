@@ -13,16 +13,16 @@ class Streamlit_pop_ups:
         st.sidebar.markdown("#### Minimal Exon Length (AA):")
         if index_gene!=None:
             if list_of_gene_objects[index_gene].minimal_exon_length == None or raw==True:
-                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=11, step=None,
+                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=10, step=None,
                                                      format=None, key=None)
-            elif list_of_gene_objects[index_gene].minimal_exon_length >=11:
+            elif list_of_gene_objects[index_gene].minimal_exon_length >=3:
                     exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=list_of_gene_objects[index_gene].minimal_exon_length, step=None,
                                                          format=None, key=None)
             else:
-                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=11, step=None,
+                exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=10, step=None,
                                                          format=None, key=None)
         else:
-            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=11, step=None,
+            exon_length_AA = st.sidebar.number_input("", min_value=0, max_value=None, value=10, step=None,
                                                      format=None, key=None)
         st.sidebar.write("\n")
         st.sidebar.markdown("#### Needleman-Wunsch Algorithm:")
