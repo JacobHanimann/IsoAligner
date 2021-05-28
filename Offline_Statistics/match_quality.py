@@ -15,12 +15,12 @@ from Statistics import *
 conventional = False
 
 #load library
-list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_4th_may.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_27th_may.txt.gz')
 
 #standard function parameters
 match = 1
 mismatch =-2
-open_gap_penalty = -5
+open_gap_penalty = -1
 gap_extension_penalty = 0
 
 #default include all columns
@@ -42,9 +42,12 @@ for index,gene in enumerate(list_of_gene_objects[0:1000]):
 print(big_nested_dict)
 
 #create big dataframe
-correct_aa, false_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty,conventional=conventional)
+correct_aa, false_aa, mismatch_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty,conventional=conventional)
 
 
 print(correct_aa)
 print(false_aa)
+print('mismatch',mismatch_aa)
 print(false_aa/(correct_aa+false_aa))
+print(mismatch_aa/(correct_aa+false_aa+mismatch_aa))
+

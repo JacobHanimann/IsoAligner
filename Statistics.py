@@ -74,6 +74,7 @@ class Statistics:
     def isoform_form_check_stats(isoform_check_list):
         correct_aa = 0
         false_aa = 0
+        mismatch_aa =0
         for type in isoform_check_list:
             if type == 'gap':
                 continue
@@ -81,5 +82,7 @@ class Statistics:
                 correct_aa += 1
             if type == 'wrong':
                 false_aa += 1
-        return correct_aa, false_aa
+            if type =='mismatch':
+                mismatch_aa +=1
+        return correct_aa, false_aa,mismatch_aa
 
