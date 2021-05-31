@@ -16,28 +16,34 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+da
     list_of_gene_objects = pickle.load(fp)
 
 
-print('Adding exon information...')
-gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
-genes_dict_median = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict)
-Exon_Information.add_exon_minimal_to_gene_objects(list_of_gene_objects, genes_dict_median)
-#Exon_Information.add_exon_objects_to_protein_objects(list_of_gene_objects,gene_dict)
+def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):
+    '''
+    check out if there were IDs and Seq that are the same but escaped the match
+    :param list_of_gene_objects:
+    :return: dictionary of gene indexes as key and dictionary of duplicates of the isoform collection
+    '''
 
-count = 0
-for gene in list_of_gene_objects:
-    if gene.minimal_exon_length != None:
-        count += 1
+    def duplicates(lst, item):
+        return [i for i, x in enumerate(lst) if x == item]
 
-print(len(list_of_gene_objects))
-print('genes with minimal exon length:', count)
+    genes_without_AA_seq = 0
+    duplicates_number = 0
+    genes_without_duplicates = 0
+    genes_with_more_than_one_duplicate = 0
+    redundant_sequences = 0
+    duplicate_genes_dict = dict()
+    list_of_all_seq= []
+    for index, gene in enumerate(list_of_gene_objects):
+        if type(gene.protein_sequence_isoform_collection) == list:
+            List = [sequence.protein_sequence for sequence in gene.protein_sequence_isoform_collection]
+            list_of_all_seq = list_of_all_seq + List
+        print(index)
+    duplicates_dict = dict((x, duplicates(list_of_all_seq, x)) for x in set(list_of_all_seq) if list_of_all_seq.count(x) > 1)
 
-gene_dict_2 = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/GRCh38.103_protein_coding_patch.gtf')
-genes_dict_median_2 = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict_2)
-Exon_Information.add_exon_minimal_to_gene_objects(list_of_gene_objects, genes_dict_median_2)
 
-count = 0
-for gene in list_of_gene_objects:
-    if gene.minimal_exon_length!=None:
-        count +=1
+    print(duplicates_dict)
+    print(len(duplicates_dict))
 
-print(len(list_of_gene_objects))
-print('genes with minimal exon length second:', count)
+
+
+check_if_there_are_AA_seq_duplicates(list_of_gene_objects)

@@ -154,9 +154,9 @@ class Exon_Information():
 
 #testing
 
-gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
-gene_dict_only_minimal = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict)
-print(len(gene_dict_only_minimal))
-for gene, length in gene_dict_only_minimal.items():
-    if length==None:
-        print(gene)
+#gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
+#gene_dict_only_minimal = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict)
+#print(len(gene_dict_only_minimal))
+#for gene, length in gene_dict_only_minimal.items():
+#    if length==None:
+#        print(gene)
