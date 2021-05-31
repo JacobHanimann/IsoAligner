@@ -114,7 +114,7 @@ class Validate_library():
 
 
     @staticmethod
-    def fuse_gene_objects_with_same_name():
+    def fuse_gene_objects_with_same_name(list_of_gene_objects, duplicates_dict_gene):
         pass
 
 
