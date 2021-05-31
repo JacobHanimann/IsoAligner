@@ -4,7 +4,9 @@ import streamlit as st
 import urllib
 from Streamlit_community import *
 import gzip
-import SessionState
+import random
+import Gene
+import Protein_isoform
 
 class Input_flow:
     pass
@@ -272,3 +274,40 @@ class Input_flow:
             st.markdown(
                 Streamlit_community.get_table_download_link(df, 'DataframeMappedIsoforms.' + sep_choice, sep),
                 unsafe_allow_html=True)
+
+    @staticmethod
+    def generate_random_example(list_of_gene_objects):
+        '''for show example button on website'''
+        one_example=False
+        parent=False
+        fulfilled = False
+        random_number_of_exmaples = random.randint(1,2)
+        while not fulfilled:
+            parent_child = random.randint(1,4)
+            if random_number_of_exmaples >1:
+                one_example=True
+            if one_example:
+                parent_child = random.randint(1, 2)
+                if parent_child>1:
+                    parent=True
+                    list_of_attributes = [a for a in dir(Gene.Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous')]
+                    ID_type = random.randint(0,5)
+                    gene_index = random.randint(0,len(list_of_gene_objects))
+                    example = getattr(list_of_gene_objects[gene_index],list_of_attributes[ID_type])
+                    if example!=None:
+                        fulfilled = True
+                        return example
+                else:
+                    list_of_attributes = [a for a in dir(Protein_isoform.Protein_isoform('jkfbkjsdbfbkjbbd')) if
+                                          not a.startswith('__') and not a.startswith('list_') and not a.startswith(
+                                              'protein') and not a.startswith(
+                                              'collection')]
+                    ID_type = random.randint(0, 15)
+                    gene_index = random.randint(0, len(list_of_gene_objects))
+                    isoform_number=len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection)
+                    example= getattr(list_of_gene_objects[gene_index].protein_sequence_isoform_collection[random.randint(0,isoform_number-1)], list_of_attributes[ID_type])
+                    if example != None:
+                        fulfilled = True
+                        return example
+            else:
+                return 'EGFR, Q9Y6I3-1, ENSG00000074410, ENSP00000075430.7, HGNC:10728, UPI00022F85F1'
