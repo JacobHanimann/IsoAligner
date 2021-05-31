@@ -53,7 +53,7 @@ def main():
             st.image(image2,use_column_width=True)
 
         st.sidebar.markdown("### 🧬️Organism")
-        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens', '🐁 Mouse (next release)'])
+        st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
 
         #fixed in put area
         title, example_button = st.beta_columns([3.85,1])
