@@ -14,6 +14,7 @@ print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_fifth.txt", "rb") as fp:  # Pickling
     list_of_gene_objects = pickle.load(fp)
 
+print(len(list_of_gene_objects))
 
 def check_if_there_are_AA_seq_duplicates_over_all_genes(list_of_gene_objects):
     '''
