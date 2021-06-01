@@ -8,14 +8,14 @@ from minimal_exon_length import *
 
 date = '1st_june'
 
-print('Creating list of gene objects with Ensembl Fasta files...')
-list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_104_protein_coding_chromosomes.fasta.txt')
+#print('Creating list of gene objects with Ensembl Fasta files...')
+#list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_104_protein_coding_chromosomes.fasta.txt')
 
 
 #Fuse genes with same name but not same ENSG
 print('Pickling list of gene objects and saving file...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_first.txt", "wb") as fp:  # Pickling
-    pickle.dump(list_of_gene_objects, fp)
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_first.txt", "rb") as fp:  # Pickling
+    list_of_gene_objects = pickle.load(fp)
 
 #no_gene_name =0
 #for gene in list_of_gene_objects:
@@ -30,8 +30,8 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+da
 print('Adding HGNC gene symbols to gene attributes...')
 HGNC.add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 print('Pickling list of gene objects and saving file...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second.txt", "rb") as fp:  # Pickling
-    list_of_gene_objects = pickle.load(fp)
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_second.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
 
 
 print('Adding IDs from Biomart...')
@@ -63,8 +63,8 @@ Uniprot.add_uniprot_fasta_files('/Users/jacob/Desktop/Isoform Mapper Webtool/uni
 
 
 print('Pickling list of gene objects and saving file...')
-with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_fifth.txt", "rb") as fp:  # Pickling
-    list_of_gene_objects = pickle.load(fp)
+with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_fifth.txt", "wb") as fp:  # Pickling
+    pickle.dump(list_of_gene_objects, fp)
 
 
 gene_dict_2 = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/HS_protein_coding_gene_104.gtf')
