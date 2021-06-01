@@ -281,13 +281,12 @@ class Input_flow:
         one_example=False
         parent=False
         fulfilled = False
-        random_number_of_exmaples = random.randint(1,2)
+        random_number_of_examples = random.randint(1,3)
         while not fulfilled:
-            parent_child = random.randint(1,4)
-            if random_number_of_exmaples >1:
+            if random_number_of_examples >1:
                 one_example=True
             if one_example:
-                parent_child = random.randint(1, 2)
+                parent_child = random.randint(1, 3)
                 if parent_child>1:
                     parent=True
                     list_of_attributes = [a for a in dir(Gene.Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous')]

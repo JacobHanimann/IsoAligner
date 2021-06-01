@@ -16,11 +16,13 @@ from Statistics import *
 import time
 
 
-#declare session state variables
-ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False,run_id_table=1, parameters=[1,2,3,4,5])
 
 #import database
 list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_27th_may.txt.gz')
+
+#declare session state variables
+ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False,run_id_table=1, parameters=[1,2,3,4,5], random_input = Input_flow.generate_random_example(list_of_gene_objects))
+
 
 
 #Streamlit website
@@ -66,7 +68,8 @@ def main():
 
         if ss.example:
             #input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, Q9Y6I3, Q9Y6I3-1, ENSG00000074410, ENSG00000164690.2, ENSP00000005756, ENSP00000075430.7, HGNC:10728, UPI00022F85F1, uc060zgm.1, NP_004702.2, ENST00000554846.5, SEMA5B-211, BRAF_HUMAN, NM_001304833, 1232, ENST00000551640, NP_775733, NM_003769.3''',key=ss.run_id)
-            input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',Input_flow.generate_random_example(list_of_gene_objects),key=ss.run_id)
+
+            input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',ss.random_input,key=ss.run_id)
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=ss.run_id)
         file_upload, search_button = st.beta_columns([2.58,1])
@@ -118,6 +121,7 @@ def main():
                 st.write('\n')
                 if st.button('Clear All'):
                     ss.clear_button = True
+                    ss.random_input = Input_flow.generate_random_example(list_of_gene_objects)
                     ss.run_id += 1
                     ss.example = False
                     ss.searched_clicked = False
