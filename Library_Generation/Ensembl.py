@@ -32,6 +32,8 @@ class Ensembl():
                     continue
                 else:
                     raw_accession = match
+            if '000' in gene_name or 'UPI' in gene_name:
+                gene_name=None
             sequence_object = Protein_isoform(aa_sequence, gene_name,
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg', fasta),
                                              Get_Bio_ID.get_bio_IDs_with_regex('ensembl_ensg_version', fasta),
@@ -45,6 +47,8 @@ class Ensembl():
                 if found:
                     break
                 if gene.ENSG == sequence_object.ENSG:
+                    if gene_name!=None and gene.ensembl_gene_symbol==None:
+                        gene.ensembl_gene_symbol = gene_name
                     if type(gene.protein_sequence_isoform_collection) == list:
                         gene.protein_sequence_isoform_collection.append(sequence_object)
                     else:

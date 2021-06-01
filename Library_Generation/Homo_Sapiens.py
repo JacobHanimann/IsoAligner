@@ -17,6 +17,16 @@ print('Pickling list of gene objects and saving file...')
 with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+date+"_first.txt", "wb") as fp:  # Pickling
     pickle.dump(list_of_gene_objects, fp)
 
+#no_gene_name =0
+#for gene in list_of_gene_objects:
+#    print(gene.__dict__)
+#    if gene.ensembl_gene_symbol==None:
+#        no_gene_name +=1
+#    if type(gene.protein_sequence_isoform_collection)==list:
+#        for sequence in gene.protein_sequence_isoform_collection:
+#            print(sequence.__dict__)
+#print('no gene names seq:',no_gene_name)
+
 print('Adding HGNC gene symbols to gene attributes...')
 HGNC.add_HCGN_information_to_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/HGNC_protein_coding_ensembl.txt',list_of_gene_objects)
 print('Pickling list of gene objects and saving file...')
