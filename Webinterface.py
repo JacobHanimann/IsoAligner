@@ -129,52 +129,42 @@ def main():
             chosen_gene = list(nested_dict.keys())[0]
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene)
+            one_isoform = False
             if len(transcript_list)==1:
-                st.info('ℹ️ There is only one splice variant stored in the human isoform library.')
-                st.markdown(' #### Isoform Sequence:')
-                st.write('\n')
-                st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
-                st.markdown(' #### Associated information in the library:')
-                st.write('\n')
-                gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
-                gene_dict.pop('protein_sequence_isoform_collection')
-                st.write('Gene:', gene_dict)
-                isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].__dict__)
-                isoform_dict.pop('collection_of_exons')
-                isoform_dict.pop('protein_sequence')
-                st.write('Protein Isoform:', isoform_dict)
+                one_isoform =True
+                Input_flow.pop_up_if_one_isoform(list_of_gene_objects,index_gene_object)
 
-
-            st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
-            reference_select, whitespace = st.beta_columns([1, 2.2])
-            with reference_select:
-                chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
-                index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-            ss.generate = True
-            st.text('\n')
-            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
-            st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
-            st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
-            st.write('\n')
-            st.text('\n')
-            with st.spinner('Visualising Alignments . . .'):
-                Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-            #Table section
-            parameter_change = False
-            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
-            generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
-            slot1 = st.empty()
-            value = Table_Generation.display_filter_option_AA()
-            if value == "":
-                    slot1.write(generated_table)
-            else:
-                filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
-                if not filter_df.empty:
-                    slot1.write(filter_df)
-                    st.info('ℹ️ Delete value to go back to original mapping table.')
+            if not one_isoform:
+                st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
+                reference_select, whitespace = st.beta_columns([1, 2.2])
+                with reference_select:
+                    chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
+                    index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
+                ss.generate = True
+                st.text('\n')
+                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
+                st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
+                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
+                st.write('\n')
+                st.text('\n')
+                with st.spinner('Visualising Alignments . . .'):
+                    Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+                #Table section
+                parameter_change = False
+                chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
+                generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
+                slot1 = st.empty()
+                value = Table_Generation.display_filter_option_AA()
+                if value == "":
+                        slot1.write(generated_table)
                 else:
-                    st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
-            Input_flow.generate_download_section(generated_table)
+                    filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
+                    if not filter_df.empty:
+                        slot1.write(filter_df)
+                        st.info('ℹ️ Delete value to go back to original mapping table.')
+                    else:
+                        st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
+                Input_flow.generate_download_section(generated_table)
 
 
         #case of using multiple ID's
@@ -198,6 +188,8 @@ def main():
                 transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
+            if len(transcript_list) == 2:
+                Input_flow.pop_up_if_one_isoform(list_of_gene_objects, index_gene)
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
@@ -215,7 +207,7 @@ def main():
             if  [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
                 parameter_change = True
                 ss.parameters = [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA]
-            chosen_columns = Input_flow.chose_columns(nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
+            chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
             if chosen_columns:
                 df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
                 if not df_all.empty:

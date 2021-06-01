@@ -120,7 +120,7 @@ class Input_flow:
 
 
     @staticmethod
-    def show_which_elements_are_not_canonical(nested_dict,dict_of_IDs):
+    def show_which_elements_are_not_canonical_and_one_isoform(list_of_gene_objects, nested_dict, dict_of_IDs):
         ''' warn the user that the reference transcript is not specified and automatically chosen
         :param input1_IDs:
         :return:
@@ -132,10 +132,25 @@ class Input_flow:
             if Input_flow.is_ID_in_parent_class(type) and element in nested_dict.keys():
                 list_of_parent_elements.append(element)
                 notspecified += 1
-        specified_elements = number_of_elements - notspecified
         if notspecified!=0:
             if number_of_elements !=1:
-                st.info('Note: '+str(notspecified) + '/' + str(number_of_elements) + " reference isoform ID's of the following genes were not specified in the Input field and are automatically chosen: "+', '.join(list_of_parent_elements)+')')
+                st.info('Note: '+str(notspecified) + '/' + str(number_of_elements) + " reference isoform ID's were not specified in the Input field and are automatically chosen: ("+', '.join(list_of_parent_elements)+')')
+            else:
+                pass
+
+        one_isoform = 0
+        list_of_one_isoform = []
+        for element in nested_dict.items():
+            gene_index = list(element[1].keys())[0]
+            if len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection)==1:
+                list_of_one_isoform.append(element[0])
+                one_isoform += 1
+        if one_isoform!=0:
+            if number_of_elements !=1:
+                st.info('For '+str(one_isoform) + '/' + str(
+                    number_of_elements) + " of the genes, only one isoform was found in the library: (" + ', '.join(
+                    list_of_one_isoform) + ')')
+
             else:
                 pass
 
@@ -197,7 +212,7 @@ class Input_flow:
 
 
     @staticmethod
-    def chose_columns(nested_dict,dict_of_IDs,run_id,parameter_change):
+    def chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,run_id,parameter_change):
         st.markdown("### Mapped Amino Acid Positions Table")
         generate_table = False
         if  parameter_change and run_id>1:
@@ -205,7 +220,7 @@ class Input_flow:
             generate_table = st.button('Click here to generate Mapping Table with updated parameters!')
 
         if  run_id==1 or generate_table or not parameter_change:
-            Input_flow.show_which_elements_are_not_canonical(nested_dict,dict_of_IDs)
+            Input_flow.show_which_elements_are_not_canonical_and_one_isoform(list_of_gene_objects,nested_dict, dict_of_IDs)
             container = st.beta_container()
             all = st.checkbox("Select all columns")
 
@@ -310,3 +325,20 @@ class Input_flow:
                         return example
             else:
                 return 'EGFR, Q9Y6I3-1, ENSG00000074410, ENSP00000075430.7, HGNC:10728, UPI00022F85F1'
+
+
+    @staticmethod
+    def pop_up_if_one_isoform(list_of_gene_objects,index_gene_object):
+        st.info('ℹ️ There is only one splice variant stored of this gene in the human isoform library.')
+        st.markdown(' #### Isoform Sequence:')
+        st.write('\n')
+        st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
+        st.markdown(' #### Associated information in the library:')
+        st.write('\n')
+        gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
+        gene_dict.pop('protein_sequence_isoform_collection')
+        st.write('Gene:', gene_dict)
+        isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].__dict__)
+        isoform_dict.pop('collection_of_exons')
+        isoform_dict.pop('protein_sequence')
+        st.write('Protein Isoform:', isoform_dict)
