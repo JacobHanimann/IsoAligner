@@ -6,10 +6,10 @@ from Uniprot import *
 from Validation_of_library import *
 from minimal_exon_length import *
 
-date = '27th_may'
+date = '1st_june'
 
 print('Creating list of gene objects with Ensembl Fasta files...')
-list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_fasta_IDs_gene_name.txt')
+list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_104_protein_coding_chromosomes.fasta.txt')
 
 
 #Fuse genes with same name but not same ENSG
@@ -57,7 +57,7 @@ with open("/Users/jacob/Desktop/Isoform Mapper Webtool/list_of_gene_objects_"+da
     list_of_gene_objects = pickle.load(fp)
 
 
-gene_dict_2 = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/GRCh38.103_protein_coding_patch.gtf')
+gene_dict_2 = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/HS_protein_coding_gene_104.gtf')
 genes_dict_median_2 = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict_2)
 Exon_Information.add_exon_minimal_to_gene_objects(list_of_gene_objects, genes_dict_median_2)
 

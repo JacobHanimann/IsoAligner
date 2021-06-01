@@ -182,7 +182,7 @@ class Validate_library():
 
 
     @staticmethod
-    def delete_genes_and_protein_isoforms_with_no_or_one_AA_seq(list_of_gene_objects):
+    def delete_genes_and_protein_isoforms_with_no_AA_seq(list_of_gene_objects):
         '''
         function that delets empty gene_objects
         :param list_of_gene_obejcts:
@@ -195,7 +195,6 @@ class Validate_library():
                 tobedeletedgene.append(index)
             else:
                 if len(gene.protein_sequence_isoform_collection) == 1:
-                    tobedeletedgene.append(index)
                     one_AA_seq += 1
         if tobedeletedgene:
             for ele in sorted(tobedeletedgene, reverse=True):

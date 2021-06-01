@@ -129,6 +129,22 @@ def main():
             chosen_gene = list(nested_dict.keys())[0]
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene)
+            if len(transcript_list)==1:
+                st.info('ℹ️ There is only one splice variant stored in the human isoform library.')
+                st.markdown(' #### Isoform Sequence:')
+                st.write('\n')
+                st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
+                st.markdown(' #### Associated information in the library:')
+                st.write('\n')
+                gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
+                gene_dict.pop('protein_sequence_isoform_collection')
+                st.write('Gene:', gene_dict)
+                isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].__dict__)
+                isoform_dict.pop('collection_of_exons')
+                isoform_dict.pop('protein_sequence')
+                st.write('Protein Isoform:', isoform_dict)
+
+
             st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
             reference_select, whitespace = st.beta_columns([1, 2.2])
             with reference_select:
