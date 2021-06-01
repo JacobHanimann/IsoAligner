@@ -19,7 +19,6 @@ class Ensembl():
         matches = 0
         list_of_gene_objects = []
         for fasta in splittext[1:]:
-            print(fasta)
             fasta_count += 1
             found = False
             gene_name = Get_Bio_ID.get_bio_IDs_with_regex('gene_name', fasta)
