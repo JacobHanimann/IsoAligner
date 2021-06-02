@@ -330,11 +330,18 @@ def main():
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
-        st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with the following default function parameters: ')
+        st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with following details: ')
         st.write('\n')
-        total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
-        needleman, minimal, ids_table = st.beta_columns([1, 1,1])
-        st.write(number_of_good_genes)
+        total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon, two_isoform_number, Ids_two = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        info,needleman, minimal = st.beta_columns([1, 1,1])
+        with info:
+            st.markdown("##### Volume")
+            st.write(' - Genes: ', number_of_good_genes," \n"
+            ' - Isoforms in total: ', two_isoform_number," \n"
+            " - ID's in total:", Ids_two," \n"
+            ' - Ø Isoform per gene:', round(two_isoform_number / number_of_good_genes, 1)," \n"
+            " - Ø ID's per AA seq:", round(Ids_two / two_isoform_number, 1)," \n")
+
         with needleman:
             st.markdown("##### Needleman-Wunsch function")
             st.write(" - match: ",match," \n"
@@ -344,12 +351,8 @@ def main():
 
                      )
         with minimal:
-            st.markdown("##### Minimal exon function")
-            st.write(
-                'Gene-Specific for ', minimal_exon_lengths,'of ', total_number_of_genes,'genes. For the remaining, a minimal exon length of ', mean_exon, 'AA was used.')
-        with ids_table:
-            st.markdown("##### ID's in the mapping table")
-            st. write("All types of associated ID's to every protein sequence were inlcuded in the mapping tables. (Listed under Manual & About)")
+            st.markdown("##### Minimal exon length function")
+            st.write('Gene-specific length for all genes. The median of the sum of all shortest exons is',mean_exon)
 
         st.write('### 📁 Download')
         st.write('The dataframe is ~5 GB and tab-separated (.tsv).')
@@ -401,17 +404,17 @@ def main():
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
-        total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_mme,Ids_in_total, minimal_exon_lengths, mean_exon, two_isoform_number, Ids_two = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         picture, statistics = st.beta_columns([2, 1.2])
         with statistics:
             st.markdown("#### Statistics:")
             st.write('\n')
-            st.write('Genes: ',total_number_of_genes)
+            st.write('Genes total:', minimal_exon_lengths)
+            st.write('Genes with 1< isoforms: ',number_of_good_genes)
             st.write('Isoforms in total: ',total_number_of_isoforms)
             st.write(" ID's in total:", Ids_in_total)
             st.write('Ø Isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
             st.write("Ø ID's per AA seq:", round(Ids_in_total/total_number_of_isoforms,1))
-            st.write('Genes with minimal exons:', minimal_exon_lengths)
             st.write('Median minimal exon length:', mean_exon)
         with picture:
             st.markdown("#### Generation and Structure of Library:")

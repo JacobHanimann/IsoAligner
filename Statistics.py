@@ -1,6 +1,7 @@
 import streamlit as st
 from Protein_isoform import *
 import statistics
+from Gene import *
 
 class Statistics:
     pass
@@ -12,29 +13,45 @@ class Statistics:
         :param list_of_gene_objects:
         :return: dictionary
         '''
-        total_number_of_genes = len(list_of_gene_objects)
+        number_of_genes = 0
         more_than_two_isoforms = 0
         total_number_of_isoforms = 0
-        genes_without_isoforms = 0
+        number_of_isoforms_two = 0
+        genes_without_mme = 0
         IDs_in_total = 0
+        number_of_IDs_two = 0
         minimal_exon_lengths = []
         isoform_attributes = Protein_isoform.list_of_attributes()
+        gene_attributes = Gene.list_of_attributes()
+        gene_attributes.remove('protein_sequence_isoform_collection')
         for gene in list_of_gene_objects:
             if gene.minimal_exon_length != None:
+                number_of_genes +=1
                 if len(gene.protein_sequence_isoform_collection) >= 2:
                      more_than_two_isoforms += 1
+                     number_of_isoforms_two = number_of_isoforms_two + len(gene.protein_sequence_isoform_collection)
+                     for attribute in gene_attributes:
+                        if getattr(gene, attribute) != None:
+                            number_of_IDs_two += 1
+                     for sequence in gene.protein_sequence_isoform_collection:
+                        for attribute in isoform_attributes:
+                            if getattr(sequence,attribute)!=None:
+                                number_of_IDs_two +=1
                 minimal_exon_lengths.append(gene.minimal_exon_length)
-            if type(gene.protein_sequence_isoform_collection) == list:
-                total_number_of_isoforms = total_number_of_isoforms + len(gene.protein_sequence_isoform_collection)
-                for sequence in gene.protein_sequence_isoform_collection:
-                    for attribute in isoform_attributes:
-                        if getattr(sequence,attribute)!=None:
-                            IDs_in_total +=1
+                for attribute in gene_attributes:
+                    if getattr(gene, attribute) != None:
+                        IDs_in_total += 1
+                if type(gene.protein_sequence_isoform_collection) == list:
+                    total_number_of_isoforms = total_number_of_isoforms + len(gene.protein_sequence_isoform_collection)
+                    for sequence in gene.protein_sequence_isoform_collection:
+                        for attribute in isoform_attributes:
+                            if getattr(sequence,attribute)!=None:
+                                IDs_in_total +=1
             else:
-                genes_without_isoforms += 1
+                genes_without_mme += 1
         minimal_exon_lengths = [exon for exon in minimal_exon_lengths if exon >=0]
         median_exon = statistics.median(minimal_exon_lengths)
-        return total_number_of_genes, more_than_two_isoforms, total_number_of_isoforms, genes_without_isoforms, IDs_in_total, len(minimal_exon_lengths), round(median_exon)
+        return number_of_genes, more_than_two_isoforms, total_number_of_isoforms, genes_without_mme, IDs_in_total, len(minimal_exon_lengths), round(median_exon), number_of_isoforms_two,number_of_IDs_two
 
 
     @staticmethod
