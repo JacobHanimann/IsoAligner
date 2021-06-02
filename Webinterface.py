@@ -301,7 +301,7 @@ def main():
         match = 1
         mismatch = -2
         gap_extend = 0
-        gap_open = -1.75
+        gap_open = -1
         exon_length_AA = 11
         if resource == "...org/api/map":
             st.markdown("### Resource: /map")
@@ -355,8 +355,10 @@ def main():
         Streamlit_community.create_download_section_from_ext_link('1Xu-dHy4My3qT9iebfN4eIU8CKl0kb0Ss', 'Click here to start download')
 
         for gene in list_of_gene_objects:
-                if gene.ensembl_gene_symbol == "LY6G5C":
+                if gene.minimal_exon_length==None:
                     st.write(gene.__dict__)
+                    for sequence in gene.protein_sequence_isoform_collection:
+                        st.write(sequence.__dict__)
 
     elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")
