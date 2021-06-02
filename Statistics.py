@@ -13,6 +13,7 @@ class Statistics:
         :return: dictionary
         '''
         total_number_of_genes = len(list_of_gene_objects)
+        more_than_two_isoforms = 0
         total_number_of_isoforms = 0
         genes_without_isoforms = 0
         IDs_in_total = 0
@@ -20,6 +21,8 @@ class Statistics:
         isoform_attributes = Protein_isoform.list_of_attributes()
         for gene in list_of_gene_objects:
             if gene.minimal_exon_length != None:
+                if len(gene.protein_sequence_isoform_collection) >= 2:
+                     more_than_two_isoforms += 1
                 minimal_exon_lengths.append(gene.minimal_exon_length)
             if type(gene.protein_sequence_isoform_collection) == list:
                 total_number_of_isoforms = total_number_of_isoforms + len(gene.protein_sequence_isoform_collection)
@@ -31,7 +34,7 @@ class Statistics:
                 genes_without_isoforms += 1
         minimal_exon_lengths = [exon for exon in minimal_exon_lengths if exon >=0]
         median_exon = statistics.median(minimal_exon_lengths)
-        return total_number_of_genes, total_number_of_isoforms, genes_without_isoforms, IDs_in_total, len(minimal_exon_lengths), round(median_exon)
+        return total_number_of_genes, more_than_two_isoforms, total_number_of_isoforms, genes_without_isoforms, IDs_in_total, len(minimal_exon_lengths), round(median_exon)
 
 
     @staticmethod

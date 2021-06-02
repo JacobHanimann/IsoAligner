@@ -332,8 +332,9 @@ def main():
         st.header("Pre-Computed Mapped Human Isoform Library")
         st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with the following default function parameters: ')
         st.write('\n')
-        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         needleman, minimal, ids_table = st.beta_columns([1, 1,1])
+        st.write(number_of_good_genes)
         with needleman:
             st.markdown("##### Needleman-Wunsch function")
             st.write(" - match: ",match," \n"
@@ -354,11 +355,9 @@ def main():
         st.write('The dataframe is ~5 GB and tab-separated (.tsv).')
         Streamlit_community.create_download_section_from_ext_link('1Xu-dHy4My3qT9iebfN4eIU8CKl0kb0Ss', 'Click here to start download')
 
-        for gene in list_of_gene_objects:
-                if gene.minimal_exon_length==None:
-                    st.write(gene.__dict__)
-                    for sequence in gene.protein_sequence_isoform_collection:
-                        st.write(sequence.__dict__)
+        #for gene in list_of_gene_objects:
+        #        if len(gene.protein_sequence_isoform_collection)==1:
+        #            st.write(gene.__dict__)
 
     elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")
@@ -402,7 +401,7 @@ def main():
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
-        total_number_of_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
+        total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         picture, statistics = st.beta_columns([2, 1.2])
         with statistics:
             st.markdown("#### Statistics:")
