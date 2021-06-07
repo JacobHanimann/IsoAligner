@@ -45,8 +45,8 @@ def main():
             st.title(" Amino Acid Isoform Aligner")
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
-                "Align protein isoforms interactively with a fitted Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
-                " The current human isoform library consists of ~18K protein coding genes covering ~130K protein sequences and +1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
+                "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
+                " The current human isoform library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
         with tRNA:
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
@@ -364,21 +364,21 @@ def main():
 
     elif choice == 'Manual & About':
         st.title(" Amino Acid Isoform Aligner")
-        st.markdown("### Biologically Appropriate Alignment of Isoforms:")
+        st.markdown("### Matching identical Exons")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
-                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by fitting the parameters of the Needleman Wunsch global alignment and validating its solution in an extra step to assure positional mapping of biologically corresponding amino acid positions only.  ')
+                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional comprehensibly corresponding AA’s exclusively.  ')
         problem_schema = Image.open('Pictures/mapping_problem_may.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
         needleman, minimal = st.beta_columns([1, 1.])
         with needleman:
             st.markdown("#### Needleman-Wunsch global alignment")
-            st.write(" - Big open gap penalty (Default -1.75) \n"
-                 "- Small extend gap penalty (Default 0)\n"
-                    "- Normal match and mismatch values (Default 1, -2)" )
+            st.write(" - Big open gap penalty (Default -1) \n"
+                 "- No extend gap penalty (Default 0)\n"
+                    "- Conventional match and mismatch values (Default 1, -2)" )
         with minimal:
             st.markdown("#### Discard falsely matched positions")
-            st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific or at least 5 AA per default.')
+            st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific and at least 3.')
         st.markdown("### Alignment example:")
         st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded.")
         example = Image.open('Pictures/example_may.png')
@@ -387,20 +387,20 @@ def main():
         st.markdown("### Manual Alignment Tool")
         st.write("Quick Start: Click on 'Show Example' and then 'Search Library for IDs' to get a overview.")
         st.write("1. Paste ID's, gene names or raw amino acid sequences"
-                 "\n    - The current human library consists of ~18K protein coding genes covering +130K protein sequences and +1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types (see figure below)."
+                 "\n    - The current human library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types (see figure below)."
                  "\n    - Click 'Search Library for IDs' or 'Align' to compute alignments"
                  "\n 2. Tweak function parameters in the sidebar and inspect the alignment previews"
                  "\n    - Set the mininmal exon length (in AA)"
                  "\n""    - Set Needleman-Wunsch parameters"
                  "\n 3. Explore the computed mapping table."
                 "\n    - Filter for specific amino acid position "
-                "\n     - Select ID's to be included dataframe."
+                "\n     - Select ID's to be included in the dataframe."
                 "\n    - Download dataframe: tab or comma separated (tsv/csv) "
                  )
         st.markdown("#### ⚠️ Important:")
         st.write("When multiple ID's are entered, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
                  " In this case, the isoform with the longest sequence is used as the reference to align against."
-                 " Also, be aware that the minimal exon length for the generation of the mapping table is likewise automatically chosen in this context. (gene-specific or at least 5 AA).")
+                 " Also, be aware that the minimal exon length for the generation of the mapping table is likewise automatically chosen in this context. (gene-specific and at least 3 AA).")
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
