@@ -239,7 +239,10 @@ class Table_Generation:
                     else:
                         print(gene)
             my_bar.empty()
-            df = pd.DataFrame(list_of_alignments, columns=(column_names))
+            if list_of_alignments:
+                df = pd.DataFrame(list_of_alignments, columns=(column_names))
+            else:
+                return ('no','matches')
 
         return df
 

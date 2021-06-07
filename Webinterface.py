@@ -153,18 +153,23 @@ def main():
                 parameter_change = False
                 chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
                 generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
-                slot1 = st.empty()
-                value = Table_Generation.display_filter_option_AA()
-                if value == "":
-                        slot1.write(generated_table)
-                else:
-                    filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
-                    if not filter_df.empty:
-                        slot1.write(filter_df)
-                        st.info('ℹ️ Delete value to go back to original mapping table.')
+                if not type(generated_table)==tuple:
+                    slot1 = st.empty()
+                    value = Table_Generation.display_filter_option_AA()
+                    if value == "":
+                            slot1.write(generated_table)
                     else:
-                        st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
-                Input_flow.generate_download_section(generated_table)
+                        filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
+                        if not filter_df.empty:
+                            slot1.write(filter_df)
+                            st.info('ℹ️ Delete value to go back to original mapping table.')
+                        else:
+                            st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
+                    Input_flow.generate_download_section(generated_table)
+                else:
+                    st.warning(
+                        'No amino acid positions mapped currently.')
+                    st.info(' Tweak function parameters on the left sidebar to allow matches!')
 
 
         #case of using multiple ID's
@@ -211,7 +216,7 @@ def main():
             chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
             if chosen_columns:
                 df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
-                if not df_all.empty:
+                if not type(df_all)==tuple:
                     with st.spinner('Preparing Preview of Mapping Table . . .'):
                         slot1 = st.empty()
                         value = Table_Generation.display_filter_option_AA()
@@ -229,7 +234,9 @@ def main():
                     st.text('\n')
                     Input_flow.generate_download_section(df_all)
                 else:
-                    st.warning('No amino acid positions mapped currently. Tweak function parameters to generate matches.')
+                    st.warning(
+                        'No amino acid positions mapped currently.')
+                    st.info(' Tweak function parameters on the left sidebar to allow matches!')
             ss.run_id_table += 1
 
         #Input 2 Area
