@@ -34,6 +34,9 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
+correct_aa_collection = 0
+false_aa_collection = 0
+mismatch_aa_collection = 0
 for index,gene in enumerate(list_of_gene_objects):
     #create nested dict for one gene
     if len(gene.protein_sequence_isoform_collection)==1:
@@ -41,16 +44,22 @@ for index,gene in enumerate(list_of_gene_objects):
     if gene.minimal_exon_length!=None:
         nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
         big_nested_dict.update(nested_dict)
+    if index % 1000 ==0:
+        correct_aa, false_aa, mismatch_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(
+            big_nested_dict, list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
+            gap_extension_penalty, conventional=conventional)
+        print(correct_aa)
+        print(false_aa)
+        print(mismatch_aa)
+        correct_aa_collection = correct_aa_collection + correct_aa
+        false_aa_collection = false_aa_collection + false_aa
+        mismatch_aa_collection = mismatch_aa_collection + mismatch_aa
+        nested_dict.clear()
+        big_nested_dict.clear()
 
-print(big_nested_dict)
-print(len(big_nested_dict))
 
-#create big dataframe
-correct_aa, false_aa, mismatch_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty,conventional=conventional)
+print(correct_aa_collection)
+print(false_aa_collection)
+print('mismatch',mismatch_aa_collection)
+print(false_aa_collection/(correct_aa_collection+false_aa_collection))
 
-
-print(correct_aa)
-print(false_aa)
-print('mismatch',mismatch_aa)
-print(false_aa/(correct_aa+false_aa))
-print(mismatch_aa/(correct_aa+false_aa+mismatch_aa))
