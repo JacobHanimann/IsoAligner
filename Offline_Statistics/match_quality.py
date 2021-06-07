@@ -44,7 +44,7 @@ for index,gene in enumerate(list_of_gene_objects):
     if gene.minimal_exon_length!=None:
         nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
         big_nested_dict.update(nested_dict)
-    if index % 1000 ==0:
+    if index % 500 ==0:
         correct_aa, false_aa, mismatch_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(
             big_nested_dict, list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
             gap_extension_penalty, conventional=conventional)
