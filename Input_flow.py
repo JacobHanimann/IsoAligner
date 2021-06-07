@@ -72,6 +72,10 @@ class Input_flow:
                             if element.upper() in getattr(gene, "alias_symbols"):
                                 dict_element_indexes[element] = index
                                 break
+                    if ID =="refseq_gene_ID":
+                        if getattr(gene, ID) == float(element):
+                            dict_element_indexes[element] = index
+                            break
                     else:
                         if getattr(gene, ID) == element:
                             dict_element_indexes[element] = index
@@ -337,6 +341,7 @@ class Input_flow:
         st.write('\n')
         gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
         gene_dict.pop('protein_sequence_isoform_collection')
+        gene_dict.pop('refseq_gene_ID')
         st.write('Gene:', gene_dict)
         isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].__dict__)
         isoform_dict.pop('collection_of_exons')
