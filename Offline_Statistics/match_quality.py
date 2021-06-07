@@ -62,4 +62,3 @@ print(correct_aa_collection)
 print(false_aa_collection)
 print('mismatch',mismatch_aa_collection)
 print(false_aa_collection/(correct_aa_collection+false_aa_collection))
-
