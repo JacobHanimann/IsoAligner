@@ -72,7 +72,7 @@ class Input_flow:
                             if element.upper() in getattr(gene, "alias_symbols"):
                                 dict_element_indexes[element] = index
                                 break
-                    if ID =="refseq_gene_ID":
+                    elif ID =="refseq_gene_ID":
                         if getattr(gene, ID) == float(element):
                             dict_element_indexes[element] = index
                             break
@@ -291,7 +291,7 @@ class Input_flow:
             st.text('\n')
             st.text('\n')
             st.markdown(
-                Streamlit_community.get_table_download_link(df, 'DataframeMappedIsoforms.' + sep_choice, sep),
+                Streamlit_community.get_table_download_link(df, 'Click here to download', sep),
                 unsafe_allow_html=True)
 
     @staticmethod

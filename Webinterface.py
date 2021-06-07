@@ -94,7 +94,7 @@ def main():
         if ss.searched_clicked and input1 !="""""":
             with st.spinner('Checking database . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-                st.write(dict_of_IDs)
+                #st.write(dict_of_IDs)
                 #if an element is an amino acid:
                     #warning message
                 #else (no AA sequence)
@@ -337,10 +337,6 @@ def main():
             st.write("In case of stating two ID's in the request, you can retrieve single corresponding AA positions of the alternative isoform sequence. As an example:")
             st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
             st.markdown("response: <em> 993 </em> ", unsafe_allow_html=True)
-
-
-        for gene in list_of_gene_objects[0:20]:
-            st.write(gene.refseq_gene_ID)
 
 
         st.write("--------------------------")
