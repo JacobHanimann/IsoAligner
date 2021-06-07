@@ -143,8 +143,8 @@ def main():
                 ss.generate = True
                 st.text('\n')
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
-                st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
-                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
+                st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
+                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
                 st.write('\n')
                 st.text('\n')
                 with st.spinner('Visualising Alignments . . .'):
@@ -193,8 +193,9 @@ def main():
             ss.generate = True
             st.text('\n')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
-            st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
-            st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
+            st.markdown(
+                " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
+            st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
             st.write('\n')
             st.text('\n')
             gene_index = list(nested_dict[re.split(' \(',Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
@@ -253,8 +254,8 @@ def main():
                 percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
                 st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
                 st.write("\n")
-                st.markdown(" ###### ℹ️Syntax: 'x' are discarded matches determined by the minimal exon length and '|' are valid matches of identical exons")
-                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per isoform")
+                st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
+                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
                 st.write("\n")
                 st.write("\n")
                 generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
@@ -264,13 +265,16 @@ def main():
                     with download:
                         st.write("\n")
                         st.write("\n")
+                        st.write("\n")
+                        st.write("\n")
+                        st.write("\n")
                         st.markdown("#### 📁 Download")
                         sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
                         if sep_choice == "tsv":
                             sep = '\t'
                         else:
                             sep = ','
-                        st.markdown(Streamlit_community.get_table_download_link(generated_table, 'Click here to download' + sep_choice, sep),unsafe_allow_html=True)
+                        st.markdown(Streamlit_community.get_table_download_link(generated_table, 'Click here to download', sep),unsafe_allow_html=True)
                     with table:
                         st.markdown("### Mapped Amino Acid Positions Table")
                         st.write("\n")
