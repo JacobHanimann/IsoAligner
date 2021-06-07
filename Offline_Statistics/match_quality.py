@@ -37,14 +37,17 @@ big_nested_dict = {}
 correct_aa_collection = 0
 false_aa_collection = 0
 mismatch_aa_collection = 0
+length =0
 for index,gene in enumerate(list_of_gene_objects):
     #create nested dict for one gene
     if len(gene.protein_sequence_isoform_collection)==1:
         continue
     if gene.minimal_exon_length!=None:
+        length +=1
         nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
         big_nested_dict.update(nested_dict)
-    if index % 500 ==0:
+    if index % 10 ==0:
+        print('index',index)
         correct_aa, false_aa, mismatch_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(
             big_nested_dict, list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
             gap_extension_penalty, conventional=conventional)
@@ -58,6 +61,7 @@ for index,gene in enumerate(list_of_gene_objects):
         big_nested_dict.clear()
 
 
+print('length',length)
 print(correct_aa_collection)
 print(false_aa_collection)
 print('mismatch',mismatch_aa_collection)
