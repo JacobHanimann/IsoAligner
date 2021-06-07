@@ -15,7 +15,7 @@ from Statistics import *
 conventional = False
 
 #load library
-list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_27th_may.txt.gz')
+list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_1st_june.txt.gz')
 
 #standard function parameters
 match = 1
@@ -34,12 +34,16 @@ chosen_columns = ['Gene name', 'Ensembl Gene ID (ENSG)', 'Ensembl Transcript ID 
                       'Refseq Transcript ID version (NP.Number)',
                       'HGNC ID (HGNC:Number)']
 big_nested_dict = {}
-for index,gene in enumerate(list_of_gene_objects[0:1000]):
+for index,gene in enumerate(list_of_gene_objects):
     #create nested dict for one gene
-    nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
-    big_nested_dict.update(nested_dict)
+    if len(gene.protein_sequence_isoform_collection)==1:
+        continue
+    if gene.minimal_exon_length!=None:
+        nested_dict = {gene.ensembl_gene_symbol:{index:Input_flow.pick_index_of_canonical_sequence(list_of_gene_objects,index)}}
+        big_nested_dict.update(nested_dict)
 
 print(big_nested_dict)
+print(len(big_nested_dict))
 
 #create big dataframe
 correct_aa, false_aa, mismatch_aa = Table_Generation_match.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty,conventional=conventional)
@@ -50,4 +54,3 @@ print(false_aa)
 print('mismatch',mismatch_aa)
 print(false_aa/(correct_aa+false_aa))
 print(mismatch_aa/(correct_aa+false_aa+mismatch_aa))
-
