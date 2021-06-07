@@ -241,7 +241,6 @@ def main():
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
                 #Sidebar pop up, make function out of it?
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, raw=True)
-                st.markdown("### Results")
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
@@ -249,7 +248,7 @@ def main():
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
                 #st.text(Alignment_preview)
                 st.write("\n")
-                st.markdown("#### Alignment")
+                st.markdown("### Alignment Preview")
                 st.write("\n")
                 percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
                 st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
@@ -260,7 +259,7 @@ def main():
                 st.write("\n")
                 generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
                 if not generated_table.empty:
-                    table, whitespace, download = st.beta_columns([1,0.2,1])
+                    table, whitespace, download = st.beta_columns([1.25,0.2,1])
                     st.write("\n")
                     with download:
                         st.write("\n")
@@ -271,9 +270,9 @@ def main():
                             sep = '\t'
                         else:
                             sep = ','
-                        st.markdown(Streamlit_community.get_table_download_link(generated_table, 'dataframe.' + sep_choice, sep),unsafe_allow_html=True)
+                        st.markdown(Streamlit_community.get_table_download_link(generated_table, 'Click here to download' + sep_choice, sep),unsafe_allow_html=True)
                     with table:
-                        st.markdown("##### Correctly mapped AA positions")
+                        st.markdown("### Mapped Amino Acid Positions Table")
                         st.write("\n")
                         st.write(generated_table)
                 else:
@@ -421,23 +420,12 @@ def main():
             st.write('\n')
             library = Image.open('Pictures/human_libary.png')
             st.image(library, use_column_width=True,width=None)
-        #st.write("Gene object attributes:", Gene.list_of_attributes())
-        #st.write("Collection of Isoform ID's includes:",Protein_isoform.list_of_attributes())
-        #st.write('gene objects without isoforms: ',genes_without_isoforms)
-        duplicates_number, genes_without_duplicates, redundant_sequences, genes_with_more_than_one_duplicate = Statistics.check_if_there_are_AA_seq_duplicates(list_of_gene_objects)
-        #st.write('Genes with AA seq duplicates: ', duplicates_number)
-        #st.write('Genes without AA seq duplicates: ', genes_without_duplicates)
-        #st.write('Redundant AA sequences:', redundant_sequences)
-        #st.write('Genes with more than one AA seq duplicate: ', genes_with_more_than_one_duplicate)
-        #st.write('Ensembl IDs: ')
-        #st.write('Refseq IDs: ')
-        #st.write('Uniprot IDs: ')
         st.write("--------------------------")
         st.markdown("#### Contact:")
         st.write("\n")
         st.write("Please get in touch for suggestions or to report bugs :)")
         st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
-        st.write('Bioinformatics group: https://clinicalcompbio.org/')
+        st.write('Bioinformatics group: https://www.sib.swiss/abdullah-kahraman-group')
         st.write('---------------')
         st.markdown("#### License:")
         st.write("\n")
