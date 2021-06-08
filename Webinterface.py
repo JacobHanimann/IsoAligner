@@ -45,7 +45,7 @@ def main():
             st.title(" Amino Acid Isoform Aligner")
             st.subheader("Map Amino Acid Positions Across Isoforms")
             st.write(
-                "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and set the minimal exon length to discard falsely mapped positions."
+                "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and gene-specific minimal exon lengths to match comprehensibly corresponding amino acid positions exclusively."
                 " The current human isoform library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
         with tRNA:
             st.write('\n')
