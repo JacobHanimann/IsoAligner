@@ -92,7 +92,7 @@ def main():
         input1_IDs = []
 
         if ss.searched_clicked and input1 !="""""":
-            with st.spinner('Checking database . . .'):
+            with st.spinner('Checking library . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
                 #st.write(dict_of_IDs)
                 #if an element is an amino acid:
