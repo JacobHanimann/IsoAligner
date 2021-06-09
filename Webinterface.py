@@ -24,7 +24,7 @@ ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False,
 
 
 if ss.run_id !=0:
-    print('run ID changed')
+    print('run ID changed',time)
 
 #Streamlit website
 def main():
