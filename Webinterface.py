@@ -22,6 +22,10 @@ list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_
 #declare session state variables
 ss = SessionState.get(clicked=False,searched_clicked=False, align_clicked=False, generate=False,run_id=0,example=False, clear_button=False,run_id_table=1, parameters=[1,2,3,4,5], random_input = Input_flow.generate_random_example(list_of_gene_objects))
 
+
+if ss.run_id !=0:
+    print('run ID changed')
+
 #Streamlit website
 def main():
     """ Isoform Alignment Tool """
