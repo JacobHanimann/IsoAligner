@@ -152,7 +152,7 @@ class Input_flow:
         if one_isoform!=0:
             if number_of_elements !=1:
                 st.info('For '+str(one_isoform) + '/' + str(
-                    number_of_elements) + " of the genes, only one isoform was found in the library: (" + ', '.join(
+                    number_of_elements) + " of the genes, only one protein sequence was found in the library: (" + ', '.join(
                     list_of_one_isoform) + ')')
 
             else:
@@ -300,7 +300,7 @@ class Input_flow:
         one_example=False
         parent=False
         fulfilled = False
-        random_number_of_examples = random.randint(1,3)
+        random_number_of_examples = random.randint(1,2)
         while not fulfilled:
             if random_number_of_examples >1:
                 one_example=True
@@ -308,8 +308,8 @@ class Input_flow:
                 parent_child = random.randint(1, 3)
                 if parent_child>1:
                     parent=True
-                    list_of_attributes = [a for a in dir(Gene.Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous')]
-                    ID_type = random.randint(0,5)
+                    list_of_attributes = [a for a in dir(Gene.Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous') and not a.startswith('refseq')]
+                    ID_type = random.randint(0,4)
                     gene_index = random.randint(0,len(list_of_gene_objects))
                     example = getattr(list_of_gene_objects[gene_index],list_of_attributes[ID_type])
                     if example!=None:
@@ -319,8 +319,7 @@ class Input_flow:
                     list_of_attributes = [a for a in dir(Protein_isoform.Protein_isoform('jkfbkjsdbfbkjbbd')) if
                                           not a.startswith('__') and not a.startswith('list_') and not a.startswith(
                                               'protein') and not a.startswith(
-                                              'collection') and not a.startswith(
-                                              'refseq_')]
+                                              'collection')]
                     ID_type = random.randint(0, 15)
                     gene_index = random.randint(0, len(list_of_gene_objects))
                     isoform_number=len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection)
@@ -334,7 +333,7 @@ class Input_flow:
 
     @staticmethod
     def pop_up_if_one_isoform(list_of_gene_objects,index_gene_object):
-        st.info('ℹ️ There is only one splice variant stored of this gene in the human isoform library.')
+        st.info('ℹ️ There is only one protein sequence stored of this gene in the human isoform library.')
         st.markdown(' #### Isoform Sequence:')
         st.write('\n')
         st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
@@ -342,7 +341,6 @@ class Input_flow:
         st.write('\n')
         gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
         gene_dict.pop('protein_sequence_isoform_collection')
-        gene_dict.pop('refseq_gene_ID')
         st.write('Gene:', gene_dict)
         isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].__dict__)
         isoform_dict.pop('collection_of_exons')

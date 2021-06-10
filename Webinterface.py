@@ -344,17 +344,17 @@ def main():
         if parameter == 'match' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: match")
             st.write(
-                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to reward matches. This value can only be positive.")
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to reward matches. This value must be ≥ 0.")
 
         if parameter == 'mismatch' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: mismatch")
             st.write(
-                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize mismatches. This value can only be negative.")
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize mismatches. This value must be ≤ 0.")
 
         if parameter == 'gap_open' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: gap_open")
             st.write(
-                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize opening a gap. This value can only be negative")
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize opening a gap. This value can only be negative.")
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
@@ -438,7 +438,7 @@ def main():
             st.markdown("#### Statistics:")
             st.write('\n')
             st.write('Genes total:', minimal_exon_lengths)
-            st.write('Genes with 1< isoforms: ',number_of_good_genes)
+            st.write('Genes with 2 ≤ isoforms: ',number_of_good_genes)
             st.write('Isoforms in total: ',total_number_of_isoforms)
             st.write(" ID's in total:", Ids_in_total)
             st.write('Ø Isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
