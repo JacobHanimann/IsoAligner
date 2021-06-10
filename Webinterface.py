@@ -351,10 +351,23 @@ def main():
             st.write(
                 "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize mismatches. This value must be ≤ 0.")
 
-        if parameter == 'gap_open' or parameter == 'ℹ️ Show All Parameters':
+        if parameter == 'open_gap' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: open_gap")
+            st.write(
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize opening a gap. This value must be ≤ 0.")
+
+        if parameter == 'gap_extend' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: gap_open")
             st.write(
-                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize opening a gap. This value can only be negative.")
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize extending a gap. This value must be ≤ 0.")
+
+        if parameter == 'df_ids' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: df_ids")
+            st.write("Choose which sequence database ID's you want to include in the mapping table. Per default, the mapping table consists of the same type of ID's sent with the request. Available options are: [ensembl, refseq, uniprot, ucsc, hgnc]. Example to retrieve only ensembl and uniprot ID's:")
+            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&df_ids=[ensembl,uniprot] </em> ",
+                        unsafe_allow_html=True)
+
+
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
