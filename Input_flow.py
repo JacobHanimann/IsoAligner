@@ -319,7 +319,8 @@ class Input_flow:
                     list_of_attributes = [a for a in dir(Protein_isoform.Protein_isoform('jkfbkjsdbfbkjbbd')) if
                                           not a.startswith('__') and not a.startswith('list_') and not a.startswith(
                                               'protein') and not a.startswith(
-                                              'collection')]
+                                              'collection') and not a.startswith(
+                                              'refseq_')]
                     ID_type = random.randint(0, 15)
                     gene_index = random.randint(0, len(list_of_gene_objects))
                     isoform_number=len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection)
