@@ -301,9 +301,9 @@ def main():
             method = st.selectbox('Methods:', ['GET'])
         with parameters:
             if resource=="...org/api/map":
-                parameter = st.selectbox('Parameters: ',['id1','id2','pos',"match","mismatch", "open_gap", "gap_ext","min_ex_len",'df_ids', 'ℹ️ Show All Parameters'])
+                parameter = st.selectbox('Parameters: ',['id1','id2','pos',"min_ex_len",'df_ids',"match","mismatch", "open_gap", "gap_ext", 'ℹ️ Show All Parameters'])
             else:
-                parameter = st.selectbox('Parameters: ',['seq1','seq2',"match","mismatch", "open_gap", "gap_ext","min_ex_len", 'ℹ️ show all parameters'])
+                parameter = st.selectbox('Parameters: ',['seq1','seq2',"min_ex_len", "match","mismatch", "open_gap", "gap_ext", 'ℹ️ show all parameters'])
         #default parameters
         match = 1
         mismatch = -2
@@ -316,6 +316,7 @@ def main():
         if resource == "...org/api/align":
             st.markdown("### Resource: /align")
             st.write('With this resource, you can align two raw amino acid sequences sent with the request and retrieve a mapping table in json format. The required parameters are seq1 and seq2.')
+
         if parameter == 'id1' or parameter =='ℹ️ Show All Parameters':
             st.write(" ##### Parameter: id1")
             st.write('ID of any type (Ensembl, Refseq, Uniprot, UCSC) to access the isoforms of a gene of the human isoform library. '
@@ -341,31 +342,46 @@ def main():
             st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23 </em> ",
                         unsafe_allow_html=True)
 
-        if parameter == 'match' or parameter == 'ℹ️ Show All Parameters':
+        if parameter == 'df_ids' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: df_ids")
+            st.write(
+                "Choose which sequence database ID's you want to include in the mapping table. Per default, the mapping table consists of the same type of ID's sent with the request. Available options are: [ensembl, refseq, uniprot, ucsc, hgnc]. Example to retrieve only ensembl and uniprot ID's:")
+            st.markdown(
+                "request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&df_ids=[ensembl,uniprot] </em> ",
+                unsafe_allow_html=True)
+
+        #align resource
+
+        if parameter == 'seq1' or parameter =='seq2' or parameter == 'ℹ️ show all parameters':
+            st.write(" ##### Parameter: seq1 and seq2")
+            st.write("Reference and alternative raw amino acid sequences. Must be at least 7 AA's long, for example:")
+            st.text('www.isoaligner.org/api/align?seq1=CRSSWTAAMELSAEYLREKLQRDLEAEHVEVEDTTLNRCSCSFRVLVVSAKFEGKPLLQRHSLDPSMTIHCDMVITYGLDQLENCQTCGTDYIISVLNLLTLI&seq2=YLREKLQRDLEAEHVEVEDTTLNRCSCSFRVLVVSAKFEGKPLLQRH')
+
+        if parameter == 'min_ex_len' or parameter == 'ℹ️ show all parameters':
+            st.write(" ##### Parameter: min_ex_len")
+            st.write(
+                "The alignment parameter for the minimal exon length (consecutive AA) is per default 12 and can be manually defined followingly: ")
+            st.text('www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23')
+
+        if parameter == 'match' or parameter == 'ℹ️ Show All Parameters' or parameter == 'ℹ️ show all parameters':
             st.write(" ##### Parameter: match")
             st.write(
                 "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to reward matches. This value must be ≥ 0.")
 
-        if parameter == 'mismatch' or parameter == 'ℹ️ Show All Parameters':
+        if parameter == 'mismatch' or parameter == 'ℹ️ Show All Parameters' or parameter == 'ℹ️ show all parameters':
             st.write(" ##### Parameter: mismatch")
             st.write(
                 "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize mismatches. This value must be ≤ 0.")
 
-        if parameter == 'open_gap' or parameter == 'ℹ️ Show All Parameters':
+        if parameter == 'open_gap' or parameter == 'ℹ️ Show All Parameters' or parameter == 'ℹ️ show all parameters':
             st.write(" ##### Parameter: open_gap")
             st.write(
                 "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize opening a gap. This value must be ≤ 0.")
 
-        if parameter == 'gap_extend' or parameter == 'ℹ️ Show All Parameters':
+        if parameter == 'gap_extend' or parameter == 'ℹ️ Show All Parameters' or parameter == 'ℹ️ show all parameters':
             st.write(" ##### Parameter: gap_open")
             st.write(
                 "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize extending a gap. This value must be ≤ 0.")
-
-        if parameter == 'df_ids' or parameter == 'ℹ️ Show All Parameters':
-            st.write(" ##### Parameter: df_ids")
-            st.write("Choose which sequence database ID's you want to include in the mapping table. Per default, the mapping table consists of the same type of ID's sent with the request. Available options are: [ensembl, refseq, uniprot, ucsc, hgnc]. Example to retrieve only ensembl and uniprot ID's:")
-            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&df_ids=[ensembl,uniprot] </em> ",
-                        unsafe_allow_html=True)
 
 
 
