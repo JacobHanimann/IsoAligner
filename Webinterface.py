@@ -344,8 +344,17 @@ def main():
         if parameter == 'match' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: match")
             st.write(
-                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter.")
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to reward matches. This value can only be positive.")
 
+        if parameter == 'mismatch' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: mismatch")
+            st.write(
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize mismatches. This value can only be negative.")
+
+        if parameter == 'gap_open' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: gap_open")
+            st.write(
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize opening a gap. This value can only be negative")
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
