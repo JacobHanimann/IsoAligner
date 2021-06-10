@@ -335,6 +335,17 @@ def main():
             st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
             st.markdown("response: <em> 993 </em> ", unsafe_allow_html=True)
 
+        if parameter == 'min_ex_len' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: min_ex_len")
+            st.write("The alignment parameter for the minimal exon length (consecutive AA) is gene-specific per default and can be manually defined followingly: ")
+            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23 </em> ",
+                        unsafe_allow_html=True)
+
+        if parameter == 'match' or parameter == 'ℹ️ Show All Parameters':
+            st.write(" ##### Parameter: match")
+            st.write(
+                "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter.")
+
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
