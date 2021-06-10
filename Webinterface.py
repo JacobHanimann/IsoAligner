@@ -336,10 +336,11 @@ def main():
             st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
             st.markdown("response: <em> 993 </em> ", unsafe_allow_html=True)
 
-        if parameter == 'min_ex_len' or parameter == 'ℹ️ Show All Parameters':
-            st.write(" ##### Parameter: min_ex_len")
-            st.write("The alignment parameter for the minimal exon length (consecutive AA) is gene-specific per default and can be manually defined followingly: ")
-            st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23 </em> ",
+        if resource == "...org/api/map":
+            if parameter == 'min_ex_len' or parameter == 'ℹ️ Show All Parameters':
+                st.write(" ##### Parameter: min_ex_len")
+                st.write("The alignment parameter for the minimal exon length (consecutive AA) is gene-specific per default and can be manually defined followingly: ")
+                st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23 </em> ",
                         unsafe_allow_html=True)
 
         if parameter == 'df_ids' or parameter == 'ℹ️ Show All Parameters':
@@ -353,15 +354,16 @@ def main():
         #align resource
 
         if parameter == 'seq1' or parameter =='seq2' or parameter == 'ℹ️ show all parameters':
-            st.write(" ##### Parameter: seq1 and seq2")
+            st.write(" ##### Parameters: seq1 and seq2")
             st.write("Reference and alternative raw amino acid sequences. Must be at least 7 AA's long, for example:")
             st.text('www.isoaligner.org/api/align?seq1=CRSSWTAAMELSAEYLREKLQRDLEAEHVEVEDTTLNRCSCSFRVLVVSAKFEGKPLLQRHSLDPSMTIHCDMVITYGLDQLENCQTCGTDYIISVLNLLTLI&seq2=YLREKLQRDLEAEHVEVEDTTLNRCSCSFRVLVVSAKFEGKPLLQRH')
 
-        if parameter == 'min_ex_len' or parameter == 'ℹ️ show all parameters':
-            st.write(" ##### Parameter: min_ex_len")
-            st.write(
-                "The alignment parameter for the minimal exon length (consecutive AA) is per default 12 and can be manually defined followingly: ")
-            st.text('www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23')
+        if resource=="...org/api/align":
+            if parameter == 'min_ex_len' or parameter == 'ℹ️ show all parameters':
+                st.write(" ##### Parameter: min_ex_len")
+                st.write(
+                    "The alignment parameter for the minimal exon length (consecutive AA) is per default 12 and can be manually defined followingly: ")
+                st.text('www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&min_ex_len=23')
 
         if parameter == 'match' or parameter == 'ℹ️ Show All Parameters' or parameter == 'ℹ️ show all parameters':
             st.write(" ##### Parameter: match")
