@@ -504,11 +504,6 @@ def main():
 
 #Execution
 
-#Default Needleman- Wunsch Parameters:
-match=2
-mismatch= -1.75
-open_gap_penalty= -1
-gap_extension_penalty= 0
 
 #Execution
 if __name__ == '__main__':
