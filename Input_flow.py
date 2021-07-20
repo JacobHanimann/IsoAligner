@@ -1,8 +1,6 @@
-import re
 import pickle
-import streamlit as st
 import urllib
-from Streamlit_community import *
+from Streamlit_app.Streamlit_community import *
 import gzip
 import random
 import Gene

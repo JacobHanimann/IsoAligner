@@ -1,9 +1,7 @@
 import pandas as pd
 from Alignment import *
-import streamlit as st
-from Statistics import *
-import Bio
-from Bio.pairwise2 import format_alignment, align
+from Streamlit_app.Statistics import *
+
 
 class Table_Generation:
     pass

@@ -3,7 +3,7 @@
 Usage
 -----
 
->>> import SessionState
+>>> from Streamlit_app import SessionState
 >>>
 >>> session_state = SessionState.get(user_name='', favorite_color='black')
 >>> session_state.user_name

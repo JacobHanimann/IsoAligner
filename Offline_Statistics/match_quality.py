@@ -1,15 +1,5 @@
-from Gene import *
-from Protein_isoform import *
-from Streamlit_community import *
-from Input_flow import *
-from Streamlit_Pop_ups import *
-from Alignment import *
-from Visualise_Alignment import *
-from User_Input_Preparation import *
 from Input_flow import *
 from Table_Generation_match_statistics import *
-from PIL import Image
-from Statistics import *
 
 #choose if standard needleman-wunsch should be used
 conventional = False

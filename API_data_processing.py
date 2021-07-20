@@ -1,29 +1,10 @@
-from flask import Flask
-from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
-from flask_caching import Cache
-from Visualise_Alignment import *
-from Alignment import *
-import pickle
-from Gene import *
-from Protein_isoform import *
-import sys
 # insert at position 1 in the path, as 0 is the path of this file.
 #sys.path.insert(1, '../')
-import sys
-from Gene import *
-from Protein_isoform import *
-from Streamlit_community import *
-from Input_flow import *
-from Streamlit_Pop_ups import *
-from Alignment import *
 from Visualise_Alignment import *
 from User_Input_Preparation import *
 from Input_flow import *
 from Table_Generation import *
-from PIL import Image
-from Statistics import *
-from Table_Generation import *
-from flask_caching import Cache
+
 
 class Data_processing():
     pass

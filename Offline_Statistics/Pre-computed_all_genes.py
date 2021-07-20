@@ -1,15 +1,5 @@
-from Gene import *
-from Protein_isoform import *
-from Streamlit_community import *
-from Input_flow import *
-from Streamlit_Pop_ups import *
-from Alignment import *
-from Visualise_Alignment import *
-from User_Input_Preparation import *
 from Input_flow import *
 from Table_Generation import *
-from PIL import Image
-from Statistics import *
 
 #load library
 list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
