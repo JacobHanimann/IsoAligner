@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../IsoAligner_core/')
 import SessionState
 from Streamlit_Pop_ups import *
 from IsoAligner_core.Visualise_Alignment import *
@@ -6,6 +8,7 @@ from IsoAligner_core.Input_flow import *
 from IsoAligner_core.Table_Generation import *
 from PIL import Image
 from Statistics import *
+
 
 #import database
 list_of_gene_objects = Input_flow.import_data_from_github('../list_of_gene_objects_1st_june.txt.gz')
