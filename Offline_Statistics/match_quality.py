@@ -1,4 +1,4 @@
-from Input_flow import *
+from IsoAligner_core.Input_flow import *
 from Table_Generation_match_statistics import *
 
 #choose if standard needleman-wunsch should be used

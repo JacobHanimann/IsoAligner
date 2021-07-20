@@ -1,5 +1,5 @@
 import pandas as pd
-from Alignment import *
+from IsoAligner_core.Alignment import *
 from Streamlit_app.Statistics import *
 
 

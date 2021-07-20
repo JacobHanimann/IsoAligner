@@ -3,7 +3,7 @@ import urllib
 from Streamlit_app.Streamlit_community import *
 import gzip
 import random
-import Gene
+from IsoAligner_core import Gene
 import Protein_isoform
 
 class Input_flow:

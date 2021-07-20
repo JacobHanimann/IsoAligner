@@ -1,6 +1,6 @@
-from Gene import *
-from Protein_isoform import *
-from Alignment import *
+from IsoAligner_core.Gene import *
+from IsoAligner_core.Protein_isoform import *
+from IsoAligner_core.Alignment import *
 from Extractions_BioIDs import *
 
 

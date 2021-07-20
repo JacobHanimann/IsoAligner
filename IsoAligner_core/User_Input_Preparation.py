@@ -1,6 +1,5 @@
-import re
-from Alignment import *
-import streamlit as st
+from IsoAligner_core.Alignment import *
+
 
 class Input_preparation:
     pass

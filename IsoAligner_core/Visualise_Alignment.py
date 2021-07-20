@@ -1,7 +1,5 @@
-import re
 from collections import Counter
-import streamlit as st
-from Alignment import *
+from IsoAligner_core.Alignment import *
 
 class Visualise_Alignment:
     pass

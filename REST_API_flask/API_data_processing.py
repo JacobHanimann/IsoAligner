@@ -1,9 +1,9 @@
 # insert at position 1 in the path, as 0 is the path of this file.
 #sys.path.insert(1, '../')
-from Visualise_Alignment import *
-from User_Input_Preparation import *
-from Input_flow import *
-from Table_Generation import *
+from IsoAligner_core.Visualise_Alignment import *
+from IsoAligner_core.User_Input_Preparation import *
+from IsoAligner_core.Input_flow import *
+from IsoAligner_core.Table_Generation import *
 
 
 class Data_processing():

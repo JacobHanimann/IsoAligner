@@ -1,5 +1,5 @@
-from Input_flow import *
-from Table_Generation import *
+from IsoAligner_core.Input_flow import *
+from IsoAligner_core.Table_Generation import *
 
 #load library
 list_of_gene_objects = Input_flow.import_data_from_github('list_of_gene_objects_4th_may.txt.gz')

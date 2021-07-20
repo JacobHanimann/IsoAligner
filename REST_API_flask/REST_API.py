@@ -1,6 +1,6 @@
 # insert at position 1 in the path, as 0 is the path of this file.
 #sys.path.insert(1, '../')
-from API_data_processing import *
+from REST_API_flask.API_data_processing import *
 from cachetools import cached, TTLCache
 
 
@@ -23,7 +23,7 @@ def import_data_from_github(file):
     return list_of_gene_objects
 
 #cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
-list_of_gene_objects = import_data_from_github('list_of_gene_objects_1st_june.txt.gz')
+list_of_gene_objects = import_data_from_github('../list_of_gene_objects_1st_june.txt.gz')
 
 #standard parameters if no body is sent with the request
 match = 1

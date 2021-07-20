@@ -1,5 +1,5 @@
 import pandas as pd
-from Gene import *
+from IsoAligner_core.Gene import *
 
 
 class HGNC():

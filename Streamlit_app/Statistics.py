@@ -1,7 +1,6 @@
-import streamlit as st
-from Protein_isoform import *
+from IsoAligner_core.Protein_isoform import *
 import statistics
-from Gene import *
+from IsoAligner_core.Gene import *
 
 class Statistics:
     pass

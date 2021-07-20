@@ -1,9 +1,9 @@
 import SessionState
 from Streamlit_Pop_ups import *
-from Visualise_Alignment import *
-from User_Input_Preparation import *
-from Input_flow import *
-from Table_Generation import *
+from IsoAligner_core.Visualise_Alignment import *
+from IsoAligner_core.User_Input_Preparation import *
+from IsoAligner_core.Input_flow import *
+from IsoAligner_core.Table_Generation import *
 from PIL import Image
 from Statistics import *
 
@@ -39,7 +39,7 @@ def main():
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
             #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
-            image2 = Image.open('../Pictures/Spliceosome_yeast_small.tif')
+            image2 = Image.open('Pictures/Spliceosome_yeast_small.tif')
             st.image(image2,use_column_width=True)
 
         st.sidebar.markdown("### 🧬️Organism")
@@ -417,7 +417,7 @@ def main():
         st.markdown("### Matching identical exons")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
                  ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional comprehensibly corresponding AA’s exclusively.  ')
-        problem_schema = Image.open('../Pictures/exon_problem.png')
+        problem_schema = Image.open('Pictures/exon_problem.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
         needleman, minimal = st.beta_columns([1, 1.])
@@ -431,7 +431,7 @@ def main():
             st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific and at least 3.')
         st.markdown("### Alignment example:")
         st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded.")
-        example = Image.open('../Pictures/example_june.png')
+        example = Image.open('Pictures/example_june.png')
         st.image(example, use_column_width=True)
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")
@@ -469,7 +469,7 @@ def main():
         with picture:
             st.markdown("#### Generation and Structure of Library:")
             st.write('\n')
-            library = Image.open('../Pictures/human_isoform_library.png')
+            library = Image.open('Pictures/human_isoform_library.png')
             st.image(library, use_column_width=True,width=None)
         st.write("--------------------------")
         st.markdown("#### Contact:")

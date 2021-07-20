@@ -1,12 +1,6 @@
-import pandas as pd
-import re
-from Gene import *
-from Protein_isoform import *
-from Alignment import *
 from Extractions_BioIDs import *
 from Exon import *
-import statistics
-import pickle
+
 
 class Exon_Information():
     pass
