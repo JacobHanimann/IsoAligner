@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../IsoAligner_core/')
+sys.path.append('../IsoAligner_core')
 import SessionState
 from Streamlit_Pop_ups import *
 from IsoAligner_core.Visualise_Alignment import *
