@@ -10,8 +10,7 @@ from IsoAligner_core.Table_Generation import *
 from PIL import Image
 from Statistics import *
 
-
-#import database
+#import databasee
 list_of_gene_objects = Input_flow.import_data_from_github('Human_Isoform_Library/list_of_gene_objects_1st_june.txt.gz')
 
 #declare session state variables

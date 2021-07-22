@@ -1,4 +1,5 @@
 
+
 class Gene:
     def __init__(self, ENSG=None, ensembl_gene_symbol=None, refseq_gene_ID=None, HGNC=None, HGNC_gene_symbol=None, previous_symbols=None, alias_symbols=None, protein_sequence_isoform_collection=None, minimal_exon_length=None, uniprot_name_ID=None):
         self.ENSG = ENSG

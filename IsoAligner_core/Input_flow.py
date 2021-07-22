@@ -3,6 +3,8 @@ import urllib
 from Streamlit_app.Streamlit_community import *
 import gzip
 import random
+from .Gene import *
+from IsoAligner_core.Gene import *
 from IsoAligner_core import Gene
 from IsoAligner_core import Protein_isoform
 
@@ -20,9 +22,10 @@ class Input_flow:
 
 
     @staticmethod
-    @st.cache(allow_output_mutation=True)
+    #@st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
         with gzip.open(file, "rb") as fp:  # Pickling
+            st.write(Gene())
             list_of_gene_objects = pickle.load(fp)
         return list_of_gene_objects
 
