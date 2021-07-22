@@ -4,7 +4,7 @@ from Streamlit_app.Streamlit_community import *
 import gzip
 import random
 from IsoAligner_core import Gene
-import Protein_isoform
+from IsoAligner_core import Protein_isoform
 
 class Input_flow:
     pass
