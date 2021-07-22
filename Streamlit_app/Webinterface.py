@@ -1,8 +1,9 @@
 import sys
-sys.path.append('../IsoAligner_core')
+sys.path.append('..')
+
 import SessionState
 from Streamlit_Pop_ups import *
-from IsoAligner_core.Visualise_Alignment import *
+from IsoAligner_core import Visualise_Alignment
 from IsoAligner_core.User_Input_Preparation import *
 from IsoAligner_core.Input_flow import *
 from IsoAligner_core.Table_Generation import *
