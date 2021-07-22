@@ -1,5 +1,5 @@
-import sys
-sys.path.append('..')
+#import sys
+#sys.path.append('..')
 
 import SessionState
 from Streamlit_Pop_ups import *
