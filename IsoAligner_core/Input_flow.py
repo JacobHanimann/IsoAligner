@@ -4,8 +4,7 @@ from Streamlit_app.Streamlit_community import *
 import gzip
 import random
 from IsoAligner_core.Gene import *
-from IsoAligner_core import Gene
-from IsoAligner_core import Protein_isoform
+from IsoAligner_core.Protein_isoform import *
 
 class Input_flow:
     pass
@@ -23,8 +22,9 @@ class Input_flow:
     @staticmethod
     #@st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
+        st.write(Gene())
+        st.write('in the function')
         with gzip.open(file, "rb") as fp:  # Pickling
-            st.write(Gene())
             list_of_gene_objects = pickle.load(fp)
         return list_of_gene_objects
 
