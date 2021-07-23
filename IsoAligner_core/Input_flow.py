@@ -3,8 +3,9 @@ import urllib
 from Streamlit_app.Streamlit_community import *
 import gzip
 import random
-from IsoAligner_core.Gene import *
+from .Gene import *
 from IsoAligner_core.Protein_isoform import *
+
 
 class Input_flow:
     pass
