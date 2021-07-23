@@ -11,10 +11,10 @@ from PIL import Image
 from Statistics import *
 
 #import databasee
-list_of_gene_objects = Input_flow.import_data_from_github('Human_Isoform_Library/list_of_gene_objects_1st_june.txt.gz')
+#list_of_gene_objects = Input_flow.import_data_from_github('Human_Isoform_Library/list_of_gene_objects_1st_june.txt.gz')
 
 #declare session state variables
-ss = SessionState.get(clicked=False, searched_clicked=False, align_clicked=False, generate=False, run_id=0, example=False, clear_button=False, run_id_table=1, parameters=[1, 2, 3, 4, 5], random_input = Input_flow.generate_random_example(list_of_gene_objects))
+#ss = SessionState.get(clicked=False, searched_clicked=False, align_clicked=False, generate=False, run_id=0, example=False, clear_button=False, run_id_table=1, parameters=[1, 2, 3, 4, 5], random_input = Input_flow.generate_random_example(list_of_gene_objects))
 
 #Streamlit website
 def main():
@@ -42,7 +42,7 @@ def main():
             st.write('\n')
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
             #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
-            image2 = Image.open('Pictures/Spliceosome_yeast_small.tif')
+            image2 = Image.open('Streamlit_app/Pictures/Spliceosome_yeast_small.tif')
             st.image(image2,use_column_width=True)
 
         st.sidebar.markdown("### 🧬️Organism")
@@ -420,7 +420,7 @@ def main():
         st.markdown("### Matching identical exons")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
                  ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional comprehensibly corresponding AA’s exclusively.  ')
-        problem_schema = Image.open('Pictures/exon_problem.png')
+        problem_schema = Image.open('Streamlit_app/Pictures/exon_problem.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
         needleman, minimal = st.beta_columns([1, 1.])
@@ -434,7 +434,7 @@ def main():
             st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific and at least 3.')
         st.markdown("### Alignment example:")
         st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded.")
-        example = Image.open('Pictures/example_june.png')
+        example = Image.open('Streamlit_app/Pictures/example_june.png')
         st.image(example, use_column_width=True)
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")
