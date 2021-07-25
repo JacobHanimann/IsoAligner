@@ -1,5 +1,6 @@
-# insert at position 1 in the path, as 0 is the path of this file.
-#sys.path.insert(1, '../')
+import sys
+sys.path.append('.')
+
 from IsoAligner_core.Visualise_Alignment import *
 from IsoAligner_core.User_Input_Preparation import *
 from IsoAligner_core.Input_flow import *
