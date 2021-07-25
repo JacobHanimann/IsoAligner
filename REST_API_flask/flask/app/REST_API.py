@@ -1,9 +1,9 @@
-import sys
-sys.path.append('../..')
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-from REST_API_flask.flask.app.API_data_processing import *
 from cachetools import cached, TTLCache
+import gzip
+import pickle
+from .API_data_processing import *
 
 #Initialising Flask API and Cache
 app = Flask(__name__)
