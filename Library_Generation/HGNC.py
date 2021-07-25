@@ -23,15 +23,13 @@ class HGNC():
             previous_symbols = df.loc[index, 'previous_symbols']
             refseq_gene_ID = df.loc[index, 'NCBI Gene ID']
             alias_symbols = df.loc[index, 'alias_symbols']
-            uniprot_ID = df.loc[index, 'UniProt ID']  # check if it the same ID as in the Protein_isoform classes
 
             # transfrom data in correct format
             if type(previous_symbols) != float:  # None values are type float
                 if "," in previous_symbols:
                     previous_symbols = previous_symbols.split(', ')
                 else:
-                    previous_symbols = [
-                        previous_symbols]  # either way create a list because it facilitates later search functions
+                    previous_symbols = [previous_symbols]  # either way create a list because it facilitates later search functions
             if type(alias_symbols) != float:
                 if "," in alias_symbols:
                     alias_symbols = alias_symbols.split(', ')
@@ -50,7 +48,6 @@ class HGNC():
                     gene.previous_symbols = previous_symbols
                     gene.refseq_gene_ID = refseq_gene_ID
                     gene.alias_symbols = alias_symbols
-                    gene.uniprot_name_ID = uniprot_ID  # check if it the same ID as in the Protein_isoform classes
 
             if found == False:
                 list_of_gene_objects.append(

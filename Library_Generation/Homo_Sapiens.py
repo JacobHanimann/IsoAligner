@@ -7,7 +7,7 @@ from Validation_of_library import *
 from minimal_exon_length import *
 import pickle
 
-date = '23th_july'
+date = '25th_july'
 
 print('Creating list of gene objects with Ensembl Fasta files...')
 list_of_gene_objects = Ensembl.get_ensembl_fasta_sequences_and_IDs_and_create_gene_objects('/Users/jacob/Desktop/Isoform Mapper Webtool/ensembl_104_protein_coding_chromosomes.fasta.txt')
