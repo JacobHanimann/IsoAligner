@@ -23,8 +23,6 @@ class Input_flow:
     @staticmethod
     #@st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
-        st.write(Gene())
-        st.write('in the function')
         with gzip.open(file, "rb") as fp:  # Pickling
             list_of_gene_objects = pickle.load(fp)
         return list_of_gene_objects
