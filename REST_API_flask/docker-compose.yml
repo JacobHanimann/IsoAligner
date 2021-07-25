@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+
+  flask:
+    build: ./flask
+    container_name: flask_isoaligner_api
+    restart: always
+    environment:
+      - APP_NAME=MyFlaskApp
+    expose:
+      - 8080
+
+  nginx:
+    build: ./nginx
+    container_name: nginx_isoaligner_api
+    restart: always
+    ports:
+      - "80:80"

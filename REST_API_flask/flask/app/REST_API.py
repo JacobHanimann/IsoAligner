@@ -1,8 +1,8 @@
 import sys
-sys.path.append('.')
+sys.path.append('../..')
 from flask import Flask
-from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
-from REST_API_flask.API_data_processing import *
+from flask_restful import Api, Resource, reqparse
+from REST_API_flask.flask.app.API_data_processing import *
 from cachetools import cached, TTLCache
 
 #Initialising Flask API and Cache
@@ -125,7 +125,7 @@ class Raw_alignment(Resource):
             return alignment_string
 
 
-#adding method to server
+#adding method
 api.add_resource(Mapping_Table,'/map','/map/positions')
 api.add_resource(Raw_alignment, '/align')
 
