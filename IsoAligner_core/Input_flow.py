@@ -306,7 +306,7 @@ class Input_flow:
                 parent_child = random.randint(1, 3)
                 if parent_child>1:
                     parent=True
-                    list_of_attributes = [a for a in dir(Gene.Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous') and not a.startswith('refseq')]
+                    list_of_attributes = [a for a in dir(Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous') and not a.startswith('refseq')]
                     ID_type = random.randint(0,4)
                     gene_index = random.randint(0,len(list_of_gene_objects))
                     example = getattr(list_of_gene_objects[gene_index],list_of_attributes[ID_type])
@@ -314,7 +314,7 @@ class Input_flow:
                         fulfilled = True
                         return example
                 else:
-                    list_of_attributes = [a for a in dir(Protein_isoform.Protein_isoform('jkfbkjsdbfbkjbbd')) if
+                    list_of_attributes = [a for a in dir(Protein_isoform('jkfbkjsdbfbkjbbd')) if
                                           not a.startswith('__') and not a.startswith('list_') and not a.startswith(
                                               'protein') and not a.startswith(
                                               'collection')]
