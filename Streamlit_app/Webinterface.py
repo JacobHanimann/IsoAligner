@@ -472,7 +472,7 @@ def main():
         with picture:
             st.markdown("#### Generation and Structure of Library:")
             st.write('\n')
-            library = Image.open('Pictures/human_isoform_library.png')
+            library = Image.open('Streamlit_app/Pictures/human_isoform_library.png')
             st.image(library, use_column_width=True,width=None)
         st.write("--------------------------")
         st.markdown("#### Contact:")
