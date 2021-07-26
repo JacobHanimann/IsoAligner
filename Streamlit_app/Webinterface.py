@@ -43,7 +43,7 @@ def main():
             #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
             #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
             image2 = Image.open('Streamlit_app/Pictures/Spliceosome_yeast_small.tif')
-            st.image(image2,use_column_width=True)
+            st.image(image2,use_column_width=True,caption='Spliceosome E complex')
 
         st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
