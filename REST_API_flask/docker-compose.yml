@@ -4,7 +4,7 @@ services:
 
   flask:
     build: ./flask
-    container_name: flask_isoaligner_api
+    container_name: flask_Isoaligner_api
     restart: always
     environment:
       - APP_NAME=MyFlaskApp
@@ -13,7 +13,7 @@ services:
 
   nginx:
     build: ./nginx
-    container_name: nginx_isoaligner_api
+    container_name: nginx_Isoaligner_api
     restart: always
     ports:
       - "80:80"
