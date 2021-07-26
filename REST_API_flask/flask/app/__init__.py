@@ -6,4 +6,7 @@ app = Flask(__name__)
 def index():
     return "Hello from Isoaligner Flask"
 
-#from REST_API import *
+if __name__ == "__main__":
+    app.run(debug=True)
+
+#from REST_API import *c
