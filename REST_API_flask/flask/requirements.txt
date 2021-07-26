@@ -33,7 +33,6 @@ Flask-RESTful==0.3.8
 future==0.18.2
 gitdb==4.0.5
 GitPython==3.1.11
-gunicorn==20.1.0
 idna==2.10
 ipykernel==5.4.2
 ipython==7.19.0
@@ -52,10 +51,8 @@ Markdown==3.3.3
 markdown-emojiextension==1.2
 markdown-markup-emoji==0.2.2
 MarkupSafe==1.1.1
-matplotlib==3.3.3
 mistune==0.8.4
-mkl-fft==1.2.0
-mkl-random==1.1.1
+mkl-fft
 mkl-service==2.3.0
 nbclient==0.5.1
 nbconvert==6.0.7
@@ -63,7 +60,7 @@ nbformat==5.0.8
 neatbio==0.0.2
 nest-asyncio==1.4.3
 notebook==6.1.5
-numpy==1.19.2
+numpy
 packaging==20.8
 pandas==1.1.3
 pandocfilters==1.4.3
@@ -91,12 +88,9 @@ python-dateutil==2.8.1
 pytz==2020.1
 pyzmq==20.0.0
 recordtype==1.3
-requests==2.24.0
-requests-cache==0.5.2
-scikit-learn==0.24.2
 scipy==1.6.3
 Send2Trash==1.5.0
-setuptools==50.3.1.post20201107
+setuptools==57.4.0
 six==1.15.0
 sklearn==0.0
 smmap==3.0.4
