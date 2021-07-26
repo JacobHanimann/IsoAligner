@@ -281,8 +281,6 @@ def main():
                     st.warning('No amino acid positions mapped currently. Tweak function parameters to generate matches.')
 
 
-
-
     elif choice == 'REST API & Downloads':
         st.title(" Amino Acid Isoform Aligner")
         st.header("REST API")
