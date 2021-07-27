@@ -92,7 +92,6 @@ scipy==1.6.3
 Send2Trash==1.5.0
 setuptools==57.4.0
 six==1.15.0
-sklearn==0.0
 smmap==3.0.4
 streamlit==0.80.0
 terminado==0.9.1
@@ -114,3 +113,4 @@ wheel==0.35.1
 widgetsnbextension==3.5.1
 xmltramp2==3.1.1
 yarg==0.1.9
+uWSGI
