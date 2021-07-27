@@ -6,7 +6,6 @@ from IsoAligner_core.User_Input_Preparation import *
 from IsoAligner_core.Input_flow import *
 from IsoAligner_core.Table_Generation import *
 
-
 class Data_processing():
     pass
 
