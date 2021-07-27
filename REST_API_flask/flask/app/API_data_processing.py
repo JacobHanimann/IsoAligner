@@ -1,7 +1,7 @@
 import sys
 import os
-IsoAligner_core_directory = os.chdir("../../../IsoAligner_core")
-sys.path.insert(0,IsoAligner_core_directory)
+print(sys.path)
+sys.path.insert(0,'/Users/jacob/PycharmProjects/IsoAligner/IsoAligner_core')
 
 from IsoAligner_core.Visualise_Alignment import *
 from IsoAligner_core.User_Input_Preparation import *
