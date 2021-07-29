@@ -3,7 +3,9 @@ version: "3.7"
 services:
 
   flask:
-    build: ./flask
+    build:
+      context: ../
+      dockerfile: REST_API_flask/flask/Dockerfile
     container_name: flask_Isoaligner_api
     restart: always
     environment:
@@ -12,7 +14,9 @@ services:
       - 8080
 
   nginx:
-    build: ./nginx
+    build:
+      context: ../
+      dockerfile: REST_API_flask/nginx/Dockerfile
     container_name: nginx_Isoaligner_api
     restart: always
     ports:

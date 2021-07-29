@@ -4,7 +4,7 @@ sys.path.append('.')
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
 from cachetools import cached, TTLCache
-#from .API_data_processing import *
+from .API_data_processing import *
 
 
 #Initialising Flask API and Cache
