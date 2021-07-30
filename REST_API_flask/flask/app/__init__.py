@@ -15,7 +15,7 @@ app.config['CACHE_TYPE'] = 'simple'
 
 @app.route("/")
 def index():
-    return str(sys.path)
+    return "REST API manual: https://share.streamlit.io/jacobhanimann/isoaligner/main/Streamlit_app/Webinterface.py"
 
 #@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 @cached(cache)
