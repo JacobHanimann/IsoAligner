@@ -1,9 +1,7 @@
-import sys
-sys.path.append('.')
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
 from cachetools import cached, TTLCache
-from .API_data_processing import *
+from API_data_processing import *
 
 
 #Initialising Flask API and Cache
@@ -27,7 +25,7 @@ def import_data_from_github(file):
     return list_of_gene_objects
 
 #cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
-list_of_gene_objects = import_data_from_github('Human_Isoform_Library/list_of_gene_objects_1st_june.txt.gz')
+list_of_gene_objects = import_data_from_github('Human_Isoform_Library/list_of_gene_objects_25th_july.txt.gz')
 
 #standard parameters if no body is sent with the request
 match = 1
