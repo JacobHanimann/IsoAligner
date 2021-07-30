@@ -17,7 +17,6 @@ app.config['CACHE_TYPE'] = 'simple'
 def index():
     return str(sys.path)
 
-#importing isoform library
 #@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 @cached(cache)
 def import_data_from_github(file):
