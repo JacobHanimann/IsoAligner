@@ -1,6 +1,6 @@
 import requests
 
-BASE = "http://127.0.0.1:5000/"
+BASE = "http://jacobha.eu.pythonanywhere.com/"
 
 data = {
  "seq1": "NDFKLNDFDNFKLNSDLKFNASLKFNDSLJFNDSKF",
