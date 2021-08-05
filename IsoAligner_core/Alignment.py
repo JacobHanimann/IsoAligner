@@ -27,9 +27,6 @@ class Alignment:
     @staticmethod
     def check_for_wrong_exon_alignments(ref, isoform, exon_length_AA):
         '''
-        This function helps to identify falsely aligned elements (distinct exons) when globally aligning isoforms of a gene.
-        The Needleman Wunsch algorithm also randomly alignes fractions of different exons but they do not represent the same aminoacid.
-        since the optimization of the algorithm is to maximize matches (which makes sense with homologues but not with isoforms)
         :param ref: aligned sequence in form of a list
         :param isoform: aligned sequence in form of a list
         :return: list which categories each elements alignment in 'correct, wrong, gap'
