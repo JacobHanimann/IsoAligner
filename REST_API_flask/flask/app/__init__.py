@@ -126,5 +126,5 @@ class Raw_alignment(Resource):
 
 
 #adding method
-api.add_resource(Mapping_Table,'/map','/map/positions')
-api.add_resource(Raw_alignment, '/align')
+api.add_resource(Mapping_Table,'/api/map','/map/positions')
+api.add_resource(Raw_alignment, '/api/align')
