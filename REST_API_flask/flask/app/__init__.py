@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import Api, Resource, reqparse
 from cachetools import cached, TTLCache
 from API_data_processing import *
@@ -13,8 +13,7 @@ app.config['CACHE_TYPE'] = 'simple'
 
 @app.route("/")
 def index():
-    return "REST API manual: https://share.streamlit.io/jacobhanimann/isoaligner/main/Streamlit_app/Webinterface.py"
-
+    return render_template('iframe_streamlit.html')
 #@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
 @cached(cache)
 def import_data_from_github(file):
