@@ -29,9 +29,9 @@ list_of_gene_objects = import_data_from_github('Human_Isoform_Library/list_of_ge
 #standard parameters if no body is sent with the request
 match = 1
 mismatch =-2
-open_gap_penalty = -1.75
+open_gap_penalty = -1
 gap_extension_penalty = 0
-exon_length_AA= 11
+exon_length_AA= 12
 #standard ID's included in mapping table
 
 
