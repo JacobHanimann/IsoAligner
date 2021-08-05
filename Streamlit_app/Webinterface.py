@@ -22,8 +22,8 @@ def main():
     #Background
     #Streamlit_community.set_png_as_page_bg('TransferMessengerRNAt.png')
 
+    #remove streamlit marks
     st.markdown(""" <style>
-        #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         </style> """, unsafe_allow_html=True)
 
