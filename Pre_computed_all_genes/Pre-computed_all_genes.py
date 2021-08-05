@@ -36,7 +36,3 @@ print(big_nested_dict)
 big_df = Table_Generation.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
 print('Writing results to csv file...')
 big_df.to_csv('/Users/jacob/Desktop/all_genes_mapped_5_august.tsv')
-
-#print(correct_aa)
-#print(false_aa)
-#print(false_aa/(correct_aa+false_aa))
