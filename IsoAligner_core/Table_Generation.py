@@ -235,7 +235,7 @@ class Table_Generation:
                         my_bar.progress(percent)
 
                     else:
-                        print(gene)
+                        print('isoforms with no overlaps apparently:', gene)
             my_bar.empty()
             if list_of_alignments:
                 df = pd.DataFrame(list_of_alignments, columns=(column_names))
