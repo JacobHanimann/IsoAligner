@@ -35,4 +35,4 @@ print(big_nested_dict)
 #create big dataframe
 big_df = Table_Generation.create_table_for_dict_of_gene_objects(big_nested_dict, list_of_gene_objects, chosen_columns,match, mismatch, open_gap_penalty,gap_extension_penalty)
 print('Writing results to csv file...')
-big_df.to_csv('/Users/jacob/Desktop/all_genes_mapped_5_august.tsv')
+big_df.to_csv('/Users/jacob/Desktop/all_genes_mapped_5_august.tsv', sep='\t')
