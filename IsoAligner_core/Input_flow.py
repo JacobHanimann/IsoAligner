@@ -275,9 +275,9 @@ class Input_flow:
 
     @staticmethod
     def generate_download_section(df):
-        download, format = st.beta_columns([0.22, 1])
+        download, format = st.beta_columns([0.27, 1])
         with download:
-            st.markdown("#### 📁 Download")
+            st.markdown("### 💾 Download")
             sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
             if sep_choice == "tsv":
                 sep = '\t'

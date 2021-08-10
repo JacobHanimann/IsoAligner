@@ -35,20 +35,16 @@ def main():
 
     #Alignment tool section
     if choice == 'Alignment Tool':
-        header, tRNA = st.beta_columns([3, 1.1])
-        with header:
-            # Title
-            st.title(" Amino Acid Isoform Aligner")
-            st.subheader("Map Amino Acid Positions Across Isoforms")
-            st.write(
-                "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and gene-specific minimal exon lengths to match comprehensibly corresponding amino acid positions exclusively."
-                " The current human isoform library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
-        with tRNA:
-            st.write('\n')
-            #st.markdown('[this is a text link](upload://7FxfXwDqJIZdYJ2QYADywvNRjB.png)')
-            #st.markdown('[![this is an image link](upload://TransferMessengerRNA.tif)](https://streamlit.io)')
-            image2 = Image.open('Streamlit_app/Pictures/Spliceosome_yeast_small.tif')
-            st.image(image2,use_column_width=True,caption='Spliceosome E complex')
+        logo, name = st.beta_columns([0.18,1])
+        with logo:
+            image2 = Image.open('Streamlit_app/Pictures/only_logo.png')
+            st.image(image2, use_column_width=True, width=350)
+        with name:
+            st.markdown('# IsoAligner')
+        st.header("Map Amino Acid Positions Across Isoforms")
+        st.write(
+            "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and gene-specific minimal exon lengths to match comprehensibly corresponding amino acid positions exclusively."
+            " The current human isoform library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
 
         st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
@@ -168,7 +164,7 @@ def main():
                     st.info(' Tweak function parameters on the left sidebar to allow matches!')
 
 
-        #case of using multiple ID's
+        #case of using multiple ID'
         elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
             using_IDs = True
             title, clear_button = st.beta_columns([6, 1])
@@ -287,7 +283,12 @@ def main():
 
 
     elif choice == 'REST API & Downloads':
-        st.title(" Amino Acid Isoform Aligner")
+        logo, name = st.beta_columns([0.18, 1])
+        with logo:
+            image2 = Image.open('Streamlit_app/Pictures/only_logo.png')
+            st.image(image2, use_column_width=True, width=350)
+        with name:
+            st.markdown('# IsoAligner')
         st.header("REST API")
         st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
         st.write("#### Browse Function Features")
@@ -419,7 +420,12 @@ def main():
         #            st.write(gene.__dict__)
 
     elif choice == 'Manual & About':
-        st.title(" Amino Acid Isoform Aligner")
+        logo, name = st.beta_columns([0.18, 1])
+        with logo:
+            image2 = Image.open('Streamlit_app/Pictures/only_logo.png')
+            st.image(image2, use_column_width=True, width=350)
+        with name:
+            st.markdown('# IsoAligner')
         st.markdown("### Matching identical exons")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
                  ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional comprehensibly corresponding AA’s exclusively.  ')
@@ -483,6 +489,7 @@ def main():
         st.write("Please get in touch for suggestions or to report bugs :)")
         st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
         st.write('Bioinformatics group: https://www.sib.swiss/abdullah-kahraman-group')
+        #Footnote
         st.write('---------------')
         st.markdown("#### License:")
         st.write("\n")
