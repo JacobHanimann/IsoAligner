@@ -15,6 +15,10 @@ app.config['CACHE_TYPE'] = 'simple'
 def index():
     return render_template('iframe_streamlit.html')
 #@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+@app.route("/api")
+def api_page():
+    return "Go to REST API & Downloads on the main webpage to find out how to send requests"
+
 @cached(cache)
 def import_data_from_github(file):
     '''import reference file (database), a pickle file generated in the database_old.py file'''
