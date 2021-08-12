@@ -30,14 +30,6 @@ def import_data_from_github(file):
 #cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
 list_of_gene_objects = import_data_from_github('Human_Isoform_Library/list_of_gene_objects_25th_july.txt.gz')
 
-#standard parameters if no body is sent with the request
-match = 1
-mismatch =-2
-open_gap_penalty = -1
-gap_extension_penalty = 0
-exon_length_AA= 12
-#standard ID's included in mapping table
-
 
 # Arguments in the body of the requests
 #mapping table
@@ -67,6 +59,11 @@ align_args.add_argument("min_ex_len", type=int, help="set to default: 5", requir
 #API methods
 class Mapping_Table(Resource):
     def get(self):
+        match = 1
+        mismatch = -2
+        open_gap_penalty = -1
+        gap_extension_penalty = 0
+        exon_length_AA = 12
         args = map_args.parse_args()
         if args['match'] != None:
             match = args['match']
@@ -129,6 +126,11 @@ class Mapping_Table(Resource):
 
 class Raw_alignment(Resource):
     def get(self):
+        match = 1
+        mismatch = -2
+        open_gap_penalty = -1
+        gap_extension_penalty = 0
+        exon_length_AA = 12
         args = align_args.parse_args()
         if args['match'] != None:
             match = args['match']
