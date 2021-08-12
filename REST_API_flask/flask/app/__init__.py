@@ -39,9 +39,9 @@ map_args.add_argument('id2',type=str, help="alternative ID is missing", required
 map_args.add_argument('pos',type=str, help="choose single AA position", required=False)
 map_args.add_argument("match", type=int, help="set to default: 1", required=False)
 map_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
-map_args.add_argument("open_gap", type=float, help="set to default: -1.75", required=False)
+map_args.add_argument("open_gap", type=float, help="set to default: -1", required=False)
 map_args.add_argument("gap_ext", type=int, help="set to default: 0", required=False)
-map_args.add_argument("min_ex_len", type=int, help="set to default: 5", required=False)
+map_args.add_argument("min_ex_len", type=int, help="set to default: 12", required=False)
 map_args.add_argument('df_ids', type=str, help='choose which IDs should be included in the mapping table',required=False)
 
 #raw alignment
@@ -51,9 +51,9 @@ align_args.add_argument("seq1", type=str, help="reference raw amino acid require
 align_args.add_argument("seq2", type=str, help="second raw amino acid required", required=True)
 align_args.add_argument("match", type=int, help="set to default: 1", required=False)
 align_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
-align_args.add_argument("open_gap", type=float, help="set to default: -1.75", required=False)
+align_args.add_argument("open_gap", type=float, help="set to default: -1", required=False)
 align_args.add_argument("gap_ext", type=int, help="set to default: 0", required=False)
-align_args.add_argument("min_ex_len", type=int, help="set to default: 5", required=False)
+align_args.add_argument("min_ex_len", type=int, help="set to default: 12", required=False)
 
 
 #API methods
