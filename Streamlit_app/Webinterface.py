@@ -412,12 +412,9 @@ def main():
             st.write('Gene-specific length for all genes. The median of the sum of all shortest exons is',mean_exon)
 
         st.write('### 📁 Download')
-        st.write('The dataframe is ~5 GB and tab-separated (.tsv).')
-        Streamlit_community.create_download_section_from_ext_link('1Xu-dHy4My3qT9iebfN4eIU8CKl0kb0Ss', 'Click here to start download')
+        st.write('The dataframe is ~385MB, tab-separated and zipped (.tsv.gz).')
 
-        #for gene in list_of_gene_objects:
-        #        if len(gene.protein_sequence_isoform_collection)==1:
-        #            st.write(gene.__dict__)
+        Streamlit_community.create_download_section_from_ext_link('1-djWhoz-Yadi1vVKI6AArfA65u8p2clz','Click here to start download')
 
     elif choice == 'Manual & About':
         logo, name = st.beta_columns([0.18, 1])
