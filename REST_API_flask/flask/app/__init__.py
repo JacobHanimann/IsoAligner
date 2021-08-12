@@ -68,6 +68,16 @@ align_args.add_argument("min_ex_len", type=int, help="set to default: 5", requir
 class Mapping_Table(Resource):
     def get(self):
         args = map_args.parse_args()
+        if args['match'] != None:
+            match = args['match']
+        if args['mismatch'] != None:
+            mismatch = args['mismatch']
+        if args['open_gap'] != None:
+            open_gap_penalty = args['open_gap']
+        if args['gap_ext'] != None:
+            gap_extension_penalty = args['gap_ext']
+        if args['min_ex_len'] != None:
+            exon_length_AA = args['min_ex_len']
         #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
         #cache.set("list_of_gene_objects", import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
         #list_of_gene_objects = cache.get('list_of_gene_objects')
@@ -108,6 +118,7 @@ class Mapping_Table(Resource):
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
             index_of_reference_transcript = list(list(nested_dict.values())[0].values())[0]
             chosen_columns = Data_processing.choose_mapping_table_columns(table_ids=args['df_ids'])
+
             generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,
                                                                                 list_of_gene_objects, index_gene_object,
                                                                                 chosen_columns, match, mismatch,
@@ -119,6 +130,16 @@ class Mapping_Table(Resource):
 class Raw_alignment(Resource):
     def get(self):
         args = align_args.parse_args()
+        if args['match'] != None:
+            match = args['match']
+        if args['mismatch'] != None:
+            mismatch = args['mismatch']
+        if args['open_gap'] != None:
+            open_gap_penalty = args['open_gap']
+        if args['gap_ext'] != None:
+            gap_extension_penalty = args['gap_ext']
+        if args['min_ex_len'] != None:
+            exon_length_AA = args['min_ex_len']
         if args['view']==False:
             needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['seq1'], args['seq2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
