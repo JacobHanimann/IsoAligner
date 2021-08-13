@@ -37,11 +37,11 @@ map_args = reqparse.RequestParser()
 map_args.add_argument('id1',type=str, help="reference ID is required", required=True)
 map_args.add_argument('id2',type=str, help="alternative ID is missing", required=False)
 map_args.add_argument('pos',type=str, help="choose single AA position", required=False)
-map_args.add_argument("match", type=int, help="set to default: 1", required=False)
-map_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
+map_args.add_argument("match", type=int, help="set to default: 1, must be an integer", required=False)
+map_args.add_argument("mismatch", type=int, help="set to default: -2, must be an integer", required=False)
 map_args.add_argument("open_gap", type=float, help="set to default: -1", required=False)
-map_args.add_argument("gap_ext", type=int, help="set to default: 0", required=False)
-map_args.add_argument("min_ex_len", type=int, help="set to default: 12", required=False)
+map_args.add_argument("gap_ext", type=int, help="set to default: 0, must be an integer", required=False)
+map_args.add_argument("min_ex_len", type=int, help="set to default: 12, must be an integer", required=False)
 map_args.add_argument('df_ids', type=str, help='choose which IDs should be included in the mapping table',required=False)
 
 #raw alignment
@@ -49,10 +49,11 @@ align_args = reqparse.RequestParser()
 align_args.add_argument('view', type=bool, default=False, required=False, help='view alignment')
 align_args.add_argument("seq1", type=str, help="reference raw amino acid required", required=True)
 align_args.add_argument("seq2", type=str, help="second raw amino acid required", required=True)
-align_args.add_argument("match", type=int, help="set to default: 1", required=False)
-align_args.add_argument("mismatch", type=int, help="set to default: -2", required=False)
-align_args.add_argument("open_gap", type=float, help="set to default: -1", required=False)
-align_args.add_argument("gap_ext", type=int, help="set to default: 0", required=False)
+map_args.add_argument("match", type=int, help="set to default: 1, must be an integer", required=False)
+map_args.add_argument("mismatch", type=int, help="set to default: -2, must be an integer", required=False)
+map_args.add_argument("open_gap", type=float, help="set to default: -1", required=False)
+map_args.add_argument("gap_ext", type=int, help="set to default: 0, must be an integer", required=False)
+map_args.add_argument("min_ex_len", type=int, help="set to default: 12, must be an integer", required=False)
 align_args.add_argument("min_ex_len", type=int, help="set to default: 12", required=False)
 
 
@@ -120,8 +121,11 @@ class Mapping_Table(Resource):
                                                                                 list_of_gene_objects, index_gene_object,
                                                                                 chosen_columns, match, mismatch,
                                                                                 open_gap_penalty, gap_extension_penalty)
-            table_json = generated_table.to_json(orient='records')
-            return table_json
+            if type(generated_table) != tuple:
+                table_json = generated_table.to_json(orient='records')
+                return table_json
+            else:
+                return "No amino acid positions mapped. Adjust parameters to allow matches."
 
 
 class Raw_alignment(Resource):
@@ -145,8 +149,11 @@ class Raw_alignment(Resource):
         if args['view']==False:
             needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['seq1'], args['seq2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
-            table_json = generated_table.to_json(orient='records')
-            return table_json
+            if type(generated_table) != tuple:
+                table_json = generated_table.to_json(orient='records')
+                return table_json
+            else:
+                return "No amino acid positions mapped. Adjust parameters to allow matches."
         elif args['view']==True:
             alignment_string = Data_processing.align_sequences(args['seq1'], args['seq2'])
             return alignment_string
