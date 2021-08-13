@@ -76,10 +76,6 @@ class Mapping_Table(Resource):
             gap_extension_penalty = args['gap_ext']
         if args['min_ex_len'] != None:
             exon_length_AA = args['min_ex_len']
-        #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
-        #cache.set("list_of_gene_objects", import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
-        #list_of_gene_objects = cache.get('list_of_gene_objects')
-        #list_of_gene_objects = import_data_from_github('list_of_gene_objects_4th_may.txt.gz')
         if args['id2']!= None:
             nested_dict_reference,reference_type_dict = Data_processing.search_and_generate_nested_dict(args['id1'],list_of_gene_objects)
             nested_dict_alternative,alternative_type_dict = Data_processing.search_and_generate_nested_dict(args['id2'], list_of_gene_objects)
@@ -97,8 +93,11 @@ class Mapping_Table(Resource):
                                                                                 open_gap_penalty, gap_extension_penalty,
                                                                                 exon_length_AA)
                 if args['pos']==None:
-                    table_json = mapping_table.to_json(orient='records')
-                    return table_json
+                    if type(mapping_table) != tuple:
+                        table_json = mapping_table.to_json(orient='records')
+                        return table_json
+                    else:
+                        return "No amino acid positions mapped. Adjust parameters to allow matches."
                 else:
                     AA_new_position = Data_processing.extract_specific_position_mapping_table(mapping_table,args['pos'])
                     return AA_new_position
@@ -149,7 +148,7 @@ class Raw_alignment(Resource):
         if args['view']==False:
             needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['seq1'], args['seq2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
-            if type(generated_table) != tuple:
+            if generated_table:
                 table_json = generated_table.to_json(orient='records')
                 return table_json
             else:
