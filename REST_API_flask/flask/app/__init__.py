@@ -148,7 +148,7 @@ class Raw_alignment(Resource):
         if args['view']==False:
             needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(args['seq1'], args['seq2'], match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA)
             generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
-            if generated_table:
+            if not generated_table.empty():
                 table_json = generated_table.to_json(orient='records')
                 return table_json
             else:
