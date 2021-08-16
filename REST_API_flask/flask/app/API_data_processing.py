@@ -33,15 +33,7 @@ class Data_processing():
 
     @staticmethod
     def choose_column_if_two_IDs(reference_ID, alternative_ID):
-        attribute_column_dict = {'gene_name':'Gene name','ENSG':'Ensembl Gene ID (ENSG)', 'ENST':'Ensembl Transcript ID (ENST)',
-                      'ENSP':'Ensembl Protein ID (ENSP)', 'transcript_name':'Transcript name',
-                      'refseq_gene_ID':'Refseq Gene ID (Number)', 'refseq_NM':'Refseq Transcript ID (NM)','refseq_NP': 'Refseq Protein ID (NP)',
-                      'UCSC_stable_ID':'UCSC Stable ID (uc)',
-                      'uniprot_name_ID':'Uniprot Name ID','uniprot_accession':'Uniprot Accession ID','uniprot_isoform': 'Uniprot Isoform ID','uniprot_uniparc': 'Uniparc ID',
-                      'ENSG_version':'Ensembl Gene ID version (ENSG.Number)','ENST_version':'Ensembl Transcript ID version (ENST.Number)',
-                      'ENSP_version':'Ensembl Protein ID version (ENSP.Number)', 'refseq_NM_version':'Refseq Transcript ID version (NM.Number)',
-                      'refseq_NP_version':'Refseq Transcript ID version (NP.Number)',
-                      'HGNC':'HGNC ID (HGNC:Number)'}
+        attribute_column_dict = Input_flow.import_attribute_column_dict()
         chosen_column = [attribute_column_dict[reference_ID],attribute_column_dict[alternative_ID]]
         return chosen_column
 
