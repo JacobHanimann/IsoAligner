@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 
 import SessionState
 from Streamlit_Pop_ups import *
@@ -89,7 +91,7 @@ def main():
                     #warning message
                 #else (no AA sequence)
                 input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-                st.write(input1_IDs)
+                #st.write(input1_IDs)
                 Input_flow.show_which_elements_were_not_found(input1_IDs)
                 cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
                 #execute nested dict only if dict is still existent...
@@ -118,7 +120,7 @@ def main():
                     Streamlit_community.rerun_script_from_top()
             chosen_gene = list(nested_dict.keys())[0]
             index_gene_object = list(list(nested_dict.values())[0].keys())[0]
-            transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene)
+            transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene, dict_of_IDs)
             one_isoform = False
             if len(transcript_list)==1:
                 one_isoform =True
@@ -126,7 +128,7 @@ def main():
 
             if not one_isoform:
                 st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
-                reference_select, whitespace = st.beta_columns([1, 2.2])
+                reference_select, whitespace = st.beta_columns([1, 1.2])
                 with reference_select:
                     chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                     index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
@@ -180,7 +182,7 @@ def main():
             with genes:
                 chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
             with reference:
-                transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene)
+                transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene,dict_of_IDs)
                 chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
             if len(transcript_list) == 2:

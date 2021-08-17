@@ -1,5 +1,6 @@
 from collections import Counter
 from IsoAligner_core.Alignment import *
+from IsoAligner_core.Input_flow import *
 
 class Visualise_Alignment:
     pass
@@ -42,7 +43,7 @@ class Visualise_Alignment:
 
 
     @staticmethod
-    def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene):
+    def fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, dict_element_indexes, chosen_gene,dict_of_ids):
         '''
         function that fetches isoform IDs in form of a list with the canonical ID as the first element
         :param  list_of_gene_objects, index_of_gene, optional:ID_type:
@@ -75,7 +76,7 @@ class Visualise_Alignment:
                     canonical_element = [(sequence.uniprot_isoform,index_count)]
             elif getattr(sequence, 'refseq_NP') != None:
                 if not canonical:
-                    list_of_transcripts.append((sequence.refseq_NP,index_count)) #additional IDs have to be added
+                    list_of_transcripts.append((sequence.refseq_NP,index_count))
                 else:
                     canonical_element = [(sequence.refseq_NP, index_count)]
             else:
@@ -83,12 +84,14 @@ class Visualise_Alignment:
                 for attribute in list_of_attributes:
                     if getattr(sequence,attribute)!=None:
                         if not canonical:
-                            list_of_transcripts.append((getattr(sequence,attribute), index_count))  # additional IDs have to be added
+                            list_of_transcripts.append((getattr(sequence,attribute), index_count))
                         else:
                             canonical_element = [(getattr(sequence,attribute), index_count)]
                         break
             index_count +=1
-
+        if not Input_flow.is_ID_in_parent_class(dict_of_ids[chosen_gene_cleaned]):
+            if list(canonical_element)[0][0] != chosen_gene_cleaned:
+               canonical_element = [(list(canonical_element)[0][0]+' | '+chosen_gene_cleaned,list(canonical_element)[0][1])]
         final_transcript_list = canonical_element + list_of_transcripts
         return final_transcript_list, index_of_gene_object
 
