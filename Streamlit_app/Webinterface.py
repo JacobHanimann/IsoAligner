@@ -128,10 +128,12 @@ def main():
 
             if not one_isoform:
                 st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
-                reference_select, whitespace = st.beta_columns([1, 1.2])
+                reference_select, whitespace = st.beta_columns([1, 0.9])
                 with reference_select:
                     chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
                     index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
+                if st.button('Details about isoform'):
+                    Input_flow.pop_up_if_one_isoform(list_of_gene_objects, index_gene_object,index_of_reference_transcript)
                 ss.generate = True
                 st.text('\n')
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)

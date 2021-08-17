@@ -355,8 +355,9 @@ class Input_flow:
 
 
     @staticmethod
-    def pop_up_if_one_isoform(list_of_gene_objects,index_gene_object):
-        st.info('ℹ️ There is only one protein sequence stored of this gene in the human isoform library.')
+    def pop_up_if_one_isoform(list_of_gene_objects,index_gene_object, index_isoform=0):
+        if index_isoform ==0:
+            st.info('ℹ️ There is only one protein sequence stored of this gene in the human isoform library.')
         st.markdown(' #### Isoform Sequence:')
         st.write('\n')
         st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
@@ -365,7 +366,7 @@ class Input_flow:
         gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
         gene_dict.pop('protein_sequence_isoform_collection')
         st.write('Gene:', gene_dict)
-        isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].__dict__)
+        isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[index_isoform].__dict__)
         isoform_dict.pop('collection_of_exons')
         isoform_dict.pop('protein_sequence')
         st.write('Protein Isoform:', isoform_dict)
