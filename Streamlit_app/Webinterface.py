@@ -91,7 +91,7 @@ def main():
                     #warning message
                 #else (no AA sequence)
                 input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-                #st.write(input1_IDs)
+                st.write(input1_IDs)
                 Input_flow.show_which_elements_were_not_found(input1_IDs)
                 cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
                 #execute nested dict only if dict is still existent...
