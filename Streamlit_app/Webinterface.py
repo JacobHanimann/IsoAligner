@@ -50,7 +50,7 @@ def main():
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
 
         #fixed in put area
-        title, example_button = st.columns([3.85,1])
+        title, example_button = st.columns([3.8,1])
         with title:
             st.markdown("### Input")
             with example_button:
@@ -63,7 +63,7 @@ def main():
             input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',ss.random_input,key=str(ss.run_id))
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
-        file_upload, search_button = st.columns([2.58,1])
+        file_upload, search_button = st.columns([2.54,1])
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
@@ -105,7 +105,7 @@ def main():
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
-            title, clear_button = st.columns([6,1])
+            title, clear_button = st.columns([5.9,1.])
             with title:
                 st.markdown("### Alignment Preview")
             with clear_button:
@@ -131,9 +131,8 @@ def main():
                 with reference_select:
                     chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
                     index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-                if st.button('Details about this Isoform Entry'):
+                with st.expander("Details about this Isoform Entry"):
                     Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform, index_of_reference_transcript)
-                    st.button('Hide details')
                 ss.generate = True
                 st.text('\n')
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
@@ -169,7 +168,7 @@ def main():
         #case of using multiple ID'
         elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
             using_IDs = True
-            title, clear_button = st.columns([6, 1])
+            title, clear_button = st.columns([5.9, 1])
             with title:
                 st.markdown("### Alignment Preview")
             with clear_button:
@@ -194,10 +193,9 @@ def main():
             else:
                 one_isoform=False
             ss.generate = True
-            if st.button('Details about Gene and Isoform Entry'):
+            with st.expander('Details about Gene and Isoform Entry'):
                 Input_flow.pop_up_isoform_info(list_of_gene_objects, gene_index, one_isoform,
                                                index_of_reference_transcript)
-                st.button('Hide details')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
             st.write('\n')
             st.markdown(
