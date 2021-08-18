@@ -75,7 +75,7 @@ prometheus-client==0.9.0
 prompt-toolkit==3.0.8
 protobuf==3.14.0
 ptyprocess==0.6.0
-pyarrow==2.0.0
+pyarrow
 pybiomart==0.2.0
 pydeck==0.5.0
 Pygments==2.7.3
