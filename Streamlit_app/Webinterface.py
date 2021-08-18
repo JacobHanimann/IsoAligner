@@ -35,7 +35,7 @@ def main():
 
     #Alignment tool section
     if choice == 'Alignment Tool':
-        logo, name = st.beta_columns([0.18,1])
+        logo, name = st.columns([0.18,1])
         with logo:
             image2 = Image.open('Streamlit_app/Pictures/only_logo.png')
             st.image(image2, use_column_width=True, width=350)
@@ -50,7 +50,7 @@ def main():
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
 
         #fixed in put area
-        title, example_button = st.beta_columns([3.85,1])
+        title, example_button = st.columns([3.85,1])
         with title:
             st.markdown("### Input")
             with example_button:
@@ -64,7 +64,7 @@ def main():
             input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',ss.random_input,key=ss.run_id)
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=ss.run_id)
-        file_upload, search_button = st.beta_columns([2.58,1])
+        file_upload, search_button = st.columns([2.58,1])
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
@@ -106,7 +106,7 @@ def main():
             using_IDs = True
             #st.write(input1_IDs)
             #st.write(list(input1_IDs.values())[0])
-            title, clear_button = st.beta_columns([6,1])
+            title, clear_button = st.columns([6,1])
             with title:
                 st.markdown("### Alignment Preview")
             with clear_button:
@@ -128,7 +128,7 @@ def main():
 
             if not one_isoform:
                 st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
-                reference_select, whitespace = st.beta_columns([1, 0.9])
+                reference_select, whitespace = st.columns([1, 0.9])
                 with reference_select:
                     chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
                     index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
@@ -170,7 +170,7 @@ def main():
         #case of using multiple ID'
         elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
             using_IDs = True
-            title, clear_button = st.beta_columns([6, 1])
+            title, clear_button = st.columns([6, 1])
             with title:
                 st.markdown("### Alignment Preview")
             with clear_button:
@@ -181,7 +181,7 @@ def main():
                     ss.example = False
                     ss.searched_clicked = False
                     Streamlit_community.rerun_script_from_top()
-            genes, reference = st.beta_columns([2,2])
+            genes, reference = st.columns([2,2])
             with genes:
                 chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
             with reference:
@@ -269,7 +269,7 @@ def main():
                 st.write("\n")
                 generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
                 if not generated_table.empty:
-                    table, whitespace, download = st.beta_columns([1.25,0.2,1])
+                    table, whitespace, download = st.columns([1.25,0.2,1])
                     st.write("\n")
                     with download:
                         st.write("\n")
@@ -293,7 +293,7 @@ def main():
 
 
     elif choice == 'REST API & Downloads':
-        logo, name = st.beta_columns([0.18, 1])
+        logo, name = st.columns([0.18, 1])
         with logo:
             image2 = Image.open('Streamlit_app/Pictures/only_logo.png')
             st.image(image2, use_column_width=True, width=350)
@@ -302,7 +302,7 @@ def main():
         st.header("REST API")
         st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
         st.write("#### Browse Function Features")
-        resource,method, parameters = st.beta_columns([1,1,1])
+        resource,method, parameters = st.columns([1,1,1])
         with resource:
             resource = st.selectbox('Resource:', ['...org/api/map','...org/api/align'])
         with method:
@@ -400,7 +400,7 @@ def main():
         st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with following details: ')
         st.write('\n')
         total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon, two_isoform_number, Ids_two = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
-        info,needleman, minimal = st.beta_columns([1, 1,1])
+        info,needleman, minimal = st.columns([1, 1,1])
         with info:
             st.markdown("##### Volume")
             st.write(' - Genes: ', number_of_good_genes," \n"
@@ -427,7 +427,7 @@ def main():
         Streamlit_community.create_download_section_from_ext_link('1-djWhoz-Yadi1vVKI6AArfA65u8p2clz','Click here to start download')
 
     elif choice == 'Manual & About':
-        logo, name = st.beta_columns([0.18, 1])
+        logo, name = st.columns([0.18, 1])
         with logo:
             image2 = Image.open('Streamlit_app/Pictures/only_logo.png')
             st.image(image2, use_column_width=True, width=350)
@@ -439,7 +439,7 @@ def main():
         problem_schema = Image.open('Streamlit_app/Pictures/exon_problem.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
-        needleman, minimal = st.beta_columns([1, 1.])
+        needleman, minimal = st.columns([1, 1.])
         with needleman:
             st.markdown("#### Needleman-Wunsch global alignment")
             st.write(" - Big open gap penalty (Default -1) \n"
@@ -474,7 +474,7 @@ def main():
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
         total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_mme,Ids_in_total, minimal_exon_lengths, mean_exon, two_isoform_number, Ids_two = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
-        picture, statistics = st.beta_columns([2, 1.2])
+        picture, statistics = st.columns([2, 1.2])
         with statistics:
             st.markdown("#### Statistics:")
             st.write('\n')
