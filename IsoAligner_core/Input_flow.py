@@ -355,8 +355,8 @@ class Input_flow:
 
 
     @staticmethod
-    def pop_up_if_one_isoform(list_of_gene_objects,index_gene_object, index_isoform=0):
-        if index_isoform ==0:
+    def pop_up_isoform_info(list_of_gene_objects, index_gene_object,one_isoform, index_isoform=0):
+        if one_isoform:
             st.info('ℹ️ There is only one protein sequence stored of this gene in the human isoform library.')
         st.markdown(' #### Isoform Sequence:')
         st.write('\n')
@@ -365,8 +365,21 @@ class Input_flow:
         st.write('\n')
         gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
         gene_dict.pop('protein_sequence_isoform_collection')
-        st.write('Gene:', gene_dict)
+        if gene_dict['previous_symbols']!= list:
+            gene_dict.pop('previous_symbols')
+        if gene_dict['alias_symbols'] != list:
+            gene_dict.pop('alias_symbols')
+        list_of_to_be_popped_gene = [attribute for attribute, value in gene_dict.items() if value ==None]
+        for attribute in list_of_to_be_popped_gene:
+            gene_dict.pop(attribute)
+        st.write('Gene Attributes:', gene_dict)
         isoform_dict = dict(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[index_isoform].__dict__)
+        isoform_dict.pop('gene_name')
+        isoform_dict.pop('ENSG')
+        isoform_dict.pop('ENSG_version')
         isoform_dict.pop('collection_of_exons')
         isoform_dict.pop('protein_sequence')
-        st.write('Protein Isoform:', isoform_dict)
+        list_of_to_be_popped = [attribute for attribute, value in isoform_dict.items() if value ==None]
+        for attribute in list_of_to_be_popped:
+            isoform_dict.pop(attribute)
+        st.write('Protein Attributes:', isoform_dict)

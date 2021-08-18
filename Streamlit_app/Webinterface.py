@@ -124,16 +124,17 @@ def main():
             one_isoform = False
             if len(transcript_list)==1:
                 one_isoform =True
-                Input_flow.pop_up_if_one_isoform(list_of_gene_objects,index_gene_object)
+                Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform)
 
             if not one_isoform:
                 st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
                 reference_select, whitespace = st.beta_columns([1, 0.9])
                 with reference_select:
-                    chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
+                    chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
                     index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-                if st.button('Details about isoform'):
-                    Input_flow.pop_up_if_one_isoform(list_of_gene_objects, index_gene_object,index_of_reference_transcript)
+                if st.button('Details about this Isoform Entry'):
+                    Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform, index_of_reference_transcript)
+                    st.button('Hide details')
                 ss.generate = True
                 st.text('\n')
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
@@ -180,24 +181,31 @@ def main():
                     ss.example = False
                     ss.searched_clicked = False
                     Streamlit_community.rerun_script_from_top()
-            genes, reference = st.beta_columns([2,1.7])
+            genes, reference = st.beta_columns([2,2])
             with genes:
                 chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
             with reference:
                 transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene,dict_of_IDs)
-                chosen_reference = st.selectbox('Choose your reference transcript: ',[transcript[0] for transcript in transcript_list])
+                chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
                 index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-            if len(transcript_list) == 2:
-                Input_flow.pop_up_if_one_isoform(list_of_gene_objects, index_gene)
+                gene_index = list(nested_dict[re.split(' \(', Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
+            if len(transcript_list) == 1:
+                one_isoform= True
+                Input_flow.pop_up_isoform_info(list_of_gene_objects, one_isoform, index_gene)
+            else:
+                one_isoform=False
             ss.generate = True
-            st.text('\n')
+            if st.button('Details about Gene and Isoform Entry'):
+                Input_flow.pop_up_isoform_info(list_of_gene_objects, gene_index, one_isoform,
+                                               index_of_reference_transcript)
+                st.button('Hide details')
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
+            st.write('\n')
             st.markdown(
                 " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
             st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
             st.write('\n')
             st.text('\n')
-            gene_index = list(nested_dict[re.split(' \(',Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
             #st.write('indexes of gene objects:')
             #st.write(nested_dict)
             with st.spinner('Visualising Alignments . . .'):
