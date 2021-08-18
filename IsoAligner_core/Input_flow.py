@@ -382,4 +382,4 @@ class Input_flow:
         list_of_to_be_popped = [attribute for attribute, value in isoform_dict.items() if value ==None]
         for attribute in list_of_to_be_popped:
             isoform_dict.pop(attribute)
-        st.write('Protein Attributes:', isoform_dict)
+        st.write('Isoform Attributes:', isoform_dict)
