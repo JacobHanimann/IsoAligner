@@ -249,7 +249,7 @@ class Input_flow:
 
         if  run_id==1 or generate_table or not parameter_change:
             Input_flow.show_which_elements_are_not_canonical_and_one_isoform(list_of_gene_objects,nested_dict, dict_of_IDs)
-            container = st.beta_container()
+            container = st.container()
             all = st.checkbox("Select all columns")
 
             if all:
@@ -300,7 +300,7 @@ class Input_flow:
 
     @staticmethod
     def generate_download_section(df):
-        download, format = st.beta_columns([0.27, 1])
+        download, format = st.columns([0.27, 1])
         with download:
             st.markdown("### 💾 Download")
             sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
