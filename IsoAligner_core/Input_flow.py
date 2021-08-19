@@ -300,22 +300,18 @@ class Input_flow:
 
     @staticmethod
     def generate_download_section(df):
-        download, format = st.columns([0.27, 1])
+        st.write('\n')
+        download, format = st.columns([0.25, 1])
         with download:
-            st.markdown("### 💾 Download")
             sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
             if sep_choice == "tsv":
                 sep = '\t'
             else:
                 sep = ','
         with format:
-            st.text('\n')
-            st.text('\n')
-            st.text('\n')
-            st.text('\n')
-            st.markdown(
-                Streamlit_community.get_table_download_link(df, 'Click here to download', sep),
-                unsafe_allow_html=True)
+            st.write('\n')
+            st.write('\n')
+            Streamlit_community.download_button(df, 'AA_mapping_table.'+sep_choice, '⇩ Download Table', df, sep)
 
     @staticmethod
     def generate_random_example(list_of_gene_objects):
