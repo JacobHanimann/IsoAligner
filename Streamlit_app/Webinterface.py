@@ -81,6 +81,8 @@ def main():
         using_IDs= False
         no_elements = False
         input1_IDs = []
+        #state variables
+        mode_of_action = 'unknown'
 
         if ss.searched_clicked and input1 !="""""":
             with st.spinner('Checking library . . .'):
