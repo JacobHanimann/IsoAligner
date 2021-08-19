@@ -235,7 +235,7 @@ class Input_flow:
     @staticmethod
     def inlcude_id_type_of_user_input_in_df(dict_of_IDs):
         attribute_column_dict = Input_flow.import_attribute_column_dict()
-        ids_in_user_input = [ attribute_column_dict[id_type] for id_type in list(dict_of_IDs.values()) if not id_type in ['gene name', 'transcript_name']]
+        ids_in_user_input = [ attribute_column_dict[id_type] for id_type in list(dict_of_IDs.values()) if not id_type in ['gene_name', 'transcript_name','aminoacid_sequence']]
         final_id_list = ['Gene name'] + ids_in_user_input + ['Transcript Name']
         return final_id_list
 
