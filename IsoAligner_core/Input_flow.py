@@ -281,7 +281,6 @@ class Input_flow:
                                                           'Refseq Transcript ID version (NP.Number)',
                                                           'HGNC ID (HGNC:Number)'])
             else:
-                st.write(Input_flow.inlcude_id_type_of_user_input_in_df(dict_of_IDs))
                 selected_options = container.multiselect('Select further columns',
                                                          ['Gene name', 'Ensembl Gene ID (ENSG)',
                                                           'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
