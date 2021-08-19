@@ -217,7 +217,7 @@ class Input_flow:
     def import_attribute_column_dict():
         attribute_column_dict = {'gene_name': 'Gene name', 'ENSG': 'Ensembl Gene ID (ENSG)',
                                  'ENST': 'Ensembl Transcript ID (ENST)',
-                                 'ENSP': 'Ensembl Protein ID (ENSP)', 'transcript_name': 'Transcript name',
+                                 'ENSP': 'Ensembl Protein ID (ENSP)', 'transcript_name': 'Transcript Name',
                                  'refseq_gene_ID': 'Refseq Gene ID (Number)', 'refseq_NM': 'Refseq Transcript ID (NM)',
                                  'refseq_NP': 'Refseq Protein ID (NP)',
                                  'UCSC_stable_ID': 'UCSC Stable ID (uc)',
@@ -235,7 +235,7 @@ class Input_flow:
     @staticmethod
     def inlcude_id_type_of_user_input_in_df(dict_of_IDs):
         attribute_column_dict = Input_flow.import_attribute_column_dict()
-        ids_in_user_input = [ attribute_column_dict[id_type] for id_type in list(dict_of_IDs.values()) if not id_type in ['gene name, transcript_name']]
+        ids_in_user_input = [ attribute_column_dict[id_type] for id_type in list(dict_of_IDs.values()) if not id_type in ['gene name', 'transcript_name']]
         final_id_list = ['Gene name'] + ids_in_user_input + ['Transcript Name']
         return final_id_list
 
@@ -281,6 +281,7 @@ class Input_flow:
                                                           'Refseq Transcript ID version (NP.Number)',
                                                           'HGNC ID (HGNC:Number)'])
             else:
+                st.write(Input_flow.inlcude_id_type_of_user_input_in_df(dict_of_IDs))
                 selected_options = container.multiselect('Select further columns',
                                                          ['Gene name', 'Ensembl Gene ID (ENSG)',
                                                           'Ensembl Transcript ID (ENST)', 'Ensembl Protein ID (ENSP)',
