@@ -122,6 +122,22 @@ class Input_flow:
 
 
     @staticmethod
+    def report_mode_of_action(nested_dict):
+        '''
+        :param nested_dict:
+        :return: mode of action as variable: pairwise or one_ID_per_gene and streamlit warnings
+        '''
+        gene_indexes=[list(isoform_index.keys())[0] for element, isoform_index in nested_dict.items()]
+        if len(gene_indexes)== len(set(gene_indexes))*2: #there elements from the same gene:
+            return 'pairwise'
+        elif len(gene_indexes)!= len(set(gene_indexes)):
+            st.warning('Please enter your input in the format of either one or two Isoform ID\'s per gene.')
+            return 'stop'
+        else:
+            return "one_ID_per_gene"
+
+
+    @staticmethod
     def show_which_elements_are_not_canonical_and_one_isoform(list_of_gene_objects, nested_dict, dict_of_IDs):
         ''' warn the user that the reference transcript is not specified and automatically chosen
         :param input1_IDs:

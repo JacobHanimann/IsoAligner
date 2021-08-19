@@ -85,158 +85,161 @@ def main():
         if ss.searched_clicked and input1 !="""""":
             with st.spinner('Checking library . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-                st.write(dict_of_IDs)
-                #if an element is an amino acid:
-                    #warning message
-                #else (no AA sequence)
+                #st.write(dict_of_IDs)
                 input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-                st.write(input1_IDs)
+                #st.write(input1_IDs)
                 Input_flow.show_which_elements_were_not_found(input1_IDs)
                 cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
-                #execute nested dict only if dict is still existent...
                 nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
-                st.write(nested_dict)
-                if len (nested_dict)==0:
+                # identify input as pairwise or one ID per gene or mixed and report
+                mode_of_action = Input_flow.report_mode_of_action(nested_dict)
+                #st.write(nested_dict)
+                if len (nested_dict)==0 or mode_of_action=='stop':
                     no_elements = True
 
+        #case of using one ID per gene
+        if mode_of_action == "one_ID_per_gene":
+            #case of using one ID overall
+            if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1: #check if dictionary is not empty
+                using_IDs = True
+                #st.write(input1_IDs)
+                #st.write(list(input1_IDs.values())[0])
+                title, clear_button = st.columns([5.9,1.])
+                with title:
+                    st.markdown("### Alignment Preview")
+                with clear_button:
+                    st.write('\n')
+                    if st.button('Clear All'):
+                        ss.clear_button = True
+                        ss.random_input = Input_flow.generate_random_example(list_of_gene_objects)
+                        ss.run_id += 1
+                        ss.example = False
+                        ss.searched_clicked = False
+                        Streamlit_community.rerun_script_from_top()
+                chosen_gene = list(nested_dict.keys())[0]
+                index_gene_object = list(list(nested_dict.values())[0].keys())[0]
+                transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene, dict_of_IDs)
+                one_isoform = False
+                if len(transcript_list)==1:
+                    one_isoform =True
+                    Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform)
 
-        #case of using one ID
-        if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1: #check if dictionary is not empty
-            using_IDs = True
-            #st.write(input1_IDs)
-            #st.write(list(input1_IDs.values())[0])
-            title, clear_button = st.columns([5.9,1.])
-            with title:
-                st.markdown("### Alignment Preview")
-            with clear_button:
-                st.write('\n')
-                if st.button('Clear All'):
-                    ss.clear_button = True
-                    ss.random_input = Input_flow.generate_random_example(list_of_gene_objects)
-                    ss.run_id += 1
-                    ss.example = False
-                    ss.searched_clicked = False
-                    Streamlit_community.rerun_script_from_top()
-            chosen_gene = list(nested_dict.keys())[0]
-            index_gene_object = list(list(nested_dict.values())[0].keys())[0]
-            transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects, nested_dict, chosen_gene, dict_of_IDs)
-            one_isoform = False
-            if len(transcript_list)==1:
-                one_isoform =True
-                Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform)
-
-            if not one_isoform:
-                st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
-                reference_select, whitespace = st.columns([1, 0.9])
-                with reference_select:
-                    chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
-                    index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-                with st.expander("Details about this Isoform Entry"):
-                    Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform, index_of_reference_transcript)
-                ss.generate = True
-                st.text('\n')
-                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
-                st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
-                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
-                st.write('\n')
-                st.text('\n')
-                with st.spinner('Visualising Alignments . . .'):
-                    Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
-                #Table section
-                parameter_change = False
-                chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
-                generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
-                if not type(generated_table)==tuple:
-                    slot1 = st.empty()
-                    value = Table_Generation.display_filter_option_AA()
-                    if value == "":
-                            slot1.write(generated_table)
-                    else:
-                        filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
-                        if not filter_df.empty:
-                            slot1.write(filter_df)
-                            st.info('ℹ️ Delete value to go back to original mapping table.')
-                        else:
-                            st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
-                    Input_flow.generate_download_section(generated_table)
-                else:
-                    st.warning(
-                        'No amino acid positions mapped currently.')
-                    st.info(' Tweak function parameters on the left sidebar to allow matches!')
-
-
-        #case of using multiple ID'
-        elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
-            using_IDs = True
-            title, clear_button = st.columns([5.9, 1])
-            with title:
-                st.markdown("### Alignment Preview")
-            with clear_button:
-                st.write('\n')
-                if st.button('Clear All'):
-                    ss.clear_button = True
-                    ss.run_id += 1
-                    ss.example = False
-                    ss.searched_clicked = False
-                    Streamlit_community.rerun_script_from_top()
-            genes, reference = st.columns([2,2])
-            with genes:
-                chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
-            with reference:
-                transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene,dict_of_IDs)
-                chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
-                index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-                gene_index = list(nested_dict[re.split(' \(', Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
-            if len(transcript_list) == 1:
-                one_isoform= True
-                Input_flow.pop_up_isoform_info(list_of_gene_objects, one_isoform, index_gene)
-            else:
-                one_isoform=False
-            ss.generate = True
-            with st.expander('Details about Gene and Isoform Entry'):
-                Input_flow.pop_up_isoform_info(list_of_gene_objects, gene_index, one_isoform,
-                                               index_of_reference_transcript)
-            match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
-            st.write('\n')
-            st.markdown(
-                " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
-            st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
-            st.write('\n')
-            st.text('\n')
-            #st.write('indexes of gene objects:')
-            #st.write(nested_dict)
-            with st.spinner('Visualising Alignments . . .'):
-                Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
-            # Table section
-            parameter_change=False
-            if  [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
-                parameter_change = True
-                ss.parameters = [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA]
-            chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
-            if chosen_columns:
-                df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
-                if not type(df_all)==tuple:
-                    with st.spinner('Preparing Preview of Mapping Table . . .'):
+                if not one_isoform:
+                    st.write('Number of Isoform Entries for '+chosen_gene+':',len(transcript_list))
+                    reference_select, whitespace = st.columns([1, 0.9])
+                    with reference_select:
+                        chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
+                        index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
+                    with st.expander("Details about this Isoform Entry"):
+                        Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform, index_of_reference_transcript)
+                    ss.generate = True
+                    st.text('\n')
+                    match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
+                    st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
+                    st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
+                    st.write('\n')
+                    st.text('\n')
+                    with st.spinner('Visualising Alignments . . .'):
+                        Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+                    #Table section
+                    parameter_change = False
+                    chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
+                    generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
+                    if not type(generated_table)==tuple:
                         slot1 = st.empty()
                         value = Table_Generation.display_filter_option_AA()
-                        if value=="":
-                            slot1.write(df_all)
-                            #st.dataframe(df_all.style.highlight_(axis=0))
+                        if value == "":
+                                slot1.write(generated_table)
                         else:
-                            filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
+                            filter_df = Table_Generation.filter_all_columns_of_df(value, generated_table)
                             if not filter_df.empty:
                                 slot1.write(filter_df)
                                 st.info('ℹ️ Delete value to go back to original mapping table.')
                             else:
-                                st.warning('Value "' + str(
-                                    value) + '" does not exist in the dataframe.')
-                    st.text('\n')
-                    Input_flow.generate_download_section(df_all)
+                                st.warning('Value "'+str(value)+'" does not exist in the dataframe.')
+                        Input_flow.generate_download_section(generated_table)
+                    else:
+                        st.warning(
+                            'No amino acid positions mapped currently.')
+                        st.info(' Tweak function parameters on the left sidebar to allow matches!')
+
+            #case of using one ID per gene
+            #case of using multiple ID'
+            elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
+                using_IDs = True
+                title, clear_button = st.columns([5.9, 1])
+                with title:
+                    st.markdown("### Alignment Preview")
+                with clear_button:
+                    st.write('\n')
+                    if st.button('Clear All'):
+                        ss.clear_button = True
+                        ss.run_id += 1
+                        ss.example = False
+                        ss.searched_clicked = False
+                        Streamlit_community.rerun_script_from_top()
+                genes, reference = st.columns([2,2])
+                with genes:
+                    chosen_gene = st.selectbox('Select Gene:',Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict))
+                with reference:
+                    transcript_list, index_gene = Visualise_Alignment.fetch_Isoform_IDs_of_sequence_collection(list_of_gene_objects,nested_dict, chosen_gene,dict_of_IDs)
+                    chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
+                    index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
+                    gene_index = list(nested_dict[re.split(' \(', Visualise_Alignment.clean_chosen_gene(chosen_gene))[0]])[0]
+                if len(transcript_list) == 1:
+                    one_isoform= True
+                    Input_flow.pop_up_isoform_info(list_of_gene_objects, one_isoform, index_gene)
                 else:
-                    st.warning(
-                        'No amino acid positions mapped currently.')
-                    st.info(' Tweak function parameters on the left sidebar to allow matches!')
-            ss.run_id_table += 1
+                    one_isoform=False
+                ss.generate = True
+                with st.expander('Details about Gene and Isoform Entry'):
+                    Input_flow.pop_up_isoform_info(list_of_gene_objects, gene_index, one_isoform,
+                                                   index_of_reference_transcript)
+                match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene)
+                st.write('\n')
+                st.markdown(
+                    " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
+                st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
+                st.write('\n')
+                st.text('\n')
+                #st.write('indexes of gene objects:')
+                #st.write(nested_dict)
+                with st.spinner('Visualising Alignments . . .'):
+                    Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects,gene_index, match, mismatch, open_gap_penalty, gap_extension_penalty,exon_length_AA)
+                # Table section
+                parameter_change=False
+                if  [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
+                    parameter_change = True
+                    ss.parameters = [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA]
+                chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
+                if chosen_columns:
+                    df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
+                    if not type(df_all)==tuple:
+                        with st.spinner('Preparing Preview of Mapping Table . . .'):
+                            slot1 = st.empty()
+                            value = Table_Generation.display_filter_option_AA()
+                            if value=="":
+                                slot1.write(df_all)
+                                #st.dataframe(df_all.style.highlight_(axis=0))
+                            else:
+                                filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
+                                if not filter_df.empty:
+                                    slot1.write(filter_df)
+                                    st.info('ℹ️ Delete value to go back to original mapping table.')
+                                else:
+                                    st.warning('Value "' + str(
+                                        value) + '" does not exist in the dataframe.')
+                        st.text('\n')
+                        Input_flow.generate_download_section(df_all)
+                    else:
+                        st.warning(
+                            'No amino acid positions mapped currently.')
+                        st.info(' Tweak function parameters on the left sidebar to allow matches!')
+                ss.run_id_table += 1
+
+        #pairwise alignments
+        elif mode_of_action=='pairwise':
+            st.write('## Here we go with the pairwise alignments 🤠')
 
         #Input 2 Area
         if using_IDs== False and raw_aa:
