@@ -67,7 +67,7 @@ def main():
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
-                input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, HGNC, Uniprot (Accession/Isoform/Uniparc)", type=[ "txt"])
+                input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot, UCSC, HGNC (Accession/Isoform/Uniparc)", type=[ "txt"])
                 if input1 is not None:
                     input1 = input1.getvalue().decode("UTF-8")
                     ss.searched_clicked = True
