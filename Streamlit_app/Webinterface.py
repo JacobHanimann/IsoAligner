@@ -302,7 +302,7 @@ def main():
         with name:
             st.markdown('# IsoAligner')
         st.header("REST API")
-        st.write('The Restful API is accessible trough the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
+        st.write('The Restful API is accessible via the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
         st.write("#### Browse Function Features")
         resource,method, parameters = st.columns([1,1,1])
         with resource:
