@@ -363,7 +363,7 @@ class Input_flow:
                         fulfilled = True
                         return example
             else:
-                return 'EGFR, Q9Y6I3-1, ENSG00000074410, ENSP00000075430.7, HGNC:10728, UPI00022F85F1'
+                return 'RPS6KA4, KRAS, Q9Y6I3-1, ENSG00000074410, ENSP00000075430.7, HGNC:10728, UPI00022F85F1'
 
 
     @staticmethod
