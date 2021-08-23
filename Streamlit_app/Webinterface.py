@@ -263,11 +263,11 @@ def main():
                 dict_of_pairwise = Visualise_Alignment.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
                 transcript_list = dict_of_pairwise[re.split(' \(', chosen_gene)[0]]
                 chosen_reference = st.selectbox('Choose your reference isoform: ',transcript_list)
-                index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,
-                                                                                                   transcript_list)
+                index_of_reference_transcript = list(nested_dict[chosen_reference].values())[0]
+                gene_index = list(nested_dict[chosen_reference].keys())[0]
             if len(transcript_list) == 1:
                 one_isoform = True
-                Input_flow.pop_up_isoform_info(list_of_gene_objects, one_isoform, index_gene)
+                Input_flow.pop_up_isoform_info(list_of_gene_objects, one_isoform, gene_index)
             else:
                 one_isoform = False
             ss.generate = True
@@ -275,7 +275,7 @@ def main():
                 Input_flow.pop_up_isoform_info(list_of_gene_objects, gene_index, one_isoform,
                                                index_of_reference_transcript)
             match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(
-                list_of_gene_objects, index_gene)
+                list_of_gene_objects, gene_index)
             st.write('\n')
             st.markdown(
                 " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
