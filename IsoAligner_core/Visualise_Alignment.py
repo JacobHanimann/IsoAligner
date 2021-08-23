@@ -6,7 +6,7 @@ class Visualise_Alignment:
     pass
 
     @staticmethod
-    def create_list_gene_selection(list_of_gene_objects, input1_IDs):
+    def create_list_gene_selection(list_of_gene_objects, input1_IDs, pairwise=False):
         '''
         returns list of gene names, associated isoform count and user input
         also, looks like a nightmare
@@ -14,20 +14,24 @@ class Visualise_Alignment:
         :param input1_IDs:
         :return: list for the gene selection box
         '''
-        gene_list = \
-         [list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
-         ' (' +
-         str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
-         ' Entries) | '
-         + element
-          if element != list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol else
-          list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
-          ' (' +
-          str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
-          ' Entries)'
-         for element, index in input1_IDs.items()]
+        if not pairwise:
+            gene_list = \
+             [list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
+             ' (' +
+             str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
+             ' Entries) | '
+             + element
+              if element != list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol else
+              list_of_gene_objects[list(index.keys())[0]].ensembl_gene_symbol +
+              ' (' +
+              str(len(list_of_gene_objects[list(index.keys())[0]].protein_sequence_isoform_collection)) +
+              ' Entries)'
+             for element, index in input1_IDs.items()]
 
-        return gene_list
+            return gene_list
+        else:
+            gene_indexes = [list(isoform_index.keys())[0] for element, isoform_index in input1_IDs.items()]
+            return [list_of_gene_objects[gene_index].ensembl_gene_symbol+' (2/'+str(len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection))+" Entries)" for gene_index in set(gene_indexes)]
 
 
     @staticmethod
@@ -50,10 +54,8 @@ class Visualise_Alignment:
         :return: list
         '''
         chosen_gene_cleaned = Visualise_Alignment.clean_chosen_gene(chosen_gene)
-
         index_of_gene_object = list(dict_element_indexes[chosen_gene_cleaned].keys())[0]
         index_of_canonical_transcript = dict_element_indexes[chosen_gene_cleaned][index_of_gene_object]
-
         list_of_transcripts = []
         index_count = 0
         for sequence in list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection:
@@ -94,6 +96,28 @@ class Visualise_Alignment:
                canonical_element = [(list(canonical_element)[0][0]+' | '+chosen_gene_cleaned,list(canonical_element)[0][1])]
         final_transcript_list = canonical_element + list_of_transcripts
         return final_transcript_list, index_of_gene_object
+
+
+    @staticmethod
+    def create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects):
+        gene_indexes = set([list(isoform_index.keys())[0] for element, isoform_index in nested_dict.items()])
+        gene_names = dict()
+        for gene_index in gene_indexes:
+            gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol]=None
+        print(gene_indexes)
+        for element, isoform_index in nested_dict.items():
+            print(element)
+            for gene_index in gene_indexes:
+                if list(isoform_index.keys())[0]==gene_index:
+                    if gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol]==None:
+                       gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol] = [element]
+                    else:
+                        gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol].append(element)
+        return gene_names
+
+
+
+
 
 
     @staticmethod
