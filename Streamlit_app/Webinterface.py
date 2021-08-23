@@ -297,9 +297,11 @@ def main():
             chosen_columns = Input_flow.chose_columns(list_of_gene_objects, nested_dict, dict_of_IDs, ss.run_id_table,
                                                       parameter_change)
             if chosen_columns:
+                if len(dict_of_pairwise)==1: #if just one pairwise alignment --> table dynamic
+                    pass
                 df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects,
                                                                                 chosen_columns, match, mismatch,
-                                                                                open_gap_penalty, gap_extension_penalty)
+                                                                         open_gap_penalty, gap_extension_penalty)
                 if not type(df_all) == tuple:
                     with st.spinner('Preparing Preview of Mapping Table . . .'):
                         slot1 = st.empty()
