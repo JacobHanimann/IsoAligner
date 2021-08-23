@@ -98,26 +98,6 @@ class Visualise_Alignment:
         return final_transcript_list, index_of_gene_object
 
 
-    @staticmethod
-    def create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects):
-        gene_indexes = set([list(isoform_index.keys())[0] for element, isoform_index in nested_dict.items()])
-        gene_names = dict()
-        for gene_index in gene_indexes:
-            gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol]=None
-        print(gene_indexes)
-        for element, isoform_index in nested_dict.items():
-            print(element)
-            for gene_index in gene_indexes:
-                if list(isoform_index.keys())[0]==gene_index:
-                    if gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol]==None:
-                       gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol] = [element]
-                    else:
-                        gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol].append(element)
-        return gene_names
-
-
-
-
 
 
     @staticmethod
@@ -182,7 +162,7 @@ class Visualise_Alignment:
         Note: selection of attributes has to be in the same order as in the fetch_Isoform_IDs_of_sequence_collection() function
         '''
         sequence = list_of_gene_objects[index_of_gene_object].protein_sequence_isoform_collection[index_of_transcript]
-        if getattr(sequence, 'transcript_name') != None: #has to be complemented with all attributes
+        if getattr(sequence, 'transcript_name') != None:
             return getattr(sequence, 'transcript_name')
         elif getattr(sequence, 'ENSP') != None:
             return  getattr(sequence, 'ENSP')
@@ -199,7 +179,7 @@ class Visualise_Alignment:
 
     @staticmethod
     def display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects, index_of_gene, match,
-                                                     mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA):
+                                                     mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA, pairwise=None):
         '''
         executes the visualisation of the alignments for a gene with a given reference_transcript
         :param reference_transcript:
@@ -215,26 +195,37 @@ class Visualise_Alignment:
         #get reference AA sequence
         reference_protein_sequence = getattr(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_of_reference_transcript], "protein_sequence")
 
+
         transcript_number = 1
         sequence1_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index_of_reference_transcript)
         for index, transcript in enumerate(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection):
+            stop= False
             if index == index_of_reference_transcript: #skip reference AA
                 continue
+            if pairwise:
+                for element in pairwise:
+                    if index != element[1]:
+                        stop = True
+                    else:
+                        stop=False
+                        break
+
 
             #compute alignment
-            isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
-                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,
-                gap_extension_penalty, exon_length_AA)[4:7]
+            if not stop:
+                isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
+                    reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,
+                    gap_extension_penalty, exon_length_AA)[4:7]
 
-            #calculate statistics of alignment output
-            percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,
-                                                                                                                    reference_protein_sequence,
-                                                                                                        transcript.protein_sequence)
-            st.write('Alignment ' + str(transcript_number))
-            #extract transcript name of alternative_ID isoform
-            sequence2_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index)
-            st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
-                                                    isoform_pattern_check, percentage_reference, percentage_isoform,
-                                                    sequence1=sequence1_name, sequence2=sequence2_name))
-            st.text('\n')
-            transcript_number += 1
+                #calculate statistics of alignment output
+                percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,
+                                                                                                                        reference_protein_sequence,
+                                                                                                            transcript.protein_sequence)
+                st.write('Alignment ' + str(transcript_number))
+                #extract transcript name of alternative_ID isoform
+                sequence2_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index)
+                st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta, alignment_isoform_fasta,
+                                                        isoform_pattern_check, percentage_reference, percentage_isoform,
+                                                        sequence1=sequence1_name, sequence2=sequence2_name))
+                st.text('\n')
+                transcript_number += 1

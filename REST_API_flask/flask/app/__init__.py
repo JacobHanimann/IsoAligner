@@ -86,7 +86,7 @@ class Mapping_Table(Resource):
                 index_reference_transcript = list(list(nested_dict_reference.values())[0].values())[0]
                 index_alternative_transcript = list(list(nested_dict_alternative.values())[0].values())[0]
                 chosen_columns = Data_processing.choose_mapping_table_columns(args['df_ids'],id_type_reference,id_type_alternative,two_IDs=True)
-                mapping_table = Data_processing.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
+                mapping_table = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
                                                                                 index_reference_transcript,
                                                                                 index_alternative_transcript,
                                                                                 chosen_columns, match, mismatch,

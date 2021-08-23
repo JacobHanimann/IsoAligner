@@ -38,6 +38,22 @@ class Input_flow:
 
 
     @staticmethod
+    def create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects):
+        gene_indexes = set([list(isoform_index.keys())[0] for element, isoform_index in nested_dict.items()])
+        gene_names = dict()
+        for gene_index in gene_indexes:
+            gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol]=None
+        for element, isoform_index in nested_dict.items():
+            for gene_index in gene_indexes:
+                if list(isoform_index.keys())[0]==gene_index:
+                    if gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol]==None:
+                       gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol] = [element]
+                    else:
+                        gene_names[list_of_gene_objects[gene_index].ensembl_gene_symbol].append(element)
+        return gene_names
+
+
+    @staticmethod
     def search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs):
         '''
         Function that searches trough database with gettatribute()

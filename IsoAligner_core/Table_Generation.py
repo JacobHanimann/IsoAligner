@@ -1,6 +1,7 @@
 import pandas as pd
 from IsoAligner_core.Alignment import *
 from Streamlit_app.Statistics import *
+from IsoAligner_core.Input_flow import *
 
 
 class Table_Generation:
@@ -202,6 +203,56 @@ class Table_Generation:
                 return list_of_all_alignments, column_names, #(aa_correct, aa_false)
         else:
             return ('no','matches')
+
+
+    @staticmethod
+    def create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA, two_ids=True):
+        list_of_all_alignments = []
+
+        # reference protein sequence
+        reference_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+            index_reference_transcript].protein_sequence
+
+        # alternative protein sequence
+        alternative_protein_sequence = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[
+            index_alternative_transcript].protein_sequence
+
+        #protein isoform object of alternative sequence
+        transcript = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_alternative_transcript]
+
+        aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(reference_protein_sequence, alternative_protein_sequence, match, mismatch, open_gap_penalty,
+                                                                                            gap_extension_penalty, exon_length_AA)[1:4]
+
+        # save the results of each alignment in a list outside the loop
+        for indexiterator in range(0, len(aminoacids)):
+            column_values, column_names = Table_Generation.get_selected_columns_attributes_and_column_names(
+                chosen_columns, index_of_gene, index_reference_transcript, transcript, list_of_gene_objects)
+            positions = [aminoacids[indexiterator], reference_position_list[indexiterator],
+                         isoform_positions_list[indexiterator]]
+            nested_list_alignment = column_values + positions
+            list_of_all_alignments.append(nested_list_alignment)
+
+        if two_ids:
+           df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
+           return df
+        else:
+            return list_of_all_alignments
+
+    @staticmethod
+    def create_mapping_table_of_two_IDs_dict(nested_dict, list,list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
+                                        gap_extension_penalty, exon_length_AA, two_ids=True):
+
+        dict_of_gene_names = Input_flow.create_dict_for_pairwise_mode(nested_dict,list_of_gene_objects)
+        for gene, elements in dict_of_gene_names.items():
+            index_of_gene = nested_dict[elements[0]]
+            index_reference_transcript = ""
+            index_alternative_transcript = ""
+            Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
+                                                                                index_reference_transcript,
+                                                                                index_alternative_transcript,
+                                                                                chosen_columns, match, mismatch,
+                                                                                open_gap_penalty, gap_extension_penalty,
+                                                                                exon_length_AA)
 
 
     @staticmethod

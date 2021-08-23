@@ -260,7 +260,7 @@ def main():
                 chosen_gene = st.selectbox('Select Gene:',
                                            Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict, pairwise=True))
             with reference:
-                dict_of_pairwise = Visualise_Alignment.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
+                dict_of_pairwise = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
                 transcript_list = dict_of_pairwise[re.split(' \(', chosen_gene)[0]]
                 chosen_reference = st.selectbox('Choose your reference isoform: ',transcript_list)
                 index_of_reference_transcript = list(nested_dict[chosen_reference].values())[0]
@@ -284,10 +284,11 @@ def main():
             st.write('\n')
             st.text('\n')
             with st.spinner('Visualising Alignments . . .'):
+                transcript_list_w_index = [(element, list(nested_dict[element].values())[0]) for element in transcript_list]
                 Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
                                                                                  list_of_gene_objects, gene_index,
                                                                                  match, mismatch, open_gap_penalty,
-                                                                                 gap_extension_penalty, exon_length_AA)
+                                                                                 gap_extension_penalty, exon_length_AA, pairwise=transcript_list_w_index)
             # Table section
             parameter_change = False
             if [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
