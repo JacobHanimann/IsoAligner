@@ -88,15 +88,15 @@ def main():
         if ss.searched_clicked and input1 !="""""":
             with st.spinner('Checking library . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
-                st.write(dict_of_IDs)
+                #st.write(dict_of_IDs)
                 input1_IDs = Input_flow.search_through_database_with_known_ID_Type(list_of_gene_objects, dict_of_IDs)
-                st.write(input1_IDs)
+                #st.write(input1_IDs)
                 Input_flow.show_which_elements_were_not_found(input1_IDs)
                 cleaned_input1_IDs=Input_flow.remove_dict_elements_with_no_gene_object_match(input1_IDs)
                 nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
                 # identify input as pairwise or one ID per gene or mixed and report
                 mode_of_action = Input_flow.report_mode_of_action(nested_dict)
-                st.write(nested_dict)
+                #st.write(nested_dict)
                 if len (nested_dict)==0 or mode_of_action=='stop':
                     no_elements = True
 
