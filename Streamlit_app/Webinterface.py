@@ -63,7 +63,7 @@ def main():
             input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',ss.random_input,key=str(ss.run_id))
         else:
             input1 = st.text_area('Paste any Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
-        file_upload, search_button = st.columns([3.25,1])
+        file_upload, search_button = st.columns([3.3,1])
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
