@@ -73,7 +73,7 @@ def main():
                     ss.searched_clicked = True
             raw_aa = st.checkbox("insert 2nd raw amino acid manually")
         with search_button:
-            search = st.button('Search Library for ID\'s')
+            search = st.button('Search and Align')
             if search:
                 ss.searched_clicked =True
 
