@@ -43,8 +43,8 @@ def main():
             st.markdown('# IsoAligner')
         st.header("Map Amino Acid Positions Across Isoforms")
         st.write(
-            "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and gene-specific minimal exon lengths to match comprehensibly corresponding amino acid positions exclusively."
-            " The current human isoform library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
+            "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and gene-specific minimal exon lengths to retrieve clean positional mapping table's for corresponding AA's in alternative splice variants."
+            " The current human isoform library consists of ~19'000 protein coding genes covering ~120'000 protein sequences and +1.3 million mapped isoform ID's from Ensembl, Uniprot, Refseq, UCSC and HGNC.")
 
         st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
@@ -60,10 +60,10 @@ def main():
         if ss.example:
             #input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, Q9Y6I3, Q9Y6I3-1, ENSG00000074410, ENSG00000164690.2, ENSP00000005756, ENSP00000075430.7, HGNC:10728, UPI00022F85F1, uc060zgm.1, NP_004702.2, ENST00000554846.5, SEMA5B-211, BRAF_HUMAN, NM_001304833, 1232, ENST00000551640, NP_775733, NM_003769.3''',key=ss.run_id)
 
-            input1 = st.text_area('Paste multiple ID\'s (comma or newline separated) and click on search library. Go to "Manual" for further information',ss.random_input,key=str(ss.run_id))
+            input1 = st.text_area('Paste ID\'s (comma or newline separated) and click on Search and Align. Go to "Manual" for further information.',ss.random_input,key=str(ss.run_id))
         else:
-            input1 = st.text_area('Paste one, two (pairwise) or multiple Ensembl/Uniprot/Refseq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
-        file_upload, search_button = st.columns([3.3,1])
+            input1 = st.text_area('Paste one, two (pairwise) or multiple Ensembl/UniProt/RefSeq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
+        file_upload, search_button = st.columns([3.35,1])
         with file_upload:
             file_wanted = st.checkbox("upload list of ID's or gene names")
             if file_wanted:
@@ -71,7 +71,7 @@ def main():
                 if input1 is not None:
                     input1 = input1.getvalue().decode("UTF-8")
                     ss.searched_clicked = True
-            raw_aa = st.checkbox("insert 2nd raw amino acid manually")
+            raw_aa = st.checkbox("insert 2nd raw amino acid sequence manually")
         with search_button:
             search = st.button('Search and Align')
             if search:
