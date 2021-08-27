@@ -130,7 +130,7 @@ class Input_flow:
                     #st.success('Element succesfully identified')
         elif matched_elements==0:
             if number_of_elements==1 and list(input1_IDs.values())[0]=='aminoacid_sequence':
-                st.warning("Looks like an amino acid sequence. Click on 'Clear' and 'add 2nd sequence'")
+                st.warning("Looks like an amino acid sequence. Click on 'enter 2nd sequence' to add another sequence.")
             else:
                 st.warning ('No references found in the library')
         else:
@@ -144,6 +144,8 @@ class Input_flow:
         :return: mode of action as variable: pairwise or one_ID_per_gene and streamlit warnings
         '''
         gene_indexes=[list(isoform_index.keys())[0] for element, isoform_index in nested_dict.items()]
+        if len(gene_indexes)==0:
+            return 'stop'
         if len(gene_indexes)== len(set(gene_indexes))*2: #there elements from the same gene:
             return 'pairwise'
         elif len(gene_indexes)!= len(set(gene_indexes)):

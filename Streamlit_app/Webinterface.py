@@ -86,7 +86,7 @@ def main():
         mode_of_action = 'unknown'
 
 
-        if ss.searched_clicked and input1 !="""""":
+        if ss.searched_clicked and input1 !="""""" and input1!=None:
             with st.spinner('Checking library . . .'):
                 dict_of_IDs = Input_preparation.identify_IDs_from_user_text_input(input1)
                 #st.write(dict_of_IDs)
@@ -97,7 +97,6 @@ def main():
                 nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
                 # identify input as pairwise or one ID per gene or mixed and report
                 mode_of_action = Input_flow.report_mode_of_action(nested_dict)
-                #st.write(nested_dict)
                 if len (nested_dict)==0 or mode_of_action=='stop':
                     no_elements = True
 
@@ -335,12 +334,14 @@ def main():
                 ss.align_clicked = True
                 ss.searched_clicked = False
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
+                if len(input2)<7:
+                    st.error('Protein sequence has to be at least 7 AA long. Please reload page.')
                 #Sidebar pop up, make function out of it?
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, raw=True)
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
-                needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, streamlit=True)
+                needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1.upper(),input2.upper(), match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, streamlit=True)
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
                 #st.text(Alignment_preview)
                 st.write("\n")
@@ -352,7 +353,7 @@ def main():
                     if st.button('Clear All'):
                         ss.clear_button = True
                         ss.random_input = Input_flow.generate_random_example(list_of_gene_objects)
-                        ss.run_id += 1
+                        ss.run_id += 2
                         ss.example = False
                         ss.searched_clicked = False
                         Streamlit_community.rerun_script_from_top()
