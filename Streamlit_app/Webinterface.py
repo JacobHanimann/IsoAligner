@@ -385,7 +385,7 @@ def main():
         with name:
             st.markdown('# IsoAligner')
         st.header("REST API")
-        st.write('The Restful API is accessible via the url www.isoaligner.org/api. Currently, a get method called /map for the retrieval of mapping tables for IDs of the human isoform library as well as the method /align to retrieve the alignment of two raw protein sequences.')
+        st.write('The Restful API is accessible via the url www.isoaligner.org/api. Currently, a GET method called /map for the retrieval of mapping tables for IDs of the human isoform library is available, as well as the method /align to retrieve the alignment of two raw protein sequences.')
         st.write("#### Browse Function Features")
         resource,method, parameters = st.columns([1,1,1])
         with resource:
@@ -482,7 +482,7 @@ def main():
 
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
-        st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library, computed with following details: ')
+        st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library. The isoform with the longest sequence is used as the reference to align against all other splice variants.')
         st.write('\n')
         total_number_of_genes, number_of_good_genes, total_number_of_isoforms, genes_without_isoforms,Ids_in_total, minimal_exon_lengths, mean_exon, two_isoform_number, Ids_two = Statistics.list_of_gene_objects_statistics(list_of_gene_objects)
         info,needleman, minimal = st.columns([1, 1,1])
@@ -520,7 +520,7 @@ def main():
             st.markdown('# IsoAligner')
         st.markdown("### Matching identical exons")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
-                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional comprehensibly corresponding AA’s exclusively.  ')
+                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional mapping of comprehensibly corresponding amino acids exclusively.  ')
         problem_schema = Image.open('Streamlit_app/Pictures/exon_problem.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
@@ -534,27 +534,26 @@ def main():
             st.markdown("#### Discard falsely matched positions")
             st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific and at least 3.')
         st.markdown("### Alignment example:")
-        st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded.")
+        st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded from the mapping table.")
         example = Image.open('Streamlit_app/Pictures/example_june.png')
         st.image(example, use_column_width=True)
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")
-        st.write("Quick Start: Click on 'Show Example' and then 'Search Library for IDs' to get a overview.")
-        st.write("1. Paste ID's, gene names or raw amino acid sequences"
-                 "\n    - The current human library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC. Included are Gene, Transcript & Protein ID's of various types (see figure below)."
-                 "\n    - Click 'Search Library for IDs' or 'Align' to compute alignments"
-                 "\n 2. Tweak function parameters in the sidebar and inspect the alignment previews"
-                 "\n    - Set the mininmal exon length (in AA)"
-                 "\n""    - Set Needleman-Wunsch parameters"
+        st.write("Quick Start: Click on 'Show Example' and then 'Search and Align' to get a overview.")
+        st.write("1. Enter either one isoform ID per gene **or** two isoform ID's per gene **or** a list of genes names **or** two raw amino acid sequences. The input can be tab, comma or whitespace separated."
+                "\n   - Included are Gene, Transcript & Protein ID's of various types (see figure below). The current human library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC."                 "\n    - Click 'Search and Align' or 'Align' to compute alignments."
+                 "\n 2. Tweak function parameters in the left sidebar and inspect the alignment previews."
+                 "\n    - Set the mininmal exon length (in AA)."
+                 "\n""    - Set Needleman-Wunsch parameters."
                  "\n 3. Explore the computed mapping table."
-                "\n    - Filter for specific amino acid position "
-                "\n     - Select ID's to be included in the dataframe."
-                "\n    - Download dataframe: tab or comma separated (tsv/csv) "
+                "\n    - Filter for specific amino acid position."
+                "\n     - Select ID types (Ensembl, UniProt, RefSeq, UCSC) to be included in the dataframe."
+                "\n    - Download mapping table: tab or comma separated (tsv/csv). "
                  )
         st.markdown("#### ⚠️ Important:")
-        st.write("When multiple ID's are entered, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
+        st.write("When multiple ID's are entered from different genes, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
                  " In this case, the isoform with the longest sequence is used as the reference to align against."
-                 " Also, be aware that the minimal exon length for the generation of the mapping table is likewise automatically chosen in this context. (gene-specific and at least 3 AA).")
+                 " Also, be aware that the minimal exon length for the generation of the mapping table is likewise automatically chosen in this context, gene-specific and at least 3 AA.")
         st.write("--------------------------")
         st.markdown("### Human Isoform Library Overview:")
         st.write('\n')
@@ -579,7 +578,7 @@ def main():
         st.markdown("#### Contact:")
         st.write("\n")
         st.write("Please get in touch for suggestions or to report bugs :)")
-        st.text('''Gian Jacob Hanimann\nE-mail: GianJacob.Hanimann@usz.ch\nPhone: +41765596015''')
+        st.text('''Linkedin: Jacob Hanimann\nE-mail: jacobh@student.ethz.ch''')
         st.write('Bioinformatics group: https://www.sib.swiss/abdullah-kahraman-group')
         #Footnote
         st.write('---------------')
