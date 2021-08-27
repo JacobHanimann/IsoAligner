@@ -179,7 +179,7 @@ class Visualise_Alignment:
 
     @staticmethod
     def display_alignment_for_one_gene_from_database(index_of_reference_transcript, list_of_gene_objects, index_of_gene, match,
-                                                     mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA, pairwise=None):
+                                                     mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA, pairwise=None, streamlit=False):
         '''
         executes the visualisation of the alignments for a gene with a given reference_transcript
         :param reference_transcript:
@@ -215,7 +215,7 @@ class Visualise_Alignment:
             if not stop:
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = Alignment.map_AA_Needleman_Wunsch_with_exon_check(
                     reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,
-                    gap_extension_penalty, exon_length_AA)[4:7]
+                    gap_extension_penalty, exon_length_AA, streamlit=True)[4:7]
 
                 #calculate statistics of alignment output
                 percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,

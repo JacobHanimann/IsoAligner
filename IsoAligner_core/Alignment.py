@@ -71,18 +71,20 @@ class Alignment:
 
     @staticmethod
     def map_AA_Needleman_Wunsch_with_exon_check(fasta1, fasta2, match, mismatch, gap_penalty,
-                                                gap_extension_penalty, exon_length_AA):
+                                                gap_extension_penalty, exon_length_AA, streamlit=False):
         'maps FMI AA on COSMIC AA and creates list of AA position and gaps'
         clean_reference_fasta = Alignment.extract_only_AA_of_Fasta_file(fasta1)
         alignments = pairwise2.align.globalms(clean_reference_fasta, Alignment.extract_only_AA_of_Fasta_file(fasta2), match,
                                               mismatch, gap_penalty, gap_extension_penalty, one_alignment_only=True,
                                               penalize_extend_when_opening=True, penalize_end_gaps=False)
-        #matrix = matlist.available_matrices
-        #help(pairwise2.align.globalms)
+
         alignment_reference_fasta = list(alignments[0][0])
         alignment_isoform_fasta = list(alignments[0][1])
         isoform_pattern_check = Alignment.check_for_wrong_exon_alignments(alignment_reference_fasta, alignment_isoform_fasta,
                                                                 exon_length_AA)
+        if streamlit==True:
+            if 'mismatch' in isoform_pattern_check:
+                st.error('Mismatch detected: displayed as big letter X.')
         reference_position_list = []
         isoform_positions_list = []
         aminoacids = []

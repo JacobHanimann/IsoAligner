@@ -148,7 +148,7 @@ def main():
                     #Table section
                     parameter_change = False
                     chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
-                    generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA)
+                    generated_table = Table_Generation.create_table_for_one_gene_object(index_of_reference_transcript,list_of_gene_objects,index_gene_object,chosen_columns,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length=exon_length_AA, streamlit=False)
                     if not type(generated_table)==tuple:
                         slot1 = st.empty()
                         value = Table_Generation.display_filter_option_AA()
@@ -217,7 +217,7 @@ def main():
                     ss.parameters = [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA]
                 chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
                 if chosen_columns:
-                    df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty)
+                    df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict,list_of_gene_objects,chosen_columns, match, mismatch, open_gap_penalty, gap_extension_penalty, streamlit=False)
                     if not type(df_all)==tuple:
                         with st.spinner('Preparing Preview of Mapping Table . . .'):
                             slot1 = st.empty()
@@ -288,7 +288,7 @@ def main():
                 Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
                                                                                  list_of_gene_objects, gene_index,
                                                                                  match, mismatch, open_gap_penalty,
-                                                                                 gap_extension_penalty, exon_length_AA, pairwise=transcript_list_w_index)
+                                                                                 gap_extension_penalty, exon_length_AA, pairwise=transcript_list_w_index, streamlit=True)
             # Table section
             parameter_change = False
             if [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
