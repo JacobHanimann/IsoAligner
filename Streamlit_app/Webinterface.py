@@ -329,7 +329,7 @@ def main():
 
         #Input 2 Area
         if using_IDs== False and raw_aa:
-            input2 = st.text_area('Paste raw amino acid sequence of alternative isoform and click align: ', '''''', key=ss.run_id)
+            input2 = st.text_area('Paste raw amino acid sequence of alternative isoform and click align: ', '''''', key=str(ss.run_id+1))
             align=st.button('Align')
             if align:
                 ss.align_clicked = True
@@ -340,11 +340,22 @@ def main():
                 #st.write("\n")
                 #st.markdown("##### Unfiltered Alignment:")
                 #st.write("\n")
-                needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)
+                needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1,input2, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, streamlit=True)
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
                 #st.text(Alignment_preview)
                 st.write("\n")
-                st.markdown("### Alignment Preview")
+                title, clear_button = st.columns([5.5,1])
+                with title:
+                    st.markdown("### Alignment Preview")
+                with clear_button:
+                    st.write('\n')
+                    if st.button('Clear All'):
+                        ss.clear_button = True
+                        ss.random_input = Input_flow.generate_random_example(list_of_gene_objects)
+                        ss.run_id += 1
+                        ss.example = False
+                        ss.searched_clicked = False
+                        Streamlit_community.rerun_script_from_top()
                 st.write("\n")
                 percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,input1,input2)
                 st.text(Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference,percentage_isoform))
