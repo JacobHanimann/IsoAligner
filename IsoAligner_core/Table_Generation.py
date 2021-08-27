@@ -146,7 +146,7 @@ class Table_Generation:
     @staticmethod
     def create_table_for_one_gene_object(index_reference_transcript, list_of_gene_objects, index_of_gene, chosen_columns, match,
                                          mismatch, open_gap_penalty, gap_extension_penalty,
-                                         one_ID=True,exon_length=None, streamlit=False):
+                                         one_ID=True,exon_length=None):
         '''
         one_ID: function returns pandas dataframe directly of alignments
         multiple IDs: function returns with list of the computed alignments which is then further used in create_table_for_dict_of_gene_objects function
@@ -182,7 +182,7 @@ class Table_Generation:
             if index == index_reference_transcript: #do not align the reference transcript with itself
                 continue
             aminoacids, reference_position_list, isoform_positions_list, = Alignment.map_AA_Needleman_Wunsch_with_exon_check( #add isoform_check_list and [1:5] and uncomment all lines with aa_correct, aa_false associations for false,positive statistics
-                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, streamlit)[1:4]
+                reference_protein_sequence, transcript.protein_sequence, match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA)[1:4]
 
 
             #save the results of each alignment in a list outside the loop
@@ -206,7 +206,7 @@ class Table_Generation:
 
 
     @staticmethod
-    def create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA, two_ids=True, streamlit=False):
+    def create_mapping_table_of_two_IDs(list_of_gene_objects,index_of_gene,index_reference_transcript,index_alternative_transcript,chosen_columns, match, mismatch,open_gap_penalty, gap_extension_penalty,exon_length_AA, two_ids=True):
         list_of_all_alignments = []
 
         # reference protein sequence
@@ -240,7 +240,7 @@ class Table_Generation:
 
     @staticmethod
     def create_mapping_table_of_two_IDs_dict(nested_dict, list,list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
-                                        gap_extension_penalty, exon_length_AA, two_ids=True, streamlit=False):
+                                        gap_extension_penalty, exon_length_AA, two_ids=True):
 
         dict_of_gene_names = Input_flow.create_dict_for_pairwise_mode(nested_dict,list_of_gene_objects)
         for gene, elements in dict_of_gene_names.items():
@@ -259,7 +259,7 @@ class Table_Generation:
     #@st.cache()
     #@st.cache(hash_funcs={Alignment.map_AA_Needleman_Wunsch_with_exon_check: hash})
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
-                                              open_gap_penalty, gap_extension_penalty, streamlit):
+                                              open_gap_penalty, gap_extension_penalty):
 
         list_of_alignments = []
         total_genes = len(nested_dict)
