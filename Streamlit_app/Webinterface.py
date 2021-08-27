@@ -254,7 +254,7 @@ def main():
                     ss.example = False
                     ss.searched_clicked = False
                     Streamlit_community.rerun_script_from_top()
-            show_all_isoforms = st.checkbox('Show all associated Isoform Entries')
+            #show_all_isoforms = st.checkbox('Show all associated Isoform Entries')
             genes, reference = st.columns([2, 2])
             with genes:
                 chosen_gene = st.selectbox('Select Gene:',
