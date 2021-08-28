@@ -200,7 +200,7 @@ class Table_Generation:
                 return df
 
             else:
-                return list_of_all_alignments, column_names, #(aa_correct, aa_false)
+                return list_of_all_alignments, column_names #(aa_correct, aa_false)
         else:
             return ('no','matches')
 
@@ -247,20 +247,35 @@ class Table_Generation:
 
     @staticmethod
     def create_mapping_table_of_two_IDs_dict(nested_dict,list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
-                                        gap_extension_penalty, exon_length_AA):
+                                        gap_extension_penalty):
 
         dict_of_gene_names = Input_flow.create_dict_for_pairwise_mode(nested_dict,list_of_gene_objects)
-        st.write(dict_of_gene_names)
+        list_of_alignments = []
         for gene, elements in dict_of_gene_names.items():
-            index_of_gene = nested_dict[elements[0]]
-            index_reference_transcript = ""
-            index_alternative_transcript = ""
-            Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
-                                                                                index_reference_transcript,
-                                                                                index_alternative_transcript,
-                                                                                chosen_columns, match, mismatch,
-                                                                                open_gap_penalty, gap_extension_penalty,
-                                                                                exon_length_AA)
+            index_of_gene = list(nested_dict[elements[0]].keys())[0]
+            index_reference_transcript = list(nested_dict[elements[0]].values())[0]
+            index_alternative_transcript = list(nested_dict[elements[1]].values())[0]
+            exon_length_AA = list_of_gene_objects[index_of_gene].minimal_exon_length
+            list_of_dataframe, column_names = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects, index_of_gene,
+                                                                               index_reference_transcript,
+                                                                               index_alternative_transcript,
+                                                                               chosen_columns, match, mismatch,
+                                                                               open_gap_penalty, gap_extension_penalty,
+                                                                               exon_length_AA, two_ids=False)
+
+            if (list_of_dataframe, column_names) != (
+            'no', 'matches'):  # don't add gene object alignments with no matches at all
+                list_of_alignments = list_of_alignments + list_of_dataframe
+
+            else:
+                print('isoforms with no overlaps apparently:', gene)
+        if list_of_alignments:
+            df = pd.DataFrame(list_of_alignments, columns=(column_names))
+        else:
+            return ('no', 'matches')
+
+        return df
+
 
 
     @staticmethod

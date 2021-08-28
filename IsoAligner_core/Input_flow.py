@@ -279,7 +279,8 @@ class Input_flow:
         generate_table = False
         if  parameter_change and run_id>1:
             st.write('\n')
-            generate_table = st.button('Click here to generate Mapping Table with updated parameters!')
+            generate_table = st.button('Generate Mapping Table with updated Needleman-Wunsch parameters')
+            st.info('⚠️ Manual gene-specific minimal exon length value **changes** are not taken into account for the computing of the mapping table when investigating isoforms from multiple genes simultaneously. See Manual & About for more details.')
 
         if  run_id==1 or generate_table or not parameter_change:
             Input_flow.show_which_elements_are_not_canonical_and_one_isoform(list_of_gene_objects,nested_dict, dict_of_IDs)
