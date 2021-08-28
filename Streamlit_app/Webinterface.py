@@ -606,16 +606,7 @@ def main():
         st.write("\n")
         html_string = '<a rel="license" href="http://creativecommons.org/licenses/by/4.0/" target="_blank" ><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" target="_blank" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" target="_blank" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" >Creative Commons Attribution 4.0 International License </a>.'
         st.markdown(html_string, unsafe_allow_html=True)
-        #st.markdown("#### Functions:")
-        #code = '''
-        #def transform_uploaded_data_type_accordingly(file):
-        #    'uploaded files can be different types of files. A transformation is needed to interpret the data correctly
-        #    Type of input: FASTA, FA and TXT
-        #    Output type: depends on the case'
-        #
-        #'''
-        #st.code(code, language='python')
-#Execution
+
 
 #Execution
 if __name__ == '__main__':
