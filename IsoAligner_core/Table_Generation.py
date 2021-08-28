@@ -220,6 +220,7 @@ class Table_Generation:
         #protein isoform object of alternative sequence
         transcript = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_alternative_transcript]
 
+        st.write(exon_length_AA)
         aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(reference_protein_sequence, alternative_protein_sequence, match, mismatch, open_gap_penalty,
                                                                                             gap_extension_penalty, exon_length_AA)[1:4]
 
@@ -237,6 +238,8 @@ class Table_Generation:
            return df
         else:
             return list_of_all_alignments
+
+
 
     @staticmethod
     def create_mapping_table_of_two_IDs_dict(nested_dict, list,list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,

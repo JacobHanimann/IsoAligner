@@ -298,8 +298,9 @@ def main():
                                                       parameter_change)
             if chosen_columns:
                 if len(dict_of_pairwise)==1: #if just one pairwise alignment --> table dynamic
-                    pass
-                df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects,
+                    df_all = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects,gene_index,index_of_reference_transcript,index_of_reference_transcript,chosen_columns,match,mismatch,open_gap_penalty,gap_extension_penalty,exon_length_AA,two_ids=True)
+                else:
+                    df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects,
                                                                                 chosen_columns, match, mismatch,
                                                                          open_gap_penalty, gap_extension_penalty)
                 if not type(df_all) == tuple:
