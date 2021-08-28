@@ -354,13 +354,13 @@ class Input_flow:
         one_example=False
         parent=False
         fulfilled = False
-        random_number_of_examples = random.randint(1,2)
+        random_number_of_examples = random.randint(1,5)
         while not fulfilled:
             if random_number_of_examples >1:
                 one_example=True
             if one_example:
-                parent_child = random.randint(1, 3)
-                if parent_child>1:
+                parent_child = random.randint(1, 5)
+                if parent_child<2:
                     parent=True
                     list_of_attributes = [a for a in dir(Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous') and not a.startswith('refseq')]
                     ID_type = random.randint(0,4)
