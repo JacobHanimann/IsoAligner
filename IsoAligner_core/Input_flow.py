@@ -365,10 +365,14 @@ class Input_flow:
                     list_of_attributes = [a for a in dir(Gene()) if not a.startswith('__') and not a.startswith('list_') and not a.startswith('minimal') and not a.startswith('protein') and not a.startswith('alias') and not a.startswith('previous') and not a.startswith('refseq')]
                     ID_type = random.randint(0,4)
                     gene_index = random.randint(0,len(list_of_gene_objects))
+                    if len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection)==1:
+                        return 'RPS6KA4-201'
                     example = getattr(list_of_gene_objects[gene_index],list_of_attributes[ID_type])
                     if example!=None:
                         fulfilled = True
                         return example
+                    else:
+                        return 'RPS6KA4-201'
                 else:
                     list_of_attributes = [a for a in dir(Protein_isoform('jkfbkjsdbfbkjbbd')) if
                                           not a.startswith('__') and not a.startswith('list_') and not a.startswith(
@@ -377,10 +381,14 @@ class Input_flow:
                     ID_type = random.randint(0, 15)
                     gene_index = random.randint(0, len(list_of_gene_objects))
                     isoform_number=len(list_of_gene_objects[gene_index].protein_sequence_isoform_collection)
+                    if isoform_number ==1:
+                        return 'RPS6KA4-201'
                     example= getattr(list_of_gene_objects[gene_index].protein_sequence_isoform_collection[random.randint(0,isoform_number-1)], list_of_attributes[ID_type])
                     if example != None:
                         fulfilled = True
                         return example
+                    else:
+                        return 'RPS6KA4-201'
             else:
                 return 'RPS6KA4, KRAS, Q9Y6I3-1, ENSG00000074410, ENSP00000075430.7, HGNC:10728, UPI00022F85F1'
 
