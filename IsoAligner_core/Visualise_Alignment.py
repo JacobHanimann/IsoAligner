@@ -190,8 +190,8 @@ class Visualise_Alignment:
         set reference protein sequence
         iterate through others
         create a function for names of sequence1 and sequence2, has to be the same sequence as generating the transcript_index_list for consistency
-
         '''
+
         #get reference AA sequence
         reference_protein_sequence = getattr(list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_of_reference_transcript], "protein_sequence")
 

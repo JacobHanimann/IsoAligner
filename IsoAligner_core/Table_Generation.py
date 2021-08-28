@@ -220,7 +220,7 @@ class Table_Generation:
         #protein isoform object of alternative sequence
         transcript = list_of_gene_objects[index_of_gene].protein_sequence_isoform_collection[index_alternative_transcript]
 
-        st.write(exon_length_AA)
+
         aminoacids, reference_position_list, isoform_positions_list = Alignment.map_AA_Needleman_Wunsch_with_exon_check(reference_protein_sequence, alternative_protein_sequence, match, mismatch, open_gap_penalty,
                                                                                             gap_extension_penalty, exon_length_AA)[1:4]
 
@@ -233,11 +233,15 @@ class Table_Generation:
             nested_list_alignment = column_values + positions
             list_of_all_alignments.append(nested_list_alignment)
 
-        if two_ids:
-           df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
-           return df
+        if "column_names" in locals():  # column_values, column_names are only generated if len(aminoacid) >0, which means that there has to be at least one match
+            if two_ids:
+                df = pd.DataFrame(list_of_all_alignments, columns=(column_names))
+                return df
+
+            else:
+                return list_of_all_alignments, column_names
         else:
-            return list_of_all_alignments
+            return ('no', 'matches')
 
 
 

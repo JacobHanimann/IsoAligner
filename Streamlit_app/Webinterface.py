@@ -264,6 +264,11 @@ def main():
                 transcript_list = dict_of_pairwise[re.split(' \(', chosen_gene)[0]]
                 chosen_reference = st.selectbox('Choose your reference isoform: ',transcript_list)
                 index_of_reference_transcript = list(nested_dict[chosen_reference].values())[0]
+                for element in transcript_list:
+                    if element == chosen_reference:
+                        continue
+                    else:
+                        index_of_alternative_transcript = list(nested_dict[element].values())[0]
                 gene_index = list(nested_dict[chosen_reference].keys())[0]
             if len(transcript_list) == 1:
                 one_isoform = True
@@ -291,15 +296,16 @@ def main():
                                                                                  gap_extension_penalty, exon_length_AA, pairwise=transcript_list_w_index, streamlit=True)
             # Table section
             parameter_change = False
-            if [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
-                parameter_change = True
-                ss.parameters = [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA]
             chosen_columns = Input_flow.chose_columns(list_of_gene_objects, nested_dict, dict_of_IDs, ss.run_id_table,
                                                       parameter_change)
             if chosen_columns:
                 if len(dict_of_pairwise)==1: #if just one pairwise alignment --> table dynamic
-                    df_all = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects,gene_index,index_of_reference_transcript,index_of_reference_transcript,chosen_columns,match,mismatch,open_gap_penalty,gap_extension_penalty,exon_length_AA,two_ids=True)
+                    df_all = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects,gene_index,index_of_reference_transcript,index_of_alternative_transcript,chosen_columns,match,mismatch,open_gap_penalty,gap_extension_penalty,exon_length_AA,two_ids=True)
                 else:
+                    if [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
+                        parameter_change = True
+                        ss.parameters = [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA]
+
                     df_all = Table_Generation.create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects,
                                                                                 chosen_columns, match, mismatch,
                                                                          open_gap_penalty, gap_extension_penalty)
@@ -610,7 +616,6 @@ def main():
         #'''
         #st.code(code, language='python')
 #Execution
-
 
 #Execution
 if __name__ == '__main__':
