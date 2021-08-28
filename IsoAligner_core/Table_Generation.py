@@ -246,10 +246,11 @@ class Table_Generation:
 
 
     @staticmethod
-    def create_mapping_table_of_two_IDs_dict(nested_dict, list,list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
-                                        gap_extension_penalty, exon_length_AA, two_ids=True):
+    def create_mapping_table_of_two_IDs_dict(nested_dict,list_of_gene_objects, chosen_columns, match, mismatch, open_gap_penalty,
+                                        gap_extension_penalty, exon_length_AA):
 
         dict_of_gene_names = Input_flow.create_dict_for_pairwise_mode(nested_dict,list_of_gene_objects)
+        st.write(dict_of_gene_names)
         for gene, elements in dict_of_gene_names.items():
             index_of_gene = nested_dict[elements[0]]
             index_reference_transcript = ""
