@@ -570,7 +570,7 @@ def main():
                  "\n    - Set the mininmal exon length (in AA)."
                  "\n""    - Set Needleman-Wunsch parameters."
                  "\n 3. Explore the computed mapping table."
-                "\n    - Filter for specific amino acid position."
+                "\n    -  specific amino acid position."
                 "\n     - Select ID types (Ensembl, UniProt, RefSeq, UCSC) to be included in the dataframe."
                 "\n    - Download mapping table: tab or comma separated (tsv/csv). "
                  )
