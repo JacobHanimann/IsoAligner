@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "IsoAligner",
+    "short_name": "IsoAligner",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
