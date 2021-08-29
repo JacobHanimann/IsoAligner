@@ -449,7 +449,7 @@ def main():
                     unsafe_allow_html=True)
         if parameter == 'pos' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: pos")
-            st.write("In case of stating two ID's in the request, you can retrieve single corresponding AA positions of the alternative isoform sequence. As an example:")
+            st.write("In case of stating two IDs in the request, you can retrieve single corresponding AA positions of the alternative isoform sequence. As an example:")
             st.markdown("request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&pos=1038 </em> ", unsafe_allow_html=True)
             st.markdown("response: <em> 993 </em> ", unsafe_allow_html=True)
 
@@ -463,7 +463,7 @@ def main():
         if parameter == 'df_ids' or parameter == 'ℹ️ Show All Parameters':
             st.write(" ##### Parameter: df_ids")
             st.write(
-                "Choose which sequence database ID's you want to include in the mapping table. Per default, the mapping table consists of the same type of ID's sent with the request. Available options are: [ensembl, refseq, uniprot, ucsc, hgnc]. Example to retrieve only ensembl and uniprot ID's:")
+                "Choose which sequence database IDs you want to include in the mapping table. Per default, the mapping table consists of the same type of IDs sent with the request. Available options are: [ensembl, refseq, uniprot, ucsc, hgnc]. Example to retrieve only ensembl and uniprot IDs:")
             st.markdown(
                 "request: <em> www.isoaligner.org/api/map?id1=EGFR-201&id2=EGFR-207&df_ids=[ensembl,uniprot] </em> ",
                 unsafe_allow_html=True)
@@ -514,9 +514,9 @@ def main():
             st.markdown("##### Volume")
             st.write(' - Genes: ', number_of_good_genes," \n"
             ' - Isoforms in total: ', two_isoform_number," \n"
-            " - ID's in total:", Ids_two," \n"
+            " - IDs in total:", Ids_two," \n"
             ' - Ø Isoform per gene:', round(two_isoform_number / number_of_good_genes, 1)," \n"
-            " - Ø ID's per AA seq:", round(Ids_two / two_isoform_number, 1)," \n")
+            " - Ø IDs per AA seq:", round(Ids_two / two_isoform_number, 1)," \n")
 
         with needleman:
             st.markdown("##### Needleman-Wunsch function")
@@ -564,8 +564,8 @@ def main():
         st.write("--------------------------")
         st.markdown("### Manual Alignment Tool")
         st.write("Quick Start: Click on 'Show Example' and then 'Search and Align' to get a overview.")
-        st.write("1. Enter either one isoform ID per gene **or** two isoform ID's per gene **or** a list of genes names **or** two raw amino acid sequences. The input can be tab, comma or whitespace separated."
-                "\n   - Included are Gene, Transcript & Protein ID's of various types (see figure below). The current human library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped Isoforms ID's from Ensembl, Uniprot, Refseq & HGNC."                 "\n    - Click 'Search and Align' or 'Align' to compute alignments."
+        st.write("1. Enter either one isoform ID per gene **or** two isoform IDs per gene **or** a list of genes names **or** two raw amino acid sequences. The input can be tab, comma or whitespace separated."
+                "\n   - Included are Gene, Transcript & Protein IDs of various types (see figure below). The current human library consists of ~19K protein coding genes covering ~120K protein sequences and ~1.3M mapped Isoforms IDs from Ensembl, Uniprot, Refseq & HGNC."                 "\n    - Click 'Search and Align' or 'Align' to compute alignments."
                  "\n 2. Tweak function parameters in the left sidebar and inspect the alignment previews."
                  "\n    - Set the mininmal exon length (in AA)."
                  "\n""    - Set Needleman-Wunsch parameters."
@@ -575,7 +575,7 @@ def main():
                 "\n    - Download mapping table: tab or comma separated (tsv/csv). "
                  )
         st.markdown("#### ⚠️ Important:")
-        st.write("When multiple ID's are entered from different genes, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
+        st.write("When multiple IDs are entered from different genes, the reference transcript for the generation of the mapping table is automatically chosen, unless a specific transcript or protein ID is used in the input field."
                  " In this case, the isoform with the longest sequence is used as the reference to align against."
                  " Also, be aware that the minimal exon length for the generation of the mapping table is likewise automatically chosen in this context, gene-specific and at least 3 AA.")
         st.write("--------------------------")
@@ -589,9 +589,9 @@ def main():
             st.write('Genes total:', minimal_exon_lengths)
             st.write('Genes with 2 ≤ isoforms: ',number_of_good_genes)
             st.write('Isoforms in total: ',total_number_of_isoforms)
-            st.write(" ID's in total:", Ids_in_total)
+            st.write(" IDs in total:", Ids_in_total)
             st.write('Ø Isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
-            st.write("Ø ID's per AA seq:", round(Ids_in_total/total_number_of_isoforms,1))
+            st.write("Ø IDs per AA seq:", round(Ids_in_total/total_number_of_isoforms,1))
             st.write('Median minimal exon length:', mean_exon)
         with picture:
             st.markdown("#### Generation and Structure of Library:")
