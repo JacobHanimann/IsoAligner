@@ -379,20 +379,11 @@ def main():
                 generated_table = Table_Generation.create_pandas_dataframe_raw_aa_sequence(needleman_mapped)
                 if not generated_table.empty:
                     table, whitespace, download = st.columns([1.25,0.2,1])
-                    st.write("\n")
                     with download:
-                        st.write("\n")
-                        st.write("\n")
-                        st.write("\n")
-                        st.write("\n")
-                        st.write("\n")
-                        st.markdown("#### 📁 Download")
-                        sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
-                        if sep_choice == "tsv":
-                            sep = '\t'
-                        else:
-                            sep = ','
-                        st.markdown(Streamlit_community.get_table_download_link(generated_table, 'Click here to download', sep),unsafe_allow_html=True)
+                        st.write('\n')
+                        st.write('\n')
+                        st.write('\n')
+                        Input_flow.generate_download_section(generated_table, no_column=True)
                     with table:
                         st.markdown("### Mapped Amino Acid Positions Table")
                         st.write("\n")

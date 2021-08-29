@@ -334,19 +334,28 @@ class Input_flow:
             return selected_options
 
     @staticmethod
-    def generate_download_section(df):
+    def generate_download_section(df, no_column=False):
         st.write('\n')
-        download, format = st.columns([0.25, 1])
-        with download:
+        if not no_column:
+            download, format = st.columns([0.25, 1])
+            with download:
+                sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
+                if sep_choice == "tsv":
+                    sep = '\t'
+                else:
+                    sep = ','
+            with format:
+                st.write('\n')
+                st.write('\n')
+                Streamlit_community.download_button(df, 'AA_mapping_table.'+sep_choice, '⇩ Download Table', df, sep)
+        else:
             sep_choice = st.radio('Choose file format:', ['tsv', 'csv'])
             if sep_choice == "tsv":
                 sep = '\t'
             else:
                 sep = ','
-        with format:
-            st.write('\n')
-            st.write('\n')
-            Streamlit_community.download_button(df, 'AA_mapping_table.'+sep_choice, '⇩ Download Table', df, sep)
+            Streamlit_community.download_button(df, 'AA_mapping_table.' + sep_choice, '⇩ Download Table', df, sep)
+
 
     @staticmethod
     def generate_random_example(list_of_gene_objects):
