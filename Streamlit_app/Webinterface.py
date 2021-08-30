@@ -189,6 +189,7 @@ def main():
 
         #pairwise alignments
         elif mode_of_action == 'pairwise':
+            dict_of_pairwise = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
             title, clear_button = st.columns([5.9, 1])
             with title:
                 st.markdown("### Alignment Preview")
@@ -202,6 +203,8 @@ def main():
                     Streamlit_community.rerun_script_from_top()
             show_all_isoforms = st.checkbox('Show all associated Isoform Entries')
             if show_all_isoforms:
+                for gene, elements in dict_of_pairwise.items():
+                    nested_dict.pop(elements[1])
                 Table_Generation.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
             else:
                 genes, reference = st.columns([2, 2])
@@ -210,7 +213,6 @@ def main():
                                                Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,
                                                                                               nested_dict, pairwise=True))
                 with reference:
-                    dict_of_pairwise = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
                     transcript_list = dict_of_pairwise[re.split(' \(', chosen_gene)[0]]
                     chosen_reference = st.selectbox('Choose your reference isoform: ', transcript_list)
                     index_of_reference_transcript = list(nested_dict[chosen_reference].values())[0]

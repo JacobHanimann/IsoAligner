@@ -1,5 +1,3 @@
-import sys
-sys.path.append(".")
 import pickle
 import urllib
 from Streamlit_app.Streamlit_community import *
@@ -7,7 +5,6 @@ import gzip
 import random
 from .Gene import *
 from IsoAligner_core.Protein_isoform import *
-import streamlit
 
 
 class Input_flow:
