@@ -5,7 +5,6 @@ from IsoAligner_core.Input_flow import *
 from IsoAligner_core.Visualise_Alignment import *
 from Streamlit_app.Streamlit_Pop_ups import *
 
-
 class Table_Generation:
     pass
 
@@ -281,7 +280,6 @@ class Table_Generation:
 
 
     @staticmethod
-    #@st.cache()
     #@st.cache(hash_funcs={Alignment.map_AA_Needleman_Wunsch_with_exon_check: hash})
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
                                               open_gap_penalty, gap_extension_penalty):
@@ -375,8 +373,6 @@ class Table_Generation:
             " ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
         st.write('\n')
         st.text('\n')
-        # st.write('indexes of gene objects:')
-        # st.write(nested_dict)
         with st.spinner('Visualising Alignments . . .'):
             Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
                                                                              list_of_gene_objects, gene_index, match,
@@ -399,7 +395,7 @@ class Table_Generation:
                     value = Table_Generation.display_filter_option_AA()
                     if value == "":
                         slot1.write(df_all)
-                        # st.dataframe(df_all.style.highlight_(axis=0))
+                        # st.dataframe(df_all.style.highlight_(axis=0)) to improve filtering
                     else:
                         filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
                         if not filter_df.empty:
