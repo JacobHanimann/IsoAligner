@@ -104,4 +104,3 @@ class Statistics:
             if type =='mismatch':
                 mismatch_aa +=1
         return correct_aa, false_aa,mismatch_aa
-
