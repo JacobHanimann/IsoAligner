@@ -1,6 +1,4 @@
 import sys
-import os
-print(sys.path)
 sys.path.insert(0,'/Users/jacob/PycharmProjects/IsoAligner/IsoAligner_core')
 
 from IsoAligner_core.Visualise_Alignment import *
@@ -11,10 +9,9 @@ from IsoAligner_core.Table_Generation import *
 class Data_processing():
     pass
 
-
     @staticmethod
     def align_sequences(input1, input2):
-        needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1, input2, 1, -2, -1.75, 0, 5)
+        needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1, input2, 1, -2, -1, 0, 12)
         isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
         percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check, input1, input2)
         alignment_string = Visualise_Alignment.visualise_alignment_dynamically(alignment_reference_fasta,alignment_isoform_fasta,isoform_pattern_check,percentage_reference, percentage_isoform)
@@ -36,7 +33,6 @@ class Data_processing():
         attribute_column_dict = Input_flow.import_attribute_column_dict()
         chosen_column = [attribute_column_dict[reference_ID],attribute_column_dict[alternative_ID]]
         return chosen_column
-
 
 
     @staticmethod
@@ -114,7 +110,6 @@ class Data_processing():
         if not match_list:
             return 'aa_position must be an integer'
         position_number = int(AA_position)
-        #df.loc[(df['AA'] == AA) & (df['ReferencePos'] == position_number)]
         row = df.loc[df['ReferencePos'] == position_number]
         if not row.empty:
             AA_position_new = str(list(row['IsoformPos'])[0])

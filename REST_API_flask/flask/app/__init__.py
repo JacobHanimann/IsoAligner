@@ -7,32 +7,28 @@ import re
 #Initialising Flask API and Cache
 app = Flask(__name__)
 api = Api(app)
-#cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache = TTLCache(maxsize=100, ttl=100)
 app.config['CACHE_TYPE'] = 'simple'
 
 @app.route("/")
 def index():
-    #return "Go to REST API & Downloads on the main webpage to find out how to send requests"
-	browser = request.user_agent.browser
-	version = request.user_agent.version
-	platform = request.user_agent.platform
-	uas = request.user_agent.string
+    browser = request.user_agent.browser
+    version = request.user_agent.version
+    platform = request.user_agent.platform
+    uas = request.user_agent.string
 
-	if browser and version:
-		if ((platform == 'macos' or platform == 'windows') and browser == 'safari' and not re.search('Mobile', uas) and "13." in version and "14." not in version):
-			return "Please upgrade Safari to a newer version (V14) to be able to use this Webtool."
-		else:
-		    return render_template('iframe_streamlit.html')
+    if browser and version:
+        if ((platform == 'macos' or platform == 'windows') and browser == 'safari' and not re.search('Mobile', uas) and "13." in version and "14." not in version):
+            return "Please upgrade Safari to a newer version (V14) to be able to use this Webtool."
+        else:
+            return render_template('iframe_streamlit.html')
 
-	else:
-	    return render_template('iframe_streamlit.html')
-
+    else:
+        return render_template('iframe_streamlit.html')
 
 @app.route("/api")
 def api_page():
     return "Go to REST API & Downloads on the main webpage to find out how to send requests."
-
 
 @cached(cache)
 def import_data_from_github(file):
@@ -42,7 +38,7 @@ def import_data_from_github(file):
     print('library loaded new')
     return list_of_gene_objects
 
-#cache.set("list_of_gene_objects",import_data_from_github('list_of_gene_objects_4th_may.txt.gz'))
+#load library
 list_of_gene_objects = import_data_from_github('Human_Isoform_Library/list_of_gene_objects_25th_july.txt.gz')
 
 
@@ -172,7 +168,6 @@ class Raw_alignment(Resource):
             alignment_string = Data_processing.align_sequences(args['seq1'], args['seq2'])
             return alignment_string
 
-
-#adding method
+#adding methods
 api.add_resource(Mapping_Table,'/api/map','/map/positions')
 api.add_resource(Raw_alignment, '/api/align')
