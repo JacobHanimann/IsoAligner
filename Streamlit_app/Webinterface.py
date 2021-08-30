@@ -184,7 +184,7 @@ def main():
                         ss.example = False
                         ss.searched_clicked = False
                         Streamlit_community.rerun_script_from_top()
-                Input_flow.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
+                Table_Generation.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
 
 
         #pairwise alignments
@@ -202,7 +202,7 @@ def main():
                     Streamlit_community.rerun_script_from_top()
             show_all_isoforms = st.checkbox('Show all associated Isoform Entries')
             if show_all_isoforms:
-                Input_flow.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
+                Table_Generation.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
             else:
                 genes, reference = st.columns([2, 2])
                 with genes:
