@@ -1,6 +1,5 @@
 from IsoAligner_core.Alignment import *
 
-
 class Input_preparation:
     pass
 
@@ -114,7 +113,7 @@ class Input_preparation:
             if Alignment.extract_only_AA_of_Fasta_file(element)!=None:
                 dict_of_IDs[raw_element] = 'aminoacid_sequence'
 
-            else:# if no ID's were found, the string is probably a gene name
+            else:# if no IDs were found, the string is probably a gene name
                 dict_of_IDs[raw_element] = 'gene_name'
 
         return dict_of_IDs

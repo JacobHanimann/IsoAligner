@@ -280,7 +280,6 @@ class Table_Generation:
 
 
     @staticmethod
-    #@st.cache(hash_funcs={Alignment.map_AA_Needleman_Wunsch_with_exon_check: hash})
     def create_table_for_dict_of_gene_objects(nested_dict, list_of_gene_objects, chosen_columns, match, mismatch,
                                               open_gap_penalty, gap_extension_penalty):
 

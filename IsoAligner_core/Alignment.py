@@ -2,7 +2,6 @@ import re
 from Bio import pairwise2, Align
 from Bio.pairwise2 import format_alignment
 import streamlit as st
-#from Bio.SubsMat import MatrixInfo as matlist
 
 class Alignment:
     pass
@@ -20,7 +19,7 @@ class Alignment:
         minimal_length_of_AA_seq = '[A-Z]{7}'
         raw_AA_seq_list = re.findall(sequence_of_AA_acronym + minimal_length_of_AA_seq, without_newline_and_whitespice)
         if len(raw_AA_seq_list) >= 1:
-            return raw_AA_seq_list[0]  # string
+            return raw_AA_seq_list[0]
         else:
             return None
 
@@ -30,7 +29,6 @@ class Alignment:
         :param ref: aligned sequence in form of a list
         :param isoform: aligned sequence in form of a list
         :return: list which categories each elements alignment in 'correct, wrong, gap'
-        To do: Function could be written in fewer lines: few things are copied like category gap classification and appending the category..could be all shortened
         '''
         isoform_check = []
         for index in range(0, len(ref)):
@@ -42,7 +40,7 @@ class Alignment:
                     gap = True
                 else:
                     category='mismatch'
-                    #st.error('mismatch detected: displayed as big letter X instead of x.')
+
                     isoform_check.append(category)
                     continue
             else:  # same Aminoacid
@@ -98,7 +96,7 @@ class Alignment:
                     isoform_positions_list.append(position_isoform)
                     position_reference += 1
                     position_isoform += 1
-                if alignment_reference_fasta[i] == '-' and alignment_isoform_fasta[i] == '-':  # does it even happen?
+                if alignment_reference_fasta[i] == '-' and alignment_isoform_fasta[i] == '-':
                     continue
                 if alignment_reference_fasta[i] != '-' and alignment_isoform_fasta[i] == '-':
                     position_reference += 1

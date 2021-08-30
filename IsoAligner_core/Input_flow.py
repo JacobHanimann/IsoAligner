@@ -1,5 +1,4 @@
 import pickle
-import urllib
 from Streamlit_app.Streamlit_community import *
 import gzip
 import random
@@ -13,7 +12,7 @@ class Input_flow:
     @staticmethod
     @st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
-        with gzip.open(file, "rb") as fp:  # Pickling
+        with gzip.open(file, "rb") as fp:
             list_of_gene_objects = pickle.load(fp)
         return list_of_gene_objects
 
@@ -186,7 +185,6 @@ class Input_flow:
             else:
                 pass
 
-
     @staticmethod
     def remove_dict_elements_with_no_gene_object_match(input1_IDs):
         '''
@@ -224,7 +222,6 @@ class Input_flow:
         :param list_of_gene_objects:
         :return: dictionary of canonical ID's used as a default reference
         '''
-
 
 
         def find_index_of_reference_transcript(element):
@@ -278,7 +275,7 @@ class Input_flow:
             generate_table = st.button('Generate Mapping Table with updated Needleman-Wunsch parameters')
             st.info('⚠️ Manual gene-specific minimal exon length value **changes** are not taken into account for the computing of the mapping table when investigating isoforms from multiple genes simultaneously. See Manual & About for more details.')
 
-        if  run_id==1 or generate_table or not parameter_change:
+        if run_id==1 or generate_table or not parameter_change:
             Input_flow.show_which_elements_are_not_canonical_and_one_isoform(list_of_gene_objects,nested_dict, dict_of_IDs)
             container = st.container()
             all = st.checkbox("Select all columns")

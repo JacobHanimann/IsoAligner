@@ -99,7 +99,6 @@ class Visualise_Alignment:
 
 
 
-
     @staticmethod
     def calculate_percentage_of_mapped_positions(isoform_check, reference_protein_sequence, isoform_protein_sequence):
         '''
@@ -209,7 +208,6 @@ class Visualise_Alignment:
                     else:
                         stop=False
                         break
-
 
             #compute alignment
             if not stop:
