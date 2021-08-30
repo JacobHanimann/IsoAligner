@@ -5,10 +5,8 @@ import gzip
 import random
 from .Gene import *
 from IsoAligner_core.Protein_isoform import *
-from IsoAligner_core.Table_Generation import *
-from IsoAligner_core.Visualise_Alignment import *
-from IsoAligner_core.User_Input_Preparation import *
-from IsoAligner_core.Visualise_Alignment import *
+
+
 
 
 class Input_flow:

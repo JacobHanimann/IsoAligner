@@ -188,7 +188,7 @@ def main():
 
 
         #pairwise alignments
-        elif mode_of_action=='pairwise':
+        elif mode_of_action == 'pairwise':
             title, clear_button = st.columns([5.9, 1])
             with title:
                 st.markdown("### Alignment Preview")
@@ -200,17 +200,16 @@ def main():
                     ss.example = False
                     ss.searched_clicked = False
                     Streamlit_community.rerun_script_from_top()
-            show_all_isoforms = st.checkbox('Show all associated Isoform Entries per Gene')
-            if show_all_isoforms:
-                Input_flow.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
+            # show_all_isoforms = st.checkbox('Show all associated Isoform Entries')
             genes, reference = st.columns([2, 2])
             with genes:
                 chosen_gene = st.selectbox('Select Gene:',
-                                           Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,nested_dict, pairwise=True))
+                                           Visualise_Alignment.create_list_gene_selection(list_of_gene_objects,
+                                                                                          nested_dict, pairwise=True))
             with reference:
                 dict_of_pairwise = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
                 transcript_list = dict_of_pairwise[re.split(' \(', chosen_gene)[0]]
-                chosen_reference = st.selectbox('Choose your reference isoform: ',transcript_list)
+                chosen_reference = st.selectbox('Choose your reference isoform: ', transcript_list)
                 index_of_reference_transcript = list(nested_dict[chosen_reference].values())[0]
                 for element in transcript_list:
                     if element == chosen_reference:
@@ -237,19 +236,27 @@ def main():
             st.write('\n')
             st.text('\n')
             with st.spinner('Visualising Alignments . . .'):
-                transcript_list_w_index = [(element, list(nested_dict[element].values())[0]) for element in transcript_list]
+                transcript_list_w_index = [(element, list(nested_dict[element].values())[0]) for element in
+                                           transcript_list]
                 Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
                                                                                  list_of_gene_objects, gene_index,
                                                                                  match, mismatch, open_gap_penalty,
-                                                                                 gap_extension_penalty, exon_length_AA, pairwise=transcript_list_w_index, streamlit=True)
+                                                                                 gap_extension_penalty, exon_length_AA,
+                                                                                 pairwise=transcript_list_w_index,
+                                                                                 streamlit=True)
             # Table section
             parameter_change = False
-            if len(dict_of_pairwise)==1: #if just one pairwise alignment --> table dynamic
+            if len(dict_of_pairwise) == 1:  # if just one pairwise alignment --> table dynamic
                 chosen_columns = Input_flow.chose_columns(list_of_gene_objects, nested_dict, dict_of_IDs,
                                                           ss.run_id_table,
                                                           parameter_change)
-                df_all = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects,gene_index,index_of_reference_transcript,index_of_alternative_transcript,chosen_columns,match,mismatch,open_gap_penalty,gap_extension_penalty,exon_length_AA,two_ids=True)
-            #mutiple pairwise
+                df_all = Table_Generation.create_mapping_table_of_two_IDs(list_of_gene_objects, gene_index,
+                                                                          index_of_reference_transcript,
+                                                                          index_of_alternative_transcript,
+                                                                          chosen_columns, match, mismatch,
+                                                                          open_gap_penalty, gap_extension_penalty,
+                                                                          exon_length_AA, two_ids=True)
+            # mutiple pairwise
             else:
                 if [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
                     parameter_change = True
@@ -259,29 +266,30 @@ def main():
                                                           parameter_change)
                 if chosen_columns:
                     df_all = Table_Generation.create_mapping_table_of_two_IDs_dict(nested_dict, list_of_gene_objects,
-                                                                                chosen_columns, match, mismatch,
-                                                                         open_gap_penalty, gap_extension_penalty)
-                    if not type(df_all) == tuple:
-                        with st.spinner('Preparing Preview of Mapping Table . . .'):
-                            slot1 = st.empty()
-                            value = Table_Generation.display_filter_option_AA()
-                            if value == "":
-                                slot1.write(df_all)
-                                # st.dataframe(df_all.style.highlight_(axis=0))
-                            else:
-                                filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
-                                if not filter_df.empty:
-                                    slot1.write(filter_df)
-                                    st.info('ℹ️ Delete value to go back to original mapping table.')
-                                else:
-                                    st.warning('Value "' + str(
-                                        value) + '" does not exist in the dataframe.')
-                        st.text('\n')
-                        Input_flow.generate_download_section(df_all)
+                                                                                   chosen_columns, match, mismatch,
+                                                                                   open_gap_penalty,
+                                                                                   gap_extension_penalty)
+            if not type(df_all) == tuple:
+                with st.spinner('Preparing Preview of Mapping Table . . .'):
+                    slot1 = st.empty()
+                    value = Table_Generation.display_filter_option_AA()
+                    if value == "":
+                        slot1.write(df_all)
+                        # st.dataframe(df_all.style.highlight_(axis=0))
                     else:
-                        st.warning(
-                        'No amino acid positions mapped currently.')
-                        st.info(' Tweak function parameters on the left sidebar to allow matches!')
+                        filter_df = Table_Generation.filter_all_columns_of_df(value, df_all)
+                        if not filter_df.empty:
+                            slot1.write(filter_df)
+                            st.info('ℹ️ Delete value to go back to original mapping table.')
+                        else:
+                            st.warning('Value "' + str(
+                                value) + '" does not exist in the dataframe.')
+                st.text('\n')
+                Input_flow.generate_download_section(df_all)
+            else:
+                st.warning(
+                    'No amino acid positions mapped currently.')
+                st.info(' Tweak function parameters on the left sidebar to allow matches!')
             ss.run_id_table += 1
 
 
