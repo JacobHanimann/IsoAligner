@@ -50,7 +50,7 @@ for index,gene in enumerate(list_of_gene_objects):
         nested_dict.clear()
         big_nested_dict.clear()
 
-
+#output
 print('length',length)
 print(correct_aa_collection)
 print(false_aa_collection)
