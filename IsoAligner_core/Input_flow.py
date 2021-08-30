@@ -12,16 +12,6 @@ class Input_flow:
 
     @staticmethod
     @st.cache(allow_output_mutation=True)
-    def import_data_from_url(url):
-        path = 'https://drive.google.com/uc?export=download&id=' + url.split('/')[-2]
-        file = urllib.request.urlopen(path)
-        data = file.read()
-        list_of_gene_objects = pickle.loads(data)
-        return list_of_gene_objects
-
-
-    @staticmethod
-    @st.cache(allow_output_mutation=True)
     def import_data_from_github(file):
         with gzip.open(file, "rb") as fp:  # Pickling
             list_of_gene_objects = pickle.load(fp)
@@ -78,7 +68,7 @@ class Input_flow:
                         if getattr(gene, "HGNC_gene_symbol") == element.upper():
                             dict_element_indexes[element] = index
                             break
-                        if type(gene.previous_symbols) == list:  # line can be deleted since all these attributes should be lists
+                        if type(gene.previous_symbols) == list:
                             if element.upper() in getattr(gene, "previous_symbols"):
                                 dict_element_indexes[element] = index
                                 break
@@ -124,10 +114,8 @@ class Input_flow:
         if nomatch ==0:
                 if number_of_elements >1:
                     pass
-                    #st.success('All '+ str(number_of_elements)+' elements were successfully identified.')
                 else:
                     pass
-                    #st.success('Element succesfully identified')
         elif matched_elements==0:
             if number_of_elements==1 and list(input1_IDs.values())[0]=='aminoacid_sequence':
                 st.warning("Looks like an amino acid sequence. Click on 'enter 2nd sequence' to add another sequence.")
@@ -145,7 +133,6 @@ class Input_flow:
                 st.info("ℹ️ Isoform ID \""+elements[0]+"\" and \""+elements[1]+"\" are associated with the exact same protein sequence. All corresponding IDs can be found in the Details below.")
 
 
-
     @staticmethod
     def report_mode_of_action(nested_dict):
         '''
@@ -155,7 +142,7 @@ class Input_flow:
         gene_indexes=[list(isoform_index.keys())[0] for element, isoform_index in nested_dict.items()]
         if len(gene_indexes)==0:
             return 'stop'
-        if len(gene_indexes)== len(set(gene_indexes))*2: #there elements from the same gene:
+        if len(gene_indexes)== len(set(gene_indexes))*2:
             return 'pairwise'
         elif len(gene_indexes)!= len(set(gene_indexes)):
             st.warning('Please enter your input in the format of either one **or** two Isoform ID\'s per gene.')
@@ -201,7 +188,7 @@ class Input_flow:
 
 
     @staticmethod
-    def remove_dict_elements_with_no_gene_object_match(input1_IDs):  # doesnt work, maybe create a whole new dictionary..?, later to be implemented in generate neseted_ dictionary function
+    def remove_dict_elements_with_no_gene_object_match(input1_IDs):
         '''
         :param input1_IDs:
         :return: dictionary which the 'not found' elements were removed

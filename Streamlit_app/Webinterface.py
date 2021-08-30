@@ -1,6 +1,8 @@
+#Author: Jacob Hanimann
+#Python 3.8
+
 import sys
 sys.path.append(".")
-
 import SessionState
 from Streamlit_Pop_ups import *
 from IsoAligner_core.Visualise_Alignment import *
@@ -10,9 +12,8 @@ from IsoAligner_core.Table_Generation import *
 from PIL import Image
 from Statistics import *
 
-#import databasee
+#import database
 list_of_gene_objects = Input_flow.import_data_from_github('Human_Isoform_Library/list_of_gene_objects_25th_july.txt.gz')
-
 
 #declare session state variables
 ss = SessionState.get(clicked=False, searched_clicked=False, align_clicked=False, generate=False, run_id=0, example=False, clear_button=False, run_id_table=1, parameters=[1, 2, 3, 4, 5], random_input = Input_flow.generate_random_example(list_of_gene_objects))
@@ -20,8 +21,6 @@ ss = SessionState.get(clicked=False, searched_clicked=False, align_clicked=False
 #Streamlit website
 def main():
     """ Isoform Alignment Tool """
-    #Background
-    #Streamlit_community.set_png_as_page_bg('TransferMessengerRNAt.png')
 
     #remove streamlit marks
     st.markdown(""" <style>
@@ -59,8 +58,6 @@ def main():
                     ss.example = True
 
         if ss.example:
-            #input1 = st.text_area('Paste multiple ID\'s comma or newline and click on search library for ID\'s. Go to "Manual" for further information', '''EGFR, Q9Y6I3, Q9Y6I3-1, ENSG00000074410, ENSG00000164690.2, ENSP00000005756, ENSP00000075430.7, HGNC:10728, UPI00022F85F1, uc060zgm.1, NP_004702.2, ENST00000554846.5, SEMA5B-211, BRAF_HUMAN, NM_001304833, 1232, ENST00000551640, NP_775733, NM_003769.3''',key=ss.run_id)
-
             input1 = st.text_area('Paste ID\'s (comma or newline separated) and click on Search and Align. Go to "Manual" for further information.',ss.random_input,key=str(ss.run_id))
         else:
             input1 = st.text_area('Paste one, two (pairwise) or multiple Ensembl/UniProt/RefSeq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
@@ -82,7 +79,7 @@ def main():
         using_IDs= False
         no_elements = False
         input1_IDs = []
-        #state variables
+        #state variable
         mode_of_action = 'unknown'
 
 
@@ -106,10 +103,8 @@ def main():
         #case of using one ID per gene
         if mode_of_action == "one_ID_per_gene":
             #case of using one ID overall
-            if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1: #check if dictionary is not empty
+            if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1:
                 using_IDs = True
-                #st.write(input1_IDs)
-                #st.write(list(input1_IDs.values())[0])
                 title, clear_button = st.columns([5.9,1.])
                 with title:
                     st.markdown("### Alignment Preview")
@@ -186,7 +181,6 @@ def main():
                         Streamlit_community.rerun_script_from_top()
                 Table_Generation.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
 
-
         #pairwise alignments
         elif mode_of_action == 'pairwise':
             dict_of_pairwise = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
@@ -251,7 +245,7 @@ def main():
                                                                                      streamlit=True)
                 # Table section
                 parameter_change = False
-                if len(dict_of_pairwise) == 1:  # if just one pairwise alignment --> table dynamic
+                if len(dict_of_pairwise) == 1:
                     chosen_columns = Input_flow.chose_columns(list_of_gene_objects, nested_dict, dict_of_IDs,
                                                               ss.run_id_table,
                                                               parameter_change)
@@ -261,7 +255,7 @@ def main():
                                                                               chosen_columns, match, mismatch,
                                                                               open_gap_penalty, gap_extension_penalty,
                                                                               exon_length_AA, two_ids=True)
-                # mutiple pairwise
+                # multiple pairwise
                 else:
                     if [match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA] != ss.parameters:
                         parameter_change = True
@@ -308,14 +302,9 @@ def main():
             if input1 != "" and input2 != "" and ss.align_clicked and ss.searched_clicked==False:
                 if len(input2)<7:
                     st.error('Protein sequence has to be at least 7 AA long. Please reload page.')
-                #Sidebar pop up, make function out of it?
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, raw=True)
-                #st.write("\n")
-                #st.markdown("##### Unfiltered Alignment:")
-                #st.write("\n")
                 needleman_mapped = Alignment.map_AA_Needleman_Wunsch_with_exon_check(input1.upper(),input2.upper(), match, mismatch, open_gap_penalty,gap_extension_penalty, exon_length_AA, streamlit=True)
                 isoform_pattern_check, alignment_reference_fasta, alignment_isoform_fasta = needleman_mapped[4:7]
-                #st.text(Alignment_preview)
                 st.write("\n")
                 title, clear_button = st.columns([5.5,1])
                 with title:
@@ -378,7 +367,7 @@ def main():
         mismatch = -2
         gap_extend = 0
         gap_open = -1
-        exon_length_AA = 11
+        exon_length_AA = 12
         if resource == "...org/api/map":
             st.markdown("### Resource: /map")
             st.write('With this resource, you can access the human isoform library, compute alignments with specified parametes and retrieve whole mapping tables in json format or just single AA positions. The only required parameter that must be sent in the request body is id1, respectively an Isoform ID of any kind.')
@@ -421,7 +410,6 @@ def main():
                 unsafe_allow_html=True)
 
         #align resource
-
         if parameter == 'seq1' or parameter =='seq2' or parameter == 'ℹ️ show all parameters':
             st.write(" ##### Parameters: seq1 and seq2")
             st.write("Reference and alternative raw amino acid sequences. Must be at least 7 AA's long, for example:")
@@ -454,8 +442,6 @@ def main():
             st.write(
                 "[Needleman-Wunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) alignment parameter to penalize extending a gap. This value must be ≤ 0.")
 
-
-
         st.write("--------------------------")
         st.header("Pre-Computed Mapped Human Isoform Library")
         st.write('Here you can download a dataframe containing the mapping tables of every gene that is part of the human isoform library. The isoform with the longest sequence is used as the reference to align against all other splice variants.')
@@ -475,9 +461,7 @@ def main():
             st.write(" - match: ",match," \n"
                      " - mismatch: ",mismatch," \n"
                      " - open gap penalty: ",gap_open," \n"
-                     " - gap extend penalty: ", gap_extend, " \n"
-
-                     )
+                     " - gap extend penalty: ", gap_extend, " \n")
         with minimal:
             st.markdown("##### Minimal exon length function")
             st.write('Gene-specific length for all genes. The median of the sum of all shortest exons is',mean_exon)
@@ -562,7 +546,6 @@ def main():
         st.write("\n")
         html_string = '<a rel="license" href="http://creativecommons.org/licenses/by/4.0/" target="_blank" ><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" target="_blank" property="dct:title">IsoAligner</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.linkedin.com/in/jacob-hanimann-778032137/" target="_blank" property="cc:attributionName" rel="cc:attributionURL">Jacob Hanimann</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" >Creative Commons Attribution 4.0 International License </a>.'
         st.markdown(html_string, unsafe_allow_html=True)
-
 
 #Execution
 if __name__ == '__main__':
