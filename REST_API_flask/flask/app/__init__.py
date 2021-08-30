@@ -31,7 +31,7 @@ def index():
 
 @app.route("/api")
 def api_page():
-    return "Go to REST API & Downloads on the main webpage to find out how to send requests"
+    return "Go to REST API & Downloads on the main webpage to find out how to send requests."
 
 
 @cached(cache)
