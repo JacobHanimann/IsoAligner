@@ -5,6 +5,7 @@ import gzip
 import random
 from .Gene import *
 from IsoAligner_core.Protein_isoform import *
+from IsoAligner_core.Visualise_Alignment import *
 
 
 
