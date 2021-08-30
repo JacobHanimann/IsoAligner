@@ -97,6 +97,8 @@ def main():
                 nested_dict = Input_flow.generate_nested_dictionary_with_index_of_canonical_protein_object(dict_of_IDs, cleaned_input1_IDs,list_of_gene_objects)
                 # identify input as pairwise or one ID per gene or mixed and report
                 mode_of_action = Input_flow.report_mode_of_action(nested_dict)
+                if mode_of_action=='pairwise':
+                    Input_flow.show_identical_elements(nested_dict, list_of_gene_objects)
                 if len (nested_dict)==0 or mode_of_action=='stop':
                     no_elements = True
 

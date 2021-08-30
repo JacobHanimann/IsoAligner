@@ -138,6 +138,17 @@ class Input_flow:
 
 
     @staticmethod
+    def show_identical_elements(nested_dict, list_of_gene_objects):
+        gene_dict = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
+        for gene, elements in gene_dict.items():
+            if nested_dict[elements[0]] == nested_dict[elements[1]]:
+                st.info("ℹ️ Isoform ID \""+elements[0]+"\" and \""+elements[1]+"\" are associated with the exact same protein sequence. All corresponding IDs can be found in the Details below.")
+
+
+
+
+
+    @staticmethod
     def report_mode_of_action(nested_dict):
         '''
         :param nested_dict:
@@ -149,7 +160,7 @@ class Input_flow:
         if len(gene_indexes)== len(set(gene_indexes))*2: #there elements from the same gene:
             return 'pairwise'
         elif len(gene_indexes)!= len(set(gene_indexes)):
-            st.warning('Please enter your input in the format of either one or two Isoform ID\'s per gene.')
+            st.warning('Please enter your input in the format of either one **or** two Isoform ID\'s per gene.')
             return 'stop'
         else:
             return "one_ID_per_gene"
