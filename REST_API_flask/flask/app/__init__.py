@@ -1,8 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_restful import Api, Resource, reqparse
 from cachetools import cached, TTLCache
 from API_data_processing import *
-
+import re
 
 #Initialising Flask API and Cache
 app = Flask(__name__)
@@ -13,11 +13,26 @@ app.config['CACHE_TYPE'] = 'simple'
 
 @app.route("/")
 def index():
-    return render_template('iframe_streamlit.html')
-#@cache.cached(timeout=300,key_prefix='importing_library') #makes no difference if function is cached or not
+    #return "Go to REST API & Downloads on the main webpage to find out how to send requests"
+	browser = request.user_agent.browser
+	version = request.user_agent.version
+	platform = request.user_agent.platform
+	uas = request.user_agent.string
+
+	if browser and version:
+		if ((platform == 'macos' or platform == 'windows') and browser == 'safari' and not re.search('Mobile', uas) and "13." in version and "14." not in version):
+			return "Please upgrade Safari to a newer version (V14) to be able to use this Webtool."
+		else:
+		    return render_template('iframe_streamlit.html')
+
+	else:
+	    return render_template('iframe_streamlit.html')
+
+
 @app.route("/api")
 def api_page():
     return "Go to REST API & Downloads on the main webpage to find out how to send requests"
+
 
 @cached(cache)
 def import_data_from_github(file):
