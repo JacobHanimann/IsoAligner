@@ -184,7 +184,7 @@ def main():
                         ss.example = False
                         ss.searched_clicked = False
                         Streamlit_community.rerun_script_from_top()
-                Input_flow.flow.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
+                Input_flow.generate_multiple_IDs(nested_dict, list_of_gene_objects, dict_of_IDs, ss)
 
 
         #pairwise alignments
