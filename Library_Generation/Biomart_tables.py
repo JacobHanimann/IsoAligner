@@ -67,7 +67,7 @@ class Biomart_tables():
                             found = True
                             if type(df.loc[index, 'UCSC Stable ID']) != float:
                                 sequence.UCSC_stable_ID = df.loc[index, 'UCSC Stable ID']
-                            break  # here the uniprotKB gene names ID could be added
+                            break
                 else:
                     continue
 

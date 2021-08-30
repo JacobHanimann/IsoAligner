@@ -2,10 +2,8 @@ from IsoAligner_core.Protein_isoform import *
 from IsoAligner_core.Alignment import *
 import re
 
-
 class Uniprot():
     pass
-
 
     @staticmethod
     def add_uniprot_fasta_files(file, list_of_gene_objects):
@@ -32,7 +30,6 @@ class Uniprot():
         print(len(splittext))
 
         # iterate
-
         for fasta in splittext[1:len(splittext)]:
 
             # organisation
@@ -41,7 +38,6 @@ class Uniprot():
             if fasta_count % 1000 == 0:
                 print(100*round(fasta_count/len(splittext),2),'%')
             uniprot_isoform = False
-            #print(fasta)
 
             # extracting information
             try:
@@ -148,7 +144,7 @@ class Uniprot():
 
 
 
-                # gene name was not found in list of gene objects
+                #gene name was not found in list of gene objects
                 else:
                     no_gene_match_found += 1
                     pass

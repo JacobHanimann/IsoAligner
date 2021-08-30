@@ -1,11 +1,8 @@
 from IsoAligner_core.Protein_isoform import *
 from IsoAligner_core.Alignment import *
 
-
-
 class Validate_library():
     pass
-
 
     @staticmethod
     def check_if_there_are_AA_seq_duplicates(list_of_gene_objects):

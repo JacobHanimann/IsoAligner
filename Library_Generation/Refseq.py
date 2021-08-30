@@ -2,10 +2,8 @@ from IsoAligner_core.Gene import *
 from IsoAligner_core.Protein_isoform import *
 from Extractions_BioIDs import *
 
-
 class Refseq():
     pass
-
 
     @staticmethod
     def add_refseq_fasta_sequences(file, list_of_gene_objects):
@@ -15,7 +13,6 @@ class Refseq():
         if unique: add protein_isoform object
         if not unique: complement ID's'''
 
-        # prepare file
         with open(file, "r") as f:
             expenses_txt = f.readlines()
             # Put all the lines into a single string
@@ -68,7 +65,6 @@ class Refseq():
                 XM_ID_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_rna_predict_version',
                                                        re.findall("DBSOURCE.*\n", entry)[0])
                 XP = True
-                # print(entry)
 
             elif "YP_" in Ids:
                 YP_ID =Get_Bio_ID.get_bio_IDs_with_regex('refseq_mitocho', Ids)
@@ -76,7 +72,6 @@ class Refseq():
                 NC_ID_version =Get_Bio_ID.get_bio_IDs_with_regex('refseq_chromosome_version',
                                                        re.findall("DBSOURCE.*\n", entry)[0])
                 YP = True
-                # print(entry)
 
             else:
                 print('no known Version ID')
@@ -113,13 +108,11 @@ class Refseq():
                 if gene_found:
                     if isoform_processed:
                         break
-                    # print(gene.HGNC, HGNC_ID)
                     if NP:
                         if type(gene.protein_sequence_isoform_collection) == list:
                             for isoform in gene.protein_sequence_isoform_collection:
                                 if isoform_processed:
                                     break
-                                # print(isoform.refseq_NP, NP_ID)
                                 if isoform.refseq_NP == NP_ID:
                                     if isoform.protein_sequence == protein_sequence:
                                         isoform.refseq_NP_version = NP_version
@@ -139,13 +132,11 @@ class Refseq():
                                     isoform_processed = True
 
                             if not isoform_processed:
-                                # print(gene.HGNC, HGNC_ID, NCBI_ID,gene.refseq_gene_ID,NP_ID)
                                 gene.protein_sequence_isoform_collection.append(
                                     Protein_isoform(protein_sequence, gene_name=gene.ensembl_gene_symbol,
                                                     refseq_NM_version=NM_ID_version, refseq_NP=NP_ID,
                                                     refseq_NP_version=NP_version))
                                 isoform_processed = True
-                                # print('added isoform')
                                 sequences_added += 1
                     elif XP:
                         isoform_processed = True
@@ -250,6 +241,6 @@ class Refseq():
         minimal_length_of_AA_seq = '[A-Z]{10}'
         raw_AA_seq_list = re.findall(sequence_of_AA_acronym + minimal_length_of_AA_seq, without_numbers.upper())
         if len(raw_AA_seq_list) >= 1:
-            return raw_AA_seq_list[0]  # string
+            return raw_AA_seq_list[0]
         else:
             return 'no AA sequence found'

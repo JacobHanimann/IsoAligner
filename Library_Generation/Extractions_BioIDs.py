@@ -1,9 +1,7 @@
 import re
 
-
 class Get_Bio_ID():
     pass
-
 
     @staticmethod
     def get_bio_IDs_with_regex(ID_type, string):
@@ -32,7 +30,6 @@ class Get_Bio_ID():
             version = True
 
         # Refseq
-        # known
         elif ID_type == 'refseq_NM':
             pattern = 'NM_\d+'
         elif ID_type == 'refseq_rna_version':
@@ -60,6 +57,7 @@ class Get_Bio_ID():
         elif ID_type == 'refseq_mitocho_version':
             version = True
             pattern = 'YP_\d+\.\d+'
+
         # refseq chromosome
         elif ID_type == 'refseq_chromosome':
             pattern = 'NC_\d+\.\d+'
@@ -96,7 +94,7 @@ class Get_Bio_ID():
             if ID_type=='uniprot_uniparc':
                 return None
             else:
-                print('not found probably uniprot')
+                print('uniprot not found')
                 return 'not found'
         elif len(match_list) == 1:
             if ID_type == "uniprot_accession":

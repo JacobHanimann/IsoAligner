@@ -1,14 +1,12 @@
 from Extractions_BioIDs import *
 from Exon import *
 
-
 class Exon_Information():
     pass
 
     @staticmethod
     def read_Ensembl_GRCh38_gtf_file_generate_nested_dict(file):
         '''extraction of exon infos of protein coding genes, generates exon objects and stores them in dictionary with ENSG IDs as keys'''
-        #read file
         with open(file, "r") as f:
             all_lines = f.readlines()
         #organisation
@@ -27,15 +25,9 @@ class Exon_Information():
                 print(100*round(index/len(all_lines),2),'%')
             splitted = re.split('\t',line)
 
-            #if splitted[2] != 'exon' and splitted[2]!='CDS':
-            #   start_codon=True #actually any other category
-            #   exon=False
-            #   cds=False
-            #   continue
-
             if exon and cds:
                 #creating Exon_objects
-                if exon_length >= 2.5: #coding sequence has to at least 2 AA long
+                if exon_length >= 2.5: #coding sequence has to at least 2.5 AA long
                     if exon_length!=None and ENSE!=None and cds_exon_number!=None and cds_exon_number==exon_number:
                         exon_object = Exon(exon_start_end=start_end,exon_length=exon_length,ENSE=ENSE,ENST=ENST,exon_number=exon_number)
                         #saving exon object in gene dict
@@ -81,18 +73,12 @@ class Exon_Information():
                 start_codon=False
                 cds_start_end = [int(splitted[3]), int(splitted[4])]
                 frame = int(splitted[7])
-                #print('new cds')
-                #print(frame)
-                #print(cds_start_end)
-                exon_length = (cds_start_end[1]-cds_start_end[0]+1-frame)/3 #stimmt immer noch nicht
-                #print('exon length:', exon_length)
+                exon_length = (cds_start_end[1]-cds_start_end[0]+1-frame)/3
                 exon_number_extract = re.findall('exon_number\s"\d"', splitted[8])
                 if exon_number_extract:
                     cds_exon_number = re.findall('\d', exon_number_extract[0])[0]
                 else:
                     cds_exon_number = None
-
-
         return gene_dict
 
 
@@ -144,13 +130,3 @@ class Exon_Information():
                                     else:
                                         isoform.collection_of_exons.append(exon)
                                     break
-
-
-#testing
-
-#gene_dict = Exon_Information.read_Ensembl_GRCh38_gtf_file_generate_nested_dict('/Users/jacob/Desktop/Isoform Mapper Webtool/Homo_sapiens.GRCh38_protein_coding.gtf')
-#gene_dict_only_minimal = Exon_Information.pick_exon_length_minimal_from_nested_dict(gene_dict)
-#print(len(gene_dict_only_minimal))
-#for gene, length in gene_dict_only_minimal.items():
-#    if length==None:
-#        print(gene)

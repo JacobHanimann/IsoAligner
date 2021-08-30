@@ -1,10 +1,8 @@
 import pandas as pd
 from IsoAligner_core.Gene import *
 
-
 class HGNC():
     pass
-
 
     @staticmethod
     def add_HCGN_information_to_gene_objects(file_of_gene_names, list_of_gene_objects):
@@ -29,7 +27,7 @@ class HGNC():
                 if "," in previous_symbols:
                     previous_symbols = previous_symbols.split(', ')
                 else:
-                    previous_symbols = [previous_symbols]  # either way create a list because it facilitates later search functions
+                    previous_symbols = [previous_symbols]
             if type(alias_symbols) != float:
                 if "," in alias_symbols:
                     alias_symbols = alias_symbols.split(', ')
