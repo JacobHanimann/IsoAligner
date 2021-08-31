@@ -6,7 +6,7 @@ class Protein_isoform:
                  refseq_NM=None, refseq_NM_version=None, refseq_NP_version=None, refseq_NP=None, refseq_NC_version=None,refseq_XM_version=None,
                  refseq_XP=None, refseq_XP_version=None, refseq_YP_version=None, refseq_YP=None,
                  uniprot_accession=None, uniprot_uniparc=None, uniprot_isoform=None, uniprot_ID=None, UCSC_stable_ID=None, collection_of_exons=None):
-        self.gene_name= gene_name #maybe unnecessary
+        self.gene_name= gene_name
         self.protein_sequence = protein_sequence
         #ensembl
         self.ENSG = ENSG
