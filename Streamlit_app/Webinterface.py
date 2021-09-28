@@ -50,11 +50,11 @@ def main():
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
 
         #fixed in put area
-        title, example_button = st.columns([3.8,1])
+        title, example_button = st.columns([2.3,1])
         with title:
             st.markdown("### Input")
             with example_button:
-                if st.button('Show Example'):
+                if st.button('Show Random Example'):
                     ss.example = True
 
         if ss.example:
