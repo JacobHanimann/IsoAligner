@@ -44,7 +44,7 @@ def main():
         st.header("Map Amino Acid Positions Across Isoforms")
         st.write(
             "Align protein isoforms interactively with a customized Needleman-Wunsch algorithm and gene-specific minimal exon lengths to retrieve clean positional mapping tables for corresponding amino acids in alternative splice variants."
-            " The current human isoform library consists of ~19'000 protein coding genes covering ~120'000 protein sequences and +1.3 million mapped isoform IDs from Ensembl, UniProt, RefSeq, UCSC and HGNC.")
+            " The current human isoform library consists of ~19'000 protein coding genes covering ~120'000 protein sequences and +1.3 million mapped isoform IDs from Ensembl, UniProt, RefSeq, UCSC.")
 
         st.sidebar.markdown("### 🧬️Organism")
         st.sidebar.selectbox('Select species', ['🧍🏽Homo Sapiens'])
