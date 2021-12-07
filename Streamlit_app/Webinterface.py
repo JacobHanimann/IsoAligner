@@ -526,7 +526,7 @@ def main():
             st.markdown("#### Statistics:")
             st.write('\n')
             st.write('Genes total:', minimal_exon_lengths)
-            st.write('Genes with 2 ≤ isoforms: ',number_of_good_genes)
+            st.write('Genes with 2 ≤ isoform etnries: ',number_of_good_genes)
             st.write('Isoform entries in total: ',total_number_of_isoforms)
             st.write(" IDs in total:", Ids_in_total)
             st.write('Ø Isoform per gene:', round(total_number_of_isoforms/total_number_of_genes,1))
