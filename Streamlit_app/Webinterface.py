@@ -454,7 +454,7 @@ def main():
         with info:
             st.markdown("##### Volume")
             st.write(' - Genes: ', number_of_good_genes," \n"
-            ' - Isoforms in total: ', two_isoform_number," \n"
+            ' - Isoform entries in total: ', two_isoform_number," \n"
             " - IDs in total:", Ids_two," \n"
             ' - Ø Isoform per gene:', round(two_isoform_number / number_of_good_genes, 1)," \n"
             " - Ø IDs per AA seq:", round(Ids_two / two_isoform_number, 1)," \n")
