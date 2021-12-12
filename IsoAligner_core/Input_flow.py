@@ -144,7 +144,7 @@ class Input_flow:
         if len(gene_indexes)== len(set(gene_indexes))*2:
             return 'pairwise'
         elif len(gene_indexes)!= len(set(gene_indexes)):
-            st.warning('Please enter your input in the format of either one **or** two Isoform ID\'s per gene.')
+            st.warning('Please enter your input in the format of either one **or** two Isoform IDs per gene.')
             return 'stop'
         else:
             return "one_ID_per_gene"
@@ -165,7 +165,7 @@ class Input_flow:
                 notspecified += 1
         if notspecified!=0:
             if number_of_elements !=1:
-                st.info('Note: '+str(notspecified) + '/' + str(number_of_elements) + " reference isoform ID's were not specified in the Input field and are automatically chosen: ("+', '.join(list_of_parent_elements)+')')
+                st.info('Note: '+str(notspecified) + '/' + str(number_of_elements) + " reference isoform IDs were not specified in the Input field and are automatically chosen: ("+', '.join(list_of_parent_elements)+')')
             else:
                 pass
 

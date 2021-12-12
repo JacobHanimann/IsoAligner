@@ -61,14 +61,14 @@ def main():
                     ss.example = True
 
         if ss.example:
-            input1 = st.text_area('Paste ID\'s (comma or newline separated) and click on Search and Align. Go to "Manual" for further information.',ss.random_input,key=str(ss.run_id))
+            input1 = st.text_area('Paste IDs (comma or newline separated) and click on Search and Align. Go to "Manual" for further information.',ss.random_input,key=str(ss.run_id))
         else:
-            input1 = st.text_area('Paste one, two (pairwise) or multiple Ensembl/UniProt/RefSeq ID\'s, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
+            input1 = st.text_area('Paste one, two (pairwise) or multiple Ensembl/UniProt/RefSeq IDs, gene names or a raw amino acid sequence: ', '''''',key=str(ss.run_id))
         file_upload, search_button = st.columns([3.35,1])
         with file_upload:
-            file_wanted = st.checkbox("upload list of ID's or gene names")
+            file_wanted = st.checkbox("upload list of IDs or gene names")
             if file_wanted:
-                input1 = st.file_uploader("Accepted ID's: Ensembl, Refseq, Uniprot, UCSC, HGNC (Accession/Isoform/Uniparc)", type=[ "txt"])
+                input1 = st.file_uploader("Accepted IDs: Ensembl, Refseq, Uniprot, UCSC, HGNC (Accession/Isoform/Uniparc)", type=[ "txt"])
                 if input1 is not None:
                     input1 = input1.getvalue().decode("UTF-8")
                     ss.searched_clicked = True
