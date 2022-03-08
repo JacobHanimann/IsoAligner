@@ -135,12 +135,100 @@ class Visualise_Alignment:
         else:
             whitespace = len(name_percentage_isoform_string) * " "
             name_percentage_reference_string = name_percentage_reference_string + (len(name_percentage_isoform_string)-len(name_percentage_reference_string)) * " "
+
         alignment_character_list = [" " if score == "gap" else correct_match_character if score == "correct" else wrong_match_character if score=='wrong' else mismatch_character for score in AA_match_evalutation_list]
         #final string
+        reference_sequence_positions = Visualise_Alignment.generate_position_description(reference_sequence_list, whitespace, orentiation="top")
+        isoform_sequence_positions = Visualise_Alignment.generate_position_description(isoform_sequence_list, whitespace, orentiation="bottom")
         output_alignment_string = name_percentage_reference_string + ''.join(
+            reference_sequence_positions) + '\n' +  whitespace +''.join(
             reference_sequence_list) + '\n' + whitespace + ''.join(
-            alignment_character_list) + "\n" + name_percentage_isoform_string + ''.join(isoform_sequence_list)
+            alignment_character_list) + "\n" + name_percentage_isoform_string + ''.join(isoform_sequence_list) + '\n' + whitespace + ''.join(isoform_sequence_positions)
         return output_alignment_string
+
+
+    @staticmethod
+    def generate_position_description(sequence_list, whitespace, orentiation="top"):
+        symbols= ["|" if int(index+1) % 10==0 or index==0 else "." for index,element in enumerate(sequence_list)]
+        positions = []
+        one_digit = False
+        two_digit = False
+        three_digit = False
+        four_digit = False
+        AA_numbers = Visualise_Alignment.compute_AA_number_for_positions(sequence_list)
+        iterator = 0
+        for index, symbol in enumerate(symbols):
+            if symbol=="|":
+                positions.append(str(AA_numbers[iterator]))
+                iterator +=1
+                try:
+                    if AA_numbers[iterator-1] <10:
+                        one_digit = True
+                    if AA_numbers[iterator-1] >= 10:
+                        two_digit = True
+                    if AA_numbers[iterator-1] >=100:
+                        three_digit=True
+                    if AA_numbers[iterator-1] >=1000:
+                        four_digit=True
+                except:
+                    one_digit=True
+            else:
+                if four_digit:
+                    four_digit=False
+                    continue
+                if three_digit:
+                    three_digit=False
+                    continue
+                if two_digit:
+                   two_digit=False
+                   continue
+                if one_digit:
+                    positions.append(" ")
+                    one_digit= False
+                else:
+                    positions.append(" ")
+
+
+
+        if orentiation=="top":
+            construct = ''.join(positions) + '\n' + whitespace + ''.join(symbols)
+        elif orentiation=="bottom":
+            construct = ''.join(symbols) + '\n' + whitespace + ''.join(positions)
+
+        return construct
+
+    @staticmethod
+    def compute_AA_number_for_positions(sequence_list):
+        AA_numbers = []
+        counter = 0
+        for index, element in enumerate(sequence_list):
+            if index==0 and element!="-":
+                counter +=1
+            if index % 10==0:
+                if index==0:
+                    if not element =="-":
+                        AA_numbers.append(counter)
+                    else:
+                        AA_numbers.append(0)
+                else:
+                    AA_numbers.append(counter)
+            if element != "-" and index != 0:
+                counter += 1
+        #return Visualise_Alignment.clean_up_AA_numbers(AA_numbers)
+        return (AA_numbers)
+
+    @staticmethod
+    def clean_up_AA_numbers(AA_numbers):
+        "function above has to be adjusted to integrate this function"
+        cleaned = []
+        for index, number in enumerate(AA_numbers):
+            if index ==0:
+                cleaned.append(number)
+            elif number != AA_numbers[index-1]:
+                cleaned.append(number)
+            else:
+                cleaned.append("")
+        return cleaned
 
 
     @staticmethod

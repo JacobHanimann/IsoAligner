@@ -132,10 +132,10 @@ class Mapping_Table(Resource):
                                                                                 chosen_columns, match, mismatch,
                                                                                 open_gap_penalty, gap_extension_penalty)
             if type(generated_table) != tuple:
-                table_json = generated_table.to_json(orient='records')
+                table_json = generated_table.to_json(orient='records',)
                 return table_json
             else:
-                return "No amino acid positions mapped. Adjust parameters to allow matches."
+                return "Go to 'REST API & Downloads' on the left sidebar on the <a href='https://www.isoaligner.org'>main webpage</a> to find out how to send requests."
 
 
 class Raw_alignment(Resource):
