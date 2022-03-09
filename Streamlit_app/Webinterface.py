@@ -23,12 +23,12 @@ def main():
     """ Isoform Alignment Tool """
 
     #remove streamlit marks
-    st.markdown(""" <style>
-        footer {visibility: hidden;}
-        </style> """, unsafe_allow_html=True)
-    st.markdown("""
-           <style>div[data-testid="stToolbar"] { display: none;}</style>
-           """, unsafe_allow_html=True)
+    #st.markdown(""" <style>
+       # footer {visibility: hidden;}
+       # </style> """, unsafe_allow_html=True)
+   # st.markdown("""
+       #    <style>div[data-testid="stToolbar"] { display: none;}</style>
+          # """, unsafe_allow_html=True)
 
     #Sidebar
     activity = ['Alignment Tool', 'REST API & Downloads', 'Manual & About']

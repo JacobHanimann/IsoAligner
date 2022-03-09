@@ -138,17 +138,24 @@ class Visualise_Alignment:
 
         alignment_character_list = [" " if score == "gap" else correct_match_character if score == "correct" else wrong_match_character if score=='wrong' else mismatch_character for score in AA_match_evalutation_list]
         #final string
-        reference_sequence_positions = Visualise_Alignment.generate_position_description(reference_sequence_list, whitespace, orentiation="top")
-        isoform_sequence_positions = Visualise_Alignment.generate_position_description(isoform_sequence_list, whitespace, orentiation="bottom")
-        output_alignment_string = name_percentage_reference_string + ''.join(
-            reference_sequence_positions) + '\n' +  whitespace +''.join(
+        length_str_top = "length:" + str([ 1 if item !="-" else 0 for item in reference_sequence_list].count(1))
+        length_str_bottom = "length:" + str([ 1 if item !="-" else 0 for item in isoform_sequence_list].count(1))
+        adj_whitespace_top = (len(whitespace)-len(length_str_top)) * " "
+        adj_whitespace_bottom = (len(whitespace) - len(length_str_bottom)) * " "
+        length_str_bottom_fix = length_str_bottom + adj_whitespace_bottom
+        reference_sequence_positions = Visualise_Alignment.generate_position_description(reference_sequence_list,
+                                                                                         whitespace, orentiation="top")
+        isoform_sequence_positions = Visualise_Alignment.generate_position_description(isoform_sequence_list,
+                                                                                       whitespace, orentiation="bottom", bottom_length=length_str_bottom_fix)
+        output_alignment_string = length_str_top + adj_whitespace_top + ''.join(
+            reference_sequence_positions) + '\n' + name_percentage_reference_string  +''.join(
             reference_sequence_list) + '\n' + whitespace + ''.join(
-            alignment_character_list) + "\n" + name_percentage_isoform_string + ''.join(isoform_sequence_list) + '\n' + whitespace + ''.join(isoform_sequence_positions)
+            alignment_character_list) + "\n" + name_percentage_isoform_string + ''.join(isoform_sequence_list) + '\n' + ''.join(isoform_sequence_positions)
         return output_alignment_string
 
 
     @staticmethod
-    def generate_position_description(sequence_list, whitespace, orentiation="top"):
+    def generate_position_description(sequence_list, whitespace, orentiation="top", bottom_length=None):
         symbols= ["|" if int(index+1) % 10==0 or index==0 else "." for index,element in enumerate(sequence_list)]
         positions = []
         one_digit = False
@@ -159,7 +166,10 @@ class Visualise_Alignment:
         iterator = 0
         for index, symbol in enumerate(symbols):
             if symbol=="|":
-                positions.append(str(AA_numbers[iterator]))
+                try: #needs fixing, problem at the end of the sequence
+                    positions.append(str(AA_numbers[iterator]))
+                except:
+                    positions.append(str(''))
                 iterator +=1
                 try:
                     if AA_numbers[iterator-1] <10:
@@ -193,7 +203,7 @@ class Visualise_Alignment:
         if orentiation=="top":
             construct = ''.join(positions) + '\n' + whitespace + ''.join(symbols)
         elif orentiation=="bottom":
-            construct = ''.join(symbols) + '\n' + whitespace + ''.join(positions)
+            construct = whitespace + ''.join(symbols) + '\n' + bottom_length + ''.join(positions)
 
         return construct
 
@@ -306,7 +316,8 @@ class Visualise_Alignment:
                 #calculate statistics of alignment output
                 percentage_reference, percentage_isoform = Visualise_Alignment.calculate_percentage_of_mapped_positions(isoform_pattern_check,
                                                                                                                         reference_protein_sequence,
-                                                                                                            transcript.protein_sequence)
+                                                                                                          transcript.protein_sequence)
+                st.write("____________")
                 st.write('Alignment ' + str(transcript_number))
                 #extract transcript name of alternative_ID isoform
                 sequence2_name = Visualise_Alignment.fetch_transcript_name_from_selection_of_attributes(list_of_gene_objects,index_of_gene,index)
