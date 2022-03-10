@@ -319,9 +319,9 @@ class Table_Generation:
 
     @staticmethod
     def display_filter_option_AA():
-        option,blankspace = st.columns([1.05,2])
+        option,blankspace = st.columns([0.7,2])
         with option:
-            value = st.text_input('Filter mapping table for specific value:', value='')
+            value = st.text_input('Filter table for exact value:', value='')
         return value
 
     @staticmethod
