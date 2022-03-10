@@ -365,15 +365,13 @@ class Table_Generation:
                                            index_of_reference_transcript)
         match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(
             list_of_gene_objects, index_gene)
-        st.write('\n')
-        st.markdown(
-            " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
-        st.markdown(
-            " ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
-        st.write('\n')
-        st.text('\n')
-        with st.spinner('Visualising Alignments . . .'):
-            Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
+        st.markdown("##### Alignment Preview")
+        st.write("\n")
+        with st.expander("View Alignment Visualisations"):
+            st.markdown(
+                "###### ℹ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function. Uppercase 'X' display AA mismatches (comes with a warning message if occurring). The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence. The positions are annotated every 10th amino acid. AA position annotated in a gap region corresponds to the last prior AA in the sequence.")
+            with st.spinner('Visualising Alignments . . .'):
+                Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
                                                                              list_of_gene_objects, gene_index, match,
                                                                              mismatch, open_gap_penalty,
                                                                              gap_extension_penalty, exon_length_AA)

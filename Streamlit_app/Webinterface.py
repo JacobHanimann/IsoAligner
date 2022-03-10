@@ -23,12 +23,12 @@ def main():
     """ Isoform Alignment Tool """
 
     #remove streamlit marks
-    #st.markdown(""" <style>
-       # footer {visibility: hidden;}
-       # </style> """, unsafe_allow_html=True)
-   # st.markdown("""
-       #    <style>div[data-testid="stToolbar"] { display: none;}</style>
-          # """, unsafe_allow_html=True)
+    st.markdown(""" <style>
+        footer {visibility: hidden;}
+        </style> """, unsafe_allow_html=True)
+    st.markdown("""
+           <style>div[data-testid="stToolbar"] { display: none;}</style>
+           """, unsafe_allow_html=True)
 
     #Sidebar
     activity = ['Alignment Tool', 'REST API & Downloads', 'Manual & About']
@@ -108,9 +108,10 @@ def main():
             #case of using one ID overall
             if ss.searched_clicked and not no_elements and  len(input1_IDs) == 1:
                 using_IDs = True
+                st.write("---")
                 title, clear_button = st.columns([5.9,1.])
                 with title:
-                    st.markdown("### Alignment Preview")
+                    st.markdown("### Search Results")
                 with clear_button:
                     st.write('\n')
                     if st.button('Clear All'):
@@ -134,17 +135,16 @@ def main():
                     with reference_select:
                         chosen_reference = st.selectbox('Choose your reference isoform: ',[transcript[0] for transcript in transcript_list])
                         index_of_reference_transcript = Visualise_Alignment.get_index_of_chosen_transcript(chosen_reference,transcript_list)
-                    with st.expander("Details about this Isoform Entry"):
+                    with st.expander("View details about this Isoform Entry"):
                         Input_flow.pop_up_isoform_info(list_of_gene_objects, index_gene_object, one_isoform, index_of_reference_transcript)
                     ss.generate = True
-                    st.text('\n')
+                    st.markdown("##### Alignment Preview")
+                    st.write("\n")
                     match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(list_of_gene_objects, index_gene_object)
-                    st.markdown(" ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
-                    st.markdown(" ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
-                    st.write('\n')
-                    st.text('\n')
-                    with st.spinner('Visualising Alignments . . .'):
-                        Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
+                    with st.expander("View Alignment Visualisations"):
+                        st.markdown("###### ℹ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function. Uppercase 'X' display AA mismatches (comes with a warning message if occurring). The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence. The positions are annotated every 10th amino acid. AA position annotated in a gap region corresponds to the last prior AA in the sequence.")
+                        with st.spinner('Visualising Alignments . . .'):
+                            Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,list_of_gene_objects,index_gene_object,match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA)
                     #Table section
                     parameter_change = False
                     chosen_columns = Input_flow.chose_columns(list_of_gene_objects,nested_dict,dict_of_IDs,ss.run_id_table,parameter_change)
@@ -171,9 +171,10 @@ def main():
             #case of using multiple ID'
             elif ss.searched_clicked and len(input1_IDs) > 1 and not no_elements:
                 using_IDs = True
+                st.write("---")
                 title, clear_button = st.columns([5.9, 1])
                 with title:
-                    st.markdown("### Alignment Preview")
+                    st.markdown("### Search Results")
                 with clear_button:
                     st.write('\n')
                     if st.button('Clear All'):
@@ -187,9 +188,10 @@ def main():
         #pairwise alignments
         elif mode_of_action == 'pairwise':
             dict_of_pairwise = Input_flow.create_dict_for_pairwise_mode(nested_dict, list_of_gene_objects)
+            st.write("----")
             title, clear_button = st.columns([5.9, 1])
             with title:
-                st.markdown("### Alignment Preview")
+                st.markdown("### Search Results")
             with clear_button:
                 st.write('\n')
                 if st.button('Clear All'):
@@ -230,17 +232,15 @@ def main():
                                                    index_of_reference_transcript)
                 match, mismatch, open_gap_penalty, gap_extension_penalty, exon_length_AA = Streamlit_pop_ups.sidebar_pop_up_parameters(
                     list_of_gene_objects, gene_index)
-                st.write('\n')
-                st.markdown(
-                    " ######  ℹ️ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function")
-                st.markdown(
-                    " ###### The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence")
-                st.write('\n')
-                st.text('\n')
-                with st.spinner('Visualising Alignments . . .'):
-                    transcript_list_w_index = [(element, list(nested_dict[element].values())[0]) for element in
-                                               transcript_list]
-                    Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
+                st.markdown("##### Alignment Preview")
+                st.write("\n")
+                with st.expander("View Alignment Visualisations"):
+                    st.markdown(
+                        "###### ℹ Syntax: 'x' are discarded matches and '|' are valid correspondences determined by the minimal exon length function. Uppercase 'X' display AA mismatches (comes with a warning message if occurring). The percentage score represents the ratio of correctly mapped positions over the total number of positions per sequence. The positions are annotated every 10th amino acid. AA position annotated in a gap region corresponds to the last prior AA in the sequence.")
+                    with st.spinner('Visualising Alignments . . .'):
+                        transcript_list_w_index = [(element, list(nested_dict[element].values())[0]) for element in
+                                                   transcript_list]
+                        Visualise_Alignment.display_alignment_for_one_gene_from_database(index_of_reference_transcript,
                                                                                      list_of_gene_objects, gene_index,
                                                                                      match, mismatch, open_gap_penalty,
                                                                                      gap_extension_penalty, exon_length_AA,

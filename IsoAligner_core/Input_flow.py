@@ -4,7 +4,7 @@ import gzip
 import random
 from .Gene import *
 from IsoAligner_core.Protein_isoform import *
-
+from IsoAligner_core.Visualise_Alignment import *
 
 class Input_flow:
     pass
@@ -401,6 +401,9 @@ class Input_flow:
             st.info('ℹ️ There is only one protein sequence stored of this gene in the human isoform library.')
         st.markdown(' #### Isoform Sequence:')
         st.write('\n')
+        #Visualise_Alignment.generate_position_description(
+            #list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence,
+            #whitespace="")
         st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
         st.markdown(' #### Associated information in the library:')
         st.write('\n')
