@@ -4,7 +4,6 @@ import gzip
 import random
 from .Gene import *
 from IsoAligner_core.Protein_isoform import *
-from IsoAligner_core.Visualise_Alignment import *
 
 class Input_flow:
     pass
@@ -401,10 +400,13 @@ class Input_flow:
             st.info('ℹ️ There is only one protein sequence stored of this gene in the human isoform library.')
         st.markdown(' #### Isoform Sequence:')
         st.write('\n')
-        #Visualise_Alignment.generate_position_description(
-            #list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence,
-            #whitespace="")
-        st.text(list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence)
+        AA_seq =  list_of_gene_objects[index_gene_object].protein_sequence_isoform_collection[0].protein_sequence
+        AA_desc=Input_flow.generate_position_description(
+           AA_seq,
+            whitespace="", orentiation='bottom', bottom_length="")
+        length_str_top = "length: " + str([1 if item != "-" else 0 for item in AA_seq].count(1)) + " AA"
+        st.text(length_str_top)
+        st.text(''.join(AA_seq) + "\n" + ''.join(AA_desc))
         st.markdown(' #### Associated information in the library:')
         st.write('\n')
         gene_dict = dict(list_of_gene_objects[index_gene_object].__dict__)
@@ -428,3 +430,79 @@ class Input_flow:
             isoform_dict.pop(attribute)
         st.write('Isoform Attributes:', isoform_dict)
 
+
+
+#copied from visualise alignment module because import did not work...
+
+    @staticmethod
+    def generate_position_description(sequence_list, whitespace, orentiation="top", bottom_length=None):
+        symbols= ["|" if int(index+1) % 10==0 or index==0 else "." for index,element in enumerate(sequence_list)]
+        positions = []
+        one_digit = False
+        two_digit = False
+        three_digit = False
+        four_digit = False
+        AA_numbers = Input_flow.compute_AA_number_for_positions(sequence_list)
+        iterator = 0
+        for index, symbol in enumerate(symbols):
+            if symbol=="|":
+                try: #needs fixing, problem at the end of the sequence
+                    positions.append(str(AA_numbers[iterator]))
+                except:
+                    positions.append(str(''))
+                iterator +=1
+                try:
+                    if AA_numbers[iterator-1] <10:
+                        one_digit = True
+                    if AA_numbers[iterator-1] >= 10:
+                        two_digit = True
+                    if AA_numbers[iterator-1] >=100:
+                        three_digit=True
+                    if AA_numbers[iterator-1] >=1000:
+                        four_digit=True
+                except:
+                    one_digit=True
+            else:
+                if four_digit:
+                    four_digit=False
+                    continue
+                if three_digit:
+                    three_digit=False
+                    continue
+                if two_digit:
+                   two_digit=False
+                   continue
+                if one_digit:
+                    positions.append(" ")
+                    one_digit= False
+                else:
+                    positions.append(" ")
+
+
+
+        if orentiation=="top":
+            construct = ''.join(positions) + '\n' + whitespace + ''.join(symbols)
+        elif orentiation=="bottom":
+            construct = whitespace + ''.join(symbols) + '\n' + bottom_length + ''.join(positions)
+
+        return construct
+
+    @staticmethod
+    def compute_AA_number_for_positions(sequence_list):
+        AA_numbers = []
+        counter = 0
+        for index, element in enumerate(sequence_list):
+            if index==0 and element!="-":
+                counter +=1
+            if index % 10==0:
+                if index==0:
+                    if not element =="-":
+                        AA_numbers.append(counter)
+                    else:
+                        AA_numbers.append(0)
+                else:
+                    AA_numbers.append(counter)
+            if element != "-" and index != 0:
+                counter += 1
+        #return Visualise_Alignment.clean_up_AA_numbers(AA_numbers)
+        return (AA_numbers)
