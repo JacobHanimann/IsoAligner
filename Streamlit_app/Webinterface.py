@@ -483,7 +483,7 @@ def main():
             st.markdown('# IsoAligner')
         st.markdown("### Matching identical exons")
         st.write('The challenge of aligning protein sequences of two isoforms is essentially matching the exons correctly.'
-                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to assure positional mapping of comprehensibly corresponding amino acids exclusively.  ')
+                 ' The IsoAligner algorithm exploits the biological characteristics of isoforms by using the Needleman-Wunsch algorithm with an open gap penalty and validating its solution in an extra step to provide positional mapping of comprehensibly corresponding amino acids exclusively.  ')
         problem_schema = Image.open('Streamlit_app/Pictures/exon_problem.png')
         st.image(problem_schema,use_column_width=True)
         st.write('To avoid and discard falsely mapped positions of distinct exons (e.g. Exon4 and Exon5) the parameters of the alignment are tweaked as follows:')
@@ -495,7 +495,7 @@ def main():
                     "- Conventional match and mismatch values (Default 1, -2)" )
         with minimal:
             st.markdown("#### Discard falsely matched positions")
-            st.write('- By definition of a minimal exon length in numbers of consecutive AA. The length is gene-specific and at least 3.')
+            st.write('- By definition of a minimal exon length in numbers of consecutive AAs. The length is gene-specific and at least 3.')
         st.markdown("### Alignment example:")
         st.write("First off, IsoAligner aims at exon pattern alignment solutions. The generated AA matches are then additionally validated by the minimal exon length function. Alignment sections only containing partial diffuse mapping are being recognised as random matches and are marked as 'x' and ultimately discarded from the mapping table.")
         example = Image.open('Streamlit_app/Pictures/example_june.png')
@@ -509,7 +509,7 @@ def main():
                  "\n    - Set the mininmal exon length (in AA)."
                  "\n""    - Set Needleman-Wunsch parameters."
                  "\n 3. Explore the computed mapping table."
-                "\n    - Filter for specific amino acid positions."
+                "\n    - Filter for specific amino acid positions or transcript IDs."
                 "\n     - Select ID types (Ensembl, UniProt, RefSeq, UCSC) to be included in the dataframe."
                 "\n    - Download mapping table: tab or comma separated (tsv/csv). "
                  )
