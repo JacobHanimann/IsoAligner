@@ -28,12 +28,10 @@ for mapping in list_of_mapped_amino_acids:
         #print("Corresponding amino acid in alternative isoform:",mapping["IsoformPos"])
 
 
-
 #INTEGRATE REQUESTS IN ANY ANALYSIS PIPELINE
 
 #create a loop to check every isoform pair per gene in your dictionary
 def compare_isoform_lists(gene_dict):
     for isoform1, isoform2 in gene_dict.keys():
         list_of_mapped_amino_acids = map_amino_acid_position_of_two_isoforms(isoform1, isoform2)
-        #use mapping table in later analysis steps
         pass
