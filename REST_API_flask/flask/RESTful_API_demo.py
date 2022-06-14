@@ -1,6 +1,6 @@
-import requests
+#REST API DEMO
 
-def map_amino_acid_position_of_two_isoforms(reference_isoform_id, alternative_isoform_id):
+def map_amino_acid_positions_of_two_isoforms(reference_isoform_id, alternative_isoform_id):
     """query corresponding amino acid position between to isoforms"""
     #import python requests for API calls and json loading
     import json
@@ -18,20 +18,21 @@ def map_amino_acid_position_of_two_isoforms(reference_isoform_id, alternative_is
 
 #EXAMPLE REQUEST
 
-list_of_mapped_amino_acids = map_amino_acid_position_of_two_isoforms("EGFR-207", "EGFR-201")
-#print(list_of_mapped_amino_acids)
+list_of_mapped_amino_acids = map_amino_acid_positions_of_two_isoforms("EGFR-207", "NP_005219")
+print(list_of_mapped_amino_acids)
+
+print("-----------------------------------------------------------------------------------------------------------")
 
 #check if position 394 are the same for the two isoforms
 for mapping in list_of_mapped_amino_acids:
     if mapping["ReferencePos"]==394:
-        pass
-        #print("Corresponding amino acid in alternative isoform:",mapping["IsoformPos"])
+        print("Corresponding position of amino acid '" + mapping["AA"]+"' in alternative isoform:",mapping["IsoformPos"])
 
 
 #INTEGRATE REQUESTS IN ANY ANALYSIS PIPELINE
 
 #create a loop to check every isoform pair per gene in your dictionary
 def compare_isoform_lists(gene_dict):
-    for isoform1, isoform2 in gene_dict.keys():
-        list_of_mapped_amino_acids = map_amino_acid_position_of_two_isoforms(isoform1, isoform2)
+    for isoform1, isoform2 in gene_dict.values():
+        list_of_mapped_amino_acids = map_amino_acid_positions_of_two_isoforms(isoform1, isoform2)
         pass
